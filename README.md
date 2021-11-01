@@ -5,7 +5,7 @@
 # HyupUp
 일 잘하는 사람들의 협업 툴, HyupUp 
 
-[바로가기](http://hyupup.ml/)
+[바로가기](http://www.hyupup.ml/)
 <br/>
 ## Demo
 - [와이어프레임](https://www.figma.com/file/bnu2fR4XSstILgXYPRkvIP/HyupUp?node-id=0%3A1)
