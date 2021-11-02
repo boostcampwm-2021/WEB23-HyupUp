@@ -9,5 +9,8 @@
   "workspaces": [
     "client",
     "server"
-  ]
+  ],
+  "devDependencies": {
+    "typescript": "^4.4.4"
+  }
 }

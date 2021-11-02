@@ -8,7 +8,7 @@ module.exports = {
   entry: path.resolve(__dirname, './src/index'),
 
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
 
   devServer: {
