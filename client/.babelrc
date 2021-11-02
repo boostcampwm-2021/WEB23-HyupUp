@@ -1,0 +1,15 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "browsers": [">= 5% in KR"]
+        }
+      }
+    ],
+    "@babel/react",
+    "@babel/typescript"
+  ],
+  "plugins" : ["@babel/proposal-class-properties"]
+}
