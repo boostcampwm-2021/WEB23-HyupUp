@@ -1,0 +1,13 @@
+{
+  "name": "WEB23-HyupUp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/boostcampwm-2021/WEB23-HyupUp.git",
+  "author": "ingong <insong1216@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ]
+}
