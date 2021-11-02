@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   mode: 'development',
 
-  entry: './src/index',
+  entry: path.resolve(__dirname, './src/index'),
 
   resolve: {
     extensions: ['.js', '.jsx'],
