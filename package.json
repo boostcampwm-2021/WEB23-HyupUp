@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "ci": "yarn install --frozen-lockfile",
+    "ci": "echo 'hello' && yarn install --frozen-lockfile",
     "lint": "eslint ./"
   },
   "workspaces": [
