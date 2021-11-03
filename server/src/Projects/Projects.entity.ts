@@ -1,5 +1,5 @@
-import Epics from '@/Epics/Epics.entity';
-import Users from '@/Users/Users.entity';
+import Epics from '../Epics/Epics.entity';
+import Users from '../Users/Users.entity';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'PROJECTS' })

@@ -1,5 +1,5 @@
-import Stories from '@/Stories/Stories.entity';
-import Users from '@/Users/Users.entity';
+import Stories from '../Stories/Stories.entity';
+import Users from '../Users/Users.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'TASKS' })

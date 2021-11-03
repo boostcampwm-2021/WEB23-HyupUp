@@ -1,5 +1,5 @@
-import Epics from '@/Epics/Epics.entity';
-import Tasks from '@/Tasks/Tasks.entity';
+import Epics from '../Epics/Epics.entity';
+import Tasks from '../Tasks/Tasks.entity';
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum StatusEnum {

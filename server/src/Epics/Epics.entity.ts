@@ -1,5 +1,5 @@
-import Projects from '@/Projects/Projects.entity';
-import Stories from '@/Stories/Stories.entity';
+import Projects from '../Projects/Projects.entity';
+import Stories from '../Stories/Stories.entity';
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'EPICS' })

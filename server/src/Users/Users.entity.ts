@@ -1,5 +1,5 @@
-import Organizations from '@/Organizations/Organizations.entity';
-import Tasks from '@/Tasks/Tasks.entity';
+import Organizations from '../Organizations/Organizations.entity';
+import Tasks from '../Tasks/Tasks.entity';
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'USERS' })

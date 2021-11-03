@@ -3,6 +3,8 @@ import createError, { HttpError } from 'http-errors';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import { ConnectionOptions, createConnection } from 'typeorm';
+import { entities } from './src';
 
 // to-do router import
 
@@ -25,5 +27,29 @@ app.use((err: HttpError, req: Request, res: Response) => {
   res.status(err.status || 500);
   res.send('error');
 });
+
+(async () => {
+  const dbConfig = {
+    host: 'localhost',
+    username: 'root',
+    password: '',
+    database: '',
+  };
+
+  const connectionOptions: ConnectionOptions = {
+    type: 'mysql',
+    synchronize: true,
+    entities,
+    ...dbConfig,
+  };
+
+  const connection = await createConnection(connectionOptions);
+  await connection.synchronize();
+  await connection.connect();
+
+  const userRepo = connection.getRepository(entities[0]);
+  const x = await userRepo.findOne(1);
+  console.log(x);
+})();
 
 export default app;
