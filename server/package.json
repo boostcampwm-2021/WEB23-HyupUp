@@ -21,6 +21,7 @@
     "express": "^4.17.1",
     "http": "^0.0.1-security",
     "http-errors": "^1.8.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "socket.io": "^4.3.1"
   }
 }
