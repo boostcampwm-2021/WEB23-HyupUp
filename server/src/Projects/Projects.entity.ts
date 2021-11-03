@@ -11,7 +11,11 @@ export default class Projects {
   name!: number;
 
   @ManyToMany(() => Users)
-  @JoinTable({ name: 'USERS_PROJECTS' })
+  @JoinTable({
+    name: 'USERS_PROJECTS',
+    joinColumn: { name: 'PROJECT_ID', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'USER_ID', referencedColumnName: 'id' },
+  })
   users!: Users[];
 
   @OneToMany(() => Epics, (epics) => epics.id)

@@ -1,6 +1,6 @@
 import Epics from '../Epics/Epics.entity';
 import Tasks from '../Tasks/Tasks.entity';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum StatusEnum {
   TODO = 'TODO',
@@ -20,6 +20,7 @@ export default class Stories {
   status!: StatusEnum;
 
   @ManyToOne(() => Epics, (epics) => epics.id)
+  @JoinColumn({ name: 'EPIC_ID' })
   epics!: Epics;
 
   @OneToMany(() => Tasks, (tasks) => tasks.id)

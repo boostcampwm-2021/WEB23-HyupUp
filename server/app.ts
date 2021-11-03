@@ -44,7 +44,7 @@ app.use((err: HttpError, req: Request, res: Response) => {
   };
 
   const connection = await createConnection(connectionOptions);
-  await connection.synchronize();
+  await connection.synchronize(true); // to-do 환경변수로 만들기
 })();
 
 export default app;

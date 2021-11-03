@@ -1,6 +1,6 @@
 import Stories from '../Stories/Stories.entity';
 import Users from '../Users/Users.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'TASKS' })
 export default class Tasks {
@@ -14,8 +14,10 @@ export default class Tasks {
   status!: boolean;
 
   @ManyToOne(() => Stories, (stories) => stories.id)
+  @JoinColumn({ name: 'STORY_ID' })
   stories!: Stories;
 
   @ManyToOne(() => Users, (users) => users.id)
+  @JoinColumn({ name: 'USER_ID' })
   users!: Users;
 }

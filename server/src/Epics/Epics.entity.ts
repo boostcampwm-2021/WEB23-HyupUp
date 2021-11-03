@@ -1,6 +1,6 @@
 import Projects from '../Projects/Projects.entity';
 import Stories from '../Stories/Stories.entity';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'EPICS' })
 export default class Epics {
@@ -17,6 +17,7 @@ export default class Epics {
   endAt!: Date;
 
   @ManyToOne(() => Projects, (projects) => projects.id)
+  @JoinColumn({ name: 'PROJECT_ID' })
   projects!: Projects;
 
   @OneToMany(() => Stories, (stories) => stories.id)

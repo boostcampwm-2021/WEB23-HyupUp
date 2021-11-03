@@ -1,6 +1,6 @@
 import Organizations from '../Organizations/Organizations.entity';
 import Tasks from '../Tasks/Tasks.entity';
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'USERS' })
 export default class Users {
@@ -29,6 +29,7 @@ export default class Users {
   refreshToken!: number;
 
   @ManyToOne(() => Organizations, (org) => org.id)
+  @JoinColumn({ name: 'ORGANIZATION_ID' })
   org!: Organizations;
 
   @OneToMany(() => Tasks, (tasks) => tasks.id)
