@@ -16,7 +16,7 @@ export default class Stories {
   @Column({ name: 'NAME' })
   name!: number;
 
-  @Column({ name: 'STATUS', type: 'enum', default: StatusEnum.TODO })
+  @Column({ name: 'STATUS', type: 'enum', default: StatusEnum.TODO, enum: StatusEnum })
   status!: StatusEnum;
 
   @ManyToOne(() => Epics, (epics) => epics.id)

@@ -31,7 +31,7 @@ app.use((err: HttpError, req: Request, res: Response) => {
 (async () => {
   const dbConfig = {
     host: 'localhost',
-    username: 'root',
+    username: '',
     password: '',
     database: '',
   };
@@ -45,11 +45,6 @@ app.use((err: HttpError, req: Request, res: Response) => {
 
   const connection = await createConnection(connectionOptions);
   await connection.synchronize();
-  await connection.connect();
-
-  const userRepo = connection.getRepository(entities[0]);
-  const x = await userRepo.findOne(1);
-  console.log(x);
 })();
 
 export default app;
