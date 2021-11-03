@@ -6,6 +6,10 @@
   "author": "ingong <insong1216@gmail.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "ci": "yarn install --frozen-lockfile",
+    "lint": "eslint ./"
+  },
   "workspaces": [
     "client",
     "server"
