@@ -30,7 +30,7 @@ module.exports = {
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        type: 'assets',
+        type: 'asset',
         parser: {
           dataUrlCondition: {
             maxSize: 8 * 1024,
@@ -54,15 +54,15 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
+      template: './public/index.html',
       minify:
         process.env.NODE_ENV === 'production'
           ? {
               collapseWhitespace: true,
-              removeComments: true, 
+              removeComments: true,
             }
           : false,
     }),
     new CleanWebpackPlugin(),
   ],
 };
-
