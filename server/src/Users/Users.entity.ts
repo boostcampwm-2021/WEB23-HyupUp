@@ -8,25 +8,25 @@ export default class Users {
   id!: number;
 
   @Column({ name: 'JOB' })
-  job!: number;
+  job!: string;
 
   @Column({ name: 'NAME' })
-  name!: number;
+  name!: string;
 
   @Column({ name: 'EMAIL' })
-  email!: number;
+  email!: string;
 
   @Column({ name: 'IMAGE_URL' })
-  imageURL!: number;
+  imageURL!: string;
 
-  @Column({ name: 'ADMIN' })
-  admin!: number;
+  @Column({ name: 'ADMIN', type: 'boolean' })
+  admin!: boolean;
 
   @Column({ name: 'ACCESS_TOKEN' })
-  accessToken!: number;
+  accessToken!: string;
 
   @Column({ name: 'REFRESH_TOKEN' })
-  refreshToken!: number;
+  refreshToken!: string;
 
   @ManyToOne(() => Organizations, (org) => org.id)
   @JoinColumn({ name: 'ORGANIZATION_ID' })

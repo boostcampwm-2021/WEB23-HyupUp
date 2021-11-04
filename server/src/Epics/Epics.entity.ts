@@ -8,7 +8,7 @@ export default class Epics {
   id!: number;
 
   @Column({ name: 'NAME' })
-  name!: number;
+  name!: string;
 
   @Column({ name: 'START_AT' })
   startAt!: Date;

@@ -8,7 +8,7 @@ export default class Projects {
   id!: number;
 
   @Column({ name: 'NAME' })
-  name!: number;
+  name!: string;
 
   @ManyToMany(() => Users)
   @JoinTable({

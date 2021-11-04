@@ -8,9 +8,9 @@ export default class Tasks {
   id!: number;
 
   @Column({ name: 'NAME' })
-  name!: number;
+  name!: string;
 
-  @Column({ name: 'STATUS' })
+  @Column({ name: 'STATUS', type: 'boolean' })
   status!: boolean;
 
   @ManyToOne(() => Stories, (stories) => stories.id)

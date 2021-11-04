@@ -14,7 +14,7 @@ export default class Stories {
   id!: number;
 
   @Column({ name: 'NAME' })
-  name!: number;
+  name!: string;
 
   @Column({ name: 'STATUS', type: 'enum', default: StatusEnum.TODO, enum: StatusEnum })
   status!: StatusEnum;
