@@ -5,23 +5,16 @@ type Styling = {
   [key: string]: FlattenSimpleInterpolation;
 };
 
-const SIZES: Styling = {
-  small: css`
-    --button-font-size: 12px;
-    --button-padding: 10px 15px;
-  `,
-  large: css`
-    --button-font-size: 16px;
-    --button-padding: 13px 50px;
-  `,
-};
-
 const VARIANTS: Styling = {
   default: css`
     --button-color: #fafafa;
     --button-bg-color: #255fb5;
     --button-hover-bg-color: #fafafa;
     &:hover {
+      --button-color: #fafafa;
+      --button-bg-color: #255fb5;
+    }
+    &:active {
       --button-color: #255fb5;
       --button-bg-color: #fafafa;
     }
@@ -36,39 +29,37 @@ const VARIANTS: Styling = {
   `,
 };
 
-interface LayoutProps {
-  variantStyle: FlattenSimpleInterpolation;
-  sizeStyle: FlattenSimpleInterpolation;
-}
-
-const StyledButton = styled.button<LayoutProps>`
-  ${(p) => p.sizeStyle};
-  ${(p) => p.variantStyle};
-  margin: 0;
-  border: none;
-  cursor: pointer;
-
-  padding: var(--button-padding);
-  border-radius: var(--button-radius, 8px);
-  color: var(--button-color, #ffffff);
-  background: var(--button-bg-color, #0d6efd);
-  font: ${({ theme }) => theme.font.bold_regular};
-  font-size: var(--button-font-size, 1rem);
-`;
-
-type Props = {
+interface Props {
   variant: string;
   size: string;
   children: string;
   disabled?: boolean;
-};
+}
+interface LayoutProps {
+  variantStyle: FlattenSimpleInterpolation;
+  size: string;
+}
+
+const StyledButton = styled.button<LayoutProps>`
+  ${(props) => props.variantStyle};
+
+  margin: 0;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+
+  padding: ${(props) => (props.size === 'large' ? '13px 50px' : '10px 15px')};
+  font: ${({ theme }) => theme.font.bold_regular};
+  font-size: ${(props) => (props.size === 'large' ? '16px' : '14px')};
+
+  color: var(--button-color);
+  background: var(--button-bg-color);
+`;
 
 const Button = ({ variant, size, children, disabled }: Props) => {
   const variantStyle = VARIANTS[variant];
-  const sizeStyle = SIZES[size];
-
   return (
-    <StyledButton variantStyle={variantStyle} sizeStyle={sizeStyle} disabled={disabled}>
+    <StyledButton size={size} variantStyle={variantStyle} disabled={disabled}>
       {children}
     </StyledButton>
   );
