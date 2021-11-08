@@ -24,6 +24,11 @@ const pageName: PageName = {
   settingActive,
 };
 
+/**
+ * name으로 home, work, setting 을 받음
+ *
+ * isClicked는 옵셔널하며 true로 활성화상태가 유지됨
+ */
 export const PageIcon = styled.button<Props>`
   width: 55px;
   height: 55px;
