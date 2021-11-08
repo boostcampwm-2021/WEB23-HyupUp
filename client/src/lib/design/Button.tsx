@@ -1,48 +1,18 @@
 import React from 'react';
-import styled, { css, FlattenSimpleInterpolation } from 'styled-components';
-
-type Styling = {
-  [key: string]: FlattenSimpleInterpolation;
-};
-
-const VARIANTS: Styling = {
-  default: css`
-    --button-color: #fafafa;
-    --button-bg-color: #255fb5;
-    --button-hover-bg-color: #fafafa;
-    &:hover {
-      --button-color: #fafafa;
-      --button-bg-color: #255fb5;
-    }
-    &:active {
-      --button-color: #255fb5;
-      --button-bg-color: #fafafa;
-    }
-  `,
-  confirm: css`
-    --button-color: #fafafa;
-    --button-bg-color: #f06e69;
-  `,
-  cancel: css`
-    --button-color: #8993a1;
-    --button-bg-color: #fafafa;
-  `,
-};
+import styled from 'styled-components';
 
 interface Props {
-  variant: string;
+  category: string;
   size: string;
   children: string;
   disabled?: boolean;
 }
 interface LayoutProps {
-  variantStyle: FlattenSimpleInterpolation;
+  category: string;
   size: string;
 }
 
 const StyledButton = styled.button<LayoutProps>`
-  ${(props) => props.variantStyle};
-
   margin: 0;
   border: none;
   cursor: pointer;
@@ -52,14 +22,30 @@ const StyledButton = styled.button<LayoutProps>`
   font: ${({ theme }) => theme.font.bold_regular};
   font-size: ${(props) => (props.size === 'large' ? '16px' : '14px')};
 
-  color: var(--button-color);
-  background: var(--button-bg-color);
+  background-color: ${(props) =>
+    props.category === 'default'
+      ? props.theme.color.blue400
+      : props.category === 'confirm'
+      ? props.theme.color.red400
+      : props.theme.color.gray100};
+
+  color: ${(props) =>
+    props.category === 'cancel' ? props.theme.color.gray300 : props.theme.color.gray100};
+
+  &:hover {
+    background-color: ${(props) => (props.category === 'default' ? props.theme.color.blue500 : '')};
+  }
+  &:active {
+    background-color: ${(props) => (props.category === 'default' ? props.theme.color.gray100 : '')};
+  }
+  &:active {
+    color: ${(props) => (props.category === 'default' ? props.theme.color.blue500 : '')};
+  }
 `;
 
-const Button = ({ variant, size, children, disabled }: Props) => {
-  const variantStyle = VARIANTS[variant];
+const Button = ({ category, size, children, disabled }: Props) => {
   return (
-    <StyledButton size={size} variantStyle={variantStyle} disabled={disabled}>
+    <StyledButton size={size} category={category} disabled={disabled}>
       {children}
     </StyledButton>
   );
