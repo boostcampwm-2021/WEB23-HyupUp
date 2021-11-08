@@ -31,6 +31,7 @@ export const PageIcon = styled.button<Props>`
   border-radius: 8px;
   background-image: ${(props) =>
     props.isClicked ? `url(${pageName[props.name + 'Active']})` : `url(${pageName[props.name]})`};
+  background-color: ${({ isClicked, theme }) => isClicked && theme.color.blue100};
   background-repeat: no-repeat;
   background-position: center;
 
