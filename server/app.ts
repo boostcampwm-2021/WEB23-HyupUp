@@ -7,6 +7,7 @@ import { ConnectionOptions, createConnection } from 'typeorm';
 import { entities } from './src';
 
 // to-do router import
+import userRouter from './src/Users/Users.router';
 
 const app = express();
 app.use(logger('dev'));
@@ -16,6 +17,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // to-do router 설정
+app.use('/api/users', userRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   next(createError(404));
@@ -31,9 +33,9 @@ app.use((err: HttpError, req: Request, res: Response) => {
 (async () => {
   const dbConfig = {
     host: 'localhost',
-    username: '',
-    password: '',
-    database: '',
+    username: 'root',
+    password: '1212',
+    database: 'TEAM42_TEST',
   };
 
   const connectionOptions: ConnectionOptions = {
