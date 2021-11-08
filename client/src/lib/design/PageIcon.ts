@@ -1,21 +1,21 @@
 import styled from 'styled-components';
-import home from '../../../public/icons/home-icon.svg';
-import work from '../../../public/icons/work-icon.svg';
-import setting from '../../../public/icons/setting-icon.svg';
-import homeActive from '../../../public/icons/home-active-icon.svg';
-import workActive from '../../../public/icons/work-active-icon.svg';
-import settingActive from '../../../public/icons/setting-active-icon.svg';
+import home from '@public/icons/home-icon.svg';
+import work from '@public/icons/work-icon.svg';
+import setting from '@public/icons/setting-icon.svg';
+import homeActive from '@public/icons/home-active-icon.svg';
+import workActive from '@public/icons/work-active-icon.svg';
+import settingActive from '@public/icons/setting-active-icon.svg';
 
 interface Props {
   name: string;
   isClicked?: boolean;
 }
 
-interface pageName {
+interface PageName {
   [key: string]: string;
 }
 
-const pageName: pageName = {
+const pageName: PageName = {
   home,
   work,
   setting,
