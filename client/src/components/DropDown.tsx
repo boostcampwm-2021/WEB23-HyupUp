@@ -80,6 +80,14 @@ interface dropDownProps {
   click: (e: React.MouseEvent) => void;
 }
 
+const changeClassName = (component: HTMLElement | null, className: string) => {
+  if (component?.classList.contains(className)) {
+    component.classList.remove(className);
+  } else {
+    component?.classList.add(className);
+  }
+};
+
 /**
  * DropDown Component를 반환하는 함수
  * @param props title, list, click, font를 key로 가지고 있는 객체
@@ -98,21 +106,14 @@ const DropDown = (props: dropDownProps) => {
 
   const changeState = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (listRef.current?.classList.contains('active-ul')) {
-      listRef.current.classList.remove('active-ul');
-    } else {
-      listRef.current?.classList.add('active-ul');
-    }
-    if (imageRef.current?.classList.contains('active-image')) {
-      imageRef.current.classList.remove('active-image');
-    } else {
-      imageRef.current?.classList.add('active-image');
-    }
+    changeClassName(listRef.current, 'active-ul');
+    changeClassName(imageRef.current, 'active-image');
   };
 
   const selectItem = (e: React.MouseEvent) => {
-    click(e);
+    e.preventDefault();
     changeState(e);
+    click(e);
   };
 
   return (
