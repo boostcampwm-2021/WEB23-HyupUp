@@ -74,6 +74,14 @@ interface ModalProps {
   onClickCancel?: (e: React.MouseEvent) => void;
 }
 
+/**
+ *
+ * @param props.shouldConfirm 확인/취소가 가능한 모달인지 여부
+ * @param props.title? 제목이 필요한 모달일 경우의 제목 문자열
+ * @param props.size? 'SMALL', 'MEDIUM', 'LARGE' 셋 중 하나를 전달. 모달 컨테이너의 패딩 크기를 결정
+ * @param props.onClickOk? '확인/취소가 가능한 모달일 경우 확인 버튼을 눌렀을 때 trigger되는 이벤트 핸들러
+ * @param props.onClickCancel? '확인/취소가 가능한 모달일 경우 취소 버튼을 눌렀을 때 trigger되는 이벤트 핸들러
+ */
 const Modal = (props: ModalProps) => {
   const [hidden, setHidden] = React.useState(false);
   const toggleModal = () => setHidden((prevState) => !prevState);
