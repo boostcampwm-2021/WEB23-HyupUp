@@ -5,6 +5,7 @@ interface Props {
   category: string;
   size: string;
   children: string;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
 }
 interface LayoutProps {
@@ -43,9 +44,9 @@ const StyledButton = styled.button<LayoutProps>`
   }
 `;
 
-const Button = ({ category, size, children, disabled }: Props) => {
+const Button = ({ category, size, children, disabled, onClick }: Props) => {
   return (
-    <StyledButton size={size} category={category} disabled={disabled}>
+    <StyledButton size={size} category={category} onClick={onClick} disabled={disabled}>
       {children}
     </StyledButton>
   );
