@@ -24,12 +24,21 @@ const S = {
     width: 100%;
     height: 100%;
 
-    background-color: ${({ theme }) => theme.color.gray200};
+    opacity: 0.5;
+    background-color: ${({ theme }) => theme.color.gray300};
   `,
-  Body: styled.div`
+  Title: styled.div`
+    margin-bottom: 8px;
+    font: ${({ theme }) => theme.font.bold_medium};
+  `,
+  Body: styled.div<{ size: SizeType }>`
     position: relative;
-    width: 600px;
-    height: 400px;
+
+    padding: ${(props) => {
+      if (props.size === 'MEDIUM') return '48px';
+      else if (props.size === 'LARGE') return '64px';
+      else return '32px';
+    }};
 
     background-color: ${({ theme }) => theme.color.white};
     border-radius: 8px;
@@ -44,30 +53,60 @@ const S = {
     height: 16px;
 
     border-radius: 8px;
-    background-color: ${({ theme }) => theme.color.gray400};
+    background-color: ${({ theme }) => theme.color.gray300};
+  `,
+  ButtonWrapper: styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
   `,
 };
+
+type SizeType = 'SMALL' | 'MEDIUM' | 'LARGE';
 
 interface ModalProps {
   root: Element;
   shouldConfirm: boolean;
-  content: React.ReactNode;
+  title?: string;
   children?: React.ReactNode;
+  size?: SizeType;
+  onClickOk?: (e: React.MouseEvent) => void;
+  onClickCancel?: (e: React.MouseEvent) => void;
 }
 
 const Modal = (props: ModalProps) => {
   const [hidden, setHidden] = React.useState(false);
-  const hideModal = () => setHidden((prevState) => !prevState);
+  const toggleModal = () => setHidden((prevState) => !prevState);
 
   if (hidden) return ReactDOM.createPortal(undefined, props.root);
   const modalContent = (
     <S.Container>
-      <S.Body>
-        <S.XButton onClick={hideModal} />
+      <S.Body size={props.size ?? 'SMALL'}>
+        <S.XButton onClick={toggleModal} />
+        <S.Title>{props.title ?? ''}</S.Title>
         {props.children}
-        <div>{props.content}</div>
+        {props.shouldConfirm ? (
+          <S.ButtonWrapper>
+            <button
+              onClick={(e) => {
+                props.onClickCancel && props.onClickCancel(e);
+                toggleModal();
+              }}
+            >
+              cancel
+            </button>
+            <button
+              onClick={(e) => {
+                props.onClickOk && props.onClickOk(e);
+                toggleModal();
+              }}
+            >
+              ok
+            </button>
+          </S.ButtonWrapper>
+        ) : undefined}
       </S.Body>
-      <S.Overlay onClick={hideModal} />
+      <S.Overlay onClick={toggleModal} />
     </S.Container>
   );
 
