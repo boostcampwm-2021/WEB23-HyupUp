@@ -1,22 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 
+type Category = 'default' | 'confirm' | 'cancel';
+
+type Size = 'small' | 'large';
 interface Props {
-  category: string;
-  size: string;
+  category: Category;
+  size: Size;
   children: string;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
 }
 interface LayoutProps {
-  category: string;
-  size: string;
+  category: Category;
+  size: Size;
 }
 
 const StyledButton = styled.button<LayoutProps>`
-  margin: 0;
-  border: none;
-  cursor: pointer;
+  margin: 0 auto;
   border-radius: 8px;
 
   padding: ${(props) => (props.size === 'large' ? '13px 50px' : '10px 15px')};
