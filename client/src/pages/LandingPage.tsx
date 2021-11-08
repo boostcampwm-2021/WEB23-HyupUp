@@ -1,33 +1,32 @@
 import React from 'react';
 import styled from 'styled-components';
+import theme from '@/styles/theme';
 
 const Container = styled.div`
-  height: 100vh;
-
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+
+  height: 100vh;
 `;
 
 const Logo = styled.p`
-  font-family: Pretendard;
-  font-size: 30px;
-  font-weight: bold;
+  font: ${theme.font.display_medium};
 `;
 
 const Title = styled.p`
-  font-family: Pretendard;
-  font-size: 48px;
-  font-weight: bold;
   margin: 5px;
+
+  font: ${theme.font.display_large};
 `;
 
 const Body = styled.p`
-  font-family: Pretendard;
-  font-size: 16px;
   margin: 5px;
+
   color: #8993a1;
+
+  font: ${theme.font.body_regular};
 `;
 
 const TextContainer = styled.div`
