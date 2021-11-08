@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 
 import theme from '@/styles/theme';
@@ -30,18 +30,28 @@ const Item = styled.li`
   font: ${(props) => props.theme.font};
 `;
 
+const ArrowImage = styled.img`
+  transform: rotate(90deg);
+  transition-duration: 0.1s;
+`;
+
 const Parent = styled.div`
+  position: relative;
   width: fit-content;
   height: fit-content;
 
   border-radius: 8px;
 
-  &:hover ${Box} {
+  .active-ul {
     visibility: visible;
     opacity: 1;
     z-index: 1;
     transform: translateY(0%);
     transition-delay: 0s, 0s, 0.3s;
+  }
+  .active-image {
+    transform: rotate(0deg);
+    transition-duration: 0.1s;
   }
 `;
 
@@ -56,12 +66,6 @@ const ContextContainer = styled.div`
   background-color: ${theme.color.gray100};
 `;
 
-const Context = styled.p`
-  padding: 10px;
-
-  font: ${(props) => props.theme.font};
-`;
-
 const Line = styled.hr`
   width: 80%;
 
@@ -70,30 +74,54 @@ const Line = styled.hr`
 `;
 
 interface dropDownProps {
-  title: string;
+  Title: React.ReactNode;
   list: Array<string>;
   font?: string;
-  click: (e: React.MouseEvent<HTMLElement>) => void;
+  click: (e: React.MouseEvent) => void;
 }
 
 /**
  * DropDown Component를 반환하는 함수
  * @param props title, list, click, font를 key로 가지고 있는 객체
- * title은 string, list는 Array<string>, click은 ul 태그에 붙일 이벤트 리스너, font는 font에 적용할 특징
+ * title은 react Node, list는 Array<string>, click은 ul 태그에 붙일 이벤트 리스너, font는 font에 적용할 특징
  * @returns DropDown Component
  */
 const DropDown = (props: dropDownProps) => {
-  const { title, list, font, click } = props;
+  const { Title, list, font, click } = props;
   const fontTheme = {
     font: font ? font : theme.font.body_regular,
   };
+
+  const listRef = useRef<HTMLUListElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const changeState = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (listRef.current?.classList.contains('active-ul')) {
+      listRef.current.classList.remove('active-ul');
+    } else {
+      listRef.current?.classList.add('active-ul');
+    }
+    if (imageRef.current?.classList.contains('active-image')) {
+      imageRef.current.classList.remove('active-image');
+    } else {
+      imageRef.current?.classList.add('active-image');
+    }
+  };
+
+  const selectItem = (e: React.MouseEvent) => {
+    click(e);
+    changeState(e);
+  };
+
   return (
     <Parent>
-      <ContextContainer>
-        <Context theme={fontTheme}>{title}</Context>
-        <img src={arrow} />
+      <ContextContainer onClick={changeState} ref={targetRef}>
+        {Title}
+        <ArrowImage src={arrow} ref={imageRef} />
       </ContextContainer>
-      <Box onClick={click}>
+      <Box onClick={selectItem} ref={listRef}>
         {list.map((el: string, i: number) =>
           i === list.length - 1 ? (
             <Item key={i} theme={fontTheme}>
