@@ -65,7 +65,6 @@ const S = {
 type SizeType = 'SMALL' | 'MEDIUM' | 'LARGE';
 
 interface ModalProps {
-  root: Element;
   shouldConfirm: boolean;
   title?: string;
   children?: React.ReactNode;
@@ -77,8 +76,10 @@ interface ModalProps {
 const Modal = (props: ModalProps) => {
   const [hidden, setHidden] = React.useState(false);
   const toggleModal = () => setHidden((prevState) => !prevState);
+  const root = document.getElementById('root') ?? document.body;
 
-  if (hidden) return ReactDOM.createPortal(undefined, props.root);
+  if (hidden) return ReactDOM.createPortal(undefined, root);
+
   const modalContent = (
     <S.Container>
       <S.Body size={props.size ?? 'SMALL'}>
@@ -110,7 +111,7 @@ const Modal = (props: ModalProps) => {
     </S.Container>
   );
 
-  return ReactDOM.createPortal(modalContent, props.root);
+  return ReactDOM.createPortal(modalContent, root);
 };
 
 export default Modal;
