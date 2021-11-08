@@ -43,6 +43,7 @@ const S = {
     background-color: ${({ theme }) => theme.color.white};
     border-radius: 8px;
     z-index: 999;
+    box-shadow: ${({ theme }) => theme.shadow.default};
   `,
   XButton: styled.button`
     position: absolute;
