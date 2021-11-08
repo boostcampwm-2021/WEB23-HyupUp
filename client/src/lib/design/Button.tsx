@@ -44,6 +44,13 @@ const StyledButton = styled.button<LayoutProps>`
   }
 `;
 
+/**
+ * category : default | confirm | cancel
+ * size : small | large
+ * onClick : 전달하고자하는 함수
+ * disabled : optional 로 전달
+ */
+
 const Button = ({ category, size, children, disabled, onClick }: Props) => {
   return (
     <StyledButton size={size} category={category} onClick={onClick} disabled={disabled}>
