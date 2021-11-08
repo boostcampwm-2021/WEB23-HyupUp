@@ -67,9 +67,11 @@ type SizeType = 'SMALL' | 'MEDIUM' | 'LARGE';
 
 interface ModalProps {
   shouldConfirm: boolean;
+  onClose: (e: React.MouseEvent) => void;
   title?: string;
   children?: React.ReactNode;
   size?: SizeType;
+  visible?: boolean;
   onClickOk?: (e: React.MouseEvent) => void;
   onClickCancel?: (e: React.MouseEvent) => void;
 }
@@ -77,22 +79,21 @@ interface ModalProps {
 /**
  *
  * @param props.shouldConfirm 확인/취소가 가능한 모달인지 여부
+ * @param props.onClose 모달을 없어지게 만들기 위한 이벤트 핸들러. x버튼을 눌렀을 때와 모달의 바깥 영역을 눌렀을 때 trigger됨
  * @param props.title? 제목이 필요한 모달일 경우의 제목 문자열
  * @param props.size? 'SMALL', 'MEDIUM', 'LARGE' 셋 중 하나를 전달. 모달 컨테이너의 패딩 크기를 결정
+ * @param props.visible? 현재 모달이 보이는지의 상태. true일시 모달이 화면에 보임
  * @param props.onClickOk? '확인/취소가 가능한 모달일 경우 확인 버튼을 눌렀을 때 trigger되는 이벤트 핸들러
  * @param props.onClickCancel? '확인/취소가 가능한 모달일 경우 취소 버튼을 눌렀을 때 trigger되는 이벤트 핸들러
  */
 const Modal = (props: ModalProps) => {
-  const [hidden, setHidden] = React.useState(false);
-  const toggleModal = () => setHidden((prevState) => !prevState);
   const root = document.getElementById('root') ?? document.body;
-
-  if (hidden) return ReactDOM.createPortal(undefined, root);
+  if (!props.visible) return ReactDOM.createPortal(undefined, root);
 
   const modalContent = (
     <S.Container>
       <S.Body size={props.size ?? 'SMALL'}>
-        <S.XButton onClick={toggleModal} />
+        <S.XButton onClick={props.onClose} />
         <S.Title>{props.title ?? ''}</S.Title>
         {props.children}
         {props.shouldConfirm ? (
@@ -100,7 +101,7 @@ const Modal = (props: ModalProps) => {
             <button
               onClick={(e) => {
                 props.onClickCancel && props.onClickCancel(e);
-                toggleModal();
+                props.onClose(e);
               }}
             >
               cancel
@@ -108,7 +109,7 @@ const Modal = (props: ModalProps) => {
             <button
               onClick={(e) => {
                 props.onClickOk && props.onClickOk(e);
-                toggleModal();
+                props.onClose(e);
               }}
             >
               ok
@@ -116,7 +117,7 @@ const Modal = (props: ModalProps) => {
           </S.ButtonWrapper>
         ) : undefined}
       </S.Body>
-      <S.Overlay onClick={toggleModal} />
+      <S.Overlay onClick={props.onClose} />
     </S.Container>
   );
 
