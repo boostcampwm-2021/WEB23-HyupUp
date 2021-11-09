@@ -3,9 +3,16 @@ import styled from 'styled-components';
 
 interface SideBarProps {
   entries: React.ReactNode[];
+  highlight?: number;
 }
 
-const SideBar = ({ entries }: SideBarProps) => {
+/**
+ *
+ * @param entries 사이드바에 항목으로 들어갈 리액트 컴포넌트
+ * @param highlight? 활성화될 항목의 인덱스 번호
+ * @returns
+ */
+const SideBar = ({ entries, highlight }: SideBarProps) => {
   return (
     <S.Container>
       <ul>
