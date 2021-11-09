@@ -85,6 +85,7 @@ const Header = () => {
     toggling();
   };
 
+  useOutSideClick(ref, handleOutClick);
   return (
     <Styled.header>
       <Styled.logo to="/">HyupUp</Styled.logo>
