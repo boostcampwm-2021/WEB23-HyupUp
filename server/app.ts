@@ -34,13 +34,13 @@ app.use((err: HttpError, req: Request, res: Response) => {
   const dbConfig = {
     host: 'localhost',
     username: 'root',
-    password: '1212',
+    password: '19941021',
     database: 'TEAM42_TEST',
   };
 
   const connectionOptions: ConnectionOptions = {
     type: 'mysql',
-    synchronize: true,
+    synchronize: false,
     entities,
     ...dbConfig,
   };
