@@ -1,6 +1,5 @@
 import Epics from '../Epics/Epics.entity';
-import Users from '../Users/Users.entity';
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'PROJECTS' })
 export default class Projects {
@@ -9,14 +8,6 @@ export default class Projects {
 
   @Column({ name: 'NAME' })
   name!: string;
-
-  @ManyToMany(() => Users)
-  @JoinTable({
-    name: 'USERS_PROJECTS',
-    joinColumn: { name: 'PROJECT_ID', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'USER_ID', referencedColumnName: 'id' },
-  })
-  users!: Users[];
 
   @OneToMany(() => Epics, (epics) => epics.id)
   epics!: Epics[];
