@@ -10,6 +10,8 @@ interface Props {
 }
 
 const Box = styled.ul<Props>`
+  position: absolute;
+
   display: flex;
   flex-direction: column;
   justify-content: space-around;
