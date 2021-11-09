@@ -10,7 +10,7 @@ interface SideBarProps {
 
 /**
  *
- * @param entries 사이드바에 항목으로 들어갈 리액트 컴포넌트
+ * @param entries 사이드바에 항목으로 들어갈 리액트 컴포넌트들의 배열
  * @param highlight? 활성화될 항목의 인덱스 번호
  * @returns
  */
