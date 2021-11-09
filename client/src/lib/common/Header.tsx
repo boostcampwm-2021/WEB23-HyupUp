@@ -27,6 +27,17 @@ const Styled = {
 
     width: 30%;
   `,
+  Profile: styled.section`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    width: 10%;
+
+    img {
+      border-radius: 50%;
+    }
+  `,
 };
 
 const Header = () => {
@@ -38,6 +49,9 @@ const Header = () => {
         <PageIcon to="/work" name="work" />
         <PageIcon to="/setting" name="setting" />
       </Styled.IconList>
+      <Styled.Profile>
+        <img src="https://picsum.photos/50/50" alt="profile" />
+      </Styled.Profile>
     </Styled.header>
   );
 };
