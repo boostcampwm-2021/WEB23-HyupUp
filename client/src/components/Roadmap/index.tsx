@@ -25,7 +25,7 @@ const S = {
     display: flex;
     flex-direction: column;
 
-    width: 100%;
+    width: 941px;
     margin: 75px 0 0 26px;
     padding: 18px;
 
