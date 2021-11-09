@@ -34,9 +34,9 @@ const S = {
   Body: styled.div<{ size: SizeType }>`
     position: relative;
 
-    padding: ${(props) => {
-      if (props.size === 'MEDIUM') return '48px';
-      else if (props.size === 'LARGE') return '64px';
+    padding: ${({ size }) => {
+      if (size === 'MEDIUM') return '48px';
+      else if (size === 'LARGE') return '64px';
       else return '32px';
     }};
 
@@ -86,30 +86,39 @@ interface ModalProps {
  * @param props.onClickOk? '확인/취소가 가능한 모달일 경우 확인 버튼을 눌렀을 때 trigger되는 이벤트 핸들러
  * @param props.onClickCancel? '확인/취소가 가능한 모달일 경우 취소 버튼을 눌렀을 때 trigger되는 이벤트 핸들러
  */
-const Modal = (props: ModalProps) => {
+const Modal = ({
+  shouldConfirm,
+  onClose,
+  title,
+  size,
+  visible,
+  onClickOk,
+  onClickCancel,
+  children,
+}: ModalProps) => {
   const root = document.getElementById('root') ?? document.body;
-  if (!props.visible) return ReactDOM.createPortal(undefined, root);
+  if (!visible) return ReactDOM.createPortal(undefined, root);
 
   const modalContent = (
     <S.Container>
-      <S.Body size={props.size ?? 'SMALL'}>
-        <S.XButton onClick={props.onClose} />
-        <S.Title>{props.title ?? ''}</S.Title>
-        {props.children}
-        {props.shouldConfirm ? (
+      <S.Body size={size ?? 'SMALL'}>
+        <S.XButton onClick={onClose} />
+        <S.Title>{title ?? ''}</S.Title>
+        {children}
+        {shouldConfirm ? (
           <S.ButtonWrapper>
             <button
               onClick={(e) => {
-                props.onClickCancel && props.onClickCancel(e);
-                props.onClose(e);
+                onClickCancel && onClickCancel(e);
+                onClose(e);
               }}
             >
               cancel
             </button>
             <button
               onClick={(e) => {
-                props.onClickOk && props.onClickOk(e);
-                props.onClose(e);
+                onClickOk && onClickOk(e);
+                onClose(e);
               }}
             >
               ok
@@ -117,7 +126,7 @@ const Modal = (props: ModalProps) => {
           </S.ButtonWrapper>
         ) : undefined}
       </S.Body>
-      <S.Overlay onClick={props.onClose} />
+      <S.Overlay onClick={onClose} />
     </S.Container>
   );
 
