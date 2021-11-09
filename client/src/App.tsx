@@ -1,21 +1,18 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import GlobalStyle from './styles/GlobalStyle';
 import { BrowserRouter } from 'react-router-dom';
 import Router from '@/Router';
-import { reducer, UserContext } from '@/contexts/User';
-
-const user = {};
+import { UserProvider } from '@/contexts/User';
 
 function App() {
-  const [userState, dispatch] = useReducer(reducer, user);
   return (
     <>
-      <UserContext.Provider value={{ userState, dispatch }}>
+      <UserProvider>
         <BrowserRouter>
           <GlobalStyle />
           <Router />
         </BrowserRouter>
-      </UserContext.Provider>
+      </UserProvider>
     </>
   );
 }
