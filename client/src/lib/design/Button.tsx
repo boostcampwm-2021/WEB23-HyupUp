@@ -43,6 +43,13 @@ const StyledButton = styled.button<LayoutProps>`
   }
 `;
 
+/**
+ * Button Component를 반환하는 함수
+ * @param props size, category, onClick, disabled(optional)
+ * size 는 Size <small | large>, category 는 Category<default | confirm | cancle>, onClick은 부모로부터 전달받을 이벤트 리스너
+ * disabled 는 <optinal | undefined>
+ * @returns Button Component
+ */
 const Button = ({ category, size, children, disabled, onClick }: Props) => {
   return (
     <StyledButton size={size} category={category} onClick={onClick} disabled={disabled}>
