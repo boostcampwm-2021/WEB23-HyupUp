@@ -17,7 +17,7 @@ const dummyUrl2 =
 
 export const handleGet = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const email = req.body.email;
+    const email = req.query.email as string; // 추후에는 세션에서 email찾아야함
 
     // db로직
     const isTest1: boolean = email === 'test1@gmail.com';
