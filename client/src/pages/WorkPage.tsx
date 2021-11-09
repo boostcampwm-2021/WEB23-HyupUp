@@ -14,16 +14,17 @@ import backlog from '@public/icons/time-icon.svg';
 
 const WorkPage = () => {
   const tabs = [<Roadmap></Roadmap>, <Kanban></Kanban>, <Backlog></Backlog>];
-  const { currentTab, changeTab } = useTabs(0, tabs);
+  const { currentIndex, currentTab, changeTab } = useTabs(0, tabs);
 
   const sideBarEntries = [
     <SideBarEntry icon={roadmap} name={'로드맵'} />,
     <SideBarEntry icon={board} name={'칸반보드'} />,
     <SideBarEntry icon={backlog} name={'백로그'} />,
   ];
+
   return (
     <S.Container>
-      <SideBar entries={sideBarEntries} changeTab={changeTab} highlight={0}></SideBar>
+      <SideBar entries={sideBarEntries} changeTab={changeTab} highlight={currentIndex}></SideBar>
       {currentTab}
     </S.Container>
   );
