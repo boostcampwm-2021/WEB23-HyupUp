@@ -17,7 +17,11 @@ interface SideBarProps {
 const SideBar = ({ entries, changeTab }: SideBarProps) => {
   return (
     <S.Container>
-      <Dropdown Title={'프로젝트 선택'} list={['1', '2', '3']} handleClick={(e) => {}}></Dropdown>
+      <Dropdown
+        Title={'프로젝트 선택'}
+        list={['1', '2', '3']}
+        handleClick={(e) => undefined}
+      ></Dropdown>
       <S.Entry>
         {entries.map((entry, i) => (
           <S.EntryItem key={entry?.toString()} onClick={() => changeTab(i)}>

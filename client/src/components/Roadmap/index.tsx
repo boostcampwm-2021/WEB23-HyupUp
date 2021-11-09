@@ -8,7 +8,7 @@ const Roadmap = () => {
       <S.Title>프로젝트 로드맵</S.Title>
       <S.Content>
         <S.ContentEntry>
-          <Button size={'small'} category={'cancel'} onClick={() => {}}>
+          <Button size={'small'} category={'cancel'} onClick={() => undefined}>
             Add item
           </Button>
         </S.ContentEntry>

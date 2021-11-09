@@ -17,9 +17,9 @@ const WorkPage = () => {
   const { currentIndex, currentTab, changeTab } = useTabs(0, tabs);
 
   const sideBarEntries = [
-    <SideBarEntry icon={roadmap} name={'로드맵'} highlight={currentIndex === 0} />,
-    <SideBarEntry icon={board} name={'칸반보드'} highlight={currentIndex === 1} />,
-    <SideBarEntry icon={backlog} name={'백로그'} highlight={currentIndex === 2} />,
+    <SideBarEntry key={0} icon={roadmap} name={'로드맵'} highlight={currentIndex === 0} />,
+    <SideBarEntry key={1} icon={board} name={'칸반보드'} highlight={currentIndex === 1} />,
+    <SideBarEntry key={2} icon={backlog} name={'백로그'} highlight={currentIndex === 2} />,
   ];
 
   return (
