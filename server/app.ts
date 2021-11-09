@@ -33,9 +33,9 @@ app.use((err: HttpError, req: Request, res: Response) => {
 (async () => {
   const dbConfig = {
     host: 'localhost',
-    username: 'root',
-    password: '1212',
-    database: 'TEAM42_TEST',
+    username: '',
+    password: '',
+    database: '',
   };
 
   const connectionOptions: ConnectionOptions = {
