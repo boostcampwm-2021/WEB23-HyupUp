@@ -33,9 +33,11 @@ const S = {
   Container: styled.section`
     display: flex;
     flex-direction: column;
+    align-items: center;
 
     width: 173px;
     height: 600px;
+    padding: 24px 16px;
     margin-top: 75px;
 
     background-color: ${({ theme }) => theme.color.gray100};
@@ -44,10 +46,10 @@ const S = {
     font: ${({ theme }) => theme.font.body_regular};
   `,
   Entry: styled.ul`
-    margin-top: 64px;
+    margin-top: 32px;
   `,
   EntryItem: styled.li<{ highlight: boolean }>`
-    padding: 12px 24px;
+    padding: 12px 0;
 
     color: ${({ theme }) => theme.color.gray400};
   `,
