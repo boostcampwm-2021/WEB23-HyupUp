@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 
+import arrow from '@public/arrow_drop_down.png';
 import theme from '@/styles/theme';
-import arrow from '@/../public/arrow_drop_down.png';
 
 const Box = styled.ul`
   display: flex;
@@ -17,7 +17,7 @@ const Box = styled.ul`
 
   border-radius: 8px;
 
-  transform: translateY(-2em);
+  transform: translateY(-10px);
   z-index: -1;
   transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
   box-shadow: 0px 4px 16px 4px rgba(0, 0, 0, 0.2);
@@ -46,7 +46,7 @@ const Parent = styled.div`
     visibility: visible;
     opacity: 1;
     z-index: 1;
-    transform: translateY(0%);
+    transform: translateY(0px);
     transition-delay: 0s, 0s, 0.3s;
   }
   .active-image {
@@ -63,21 +63,21 @@ const ContextContainer = styled.div`
 
   border-radius: 8px;
 
-  background-color: ${theme.color.gray100};
+  background-color: ${({ theme }) => theme.color.gray100};
 `;
 
 const Line = styled.hr`
   width: 80%;
 
-  border: solid 0.5px #8993a1;
-  background-color: #8993a1;
+  border: solid 0.5px ${({ theme }) => theme.color.gray300};
+  background-color: ${({ theme }) => theme.color.gray300};
 `;
 
 interface dropDownProps {
   Title: React.ReactNode;
   list: Array<string>;
   font?: string;
-  click: (e: React.MouseEvent) => void;
+  handleClick: (e: React.MouseEvent) => void;
 }
 
 const changeClassName = (component: HTMLElement | null, className: string) => {
@@ -95,7 +95,7 @@ const changeClassName = (component: HTMLElement | null, className: string) => {
  * @returns DropDown Component
  */
 const DropDown = (props: dropDownProps) => {
-  const { Title, list, font, click } = props;
+  const { Title, list, font, handleClick } = props;
   const fontTheme = {
     font: font ? font : theme.font.body_regular,
   };
@@ -113,7 +113,7 @@ const DropDown = (props: dropDownProps) => {
   const selectItem = (e: React.MouseEvent) => {
     e.preventDefault();
     changeState(e);
-    click(e);
+    handleClick(e);
   };
 
   return (
