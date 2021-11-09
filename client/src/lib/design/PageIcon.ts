@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 import home from '@public/icons/home-icon.svg';
 import work from '@public/icons/work-icon.svg';
 import setting from '@public/icons/setting-icon.svg';
@@ -7,7 +8,7 @@ import workActive from '@public/icons/work-active-icon.svg';
 import settingActive from '@public/icons/setting-active-icon.svg';
 
 interface Props {
-  name: string;
+  name: 'home' | 'work' | 'setting';
   isClicked?: boolean;
 }
 
@@ -25,18 +26,16 @@ const pageName: PageName = {
 };
 
 /**
- * name으로 home, work, setting 을 받음
- *
- * isClicked는 옵셔널하며 true로 활성화상태가 유지됨
+ * @property {string} name - 'home' | 'work' | 'setting'
  */
-export const PageIcon = styled.button<Props>`
+export const PageIcon = styled(NavLink)<Props>`
+  display: inline-block;
+
   width: 55px;
   height: 55px;
 
   border-radius: 8px;
-  background-image: ${(props) =>
-    props.isClicked ? `url(${pageName[props.name + 'Active']})` : `url(${pageName[props.name]})`};
-  background-color: ${({ isClicked, theme }) => isClicked && theme.color.blue100};
+  background-image: ${(props) => `url(${pageName[props.name]})`};
   background-repeat: no-repeat;
   background-position: center;
 
@@ -44,7 +43,8 @@ export const PageIcon = styled.button<Props>`
     background-color: ${({ theme }) => theme.color.gray100};
   }
 
-  &:active {
+  &:active,
+  &.active {
     background-color: ${({ theme }) => theme.color.blue100};
     background-image: ${(props) => `url(${pageName[props.name + 'Active']})`};
   }
