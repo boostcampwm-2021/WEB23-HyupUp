@@ -10,7 +10,9 @@ const LandingPage = () => {
   const onClickLogin = async (email: string) => {
     // App 의 useEffect로 들어가야할 로직
     const user = await getUser(email);
-    dispatch({ type: 'GET_USER', data: user });
+    if (dispatch) {
+      dispatch({ type: 'GET_USER', data: user });
+    }
   };
 
   return (
