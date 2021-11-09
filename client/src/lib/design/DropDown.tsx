@@ -22,6 +22,7 @@ const Box = styled.ul<Props>`
   top: 100%;
   left: 0;
 
+  background-color: ${({ theme }) => theme.color.white};
   border-radius: 8px;
 
   transform: ${(props) => (props.state ? 'translateY(0px)' : 'translateY(-10px)')};
@@ -32,7 +33,7 @@ const Box = styled.ul<Props>`
 `;
 
 const Item = styled.li`
-  width: fit-content;
+  min-width: 100px;
   margin: 16px;
 
   font: ${(props) => props.theme.font};
