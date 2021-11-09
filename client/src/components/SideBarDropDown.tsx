@@ -30,6 +30,7 @@ const SideBarDropDown = () => {
       .then((projectList) => projectList.map((el: Project) => el.name))
       .then((nameList) => {
         listStateHandler(nameList);
+        titleStateHandler(<Title>{nameList[0]}</Title>);
       })
       .catch(() => {
         window.location.reload();
