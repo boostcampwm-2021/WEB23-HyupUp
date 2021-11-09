@@ -1,4 +1,4 @@
-import { createContext, Dispatch } from 'react';
+import React, { createContext, Dispatch, useReducer } from 'react';
 
 export type UserState = {
   id?: number;
@@ -17,7 +17,7 @@ type ContextType = {
   dispatch: Dispatch<UserAction> | null;
 };
 
-export const reducer = (state: UserState, action: UserAction): UserState => {
+const reducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
     case 'GET_USER':
       return {
@@ -36,3 +36,10 @@ export const UserContext = createContext<ContextType>({
   userState: null,
   dispatch: null,
 });
+
+const user: UserState = {};
+
+export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+  const [userState, dispatch] = useReducer(reducer, user);
+  return <UserContext.Provider value={{ userState, dispatch }}>{children}</UserContext.Provider>;
+};
