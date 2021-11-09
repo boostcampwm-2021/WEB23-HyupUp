@@ -1,11 +1,16 @@
 import React from 'react';
 import GlobalStyle from './styles/GlobalStyle';
+import { BrowserRouter } from 'react-router-dom';
+import Router from '@/Router';
 
 function App() {
+  const user = 'test';
   return (
     <>
-      <GlobalStyle />
-      <div>Hello World</div>
+      <BrowserRouter>
+        <GlobalStyle />
+        <Router user={user} />
+      </BrowserRouter>
     </>
   );
 }
