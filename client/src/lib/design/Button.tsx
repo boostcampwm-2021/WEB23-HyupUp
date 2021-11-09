@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 type Category = 'default' | 'confirm' | 'cancel';
-
 type Size = 'small' | 'large';
 interface Props {
   category: Category;
@@ -22,7 +21,8 @@ const StyledButton = styled.button<LayoutProps>`
 
   padding: ${(props) => (props.size === 'large' ? '13px 50px' : '10px 15px')};
   font: ${({ theme }) => theme.font.bold_regular};
-  font-size: ${(props) => (props.size === 'large' ? '16px' : '14px')};
+  font-size: ${(props) =>
+    props.size === 'large' ? props.theme.font.bold_regular : props.theme.font.bold_small};
 
   background-color: ${(props) =>
     props.category === 'default'
@@ -39,18 +39,9 @@ const StyledButton = styled.button<LayoutProps>`
   }
   &:active {
     background-color: ${(props) => (props.category === 'default' ? props.theme.color.gray100 : '')};
-  }
-  &:active {
     color: ${(props) => (props.category === 'default' ? props.theme.color.blue500 : '')};
   }
 `;
-
-/**
- * category : default | confirm | cancel
- * size : small | large
- * onClick : 전달하고자하는 함수
- * disabled : optional 로 전달
- */
 
 const Button = ({ category, size, children, disabled, onClick }: Props) => {
   return (
