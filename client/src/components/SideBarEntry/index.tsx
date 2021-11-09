@@ -23,7 +23,7 @@ const S = {
     align-items: center;
   `,
   Label: styled.span`
-    border: 1px solid blue;
+    margin-left: 8px;
 
     font: ${({ theme }) => theme.font.body_regular};
   `,
