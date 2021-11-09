@@ -24,7 +24,7 @@ const WorkPage = () => {
 
   return (
     <S.Container>
-      <SideBar entries={sideBarEntries} changeTab={changeTab} highlight={currentIndex}></SideBar>
+      <SideBar entries={sideBarEntries} changeTab={changeTab}></SideBar>
       {currentTab}
     </S.Container>
   );
