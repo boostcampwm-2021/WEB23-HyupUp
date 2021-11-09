@@ -7,9 +7,8 @@ import homeActive from '@public/icons/home-active-icon.svg';
 import workActive from '@public/icons/work-active-icon.svg';
 import settingActive from '@public/icons/setting-active-icon.svg';
 
-interface Props {
+interface PageProps {
   name: 'home' | 'work' | 'setting';
-  isClicked?: boolean;
 }
 
 interface PageName {
@@ -28,7 +27,7 @@ const pageName: PageName = {
 /**
  * @property {string} name - 'home' | 'work' | 'setting'
  */
-export const PageIcon = styled(NavLink)<Props>`
+export const PageIcon = styled(NavLink)<PageProps>`
   display: inline-block;
 
   width: 55px;
