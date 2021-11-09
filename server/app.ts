@@ -9,6 +9,9 @@ import { entities } from './src';
 // to-do router import
 import userRouter from './src/Users/Users.router';
 import projectRouter from './src/Projects/Projects.router';
+import epicRouter from './src/Epics/Epics.router';
+import storyRouter from './src/Stories/Stories.router';
+import taskRouter from './src/Tasks/Tasks.router';
 
 const app = express();
 app.use(logger('dev'));
@@ -20,6 +23,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // to-do router 설정
 app.use('/api/users', userRouter);
 app.use('/api/projects', projectRouter);
+app.use('/api/epics', epicRouter);
+app.use('/api/stories', storyRouter);
+app.use('/api/tasks', taskRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   next(createError(404));
@@ -35,9 +41,9 @@ app.use((err: HttpError, req: Request, res: Response) => {
 (async () => {
   const dbConfig = {
     host: 'localhost',
-    username: '',
-    password: '',
-    database: '',
+    username: 'fleamarket',
+    password: 'Project3@fleamarket',
+    database: 'project3',
   };
 
   const connectionOptions: ConnectionOptions = {
