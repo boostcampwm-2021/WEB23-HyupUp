@@ -4,7 +4,7 @@ import LandingPage from './pages/LandingPage';
 import MainPage from './pages/MainPage';
 import WorkPage from './pages/WorkPage';
 
-const Router = ({ user }: { user: string }) => {
+const Router = ({ user }: { user: string | null }) => {
   return (
     <>
       <Switch>
