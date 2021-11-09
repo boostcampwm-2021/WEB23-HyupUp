@@ -1,6 +1,9 @@
 import React from 'react';
+import styled from 'styled-components';
+
 import SideBar from '@/components/SideBar';
 import SideBarEntry from '@/components/SideBarEntry';
+import Roadmap from '@/components/Roadmap';
 
 import home from '@public/icons/home-icon.svg';
 import board from '@public/icons/board-icon.svg';
@@ -13,11 +16,17 @@ const WorkPage = () => {
     <SideBarEntry icon={backlog} name={'백로그'} />,
   ];
   return (
-    <>
-      <div>this will be work page</div>
+    <S.Container>
       <SideBar entries={sideBarEntries}></SideBar>
-    </>
+      <Roadmap></Roadmap>
+    </S.Container>
   );
 };
 
 export default WorkPage;
+
+const S = {
+  Container: styled.div`
+    display: flex;
+  `,
+};
