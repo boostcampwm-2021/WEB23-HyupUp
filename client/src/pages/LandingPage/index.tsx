@@ -1,8 +1,18 @@
-import React from 'react';
-import { Body, Container, Logo, TextContainer, Title } from './style';
+import React, { useContext } from 'react';
 import Button from '@/lib/design/Button';
+import { UserContext } from '@/contexts/User';
+import { getUser } from '@/lib/api';
+import { Body, Container, Logo, TextContainer, Title } from './style';
 
 const LandingPage = () => {
+  const { dispatch } = useContext(UserContext);
+
+  const onClickLogin = async (email: string) => {
+    // App 의 useEffect로 들어가야할 로직
+    const user = await getUser(email);
+    dispatch({ type: 'GET_USER', data: user });
+  };
+
   return (
     <Container>
       <Logo>HyupUp</Logo>
@@ -15,7 +25,7 @@ const LandingPage = () => {
         size="large"
         category="default"
         onClick={() => {
-          console.log('test1');
+          onClickLogin('test1@gmail.com');
         }}
       >
         Login as Test1
@@ -24,7 +34,7 @@ const LandingPage = () => {
         size="large"
         category="default"
         onClick={() => {
-          console.log('test1');
+          onClickLogin('test2@gmail.com');
         }}
       >
         Login as Test2
