@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
+import Dropdown from '@/lib/design/DropDown';
+
 interface SideBarProps {
   entries: React.ReactNode[];
   highlight?: number;
@@ -15,11 +17,12 @@ interface SideBarProps {
 const SideBar = ({ entries, highlight }: SideBarProps) => {
   return (
     <S.Container>
-      <ul>
-        {entries.map((entry) => (
-          <S.Entry>{entry}</S.Entry>
+      <Dropdown Title={'프로젝트 선택'} list={['1', '2', '3']} handleClick={(e) => {}}></Dropdown>
+      <S.Entry>
+        {entries.map((entry, i) => (
+          <S.EntryItem highlight={i === highlight ? true : false}>{entry}</S.EntryItem>
         ))}
-      </ul>
+      </S.Entry>
     </S.Container>
   );
 };
@@ -40,10 +43,12 @@ const S = {
 
     font: ${({ theme }) => theme.font.body_regular};
   `,
-  Entry: styled.li`
-    padding: 16px 24px;
-    border: 1px solid red;
+  Entry: styled.ul`
+    margin-top: 64px;
+  `,
+  EntryItem: styled.li<{ highlight: boolean }>`
+    padding: 12px 24px;
 
-    color: ${({ theme }) => theme.color.white};
+    color: ${({ theme }) => theme.color.gray400};
   `,
 };
