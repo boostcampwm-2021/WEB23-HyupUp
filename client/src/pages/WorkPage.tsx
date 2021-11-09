@@ -13,7 +13,7 @@ import board from '@public/icons/board-icon.svg';
 import backlog from '@public/icons/time-icon.svg';
 
 const WorkPage = () => {
-  const tabs = [<Roadmap></Roadmap>, <Kanban></Kanban>, <Backlog></Backlog>];
+  const tabs = [<Roadmap key={0} />, <Kanban key={1} />, <Backlog key={2} />];
   const { currentIndex, currentTab, changeTab } = useTabs(0, tabs);
 
   const sideBarEntries = [
