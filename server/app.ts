@@ -8,6 +8,7 @@ import { entities } from './src';
 
 // to-do router import
 import userRouter from './src/Users/Users.router';
+import projectRouter from './src/Projects/Projects.router';
 
 const app = express();
 app.use(logger('dev'));
@@ -18,6 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // to-do router 설정
 app.use('/api/users', userRouter);
+app.use('/api/projects', projectRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   next(createError(404));
@@ -33,9 +35,9 @@ app.use((err: HttpError, req: Request, res: Response) => {
 (async () => {
   const dbConfig = {
     host: 'localhost',
-    username: 'root',
-    password: '1212',
-    database: 'TEAM42_TEST',
+    username: '',
+    password: '',
+    database: '',
   };
 
   const connectionOptions: ConnectionOptions = {
@@ -46,7 +48,7 @@ app.use((err: HttpError, req: Request, res: Response) => {
   };
 
   const connection = await createConnection(connectionOptions);
-  await connection.synchronize(true); // to-do 환경변수로 만들기
+  await connection.synchronize(); // to-do 환경변수로 만들기
 })();
 
 export default app;
