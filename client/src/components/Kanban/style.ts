@@ -27,15 +27,32 @@ const Styled = {
     display: flex;
     justify-content: space-around;
 
-    font: ${({ theme }) => theme.font.body_regular};
+    font: ${({ theme }) => theme.font.body_medium};
   `,
 
-  Column: styled.article`
+  Column: styled.div`
     width: 30%;
     height: 100%;
 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
     border-radius: 8px;
     background-color: ${({ theme }) => theme.color.white};
+
+    h4 {
+      padding-top: 12px;
+      font: ${({ theme }) => theme.font.bold_regular};
+    }
+
+    button {
+      width: 250px;
+
+      position: absolute;
+      bottom: 55px;
+    }
   `,
 };
 
