@@ -15,3 +15,16 @@ export const getEpicsByProjectname = async (projectName: string) => {
     throw e;
   }
 };
+
+export const createEpic = async (projectId: number | string, epicName: string) => {
+  try {
+    const result: { data: { id: number } } = await instance.post('', {
+      projectName: projectId,
+      name: epicName,
+    });
+    return result.data;
+  } catch (e) {
+    console.error('failed to create epic item');
+    throw e;
+  }
+};
