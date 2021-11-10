@@ -14,6 +14,7 @@ import projectRouter from './src/Projects/Projects.router';
 import epicRouter from './src/Epics/Epics.router';
 import storyRouter from './src/Stories/Stories.router';
 import taskRouter from './src/Tasks/Tasks.router';
+import todoRouter from './src/Todo/Todo.router';
 
 const app = express();
 dotenv.config();
@@ -36,6 +37,7 @@ app.use('/api/projects', projectRouter);
 app.use('/api/epics', epicRouter);
 app.use('/api/stories', storyRouter);
 app.use('/api/tasks', taskRouter);
+app.use('/api/todo', todoRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   next(createError(404));
