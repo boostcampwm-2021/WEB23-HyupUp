@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Button from '@/lib/design/Button';
 import { UserContext } from '@/contexts/User';
-import { getUser } from '@/lib/api';
+import { getUser } from '@/lib/api/user';
 import { Body, Container, Logo, TextContainer, Title } from './style';
 
 const LandingPage = () => {
