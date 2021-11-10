@@ -1,8 +1,22 @@
 import { NextFunction, Request, Response } from 'express';
+import { getRepository } from 'typeorm';
+import Users from './Users.entity';
+import Todo from '../Todo/Todo.entity';
+import Tasks from '../Tasks/Tasks.entity';
 
-interface Project {
+interface UserProject {
   id: number;
   name: string;
+}
+
+interface PrivateTask {
+  id: number;
+  name: string;
+  status: boolean;
+}
+
+interface ProjectTask extends PrivateTask {
+  project: UserProject;
 }
 
 interface User {
@@ -13,35 +27,57 @@ interface User {
   url: string;
   admin: boolean;
   organization: number;
-  projects: Array<Project>;
+  projects: Array<UserProject>;
 }
 
-const dummyUrl1 =
-  'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80';
-const dummyUrl2 =
-  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80';
+const getUserTodos = async (email: string): Promise<PrivateTask[]> => {
+  const todoRepository = getRepository(Todo);
+  const todos = await todoRepository.find({
+    relations: ['users'],
+    where: { users: { email } },
+  });
+  return [...todos].map((elem) => ({
+    id: elem.id,
+    name: elem.name,
+    status: elem.status,
+  }));
+};
+
+const getUserTasks = async (email: string): Promise<ProjectTask[]> => {
+  const taskRepository = getRepository(Tasks);
+  const tasks = await taskRepository.find({
+    relations: ['users', 'projects'],
+    where: { users: { email } },
+  });
+  return [...tasks].map((elem) => ({
+    id: elem.id,
+    name: elem.name,
+    status: elem.status,
+    project: elem.projects,
+  }));
+};
+
+const getUserInfo = async (email: string): Promise<Users> => {
+  const userRepository = getRepository(Users);
+  const user = await userRepository.findOne({
+    relations: ['projects'],
+    where: { email },
+  });
+  if (!user) throw Error('유저 없음');
+  return user;
+};
 
 export const handleGet = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const email = req.query.email as string; // 추후에는 세션에서 email찾아야함
-
-    // db로직
-    const isTest1: boolean = email === 'test1@gmail.com';
-    const user: User = {
-      id: isTest1 ? 1 : 2,
-      name: isTest1 ? 'harry' : 'jarry',
-      job: isTest1 ? 'FE' : 'BE',
-      email: email,
-      url: isTest1 ? dummyUrl1 : dummyUrl2,
-      admin: isTest1 ? true : false,
-      organization: 1,
-      projects: [
-        { id: 1, name: 'TEST1' },
-        { id: 2, name: 'TEST2' },
-      ],
-    };
-
-    res.json(user);
+    const user = await getUserInfo(email);
+    const todos = await getUserTodos(email);
+    const tasks = await getUserTasks(email);
+    res.json({
+      ...user,
+      privateTasks: todos,
+      projectTasks: tasks,
+    });
   } catch (err) {
     res.status(400).json({ message: '유저 정보 없음' });
     next(err);
