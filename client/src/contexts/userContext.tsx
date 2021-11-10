@@ -43,17 +43,3 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [userState, dispatch] = useReducer(reducer, user);
   return <UserContext.Provider value={{ userState, dispatch }}>{children}</UserContext.Provider>;
 };
-
-// hooks 로 분리 필요
-
-export const useUserState = () => {
-  const { userState } = useContext(UserContext);
-  if (!userState) throw new Error('Cannot find UserProvider');
-  return userState;
-};
-
-export const useUserDispatch = () => {
-  const { dispatch } = useContext(UserContext);
-  if (!dispatch) throw new Error('Cannot find UserProvider');
-  return dispatch;
-};
