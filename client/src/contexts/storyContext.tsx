@@ -1,24 +1,11 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 
-type Project = {
-  id: number;
-  name: string;
-};
-
-type Epic = {
-  id: number;
-  name: string;
-  startAt: Date;
-  endAt: Date;
-  projects: Project;
-};
-
 type Story = {
   id: number;
   name: string;
   status: string;
-  projects: Project;
-  epics: Epic;
+  projectName: string;
+  epics: string;
 };
 
 type State = {
@@ -34,21 +21,25 @@ type StoryDispatch = Dispatch<Action>;
 const StoryStateContext = createContext<State | null>(null);
 const StoryDispatchContext = createContext<StoryDispatch | null>(null);
 
+function isProjectExist(state: State, projectName: string): boolean {
+  return Object.keys(state).includes(projectName);
+}
+
 // to-do 필요한 action이 있으면, 아래에 추가할 것
-// to-do epic 관련 변경 로직 추가할 것
+// to-do immutable 방식을 더 생각해볼 것
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'ADD_STORY':
-      if (Object.keys(state).includes(action.story.projects.name)) {
-        state[action.story.projects.name].push(action.story);
+      if (isProjectExist(state, action.story.projectName)) {
+        state[action.story.projectName] = [action.story, ...state[action.story.projectName]];
         return { ...state };
       } else {
-        state[action.story.projects.name] = [action.story];
+        state[action.story.projectName] = [action.story];
         return { ...state };
       }
     case 'REMOVE_STORY':
-      if (Object.keys(state).includes(action.story.projects.name)) {
-        state[action.story.projects.name] = state[action.story.projects.name].filter(
+      if (isProjectExist(state, action.story.projectName)) {
+        state[action.story.projectName] = state[action.story.projectName].filter(
           (el) => el.id !== action.story.id,
         );
         return { ...state };
@@ -56,8 +47,8 @@ function reducer(state: State, action: Action): State {
         throw new Error('invalid project name');
       }
     case 'UPDATE_STORY':
-      if (Object.keys(state).includes(action.story.projects.name)) {
-        state[action.story.projects.name] = state[action.story.projects.name].map((el) => {
+      if (isProjectExist(state, action.story.projectName)) {
+        state[action.story.projectName] = state[action.story.projectName].map((el) => {
           if (el.id === action.story.id) {
             el.name = action.story.name;
             el.status = action.story.status;

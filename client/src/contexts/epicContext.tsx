@@ -1,15 +1,11 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 
-type Project = {
-  id: number;
-  name: string;
-};
 type Epic = {
   id: number;
   name: string;
   startAt: Date;
   endAt: Date;
-  projects: Project;
+  projectName: string;
 };
 
 type State = {
@@ -25,19 +21,25 @@ type EpicDispatch = Dispatch<Action>;
 const EpicStateContext = createContext<State | null>(null);
 const EpicDispatchContext = createContext<EpicDispatch | null>(null);
 
+function isProjectExist(state: State, projectName: string): boolean {
+  return Object.keys(state).includes(projectName);
+}
+
+// to-do 필요한 action이 있으면, 아래에 추가할 것
+// to-do immutable 방식을 더 생각해볼 것
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'ADD_EPIC':
-      if (Object.keys(state).includes(action.epic.projects.name)) {
-        state[action.epic.projects.name].push(action.epic);
+      if (isProjectExist(state, action.epic.projectName)) {
+        state[action.epic.projectName] = [action.epic, ...state[action.epic.projectName]];
         return { ...state };
       } else {
-        state[action.epic.projects.name] = [action.epic];
+        state[action.epic.projectName] = [action.epic];
         return { ...state };
       }
     case 'REMOVE_EPIC':
-      if (Object.keys(state).includes(action.epic.projects.name)) {
-        state[action.epic.projects.name] = state[action.epic.projects.name].filter(
+      if (isProjectExist(state, action.epic.projectName)) {
+        state[action.epic.projectName] = state[action.epic.projectName].filter(
           (el) => el.id !== action.epic.id,
         );
         return { ...state };
@@ -45,8 +47,8 @@ function reducer(state: State, action: Action): State {
         throw new Error('invalid project name');
       }
     case 'UPDATE_EPIC':
-      if (Object.keys(state).includes(action.epic.projects.name)) {
-        state[action.epic.projects.name] = state[action.epic.projects.name].map((el) => {
+      if (isProjectExist(state, action.epic.projectName)) {
+        state[action.epic.projectName] = state[action.epic.projectName].map((el) => {
           if (el.id === action.epic.id) {
             el.name = action.epic.name;
             el.startAt = action.epic.startAt;
