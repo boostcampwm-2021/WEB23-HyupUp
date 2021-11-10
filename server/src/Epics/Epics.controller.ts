@@ -14,7 +14,13 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
       relations: ['projects'],
       where: { projects: { name: projectName } },
     });
-    res.status(200).json(epics);
+    const result = epics.map((el) => ({
+      id: el.id,
+      name: el.name,
+      startAt: el.startAt,
+      endAt: el.endAt,
+    }));
+    res.status(200).json(result);
   } catch (e) {
     const result = (e as Error).message;
     if (result === 'query is not vaild') {
