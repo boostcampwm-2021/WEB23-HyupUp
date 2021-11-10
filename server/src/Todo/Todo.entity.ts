@@ -6,6 +6,9 @@ export default class Todo {
   @PrimaryGeneratedColumn({ name: 'ID' })
   id!: number;
 
+  @Column({ name: 'NAME' })
+  name!: string;
+
   @Column({ name: 'STATUS', type: 'boolean' })
   status!: boolean;
 
