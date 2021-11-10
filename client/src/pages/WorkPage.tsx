@@ -7,6 +7,7 @@ import Roadmap from '@/components/Roadmap';
 import Kanban from '@/components/Kanban';
 import Backlog from '@/components/Backlog';
 import useTabs from '@/lib/hooks/useTabs';
+import Header from '@/lib/common/Header';
 
 import roadmap from '@public/icons/calendar-icon.svg';
 import board from '@public/icons/board-icon.svg';
@@ -23,10 +24,13 @@ const WorkPage = () => {
   ];
 
   return (
-    <S.Container>
-      <SideBar entries={sideBarEntries} changeTab={changeTab}></SideBar>
-      {currentTab}
-    </S.Container>
+    <>
+      <Header />
+      <S.Container>
+        <SideBar entries={sideBarEntries} changeTab={changeTab}></SideBar>
+        {currentTab}
+      </S.Container>
+    </>
   );
 };
 
@@ -35,5 +39,6 @@ export default WorkPage;
 const S = {
   Container: styled.div`
     display: flex;
+    margin-top: 60px;
   `,
 };

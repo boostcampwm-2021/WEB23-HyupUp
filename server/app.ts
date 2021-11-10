@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import cors from 'cors';
 import { ConnectionOptions, createConnection } from 'typeorm';
+import dotenv from 'dotenv';
 import { entities } from './src';
 
 // to-do router import
@@ -15,10 +16,10 @@ import storyRouter from './src/Stories/Stories.router';
 import taskRouter from './src/Tasks/Tasks.router';
 
 const app = express();
-
+dotenv.config();
 app.use(
   cors({
-    origin: true,
+    origin: process.env.CLIENT_URL,
     credentials: true,
   }),
 );
@@ -49,11 +50,10 @@ app.use((err: HttpError, req: Request, res: Response) => {
 
 (async () => {
   const dbConfig = {
-    host: 'localhost',
-    username: 'root',
-    password: '19941021',
-    database: 'TEAM42_TEST',
-
+    host: process.env.DB_HOST,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
   };
 
   const connectionOptions: ConnectionOptions = {

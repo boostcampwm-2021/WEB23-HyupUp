@@ -10,8 +10,7 @@ export const Styled = {
     max-width: 1140px;
     width: 100%;
 
-    position: absolute;
-    top: 25px;
+    margin-top: 25px;
   `,
   logo: styled(NavLink)`
     font: ${({ theme }) => theme.font.display_medium};

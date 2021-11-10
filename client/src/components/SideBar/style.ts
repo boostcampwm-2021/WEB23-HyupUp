@@ -9,7 +9,6 @@ const S = {
     width: 173px;
     height: 600px;
     padding: 24px 16px;
-    margin-top: 75px;
 
     background-color: ${({ theme }) => theme.color.gray100};
     border-radius: 8px;

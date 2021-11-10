@@ -4,5 +4,6 @@ import Projects from './Projects/Projects.entity';
 import Stories from './Stories/Stories.entity';
 import Tasks from './Tasks/Tasks.entity';
 import Users from './Users/Users.entity';
+import Todo from './Todo/Todo.entity';
 
-export const entities = [Epics, Organizations, Projects, Stories, Tasks, Users];
+export const entities = [Epics, Organizations, Projects, Stories, Tasks, Users, Todo];
