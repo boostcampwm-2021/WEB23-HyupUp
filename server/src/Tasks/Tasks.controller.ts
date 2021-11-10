@@ -4,13 +4,13 @@ import Tasks from './Tasks.entity';
 
 export const getAllTasksByProject = async (req: Request, res: Response) => {
   try {
-    if (!Object.keys(req.query).includes('projectName')) {
+    if (!('projectName' in req.query)) {
       throw new Error('query is not vaild');
     }
     const { projectName } = req.query;
     const taskRepository = getRepository(Tasks);
     const tasks = await taskRepository.find({
-      relations: ['projects'],
+      relations: ['projects', 'stories'],
       where: { projects: { name: projectName } },
     });
     res.status(200).json(tasks);

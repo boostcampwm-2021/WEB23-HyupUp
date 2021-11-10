@@ -4,13 +4,13 @@ import Stories from './Stories.entity';
 
 export const getAllStoriesByProject = async (req: Request, res: Response) => {
   try {
-    if (!Object.keys(req.query).includes('projectName')) {
+    if (!('projectName' in req.query)) {
       throw new Error('query is not vaild');
     }
     const { projectName } = req.query;
     const storyRepository = getRepository(Stories);
     const stories = await storyRepository.find({
-      relations: ['projects'],
+      relations: ['projects', 'epics'],
       where: { projects: { name: projectName } },
     });
     res.status(200).json(stories);

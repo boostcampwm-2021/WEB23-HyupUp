@@ -5,15 +5,9 @@ import Users from '../Users/Users.entity';
 
 export const getAllProjects = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (
-      !(
-        Object.keys(req.query).includes('userId') &&
-        Object.keys(req.query).includes('organizationId')
-      )
-    ) {
+    if (!('userId' in req.query && 'organizationId' in req.query)) {
       throw new Error('query is not vaild');
     }
-
     const { userId, organizationId } = req.query;
     const userRepository = getRepository(Users);
     const projects = await userRepository.find({
