@@ -39,6 +39,13 @@ const S = {
     background-color: ${({ theme }) => theme.color.white};
     border-radius: 8px;
 
+    & > ul {
+      width: 100%;
+      height: 100%;
+
+      overflow: scroll;
+    }
+
     & > button {
       position: absolute;
       bottom: 0;
@@ -46,6 +53,9 @@ const S = {
       width: calc(100% - 16px);
       margin: 8px;
     }
+  `,
+  ContentEntryItem: styled.li`
+    color: ${({ theme }) => theme.color.gray400};
   `,
   MainContent: styled.section`
     position: relative;
