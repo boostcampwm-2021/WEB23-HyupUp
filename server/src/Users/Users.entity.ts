@@ -11,6 +11,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import Projects from '../Projects/Projects.entity';
+import Todo from '../Todo/Todo.entity';
 
 @Entity({ name: 'USERS' })
 export default class Users {
@@ -51,4 +52,7 @@ export default class Users {
     joinColumn: { name: 'USER_ID', referencedColumnName: 'id' },
   })
   projects!: Projects[];
+
+  @OneToMany(() => Todo, (todo) => todo.id)
+  todo!: Todo[];
 }
