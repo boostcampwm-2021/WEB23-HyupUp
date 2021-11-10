@@ -3,8 +3,8 @@ import React, { useState, useRef } from 'react';
 import useOutSideClick from '@/lib/hooks/useOutSideClick';
 
 const Profile = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggling = () => setIsOpen(!isOpen);
+  const [openState, setOpenState] = useState(false);
+  const toggling = () => setOpenState((openState) => !openState);
   const logOutHandler = () => console.log('Logout');
   const ref = useRef(null);
 
@@ -16,7 +16,7 @@ const Profile = () => {
   return (
     <Styled.Profile>
       <section onClick={toggling}></section>
-      {isOpen && (
+      {openState && (
         <div className="list-container" ref={ref}>
           <ul className="dropdown-list">
             <li>이름</li>
