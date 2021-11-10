@@ -9,6 +9,9 @@ export default class Todo {
   @Column({ name: 'STATUS', type: 'boolean' })
   status!: boolean;
 
+  @Column({ name: 'NAME' })
+  name!: string;
+
   @ManyToOne(() => Users, (users) => users.id)
   @JoinColumn({ name: 'USER_ID' })
   users!: Users;
