@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UserState } from '@/contexts/User';
+import { UserState } from '@/contexts/userContext';
 
 const instance = axios.create({
   baseURL: 'http://localhost:3000',
