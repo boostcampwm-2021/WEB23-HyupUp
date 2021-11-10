@@ -30,14 +30,13 @@ type ContextType = {
 const reducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
     case 'GET_USER':
-      state = {
+      return {
         currentProject:
           action.payload.projects && action.payload.projects.length !== 0
             ? action.payload.projects[0].name
             : '',
         ...action.payload,
       };
-      return { ...state };
     case 'LOGOUT':
       return {};
     case 'UPDATE_USER':
