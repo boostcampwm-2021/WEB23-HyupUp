@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@/lib/design/Button';
-import { useUserDispatch } from '@/contexts/User';
+import { useUserDispatch } from '@/lib/hooks/useContextHooks';
 import { getUser } from '@/lib/api/user';
 import { Styled } from './style';
 

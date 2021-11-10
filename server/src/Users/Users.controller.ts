@@ -1,5 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 
+interface Project {
+  id: number;
+  name: string;
+}
+
 interface User {
   id: number;
   name: string;
@@ -8,6 +13,7 @@ interface User {
   url: string;
   admin: boolean;
   organization: number;
+  projects: Array<Project>;
 }
 
 const dummyUrl1 =
@@ -29,6 +35,10 @@ export const handleGet = async (req: Request, res: Response, next: NextFunction)
       url: isTest1 ? dummyUrl1 : dummyUrl2,
       admin: isTest1 ? true : false,
       organization: 1,
+      projects: [
+        { id: 1, name: 'TEST1' },
+        { id: 2, name: 'TEST2' },
+      ],
     };
 
     res.json(user);
