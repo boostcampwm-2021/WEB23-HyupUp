@@ -1,8 +1,16 @@
-import React, { createContext, Dispatch, useContext, useReducer } from 'react';
+import React, { createContext, Dispatch, useReducer } from 'react';
 
 type Project = {
   id: number;
   name: string;
+};
+
+type Epic = {
+  id: number;
+  name: string;
+  startAt: Date;
+  endAt: Date;
+  projects: Project;
 };
 
 type Story = {
@@ -10,6 +18,7 @@ type Story = {
   name: string;
   status: string;
   projects: Project;
+  epics: Epic;
 };
 
 type State = {
