@@ -3,6 +3,7 @@ import createError, { HttpError } from 'http-errors';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import cors from 'cors';
 import { ConnectionOptions, createConnection } from 'typeorm';
 import { entities } from './src';
 
@@ -10,6 +11,14 @@ import { entities } from './src';
 import userRouter from './src/Users/Users.router';
 
 const app = express();
+
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  }),
+);
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -34,13 +43,13 @@ app.use((err: HttpError, req: Request, res: Response) => {
   const dbConfig = {
     host: 'localhost',
     username: 'root',
-    password: '1212',
+    password: '19941021',
     database: 'TEAM42_TEST',
   };
 
   const connectionOptions: ConnectionOptions = {
     type: 'mysql',
-    synchronize: true,
+    synchronize: false,
     entities,
     ...dbConfig,
   };
