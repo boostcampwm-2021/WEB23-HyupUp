@@ -1,11 +1,14 @@
 import React from 'react';
+import { useStoryState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
+import useInput from '@/lib/hooks/useInput';
 import Styled from '@/components/KanbanTodo/style';
 import Button from '@/lib/design/Button';
-import { useStoryState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
 
 const KanbanTodo = () => {
   const storyState = useStoryState();
   const useDispatcher = useStoryDispatch();
+  const [value, onChange] = useInput();
+
   const storyArray = storyState[Object.keys(storyState)[0]];
   const storyLastId = storyArray ? storyArray[storyArray.length - 1].id : 0;
 
@@ -35,7 +38,7 @@ const KanbanTodo = () => {
       {storyArray?.map((story) => {
         return (
           <Styled.KanBanItem key={story.id}>
-            <input type="text" placeholder="type a todo..." />
+            <input type="text" placeholder="type a todo..." onChange={onChange} />
           </Styled.KanBanItem>
         );
       })}
