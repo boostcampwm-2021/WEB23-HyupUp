@@ -5,11 +5,15 @@ type UserProject = {
   name: string;
 };
 
-type UserTask = {
+interface PrivateTask {
   id: number;
   name: string;
   status: boolean;
-};
+}
+
+interface ProjectTask extends PrivateTask {
+  project: UserProject;
+}
 
 export type UserState = {
   id?: number;
@@ -21,8 +25,8 @@ export type UserState = {
   organization?: number;
   currentProject?: string;
   projects?: Array<UserProject>;
-  privateTasks?: Array<UserTask>;
-  projectTasks?: Array<UserTask>;
+  privateTasks?: Array<PrivateTask>;
+  projectTasks?: Array<ProjectTask>;
 };
 
 type UserAction = { type: 'GET_USER'; payload: UserState } | { type: 'LOGOUT' };
