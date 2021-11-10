@@ -1,4 +1,4 @@
-import React, { createContext, Dispatch, useContext, useReducer } from 'react';
+import React, { createContext, Dispatch, useReducer } from 'react';
 
 type Project = {
   id: number;
@@ -74,14 +74,4 @@ export function EpicProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useEpicState() {
-  const state = useContext(EpicStateContext);
-  if (!state) throw new Error('Cannot find EpicProvider'); // 유효하지 않을땐 에러를 발생
-  return state;
-}
-
-export function useEpicDispatch() {
-  const dispatch = useContext(EpicDispatchContext);
-  if (!dispatch) throw new Error('Cannot find EpicProvider'); // 유효하지 않을땐 에러를 발생
-  return dispatch;
-}
+export { EpicStateContext, EpicDispatchContext };

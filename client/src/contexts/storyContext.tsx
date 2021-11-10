@@ -25,6 +25,8 @@ type StoryDispatch = Dispatch<Action>;
 const StoryStateContext = createContext<State | null>(null);
 const StoryDispatchContext = createContext<StoryDispatch | null>(null);
 
+// to-do 필요한 action이 있으면, 아래에 추가할 것
+// to-do epic 관련 변경 로직 추가할 것
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case 'ADD_STORY':
@@ -73,14 +75,4 @@ export function StoryProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useStoryState() {
-  const state = useContext(StoryStateContext);
-  if (!state) throw new Error('Cannot find StoryProvider'); // 유효하지 않을땐 에러를 발생
-  return state;
-}
-
-export function useStoryDispatch() {
-  const dispatch = useContext(StoryDispatchContext);
-  if (!dispatch) throw new Error('Cannot find StoryProvider'); // 유효하지 않을땐 에러를 발생
-  return dispatch;
-}
+export { StoryStateContext, StoryDispatchContext };
