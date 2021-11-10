@@ -13,7 +13,13 @@ export const getAllStoriesByProject = async (req: Request, res: Response) => {
       relations: ['projects', 'epics'],
       where: { projects: { name: projectName } },
     });
-    res.status(200).json(stories);
+    const storiesWithEpicName = stories.map((el) => ({
+      id: el.id,
+      name: el.name,
+      status: el.status,
+      epic: el.epics.name,
+    }));
+    res.status(200).json(storiesWithEpicName);
   } catch (e) {
     const result = (e as Error).message;
     if (result === 'query is not vaild') {

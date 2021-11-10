@@ -1,4 +1,9 @@
-import React, { createContext, Dispatch, useContext, useReducer } from 'react';
+import React, { createContext, Dispatch, useReducer } from 'react';
+
+type Project = {
+  id: number;
+  name: string;
+};
 
 export type UserState = {
   id?: number;
@@ -8,6 +13,8 @@ export type UserState = {
   url?: string;
   admin?: boolean;
   organization?: number;
+  currentProject?: string;
+  projects?: Array<Project>;
 };
 
 type UserAction = { type: 'GET_USER'; payload: UserState } | { type: 'LOGOUT' };
@@ -21,6 +28,10 @@ const reducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
     case 'GET_USER':
       return {
+        currentProject:
+          action.payload.projects && action.payload.projects.length !== 0
+            ? action.payload.projects[0].name
+            : '',
         ...action.payload,
       };
     case 'LOGOUT':
@@ -42,18 +53,4 @@ const user: UserState = {};
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [userState, dispatch] = useReducer(reducer, user);
   return <UserContext.Provider value={{ userState, dispatch }}>{children}</UserContext.Provider>;
-};
-
-// hooks 로 분리 필요
-
-export const useUserState = () => {
-  const { userState } = useContext(UserContext);
-  if (!userState) throw new Error('Cannot find UserProvider');
-  return userState;
-};
-
-export const useUserDispatch = () => {
-  const { dispatch } = useContext(UserContext);
-  if (!dispatch) throw new Error('Cannot find UserProvider');
-  return dispatch;
 };
