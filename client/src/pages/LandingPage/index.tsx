@@ -1,18 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Button from '@/lib/design/Button';
-import { UserContext } from '@/contexts/User';
+import { useUserDispatch } from '@/contexts/User';
 import { getUser } from '@/lib/api/user';
 import { Styled } from './style';
 
 const LandingPage = () => {
-  const { dispatch } = useContext(UserContext);
+  const dispatch = useUserDispatch();
 
   const onClickLogin = async (email: string) => {
     // App 의 useEffect로 들어가야할 로직
     const user = await getUser(email);
-    if (dispatch) {
-      dispatch({ type: 'GET_USER', data: user });
-    }
+    dispatch({ type: 'GET_USER', payload: user });
   };
 
   return (
