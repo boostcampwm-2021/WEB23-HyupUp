@@ -37,6 +37,7 @@ const S = {
     margin-right: 16px;
 
     background-color: ${({ theme }) => theme.color.white};
+    border-radius: 8px;
 
     & > button {
       position: absolute;
@@ -51,8 +52,10 @@ const S = {
 
     width: 100%;
     height: 100%;
+    padding: 16px;
 
     background-color: ${({ theme }) => theme.color.white};
+    border-radius: 8px;
   `,
 };
 
