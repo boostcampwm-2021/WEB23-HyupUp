@@ -9,6 +9,10 @@ import { entities } from './src';
 
 // to-do router import
 import userRouter from './src/Users/Users.router';
+import projectRouter from './src/Projects/Projects.router';
+import epicRouter from './src/Epics/Epics.router';
+import storyRouter from './src/Stories/Stories.router';
+import taskRouter from './src/Tasks/Tasks.router';
 
 const app = express();
 
@@ -27,6 +31,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // to-do router 설정
 app.use('/api/users', userRouter);
+app.use('/api/projects', projectRouter);
+app.use('/api/epics', epicRouter);
+app.use('/api/stories', storyRouter);
+app.use('/api/tasks', taskRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   next(createError(404));
@@ -45,6 +53,7 @@ app.use((err: HttpError, req: Request, res: Response) => {
     username: 'root',
     password: '19941021',
     database: 'TEAM42_TEST',
+
   };
 
   const connectionOptions: ConnectionOptions = {
@@ -55,7 +64,7 @@ app.use((err: HttpError, req: Request, res: Response) => {
   };
 
   const connection = await createConnection(connectionOptions);
-  await connection.synchronize(true); // to-do 환경변수로 만들기
+  await connection.synchronize(); // to-do 환경변수로 만들기
 })();
 
 export default app;
