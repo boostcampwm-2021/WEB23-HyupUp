@@ -16,6 +16,12 @@ export const getEpicsByProjectname = async (projectName: string) => {
   }
 };
 
+/**
+ *
+ * @param projectId 프로젝트 id, 생성하려는 에픽이 어떤 프로젝트에 속하는지
+ * @param epicName 에픽의 이름
+ * @returns id 를 프로퍼티로 가지는 객체, 에픽 생성 성공시 생성된 에픽의 id, 실패시 -1값 { id: number }
+ */
 export const createEpic = async (projectId: number | string, epicName: string) => {
   try {
     const result: { data: { id: number } } = await instance.post('', {
@@ -24,7 +30,6 @@ export const createEpic = async (projectId: number | string, epicName: string) =
     });
     return result.data;
   } catch (e) {
-    console.error('failed to create epic item');
-    throw e;
+    return { id: -1 };
   }
 };
