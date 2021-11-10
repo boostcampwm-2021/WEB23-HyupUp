@@ -4,41 +4,57 @@ import styled from 'styled-components';
 import DropDown from '@/lib/design/DropDown';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { getAllProjects } from '@/lib/api/project';
+import { useUserDispatch, useUserState } from '@/lib/hooks/useContextHooks';
 const Title = styled.p`
   margin: 5px;
 
   font: ${({ theme }) => theme.font.body_regular};
 `;
 
-interface Project {
-  id: number;
-  name: string;
-}
 const SideBarDropDown = () => {
-  const SERVER_URL = 'http://localhost:3000';
-  const [listState, listStateHandler] = useState([]);
-  const [titleState, titleStateHandler] = useState(<Title>프로젝트</Title>);
+  const userState = useUserState();
+  const userDispatcher = useUserDispatch();
+  const [listState, listStateHandler] = useState<Array<string>>([]);
+  const [titleState, titleStateHandler] = useState('프로젝트');
   const itemClickHandler = (e: React.MouseEvent) => {
     const event = e.target as HTMLElement;
     if (event.tagName === 'LI') {
-      titleStateHandler(<Title>{event.innerText}</Title>);
+      titleStateHandler(event.innerText);
+      userDispatcher({
+        type: 'UPDATE_USER',
+        payload: {
+          currentProject: event.innerText,
+        },
+      });
     }
   };
   useEffect(() => {
-    fetch(`${SERVER_URL}/api/projects?userId=${1}&organizationId=${1}`)
-      .then((res) => res.json())
-      .then((projectList) => projectList.map((el: Project) => el.name))
-      .then((nameList) => {
-        listStateHandler(nameList);
-        titleStateHandler(<Title>{nameList[0]}</Title>);
+    const projects = getAllProjects(userState.id as number, userState.organization as number);
+    projects
+      .then((el) => {
+        // 아래 로직이 반드시 필요한지 생각해보기
+        userDispatcher({
+          type: 'UPDATE_USER',
+          payload: {
+            projects: el,
+          },
+        });
+        return el.map((project) => project.name);
       })
-      .catch(() => {
-        window.location.reload();
+      .then((el) => {
+        listStateHandler(el);
+        el.length ? titleStateHandler(el[0]) : '';
       });
   }, []);
+
   return (
     <div>
-      <DropDown Title={titleState} list={listState} handleClick={itemClickHandler} />
+      <DropDown
+        Title={<Title>{titleState}</Title>}
+        list={listState}
+        handleClick={itemClickHandler}
+      />
     </div>
   );
 };

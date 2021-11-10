@@ -17,7 +17,10 @@ export type UserState = {
   projects?: Array<Project>;
 };
 
-type UserAction = { type: 'GET_USER'; payload: UserState } | { type: 'LOGOUT' };
+type UserAction =
+  | { type: 'GET_USER'; payload: UserState }
+  | { type: 'LOGOUT' }
+  | { type: 'UPDATE_USER'; payload: UserState };
 
 type ContextType = {
   userState: UserState | null;
@@ -27,15 +30,18 @@ type ContextType = {
 const reducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
     case 'GET_USER':
-      return {
+      state = {
         currentProject:
           action.payload.projects && action.payload.projects.length !== 0
             ? action.payload.projects[0].name
             : '',
         ...action.payload,
       };
+      return { ...state };
     case 'LOGOUT':
       return {};
+    case 'UPDATE_USER':
+      return { ...state, ...action.payload };
     default:
       return {
         ...state,
