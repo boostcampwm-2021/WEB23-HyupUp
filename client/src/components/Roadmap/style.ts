@@ -38,6 +38,7 @@ const S = {
     flex-direction: column;
     justify-content: center;
 
+    width: 221px;
     padding: 16px;
 
     border-right: 3px solid ${({ theme }) => theme.color.gray100};
