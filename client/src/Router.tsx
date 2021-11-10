@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { UserContext } from './contexts/User';
+import { useUserState } from './contexts/User';
 import LandingPage from './pages/LandingPage';
 import MainPage from './pages/MainPage';
 import WorkPage from './pages/WorkPage';
 
 const Router = () => {
-  const { userState } = useContext(UserContext);
+  const userState = useUserState();
   return (
     <>
       <Switch>
