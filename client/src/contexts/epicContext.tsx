@@ -4,7 +4,7 @@ type Project = {
   id: number;
   name: string;
 };
-type Epic = {
+export type Epic = {
   id: number;
   name: string;
   startAt: Date;
