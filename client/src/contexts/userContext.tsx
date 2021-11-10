@@ -1,8 +1,14 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 
-type Project = {
+type UserProject = {
   id: number;
   name: string;
+};
+
+type UserTask = {
+  id: number;
+  name: string;
+  status: boolean;
 };
 
 export type UserState = {
@@ -14,7 +20,9 @@ export type UserState = {
   admin?: boolean;
   organization?: number;
   currentProject?: string;
-  projects?: Array<Project>;
+  projects?: Array<UserProject>;
+  privateTasks?: Array<UserTask>;
+  projectTasks?: Array<UserTask>;
 };
 
 type UserAction = { type: 'GET_USER'; payload: UserState } | { type: 'LOGOUT' };
