@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import theme from '@/styles/theme';
 
 export const Container = styled.div`
   display: flex;
@@ -11,21 +10,21 @@ export const Container = styled.div`
 `;
 
 export const Logo = styled.p`
-  font: ${theme.font.display_medium};
+  font: ${({ theme }) => theme.font.display_medium};
 `;
 
 export const Title = styled.p`
   margin: 5px;
 
-  font: ${theme.font.display_large};
+  font: ${({ theme }) => theme.font.display_large};
 `;
 
 export const Body = styled.p`
   margin: 5px;
 
-  color: #8993a1;
+  color: ${({ theme }) => theme.color300};
 
-  font: ${theme.font.body_small};
+  font: ${({ theme }) => theme.font.body_small};
 `;
 
 export const TextContainer = styled.div`
