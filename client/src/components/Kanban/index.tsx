@@ -8,7 +8,10 @@ const Kanban = () => {
       <Styled.Title>프로젝트 칸반보드</Styled.Title>
       <Styled.ColumnContainer>
         <Styled.Column>
-          <h4>Todo</h4>
+          <h4>To do</h4>
+          <Styled.KanBanItem>
+            <input type="text" placeholder="type a todo..." />
+          </Styled.KanBanItem>
           <Button size={'large'} category={'cancel'} onClick={() => undefined}>
             Add Todo
           </Button>
