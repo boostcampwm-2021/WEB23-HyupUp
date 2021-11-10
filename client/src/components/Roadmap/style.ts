@@ -6,6 +6,7 @@ const S = {
     flex-direction: column;
 
     width: 941px;
+    height: 600px;
 
     margin: 0 0 0 26px;
     padding: 18px;
@@ -14,6 +15,9 @@ const S = {
     background-color: ${({ theme }) => theme.color.gray100};
 
     font: ${({ theme }) => theme.font.body_regular};
+    color: ${({ theme }) => theme.color.gray400};
+
+    overflow: scroll;
   `,
   Title: styled.h2`
     margin-bottom: 16px;
@@ -24,42 +28,37 @@ const S = {
     display: flex;
 
     width: 100%;
-    height: 100%;
-  `,
-  ContentEntry: styled.aside`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    width: 206px;
-    height: 100%;
-    margin-right: 16px;
 
     background-color: ${({ theme }) => theme.color.white};
     border-radius: 8px;
-
-    & > ul {
-      width: 100%;
-      height: 100%;
-
-      overflow: scroll;
-    }
-
-    & > button {
-      position: absolute;
-      bottom: 0;
-
-      width: calc(100% - 16px);
-      margin: 8px;
-    }
   `,
-  ContentEntryItem: styled.li`
-    color: ${({ theme }) => theme.color.gray400};
-  `,
-  MainContent: styled.section`
+  EpicEntry: styled.ul`
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
+    padding: 16px;
+
+    border-right: 3px solid ${({ theme }) => theme.color.gray100};
+
+    overflow: scroll;
+
+    & button {
+      width: 100%;
+    }
+  `,
+  EpicEntryItem: styled.li`
+    margin: 27px 0;
+
+    font: ${({ theme }) => theme.font.body_regular};
+    color: ${({ theme }) => theme.color.gray400};
+
+    &:nth-child(1) {
+      margin-top: 64px;
+    }
+  `,
+  RoadmapCalendar: styled.section`
     width: 100%;
     height: 100%;
     padding: 16px;
