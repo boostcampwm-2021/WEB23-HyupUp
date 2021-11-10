@@ -1,6 +1,6 @@
 import { RefObject, useEffect } from 'react';
 
-const useOutSideClick = <T extends HTMLElement = HTMLElement>(
+const useOutSideClick = <T extends HTMLElement>(
   ref: RefObject<T>,
   eventHandler: () => void,
 ): void => {
