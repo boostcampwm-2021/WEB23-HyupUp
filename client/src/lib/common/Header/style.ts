@@ -18,7 +18,7 @@ export const Styled = {
     color: ${({ theme }) => theme.color.gray500};
     text-align: center;
   `,
-  IconList: styled.ul`
+  iconList: styled.ul`
     display: flex;
     align-items: center;
     justify-content: space-evenly;

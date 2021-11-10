@@ -7,11 +7,11 @@ const Header = () => {
   return (
     <Styled.header>
       <Styled.logo to="/">HyupUp</Styled.logo>
-      <Styled.IconList>
+      <Styled.iconList>
         <PageIcon to="/" name="home" />
         <PageIcon to="/work" name="work" />
         <PageIcon to="/setting" name="setting" />
-      </Styled.IconList>
+      </Styled.iconList>
       <Profile />
     </Styled.header>
   );
