@@ -7,6 +7,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "dev:client" : "yarn workspace client dev",
+    "dev:server" : "yarn workspace server dev",
+    "build:client" : "yarn workspace client build",
     "ci": "echo 'hello' && yarn install --frozen-lockfile",
     "lint": "eslint ./"
   },

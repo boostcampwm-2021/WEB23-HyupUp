@@ -13,7 +13,7 @@
     "styled-reset": "^4.3.4"
   },
   "scripts": {
-    "start": "webpack-dev-server --progress",
+    "dev": "webpack-dev-server --progress",
     "build": "webpack --mode=production"
   },
   "devDependencies": {
