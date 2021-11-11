@@ -23,23 +23,18 @@ const Roadmap = () => {
           <EpicPlaceholder
             visible={inputVisible}
             handleSubmit={async (value) => {
-              // TODO: 프로젝트 이름을 전달해서 작동하도록 수정
               const { id } = await createEpic(1, value);
-              // FIXME: 에픽 입력을 완료했을 때 에픽 생성에 성공했다면 context 에 추가해주는 로직
-              // userContext와 연동을 하지 못한 상태라 Project를 넣어줄 수 없음
-              //
-              // if (id !== -1) {
-              //   epicDispatcher({
-              //     type: 'ADD_EPIC',
-              //     epic: {
-              //       id: id,
-              //       name: value,
-              //       startAt: new Date(),
-              //       endAt: new Date(),
-              //       projects: null, // <--
-              //     },
-              //   });
-              // }
+              if (id !== -1) {
+                epicDispatcher({
+                  type: 'ADD_EPIC',
+                  epic: {
+                    id: id,
+                    name: value,
+                    startAt: new Date(),
+                    endAt: new Date(),
+                  },
+                });
+              }
               setInputVisible(false);
             }}
           ></EpicPlaceholder>
