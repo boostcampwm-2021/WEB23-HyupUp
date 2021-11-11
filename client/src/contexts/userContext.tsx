@@ -22,7 +22,7 @@ export type UserState = {
   name?: string;
   job?: string;
   email?: string;
-  url?: string;
+  imageURL?: string;
   admin?: boolean;
   organization?: number;
   currentProjectName?: string;

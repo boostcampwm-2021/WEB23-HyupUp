@@ -26,10 +26,11 @@ interface User {
   name: string;
   job: string;
   email: string;
-  url: string;
+  imageURL: string;
   admin: boolean;
   organization: number;
   projects: Array<ProjectType>;
+  org?: object;
 }
 
 export const getUserTodos = async (email: string): Promise<PrivateTask[]> => {
@@ -63,14 +64,17 @@ export const getUserTasks = async (email: string): Promise<ProjectTask[]> => {
   }));
 };
 
-export const getUserInfo = async (email: string): Promise<Users> => {
+export const getUserInfo = async (email: string): Promise<User> => {
   const userRepository = getRepository(Users);
   const user = await userRepository.findOne({
-    relations: ['projects'],
+    relations: ['projects', 'org'],
     where: { email },
   });
   if (!user) throw Error('유저 없음');
-  return user;
+
+  const result: User = { ...user, organization: user.org.id };
+  delete result.org;
+  return result;
 };
 
 export const isValidatedEmail = (email: string): boolean => {
