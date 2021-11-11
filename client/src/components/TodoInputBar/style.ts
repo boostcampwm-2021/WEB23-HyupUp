@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const TodoInputBarContainer = styled.div`
+const TodoInputBarContainer = styled.form`
   width: 753px;
   height: 80px;
 

@@ -18,7 +18,8 @@ const TodoInputBar = () => {
       buttonDisableHandler(true);
     }
   };
-  const clickHandler = async () => {
+  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (typeof userState.id === 'number') {
       const target = todoInput.current as HTMLInputElement;
       const todo = await createTodo(target.value, userState.id);
@@ -31,9 +32,16 @@ const TodoInputBar = () => {
   };
 
   return (
-    <S.TodoInputBarContainer>
+    <S.TodoInputBarContainer onSubmit={submitHandler}>
       <S.InputBox ref={todoInput} placeholder="할 일을 입력하세요." onChange={inputHandler} />
-      <Button category="cancel" size="small" onClick={clickHandler} disabled={buttonDisabled}>
+      <Button
+        category="cancel"
+        size="small"
+        onClick={() => {
+          return;
+        }}
+        disabled={buttonDisabled}
+      >
         {'할 일 추가하기'}
       </Button>
     </S.TodoInputBarContainer>
