@@ -1,7 +1,8 @@
 import React from 'react';
+import { PrivateTask, ProjectTask } from '@/contexts/userContext';
 
-const ListViewItem = ({ item }) => {
-  return <div>{item}</div>;
+const ListViewItem = ({ task }: { task: PrivateTask | ProjectTask }) => {
+  return <div>{task.name}</div>;
 };
 
 export default ListViewItem;

@@ -6,7 +6,7 @@ type ProjectType = {
   name: string;
 };
 
-interface PrivateTask {
+export interface PrivateTask {
   id: number;
   name: string;
   status: boolean;
@@ -14,7 +14,7 @@ interface PrivateTask {
   updatedAt: string;
 }
 
-interface ProjectTask extends PrivateTask {
+export interface ProjectTask extends PrivateTask {
   project: ProjectType;
 }
 
