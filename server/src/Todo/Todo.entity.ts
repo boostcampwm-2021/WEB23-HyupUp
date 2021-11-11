@@ -14,11 +14,11 @@ export default class Todo {
   @PrimaryGeneratedColumn({ name: 'ID' })
   id!: number;
 
-  @Column({ name: 'STATUS', type: 'boolean' })
-  status!: boolean;
-
   @Column({ name: 'NAME' })
   name!: string;
+
+  @Column({ name: 'STATUS', type: 'boolean' })
+  status!: boolean;
 
   @ManyToOne(() => Users, (users) => users.id)
   @JoinColumn({ name: 'USER_ID' })
