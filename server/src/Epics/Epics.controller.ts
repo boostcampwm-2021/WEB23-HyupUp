@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
-import { queryVaildator } from '../../lib/requestVaildator';
+import { queryValidator } from '../../lib/requestValidator';
 import { getRepository } from 'typeorm';
 
 import Epics from './Epics.entity';
 
 export const getAllEpicsByProject = async (req: Request, res: Response) => {
   try {
-    if (!queryVaildator(req.query, ['projectId'])) {
+    if (!queryValidator(req.query, ['projectId'])) {
       throw new Error('query is not vaild');
     }
     const { projectId } = req.query;
