@@ -1,7 +1,7 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import producer from 'immer';
 
-type Epic = {
+export type Epic = {
   id: number;
   name: string;
   startAt: Date;

@@ -13,14 +13,20 @@ import roadmap from '@public/icons/calendar-icon.svg';
 import board from '@public/icons/board-icon.svg';
 import backlog from '@public/icons/time-icon.svg';
 
-import { getEpicsByProjectname } from '@/lib/api/epic';
-import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
+import { getEpicsByProjectId } from '@/lib/api/epic';
+import { useEpicDispatch, useUserState } from '@/lib/hooks/useContextHooks';
 import { Epic } from '@/contexts/epicContext';
 
 const WorkPage = () => {
-  const tabs = [<Roadmap key={0} />, <Kanban key={1} />, <Backlog key={2} />];
-  const { currentIndex, currentTab, changeTab } = useTabs(0, tabs);
   const epicDispatcher = useEpicDispatch();
+  const user = useUserState();
+
+  const tabs = [
+    <Roadmap key={0} projectId={user?.currentProjectId} />,
+    <Kanban key={1} />,
+    <Backlog key={2} />,
+  ];
+  const { currentIndex, currentTab, changeTab } = useTabs(0, tabs);
 
   const sideBarEntries = [
     <SideBarEntry key={0} icon={roadmap} name={'로드맵'} highlight={currentIndex === 0} />,
@@ -30,8 +36,9 @@ const WorkPage = () => {
 
   React.useEffect(() => {
     (async () => {
-      // TODO: 다른 context들과 합쳐주기
-      const epics = await getEpicsByProjectname(`HyupUp`);
+      if (!user.currentProjectId) return;
+      // TODO: App에 진입시 요청하도록 수정
+      const epics = await getEpicsByProjectId(user.currentProjectId);
       epics.forEach((epic: Epic) => epicDispatcher({ type: `ADD_EPIC`, epic }));
     })();
   }, []);

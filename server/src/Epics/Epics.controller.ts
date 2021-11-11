@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { queryValidator } from '../../lib/utils/requestValidator';
 import { getRepository } from 'typeorm';
 
@@ -27,6 +27,24 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
     if (result === 'query is not vaild') {
       res.status(400).json(result);
     }
+  }
+};
+
+export const findEpicById = async (req: Request, res: Response) => {
+  try {
+    if (!req.params.id) {
+      throw new Error('id should be in request url');
+    }
+    const { id } = req.params;
+    const result = await getRepository(Epics).findOne(id);
+    if (!result) {
+      throw new Error(`cannot find Epic with id ${id}`);
+    }
+    res.status(200).json(result);
+  } catch (e) {
+    res.status(404).json({
+      message: (e as Error).message,
+    });
   }
 };
 

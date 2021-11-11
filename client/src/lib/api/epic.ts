@@ -6,9 +6,9 @@ const instance = axios.create({
   withCredentials: true,
 });
 
-export const getEpicsByProjectname = async (projectName: string) => {
+export const getEpicsByProjectId = async (projectId: number | string) => {
   try {
-    const result: { data: Epic[] } = await instance.get(`?projectName=${projectName}`);
+    const result: { data: Epic[] } = await instance.get(`?projectId=${projectId}`);
     return result.data;
   } catch (e) {
     console.error('failed to fetch epic data');
