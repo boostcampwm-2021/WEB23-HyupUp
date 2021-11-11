@@ -65,8 +65,7 @@ app.use((err: HttpError, req: Request, res: Response) => {
     ...dbConfig,
   };
 
-  const connection = await createConnection(connectionOptions);
-  await connection.synchronize(); // to-do 환경변수로 만들기
+  await createConnection(connectionOptions);
 })();
 
 export default app;
