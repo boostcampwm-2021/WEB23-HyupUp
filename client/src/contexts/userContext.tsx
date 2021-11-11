@@ -1,6 +1,6 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 
-type UserProject = {
+type ProjectType = {
   id: number;
   name: string;
 };
@@ -12,7 +12,7 @@ interface PrivateTask {
 }
 
 interface ProjectTask extends PrivateTask {
-  project: UserProject;
+  project: ProjectType;
 }
 
 export type UserState = {
@@ -23,8 +23,9 @@ export type UserState = {
   url?: string;
   admin?: boolean;
   organization?: number;
-  currentProject?: string;
-  projects?: Array<UserProject>;
+  currentProjectName?: string;
+  currentProjectId?: number;
+  projects?: Array<ProjectType>;
   privateTasks?: Array<PrivateTask>;
   projectTasks?: Array<ProjectTask>;
 };
@@ -39,13 +40,18 @@ type ContextType = {
 const reducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
     case 'GET_USER':
-      return {
-        currentProject:
-          action.payload.projects && action.payload.projects.length !== 0
-            ? action.payload.projects[0].name
-            : '',
-        ...action.payload,
-      };
+      if (action.payload.projects && action.payload.projects.length !== 0) {
+        return {
+          currentProjectId: action.payload.projects[0].id,
+          currentProjectName: action.payload.projects[0].name,
+          ...action.payload,
+        };
+      } else {
+        return {
+          ...action.payload,
+        };
+      }
+
     case 'LOGOUT':
       return {};
     default:
