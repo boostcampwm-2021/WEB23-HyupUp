@@ -1,12 +1,12 @@
 import Users from '../Users/Users.entity';
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
-import { bodyVaildator } from '../../lib/requestVaildator';
+import { bodyValidator } from '../../lib/utils/requestValidator';
 import Todo from './Todo.entity';
 
 export default async function createTodo(req: Request, res: Response) {
   try {
-    if (!bodyVaildator(req.body, ['name', 'userId'])) {
+    if (!bodyValidator(req.body, ['name', 'userId'])) {
       throw new Error('body is not vaild');
     }
     const todoRepository = getRepository(Todo);

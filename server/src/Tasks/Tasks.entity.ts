@@ -22,9 +22,6 @@ export default class Tasks {
   @Column({ name: 'STATUS', type: 'boolean' })
   status!: boolean;
 
-  @CreateDateColumn()
-  createdAt!: Date;
-
   @ManyToOne(() => Projects, (projects) => projects.id)
   @JoinColumn({ name: 'PROJECT_ID' })
   projects!: Projects;
