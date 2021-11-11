@@ -21,7 +21,6 @@ const Styled = {
   Title: styled.div`
     width: 120px;
     margin-right: 60px;
-    font-weight: 600;
 
     overflow-x: hidden;
   `,
