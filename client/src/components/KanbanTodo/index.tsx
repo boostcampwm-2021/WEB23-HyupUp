@@ -1,9 +1,10 @@
 import React from 'react';
 import { useStoryState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
-import { createStory } from '@/lib/api/story';
+import { createStory, getAllStories } from '@/lib/api/story';
 import useInput from '@/lib/hooks/useInput';
 import Styled from '@/components/KanbanTodo/style';
 import Button from '@/lib/design/Button';
+import { Story } from '@/contexts/storyContext';
 
 type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
 interface StoryObject {
@@ -33,7 +34,13 @@ const KanbanTodo = () => {
     createStory(StoryObject.id, StoryObject.status, 1, StoryObject.name, 1);
     // createStory(StoryObject.id, StoryObject.status, userState.currentProjectId as number, '', '');
   };
-
+  React.useEffect(() => {
+    (async () => {
+      //todo user의CurrentProjectId 가 없다면 Early Return, ProjectID 로 조회하게함
+      const stories = await getAllStories(1);
+      stories.forEach((story: Story) => useDispatch({ type: `ADD_STORY`, story }));
+    })();
+  }, []);
   return (
     <Styled.Column>
       <h4>To do</h4>
