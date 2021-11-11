@@ -2,6 +2,7 @@ import { getRepository } from 'typeorm';
 import Users from './Users.entity';
 import Todo from '../Todo/Todo.entity';
 import Tasks from '../Tasks/Tasks.entity';
+import Organizations from '../Organizations/Organizations.entity';
 
 interface ProjectType {
   id: number;
@@ -12,6 +13,8 @@ interface PrivateTask {
   id: number;
   name: string;
   status: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface ProjectTask extends PrivateTask {
@@ -39,6 +42,8 @@ export const getUserTodos = async (email: string): Promise<PrivateTask[]> => {
     id: elem.id,
     name: elem.name,
     status: elem.status,
+    createdAt: elem.createdAt,
+    updatedAt: elem.updatedAt,
   }));
 };
 
@@ -53,6 +58,8 @@ export const getUserTasks = async (email: string): Promise<ProjectTask[]> => {
     name: elem.name,
     status: elem.status,
     project: elem.projects,
+    createdAt: elem.createdAt,
+    updatedAt: elem.updatedAt,
   }));
 };
 
@@ -69,4 +76,16 @@ export const getUserInfo = async (email: string): Promise<Users> => {
 export const isValidatedEmail = (email: string): boolean => {
   if (typeof email !== 'string') return false;
   return true;
+};
+
+export const getUsers = async (id: number): Promise<Users[]> => {
+  const userRepository = getRepository(Users);
+  const organizationRepository = getRepository(Organizations);
+  const organization = await organizationRepository.findOne(id);
+  if (!organization) throw new Error('조직 없음');
+  const users = await userRepository.find({
+    where: { org: organization },
+  });
+  if (!users) throw Error('유저 없음');
+  return users;
 };

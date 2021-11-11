@@ -1,14 +1,33 @@
 import React from 'react';
+import styled from 'styled-components';
 import Header from '@/lib/common/Header';
 import TodoInputBar from '@/components/TodoInputBar';
+import ListView from '@/components/ListViewLayer/ListView';
+import CoworkerStatus from '@/components/CoworkerStatus';
 
 const MainPage = () => {
   return (
     <>
       <Header />
-      <TodoInputBar />
+      <ContentContainer>
+        <div>
+          <TodoInputBar />
+          <ListView />
+        </div>
+        <CoworkerStatus />
+      </ContentContainer>
     </>
   );
 };
 
 export default MainPage;
+
+const ContentContainer = styled.div`
+  width: 1140px;
+  height: 883px;
+
+  margin-top: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
