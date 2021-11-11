@@ -14,13 +14,14 @@ import board from '@public/icons/board-icon.svg';
 import backlog from '@public/icons/time-icon.svg';
 
 import { getEpicsByProjectId } from '@/lib/api/epic';
-import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
+import { useEpicDispatch, useUserState } from '@/lib/hooks/useContextHooks';
 import { Epic } from '@/contexts/epicContext';
 
 const WorkPage = () => {
   const tabs = [<Roadmap key={0} />, <Kanban key={1} />, <Backlog key={2} />];
   const { currentIndex, currentTab, changeTab } = useTabs(0, tabs);
   const epicDispatcher = useEpicDispatch();
+  const user = useUserState();
 
   const sideBarEntries = [
     <SideBarEntry key={0} icon={roadmap} name={'로드맵'} highlight={currentIndex === 0} />,
@@ -30,8 +31,10 @@ const WorkPage = () => {
 
   React.useEffect(() => {
     (async () => {
+      console.log(user);
+      if (!user.currentProjectId) return;
       // TODO: App에 진입시 요청하도록 수정
-      const epics = await getEpicsByProjectId(1);
+      const epics = await getEpicsByProjectId(user.currentProjectId);
       epics.forEach((epic: Epic) => epicDispatcher({ type: `ADD_EPIC`, epic }));
     })();
   }, []);
