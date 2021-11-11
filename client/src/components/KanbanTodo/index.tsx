@@ -9,7 +9,7 @@ const KanbanTodo = () => {
   const useDispatcher = useStoryDispatch();
   const [value, onChange] = useInput();
 
-  const lastStoryId = storyArray ? storyArray[storyArray.length - 1]?.id : 1;
+  const lastStoryId = storyArray.length > 0 ? storyArray[storyArray.length - 1]?.id : 0;
 
   const addStoryHandler = () => {
     useDispatcher({
