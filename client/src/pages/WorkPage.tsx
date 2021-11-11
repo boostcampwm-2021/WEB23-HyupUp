@@ -13,7 +13,7 @@ import roadmap from '@public/icons/calendar-icon.svg';
 import board from '@public/icons/board-icon.svg';
 import backlog from '@public/icons/time-icon.svg';
 
-import { getEpicsByProjectname } from '@/lib/api/epic';
+import { getEpicsByProjectId } from '@/lib/api/epic';
 import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
 import { Epic } from '@/contexts/epicContext';
 
@@ -30,8 +30,8 @@ const WorkPage = () => {
 
   React.useEffect(() => {
     (async () => {
-      // TODO: 다른 context들과 합쳐주기
-      const epics = await getEpicsByProjectname(`HyupUp`);
+      // TODO: App에 진입시 요청하도록 수정
+      const epics = await getEpicsByProjectId(1);
       epics.forEach((epic: Epic) => epicDispatcher({ type: `ADD_EPIC`, epic }));
     })();
   }, []);

@@ -9,7 +9,7 @@ const Roadmap = () => {
   const [inputVisible, setInputVisible] = React.useState(false);
   const epics = useEpicState();
   // TODO: 현재 프로젝트 이름을 context에서 받아오도록 수정
-  const epicsOnProject = epics['HyupUp'];
+  const epicsOnProject = epics;
   const epicDispatcher = useEpicDispatch();
 
   return (
