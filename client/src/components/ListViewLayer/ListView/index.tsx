@@ -3,11 +3,15 @@ import Styled from '@/components/ListViewLayer/ListView/style';
 import { useUserState } from '@/lib/hooks/useContextHooks';
 import ListViewHeader from '@/components/ListViewLayer/ListViewHeader';
 import ListViewItem from '@/components/ListViewLayer/ListViewItem';
-import { PrivateTask, ProjectTask } from '@/contexts/userContext';
+import { PrivateTask, ProjectType } from '@/contexts/userContext';
 
 export type ListState = 'all' | 'private' | 'project' | 'done';
 
-type AllTasks = (PrivateTask | ProjectTask)[];
+export interface TaskProp extends PrivateTask {
+  project?: ProjectType;
+}
+
+type AllTasks = TaskProp[];
 
 const ListView = () => {
   const userState = useUserState();
@@ -28,9 +32,11 @@ const ListView = () => {
   return (
     <Styled.Container>
       <ListViewHeader listState={listState} handleListState={handleListState} />
-      {allTasks.map((task, i) => (
-        <ListViewItem task={task} key={'' + i + task.id} />
-      ))}
+      <Styled.ItemWrapper>
+        {allTasks.map((task, i) => (
+          <ListViewItem task={task} key={'' + i + task.id} />
+        ))}
+      </Styled.ItemWrapper>
     </Styled.Container>
   );
 };

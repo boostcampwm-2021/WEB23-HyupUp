@@ -2,16 +2,17 @@ import styled from 'styled-components';
 
 const Styled = {
   Container: styled.section`
-    display: flex;
-    flex-direction: column;
-
     width: 753px;
-    height: 650px;
+    height: 680px;
 
     padding: 15px 30px;
 
     border-radius: 8px;
     background-color: ${({ theme }) => theme.color.gray100};
+  `,
+  ItemWrapper: styled.ul`
+    height: 550px;
+    margin-top: 90px;
 
     overflow-y: scroll;
     &::-webkit-scrollbar {
