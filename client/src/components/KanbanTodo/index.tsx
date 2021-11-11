@@ -4,8 +4,6 @@ import useInput from '@/lib/hooks/useInput';
 import Styled from '@/components/KanbanTodo/style';
 import Button from '@/lib/design/Button';
 
-type StatusType = 'todo' | 'progress' | 'done';
-
 const KanbanTodo = () => {
   const storyArray = useStoryState();
   const useDispatch = useStoryDispatch();

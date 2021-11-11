@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-type StatusType = 'todo' | 'progress' | 'done';
+type StatusType = 'TODO' | 'IN_PRGORESS' | 'DONE';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/storys',
