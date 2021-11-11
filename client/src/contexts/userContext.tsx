@@ -1,7 +1,7 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import produce from 'immer';
 
-type ProjectType = {
+export type ProjectType = {
   id: number;
   name: string;
 };

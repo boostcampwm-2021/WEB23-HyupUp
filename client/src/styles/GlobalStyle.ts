@@ -52,6 +52,8 @@ const GlobalStyle = createGlobalStyle`
     max-width: 1140px;
     margin: 0 auto;
     
+    color: #30333E;
+    
     ::-webkit-scrollbar {
       width: 6px;
     }
