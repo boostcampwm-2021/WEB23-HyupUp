@@ -1,6 +1,14 @@
 import Stories from '../Stories/Stories.entity';
 import Users from '../Users/Users.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import Projects from '../Projects/Projects.entity';
 
 @Entity({ name: 'TASKS' })
@@ -14,6 +22,9 @@ export default class Tasks {
   @Column({ name: 'STATUS', type: 'boolean' })
   status!: boolean;
 
+  @CreateDateColumn()
+  createdAt!: Date;
+
   @ManyToOne(() => Projects, (projects) => projects.id)
   @JoinColumn({ name: 'PROJECT_ID' })
   projects!: Projects;
@@ -25,4 +36,10 @@ export default class Tasks {
   @ManyToOne(() => Users, (users) => users.id)
   @JoinColumn({ name: 'USER_ID' })
   users!: Users;
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import S from './style';
 
-import Dropdown from '@/lib/design/DropDown';
+import SideBarDropDown from './SideBarDropDown';
 
 interface SideBarProps {
   entries: React.ReactNode[];
@@ -17,11 +17,7 @@ interface SideBarProps {
 const SideBar = ({ entries, changeTab }: SideBarProps) => {
   return (
     <S.Container>
-      <Dropdown
-        Title={'프로젝트 선택'}
-        list={['1', '2', '3']}
-        handleClick={(e) => undefined}
-      ></Dropdown>
+      <SideBarDropDown />
       <S.Entry>
         {entries.map((entry, i) => (
           <S.EntryItem key={i} onClick={() => changeTab(i)}>
