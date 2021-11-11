@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-type StatusType = 'TODO' | 'IN_PRGORESS' | 'DONE';
+enum StatusType {
+  TODO,
+  IN_PRGORESS,
+  DONE,
+}
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/storys',
@@ -8,7 +12,6 @@ const instance = axios.create({
 });
 
 /**
- *
  * @param storyId 스토리 id
  * @param storyName 스토리 이름
  * @param status 스토리의 상태
@@ -18,14 +21,16 @@ const instance = axios.create({
 export const createStory = async (
   storyId: number | string,
   status: StatusType,
+  projectId: number,
   storyName?: string,
   epicId?: number | string,
 ) => {
   try {
     const result: { data: { id: number } } = await instance.post('', {
       storyId: storyId,
-      storyName: storyName,
       status: status,
+      projectId: projectId,
+      storyName: storyName,
       epicId: epicId,
     });
     return result.data;
