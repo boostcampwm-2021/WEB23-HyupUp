@@ -28,3 +28,30 @@ export const getAllStoriesByProject = async (req: Request, res: Response) => {
     }
   }
 };
+
+/**
+ *
+ * @body projectName: string | number 대상 프로젝트의 id값
+ * @body name: string 새롭게 생성하는 에픽의 이름
+ * @response id: number 새롭게 생성된 에픽의 id값
+ */
+export const createStory = async (req: Request, res: Response) => {
+  try {
+    const result = await getRepository(Stories)
+      .createQueryBuilder()
+      .insert()
+      .into(Stories)
+      .values({
+        id: req.body.storyId,
+        name: req.body.storyName,
+        status: req.body.status,
+        epics: req.body.epicId,
+      })
+      .execute();
+    res.status(201).json({ id: result.raw.insertId });
+  } catch (e) {
+    res.status(400).json({
+      message: (e as Error).message,
+    });
+  }
+};
