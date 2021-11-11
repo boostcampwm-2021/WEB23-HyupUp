@@ -1,17 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
+import { queryVaildator } from '../../lib/requestVaildator';
 import { getRepository } from 'typeorm';
 import Stories from './Stories.entity';
 
 export const getAllStoriesByProject = async (req: Request, res: Response) => {
   try {
-    if (!('projectName' in req.query)) {
+    if (!queryVaildator(req.query, ['projectId'])) {
       throw new Error('query is not vaild');
     }
-    const { projectName } = req.query;
+    const { projectId } = req.query;
     const storyRepository = getRepository(Stories);
     const stories = await storyRepository.find({
       relations: ['projects', 'epics'],
-      where: { projects: { name: projectName } },
+      where: { projects: { name: +(projectId as string) } },
     });
     const storiesWithEpicName = stories.map((el) => ({
       id: el.id,

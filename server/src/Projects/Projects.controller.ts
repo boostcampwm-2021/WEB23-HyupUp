@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
+import { queryVaildator } from '../../lib/requestVaildator';
 import { getRepository } from 'typeorm';
 
 import Users from '../Users/Users.entity';
 
 export const getAllProjects = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (!('userId' in req.query && 'organizationId' in req.query)) {
+    if (!queryVaildator(req.query, ['userId', 'organizationId'])) {
       throw new Error('query is not vaild');
     }
     const { userId, organizationId } = req.query;
