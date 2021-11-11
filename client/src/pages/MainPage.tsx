@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Header from '@/lib/common/Header';
 import TodoInputBar from '@/components/TodoInputBar';
+import ListView from '@/components/ListViewLayer/ListView';
 import CoworkerStatus from '@/components/CoworkerStatus';
 
 const MainPage = () => {
@@ -9,7 +10,10 @@ const MainPage = () => {
     <>
       <Header />
       <ContentContainer>
-        <TodoInputBar />
+        <div>
+          <TodoInputBar />
+          <ListView />
+        </div>
         <CoworkerStatus />
       </ContentContainer>
     </>

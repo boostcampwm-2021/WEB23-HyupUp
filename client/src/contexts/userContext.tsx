@@ -9,6 +9,8 @@ interface PrivateTask {
   id: number;
   name: string;
   status: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface ProjectTask extends PrivateTask {

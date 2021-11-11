@@ -2,12 +2,14 @@ import styled from 'styled-components';
 
 const TodoInputBarContainer = styled.div`
   width: 753px;
-  height: 104px;
+  height: 80px;
 
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  margin-top: 60px;
+  margin-bottom: 20px;
 
   border-radius: 8px;
 
