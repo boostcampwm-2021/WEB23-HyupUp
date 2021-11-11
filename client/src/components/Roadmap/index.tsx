@@ -5,7 +5,11 @@ import EpicPlaceholder from '../EpicPlaceholder';
 import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
 import { createEpic } from '@/lib/api/epic';
 
-const Roadmap = () => {
+interface RoadmapProps {
+  projectId?: number;
+}
+
+const Roadmap = ({ projectId }: RoadmapProps) => {
   const [inputVisible, setInputVisible] = React.useState(false);
   const epics = useEpicState();
   // TODO: 현재 프로젝트 이름을 context에서 받아오도록 수정
@@ -23,7 +27,8 @@ const Roadmap = () => {
           <EpicPlaceholder
             visible={inputVisible}
             handleSubmit={async (value) => {
-              const { id } = await createEpic(1, value);
+              if (!projectId) return;
+              const { id } = await createEpic(projectId, value);
               if (id !== -1) {
                 epicDispatcher({
                   type: 'ADD_EPIC',
