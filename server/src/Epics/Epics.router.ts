@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import options from '../../lib/corsConfig';
+import options from '../../lib/config/corsConfig';
 import { getAllEpicsByProject } from './Epics.controller';
 
 const router = express.Router();

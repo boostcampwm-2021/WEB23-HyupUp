@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import options from '../../lib/corsConfig';
+import options from '../../lib/config/corsConfig';
 import { getAllTasksByProject } from './Tasks.controller';
 
 const router = express.Router();
