@@ -30,22 +30,21 @@ const SideBarDropDown = () => {
     }
   };
   useEffect(() => {
-    const projects = getAllProjects(userState.id as number, userState.organization as number);
-    projects
-      .then((el) => {
-        // 아래 로직이 반드시 필요한지 생각해보기
-        userDispatcher({
-          type: 'UPDATE_USER',
-          payload: {
-            projects: el,
-          },
-        });
-        return el.map((project) => project.name);
-      })
-      .then((el) => {
-        listStateHandler(el);
-        el.length ? titleStateHandler(el[0]) : '';
+    (async () => {
+      const projects = await getAllProjects(
+        userState.id as number,
+        userState.organization as number,
+      );
+      userDispatcher({
+        type: 'UPDATE_USER',
+        payload: {
+          projects: projects,
+        },
       });
+      const projectNames = projects.map((project) => project.name);
+      listStateHandler(projectNames);
+      projectNames.length ? titleStateHandler(projectNames[0]) : '';
+    })();
   }, []);
 
   return (
