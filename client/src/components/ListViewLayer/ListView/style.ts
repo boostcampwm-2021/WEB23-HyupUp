@@ -14,6 +14,9 @@ const Styled = {
     background-color: ${({ theme }) => theme.color.gray100};
 
     overflow-y: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   `,
 };
 
