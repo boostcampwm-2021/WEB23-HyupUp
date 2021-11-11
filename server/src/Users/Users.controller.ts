@@ -1,5 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
-import { getUserInfo, getUserTasks, getUserTodos, isValidatedEmail } from './Users.service';
+import { queryValidator } from '../../lib/utils/requestValidator';
+import {
+  getUserInfo,
+  getUsers,
+  getUserTasks,
+  getUserTodos,
+  isValidatedEmail,
+} from './Users.service';
 
 export const handleGet = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -16,5 +23,22 @@ export const handleGet = async (req: Request, res: Response, next: NextFunction)
   } catch (err) {
     res.status(400).json({ message: '유저 정보 없음' });
     next(err);
+  }
+};
+
+export const getUsersByOrganization = async (req: Request, res: Response) => {
+  try {
+    if (!queryValidator(req.query, ['organizationId'])) {
+      throw new Error('query is not valid');
+    }
+    const users = await getUsers(+(req.query.organizationId as string));
+    const nameAndProfiles = users.map((el) => ({
+      name: el.name,
+      imageURL: el.imageURL,
+    }));
+    res.status(200).json(nameAndProfiles);
+  } catch (e) {
+    const err = e as Error;
+    res.status(400).json(err.message);
   }
 };
