@@ -3,10 +3,10 @@ import producer from 'immer';
 
 type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
-type Story = {
+export type Story = {
   id: number;
   name: string;
-  status: StatusEnum;
+  status: StatusType;
   epicName?: string;
   epicId?: number;
 };
