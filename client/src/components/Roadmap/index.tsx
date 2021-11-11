@@ -29,17 +29,16 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
             handleSubmit={async (value) => {
               if (!projectId) return;
               const { id } = await createEpic(projectId, value);
-              if (id !== -1) {
-                epicDispatcher({
-                  type: 'ADD_EPIC',
-                  epic: {
-                    id: id,
-                    name: value,
-                    startAt: new Date(),
-                    endAt: new Date(),
-                  },
-                });
-              }
+              if (id === -1) return;
+              epicDispatcher({
+                type: 'ADD_EPIC',
+                epic: {
+                  id: id,
+                  name: value,
+                  startAt: new Date(),
+                  endAt: new Date(),
+                },
+              });
               setInputVisible(false);
             }}
           ></EpicPlaceholder>
