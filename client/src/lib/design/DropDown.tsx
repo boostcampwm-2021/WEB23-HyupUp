@@ -114,12 +114,10 @@ const DropDown = (props: dropDownProps) => {
               {el}
             </Item>
           ) : (
-            <>
-              <Item key={i} theme={fontTheme}>
-                {el}
-              </Item>
+            <div key={i}>
+              <Item theme={fontTheme}>{el}</Item>
               <Line />
-            </>
+            </div>
           ),
         )}
       </Box>

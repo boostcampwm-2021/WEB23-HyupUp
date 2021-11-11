@@ -30,7 +30,10 @@ export type UserState = {
   projectTasks?: Array<ProjectTask>;
 };
 
-type UserAction = { type: 'GET_USER'; payload: UserState } | { type: 'LOGOUT' };
+type UserAction =
+  | { type: 'GET_USER'; payload: UserState }
+  | { type: 'LOGOUT' }
+  | { type: 'UPDATE_USER'; payload: UserState };
 
 type ContextType = {
   userState: UserState | null;
@@ -54,6 +57,8 @@ const reducer = (state: UserState, action: UserAction): UserState => {
 
     case 'LOGOUT':
       return {};
+    case 'UPDATE_USER':
+      return { ...state, ...action.payload };
     default:
       return {
         ...state,

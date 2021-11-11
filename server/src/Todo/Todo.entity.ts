@@ -6,6 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'TODO' })
@@ -19,10 +20,13 @@ export default class Todo {
   @Column({ name: 'STATUS', type: 'boolean' })
   status!: boolean;
 
-  @CreateDateColumn()
-  createdAt!: Date;
-
   @ManyToOne(() => Users, (users) => users.id)
   @JoinColumn({ name: 'USER_ID' })
   users!: Users;
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updatedAt!: Date;
 }
