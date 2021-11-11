@@ -1,18 +1,19 @@
 import { Request, Response, NextFunction } from 'express';
+import { queryVaildator } from '../../lib/requestVaildator';
 import { getRepository } from 'typeorm';
 
 import Epics from './Epics.entity';
 
 export const getAllEpicsByProject = async (req: Request, res: Response) => {
   try {
-    if (!Object.keys(req.query).includes('projectName')) {
+    if (!queryVaildator(req.query, ['projectId'])) {
       throw new Error('query is not vaild');
     }
-    const { projectName } = req.query;
+    const { projectId } = req.query;
     const epicRepository = getRepository(Epics);
     const epics = await epicRepository.find({
       relations: ['projects'],
-      where: { projects: { name: projectName } },
+      where: { projects: { id: +(projectId as string) } },
     });
     const result = epics.map((el) => ({
       id: el.id,
