@@ -8,7 +8,6 @@ const TodoInputBarContainer = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  margin-top: 60px;
   margin-bottom: 20px;
 
   border-radius: 8px;
