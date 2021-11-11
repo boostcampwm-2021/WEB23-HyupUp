@@ -12,6 +12,8 @@ interface PrivateTask {
   id: number;
   name: string;
   status: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface ProjectTask extends PrivateTask {
@@ -39,6 +41,8 @@ export const getUserTodos = async (email: string): Promise<PrivateTask[]> => {
     id: elem.id,
     name: elem.name,
     status: elem.status,
+    createdAt: elem.createdAt,
+    updatedAt: elem.updatedAt,
   }));
 };
 
@@ -53,6 +57,8 @@ export const getUserTasks = async (email: string): Promise<ProjectTask[]> => {
     name: elem.name,
     status: elem.status,
     project: elem.projects,
+    createdAt: elem.createdAt,
+    updatedAt: elem.updatedAt,
   }));
 };
 
