@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { queryValidator } from '../../lib/requestValidator';
+import { queryValidator } from '../../lib/utils/requestValidator';
 import { getRepository } from 'typeorm';
 
 import Epics from './Epics.entity';
