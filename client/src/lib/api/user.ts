@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { UserState } from '@/contexts/userContext';
 
+export interface UserProfile {
+  name: string;
+  imageURL: string;
+}
+
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/users',
   withCredentials: true,
@@ -14,5 +19,17 @@ export const getUser = async (email: string) => {
   } catch (e) {
     console.error('유저 정보 요청 실패');
     throw e;
+  }
+};
+
+export const getUsersByOrganization = async (id: number): Promise<Array<UserProfile>> => {
+  try {
+    const result: { data: Array<UserProfile> } = await instance.get(
+      `/organization?organizationId=${id}`,
+    );
+    return result.data;
+  } catch (e) {
+    console.error('유저 정보 요청 실패');
+    return [];
   }
 };
