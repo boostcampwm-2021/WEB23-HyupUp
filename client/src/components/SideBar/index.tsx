@@ -20,7 +20,7 @@ const SideBar = ({ entries, changeTab }: SideBarProps) => {
       <SideBarDropDown />
       <S.Entry>
         {entries.map((entry, i) => (
-          <S.EntryItem key={entry?.toString()} onClick={() => changeTab(i)}>
+          <S.EntryItem key={i} onClick={() => changeTab(i)}>
             {entry}
           </S.EntryItem>
         ))}
