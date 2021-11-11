@@ -8,18 +8,21 @@ export const getAllStoriesByProject = async (req: Request, res: Response) => {
     if (!queryValidator(req.query, ['projectId'])) {
       throw new Error('query is not vaild');
     }
+
     const { projectId } = req.query;
     const storyRepository = getRepository(Stories);
     const stories = await storyRepository.find({
       relations: ['projects', 'epics'],
-      where: { projects: { name: +(projectId as string) } },
+      where: { projects: { id: +(projectId as string) } },
     });
+
     const storiesWithEpicName = stories.map((el) => ({
       id: el.id,
       name: el.name,
       status: el.status,
       epic: el.epics.name,
     }));
+
     res.status(200).json(storiesWithEpicName);
   } catch (e) {
     console.log(e);
