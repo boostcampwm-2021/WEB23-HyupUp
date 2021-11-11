@@ -10,7 +10,7 @@ const ListView = () => {
   const privateTasks = state.privateTasks;
   const projectTasks = state.projectTasks;
   const allTasks = [...privateTasks!, ...projectTasks!];
-  console.log(allTasks);
+
   return (
     <Styled.Container>
       <ListViewHeader />
