@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Story } from '@/contexts/storyContext';
 
 type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
@@ -7,10 +8,20 @@ const instance = axios.create({
   withCredentials: true,
 });
 
+export const getAllStories = async (projectId: number | string) => {
+  try {
+    const result: { data: Story[] } = await instance.get(`?projectId=${projectId}`);
+    return result.data;
+  } catch (e) {
+    console.error('[FAIL] 스토리 조회 실패');
+    throw e;
+  }
+};
 /**
  * @param storyId 스토리 id
- * @param storyName 스토리 이름
  * @param status 스토리의 상태
+ * @param projectId 프로젝트 id
+ * @param storyName 스토리 이름
  * @param epicId 에픽 id
  * @returns id 를 프로퍼티로 가지는 객체, 스토리 생성 성공시 생성된 스토리의 id, 실패시 -1값 { id: number }
  */
@@ -21,7 +32,6 @@ export const createStory = async (
   storyName?: string,
   epicId?: number | string,
 ) => {
-  console.log(storyId, status, projectId, storyName, epicId);
   try {
     const result: { data: { id: number } } = await instance.post('', {
       storyId: storyId,
