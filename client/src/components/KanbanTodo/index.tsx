@@ -6,11 +6,7 @@ import useInput from '@/lib/hooks/useInput';
 import Styled from '@/components/KanbanTodo/style';
 import Button from '@/lib/design/Button';
 
-enum StatusType {
-  TODO,
-  IN_PRGORESS,
-  DONE,
-}
+type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
 interface StoryObject {
   id: number;
   name: string;

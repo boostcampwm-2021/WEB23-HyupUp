@@ -1,13 +1,9 @@
 import axios from 'axios';
 
-enum StatusType {
-  TODO,
-  IN_PRGORESS,
-  DONE,
-}
+type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
 const instance = axios.create({
-  baseURL: process.env.SERVER_URL + '/api/storys',
+  baseURL: process.env.SERVER_URL + '/api/stories',
   withCredentials: true,
 });
 
@@ -25,6 +21,7 @@ export const createStory = async (
   storyName?: string,
   epicId?: number | string,
 ) => {
+  console.log(storyId, status, projectId, storyName, epicId);
   try {
     const result: { data: { id: number } } = await instance.post('', {
       storyId: storyId,

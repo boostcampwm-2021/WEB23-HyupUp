@@ -1,16 +1,12 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import producer from 'immer';
 
-enum StatusType {
-  TODO,
-  IN_PRGORESS,
-  DONE,
-}
+type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
 type Story = {
   id: number;
   name: string;
-  status: StatusType;
+  status: StatusEnum;
   epicName?: string;
   epicId?: number;
 };
