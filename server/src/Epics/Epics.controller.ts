@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { queryValidator } from '../../lib/utils/requestValidator';
 import { getRepository } from 'typeorm';
 
