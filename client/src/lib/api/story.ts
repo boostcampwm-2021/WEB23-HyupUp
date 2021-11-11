@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+type StatusType = 'todo' | 'progress' | 'done';
+
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/storys',
   withCredentials: true,
@@ -15,7 +17,7 @@ const instance = axios.create({
  */
 export const createStory = async (
   storyId: number | string,
-  status: string,
+  status: StatusType,
   storyName?: string,
   epicId?: number | string,
 ) => {
