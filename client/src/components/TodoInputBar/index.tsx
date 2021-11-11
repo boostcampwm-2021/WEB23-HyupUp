@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import React, { ChangeEvent, useRef, useState } from 'react';
 import * as S from './style';
 import Button from '@/lib/design/Button';
@@ -30,13 +29,9 @@ const TodoInputBar = () => {
   return (
     <S.TodoInputBarContainer>
       <S.InputBox ref={todoInput} placeholder="할 일을 입력하세요." onChange={inputHandler} />
-      <Button
-        category="cancel"
-        size="small"
-        children={'할 일 추가하기'}
-        onClick={clickHandler}
-        disabled={buttonDisabled}
-      />
+      <Button category="cancel" size="small" onClick={clickHandler} disabled={buttonDisabled}>
+        {'할 일 추가하기'}
+      </Button>
     </S.TodoInputBarContainer>
   );
 };
