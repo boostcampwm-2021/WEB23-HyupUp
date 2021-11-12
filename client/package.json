@@ -16,7 +16,8 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --progress",
-    "build": "webpack --mode=production"
+    "build": "webpack --mode=production",
+    "storybook": "start-storybook"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
@@ -24,6 +25,7 @@
     "@babel/preset-env": "^7.16.0",
     "@babel/preset-react": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
+    "@storybook/addon-docs": "^6.3.12",
     "@storybook/react": "^6.3.12",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.15.0",
