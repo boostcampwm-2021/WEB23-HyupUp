@@ -9,9 +9,9 @@ import Backlog from '@/components/Backlog';
 import useTabs from '@/lib/hooks/useTabs';
 import Header from '@/lib/common/Header';
 
-import roadmap from '@public/icons/calendar-icon.svg';
-import board from '@public/icons/board-icon.svg';
-import backlog from '@public/icons/time-icon.svg';
+import roadmap from 'public/icons/calendar-icon.svg';
+import board from 'public/icons/board-icon.svg';
+import backlog from 'public/icons/time-icon.svg';
 
 import { getEpicsByProjectId } from '@/lib/api/epic';
 import { useEpicDispatch, useUserState } from '@/lib/hooks/useContextHooks';

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import arrow from '@public/arrow_drop_down.png';
+import arrow from 'public/arrow_drop_down.png';
 import theme from '@/styles/theme';
 import { useState } from 'react';
 

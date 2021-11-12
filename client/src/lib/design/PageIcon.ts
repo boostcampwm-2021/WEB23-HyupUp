@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import home from '@public/icons/home-icon.svg';
-import work from '@public/icons/work-icon.svg';
-import setting from '@public/icons/setting-icon.svg';
-import homeActive from '@public/icons/home-active-icon.svg';
-import workActive from '@public/icons/work-active-icon.svg';
-import settingActive from '@public/icons/setting-active-icon.svg';
+import home from 'public/icons/home-icon.svg';
+import work from 'public/icons/work-icon.svg';
+import setting from 'public/icons/setting-icon.svg';
+import homeActive from 'public/icons/home-active-icon.svg';
+import workActive from 'public/icons/work-active-icon.svg';
+import settingActive from 'public/icons/setting-active-icon.svg';
 
 interface PageProps {
   name: 'home' | 'work' | 'setting';
