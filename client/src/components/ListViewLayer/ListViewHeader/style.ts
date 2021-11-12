@@ -6,6 +6,7 @@ interface StateButtonProps {
 
 const Styled = {
   Container: styled.header`
+    position: absolute;
     display: flex;
     align-items: center;
 

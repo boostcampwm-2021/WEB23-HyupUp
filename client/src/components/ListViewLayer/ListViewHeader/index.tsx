@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Styled from '@/components/ListViewLayer/ListViewHeader/style';
+import { ListState } from '../ListView';
 
-type ListState = 'all' | 'private' | 'project' | 'done';
+type ListProps = {
+  listState: ListState;
+  handleListState: (event: React.MouseEvent) => void;
+};
 
-const ListViewHeader = () => {
-  const [listState, setListState] = useState<ListState>('all');
-
-  const handleListState = (event: React.MouseEvent) => {
-    const target = event.target as HTMLElement;
-    if (!target.id) return;
-    setListState(target.id as ListState);
-  };
+const ListViewHeader = ({ listState, handleListState }: ListProps) => {
   return (
     <Styled.Container onClick={handleListState}>
       <Styled.StateButton id="all" active={'all' === listState}>

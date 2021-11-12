@@ -24,6 +24,8 @@ export default async function createTodo(req: Request, res: Response) {
       id: todo.id,
       status: todo.status,
       name: todo.name,
+      updatedAt: todo.updatedAt,
+      createdAt: todo.createdAt,
     });
   } catch (e) {
     const result = (e as Error).message;

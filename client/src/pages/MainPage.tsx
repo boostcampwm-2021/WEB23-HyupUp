@@ -23,9 +23,6 @@ const MainPage = () => {
 export default MainPage;
 
 const ContentContainer = styled.div`
-  width: 1140px;
-  height: 883px;
-
   margin-top: 60px;
   display: flex;
   flex-direction: row;

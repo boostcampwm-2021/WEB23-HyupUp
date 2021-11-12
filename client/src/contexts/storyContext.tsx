@@ -1,10 +1,12 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import producer from 'immer';
 
-type Story = {
+type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
+
+export type Story = {
   id: number;
   name: string;
-  status: string;
+  status: StatusType;
   epicName?: string;
   epicId?: number;
 };
@@ -12,6 +14,7 @@ type Story = {
 type CreateStory = {
   id: number;
   name: string;
+  status: StatusType;
 };
 
 type UpdateStory = {
