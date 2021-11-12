@@ -20,8 +20,7 @@ const StyledButton = styled.button<LayoutProps>`
   border-radius: 8px;
 
   padding: ${(props) => (props.size === 'large' ? '13px 50px' : '10px 15px')};
-  font: ${({ theme }) => theme.font.bold_regular};
-  font-size: ${(props) =>
+  font: ${(props) =>
     props.size === 'large' ? props.theme.font.bold_regular : props.theme.font.bold_small};
 
   background-color: ${(props) =>
