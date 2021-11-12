@@ -19,4 +19,4 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           cd /home/guest/WEB23-HyupUp
-          bash depoly.sh
+          bash deploy.sh
