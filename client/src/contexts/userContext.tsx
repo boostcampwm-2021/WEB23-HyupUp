@@ -1,11 +1,12 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
+import produce from 'immer';
 
-type ProjectType = {
+export type ProjectType = {
   id: number;
   name: string;
 };
 
-interface PrivateTask {
+export interface PrivateTask {
   id: number;
   name: string;
   status: boolean;
@@ -13,7 +14,7 @@ interface PrivateTask {
   updatedAt: string;
 }
 
-interface ProjectTask extends PrivateTask {
+export interface ProjectTask extends PrivateTask {
   project: ProjectType;
 }
 
@@ -22,7 +23,7 @@ export type UserState = {
   name?: string;
   job?: string;
   email?: string;
-  url?: string;
+  imageURL?: string;
   admin?: boolean;
   organization?: number;
   currentProjectName?: string;
@@ -35,7 +36,8 @@ export type UserState = {
 type UserAction =
   | { type: 'GET_USER'; payload: UserState }
   | { type: 'LOGOUT' }
-  | { type: 'UPDATE_USER'; payload: UserState };
+  | { type: 'UPDATE_USER'; payload: UserState }
+  | { type: 'ADD_PRIVATE_TASK'; payload: PrivateTask };
 
 type ContextType = {
   userState: UserState | null;
@@ -45,7 +47,7 @@ type ContextType = {
 const reducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
     case 'GET_USER':
-      if (action.payload.projects && action.payload.projects.length !== 0) {
+      if (action.payload.projects?.length) {
         return {
           currentProjectId: action.payload.projects[0].id,
           currentProjectName: action.payload.projects[0].name,
@@ -59,8 +61,14 @@ const reducer = (state: UserState, action: UserAction): UserState => {
 
     case 'LOGOUT':
       return {};
+
     case 'UPDATE_USER':
       return { ...state, ...action.payload };
+
+    case 'ADD_PRIVATE_TASK':
+      return produce(state, (draft) => {
+        draft.privateTasks?.unshift(action.payload);
+      });
     default:
       return {
         ...state,

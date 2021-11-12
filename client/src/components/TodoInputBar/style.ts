@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const TodoInputBarContainer = styled.div`
+const TodoInputBarContainer = styled.form`
   width: 753px;
   height: 80px;
 
@@ -8,7 +8,6 @@ const TodoInputBarContainer = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  margin-top: 60px;
   margin-bottom: 20px;
 
   border-radius: 8px;
