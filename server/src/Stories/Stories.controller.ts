@@ -8,20 +8,24 @@ export const getAllStoriesByProject = async (req: Request, res: Response) => {
     if (!queryValidator(req.query, ['projectId'])) {
       throw new Error('query is not vaild');
     }
+
     const { projectId } = req.query;
     const storyRepository = getRepository(Stories);
     const stories = await storyRepository.find({
       relations: ['projects', 'epics'],
-      where: { projects: { name: +(projectId as string) } },
+      where: { projects: { id: +(projectId as string) } },
     });
+
     const storiesWithEpicName = stories.map((el) => ({
       id: el.id,
       name: el.name,
       status: el.status,
       epic: el.epics.name,
     }));
+
     res.status(200).json(storiesWithEpicName);
   } catch (e) {
+    console.log(e);
     const result = (e as Error).message;
     if (result === 'query is not vaild') {
       res.status(400).json(result);
@@ -35,7 +39,7 @@ export const getAllStoriesByProject = async (req: Request, res: Response) => {
  * @body name: string 새롭게 생성하는 에픽의 이름
  * @response id: number 새롭게 생성된 에픽의 id값
  */
-export const createStory = async (req: Request, res: Response) => {
+export const postStory = async (req: Request, res: Response) => {
   try {
     const result = await getRepository(Stories)
       .createQueryBuilder()
@@ -44,8 +48,8 @@ export const createStory = async (req: Request, res: Response) => {
       .values({
         id: req.body.storyId,
         name: req.body.storyName,
-        status: req.body.status,
-        epics: req.body.epicId,
+        projects: () => req.body.projectId,
+        epics: () => req.body.epicId,
       })
       .execute();
     res.status(201).json({ id: result.raw.insertId });
