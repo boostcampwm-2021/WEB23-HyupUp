@@ -23,20 +23,27 @@ const color = {
 };
 
 const font = {
-  body_regular: "normal 300 16px/auto 'Pretendard'",
-  body_medium: "normal 300 18px/auto 'Pretendard'",
-  body_large: "normal 300 22px/auto 'Pretendard'",
-  bold_regular: "normal 600 16px/auto 'Pretendard'",
-  bold_medium: "normal 600 18px/auto 'Pretendard'",
-  bold_large: "normal 600 22px/auto 'Pretendard'",
-  display_small: "normal 600 24px/auto 'Pretendard'",
-  display_medium: "normal 600 30px/auto 'Pretendard'",
-  display_large: "normal 600 48px/auto 'Pretendard'",
+  body_small: "normal 300 12px 'Pretendard'",
+  body_regular: "normal 300 16px 'Pretendard'",
+  body_medium: "normal 300 18px 'Pretendard'",
+  body_large: "normal 300 22px 'Pretendard'",
+  bold_small: "normal 600 12px 'Pretendard'",
+  bold_regular: "normal 600 16px 'Pretendard'",
+  bold_medium: "normal 600 18px 'Pretendard'",
+  bold_large: "normal 600 22px 'Pretendard'",
+  display_small: "normal 600 24px 'Pretendard'",
+  display_medium: "normal 600 30px 'Pretendard'",
+  display_large: "normal 600 48px 'Pretendard'",
+};
+
+const shadow = {
+  default: `0px 4px 16px 4px rgba(0, 0, 0, 20%)`,
 };
 
 const theme = {
   color,
   font,
+  shadow,
 };
 
 export default theme;

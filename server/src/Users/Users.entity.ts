@@ -1,6 +1,17 @@
 import Organizations from '../Organizations/Organizations.entity';
 import Tasks from '../Tasks/Tasks.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import Projects from '../Projects/Projects.entity';
+import Todo from '../Todo/Todo.entity';
 
 @Entity({ name: 'USERS' })
 export default class Users {
@@ -34,4 +45,14 @@ export default class Users {
 
   @OneToMany(() => Tasks, (tasks) => tasks.id)
   tasks!: Tasks[];
+  @ManyToMany(() => Projects)
+  @JoinTable({
+    name: 'USERS_PROJECTS',
+    inverseJoinColumn: { name: 'PROJECT_ID', referencedColumnName: 'id' },
+    joinColumn: { name: 'USER_ID', referencedColumnName: 'id' },
+  })
+  projects!: Projects[];
+
+  @OneToMany(() => Todo, (todo) => todo.id)
+  todo!: Todo[];
 }

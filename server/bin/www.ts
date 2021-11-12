@@ -1,6 +1,7 @@
 import app from '../app';
 import http from 'http';
 import debug from 'debug';
+import io from '../socket';
 
 const onError = (err: NodeJS.ErrnoException) => {
   if (err.syscall !== 'listen') {
@@ -37,3 +38,4 @@ const server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+io.attach(server);

@@ -52,6 +52,8 @@ const GlobalStyle = createGlobalStyle`
     max-width: 1140px;
     margin: 0 auto;
     
+    color: #30333E;
+    
     ::-webkit-scrollbar {
       width: 6px;
     }
@@ -67,7 +69,6 @@ const GlobalStyle = createGlobalStyle`
   };
 
   a { color: #fff; text-decoration: none; outline: none }
-  a:hover, a:active { text-decoration: none; color:#fff; background-color: transparent; }
   button{ outline: none; background: none; border: none; cursor: pointer; };
   input { border: none; outline: none; }
 `;

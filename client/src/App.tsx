@@ -1,11 +1,18 @@
 import React from 'react';
 import GlobalStyle from './styles/GlobalStyle';
+import { BrowserRouter } from 'react-router-dom';
+import Router from '@/Router';
+import ContextProvider from './contexts';
 
 function App() {
   return (
     <>
-      <GlobalStyle />
-      <div>Hello World</div>
+      <ContextProvider>
+        <BrowserRouter>
+          <GlobalStyle />
+          <Router />
+        </BrowserRouter>
+      </ContextProvider>
     </>
   );
 }
