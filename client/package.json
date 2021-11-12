@@ -17,7 +17,7 @@
   "scripts": {
     "dev": "webpack-dev-server --progress",
     "build": "webpack --mode=production",
-    "storybook": "start-storybook"
+    "storybook": "start-storybook -s ./public -p 9001"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
