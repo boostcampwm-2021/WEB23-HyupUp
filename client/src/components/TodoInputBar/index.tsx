@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useRef, useState } from 'react';
 import * as S from './style';
-import Button from '@/lib/design/Button';
+import Button from '@/lib/design';
 import { useUserDispatch, useUserState } from '@/lib/hooks/useContextHooks';
 import { createTodo } from '@/lib/api/todo';
 
