@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/react';
 import React from 'react';
-import Button from '../lib/design/Button';
+import Button from '@/lib/design/Button';
 
 type Category = 'default' | 'confirm' | 'cancel';
 type Size = 'small' | 'large';
