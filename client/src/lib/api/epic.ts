@@ -43,10 +43,12 @@ export const createEpic = async (projectId: number | string, epicName: string) =
 export const getEpicById = async (epicId: number) => {
   try {
     const result: {
-      data: { id: number };
-    } = await instance.post(`/${epicId}`);
+      code: number;
+      data: { id: number; name: string; startAt: Date; endAt: Date };
+    } = await instance.get(`/${epicId}`);
+    if (result.code / 100 >= 4) throw new Error('에픽 정보 조회에 실패하였습니다.');
     return result.data;
   } catch (e) {
-    toast.error('에픽 정보 조회에 실패하였습니다.');
+    toast.error((e as Error).message);
   }
 };
