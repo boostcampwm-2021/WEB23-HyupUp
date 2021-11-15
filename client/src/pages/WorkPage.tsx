@@ -5,7 +5,7 @@ import SideBar from '@/layers/SideBar';
 import SideBarEntry from '@/components/SideBarEntry';
 import Roadmap from '@/layers/Roadmap';
 import Kanban from '@/layers/Kanban';
-import Backlog from '@/components/Backlog';
+import Backlog from '@/layers/Backlog';
 import useTabs from '@/lib/hooks/useTabs';
 import Header from '@/layers/Header';
 
