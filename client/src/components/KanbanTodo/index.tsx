@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useStoryState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
-import { createStory } from '@/lib/api/story';
+import { createStory, updateStoryWithName } from '@/lib/api/story';
 import useInput from '@/lib/hooks/useInput';
 import Styled from '@/components/KanbanTodo/style';
 import Button from '@/lib/design/Button';
@@ -29,6 +29,7 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
 
   const useUpdateStory = () => {
     useDispatch({ type: 'UPDATE_STORY', story: { ...StoryObject, id: key, name: value } });
+    updateStoryWithName({ ...StoryObject, id: key, name: value });
   };
 
   return (
