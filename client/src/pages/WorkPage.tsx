@@ -16,7 +16,6 @@ import backlog from '@public/icons/time-icon.svg';
 import { getEpicsByProjectId } from '@/lib/api/epic';
 import { getAllStories } from '@/lib/api/story';
 import { useEpicDispatch, useStoryDispatch, useUserState } from '@/lib/hooks/useContextHooks';
-import { EpicType } from '@/types/epic';
 import useSocketReceive from '@/lib/hooks/useSocketReceive';
 import { toast } from 'react-toastify';
 
