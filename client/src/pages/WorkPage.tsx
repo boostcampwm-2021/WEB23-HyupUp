@@ -15,7 +15,7 @@ import backlog from '@public/icons/time-icon.svg';
 
 import { getEpicsByProjectId } from '@/lib/api/epic';
 import { useEpicDispatch, useUserState } from '@/lib/hooks/useContextHooks';
-import { EpicType } from '@/contexts/epicContext';
+import { EpicType } from '@/types/epic';
 
 const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();

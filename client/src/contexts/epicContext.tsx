@@ -1,12 +1,6 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import producer from 'immer';
-
-export type EpicType = {
-  id: number;
-  name: string;
-  startAt: Date;
-  endAt: Date;
-};
+import { EpicType } from '@/types/epic';
 
 type EpicState = Array<EpicType>;
 

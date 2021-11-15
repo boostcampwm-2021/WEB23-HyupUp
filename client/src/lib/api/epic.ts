@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { EpicType } from '@/contexts/epicContext';
+import { EpicType } from '@/types/epic';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/epics',
