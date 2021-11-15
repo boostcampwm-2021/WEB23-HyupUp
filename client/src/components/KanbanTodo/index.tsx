@@ -25,7 +25,7 @@ const KanbanTodo = () => {
     status: 'TODO',
   };
 
-  const addStory = () => {
+  const useAddStory = () => {
     useDispatch({ type: 'ADD_STORY', story: StoryObject });
 
     //todo 현재 CurrentProjectId 와 EPIC ID 를 하드코딩함
@@ -44,7 +44,7 @@ const KanbanTodo = () => {
           </Styled.KanBanItem>
         );
       })}
-      <Button size={'large'} category={'cancel'} onClick={addStory}>
+      <Button size={'large'} category={'cancel'} onClick={useAddStory}>
         Add Todo
       </Button>
     </Styled.Column>
