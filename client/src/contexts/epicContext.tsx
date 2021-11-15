@@ -4,15 +4,15 @@ import producer from 'immer';
 export type Epic = {
   id: number;
   name: string;
-  startAt: Date;
-  endAt: Date;
+  startAt: string;
+  endAt: string;
 };
 
 type UpdateEpic = {
   id: number;
   name?: string;
-  startAt?: Date;
-  endAt?: Date;
+  startAt?: string;
+  endAt?: string;
 };
 
 type State = Array<Epic>;
@@ -21,6 +21,7 @@ type Action =
   | { type: 'ADD_EPIC'; epic: Epic }
   | { type: 'REMOVE_EPIC'; id: number }
   | { type: 'UPDATE_EPIC'; epic: UpdateEpic }
+  | { type: 'LOAD_EPIC'; epics: Epic[] }
   | { type: 'DROP_EPIC' };
 
 type EpicDispatch = Dispatch<Action>;
@@ -50,6 +51,8 @@ function reducer(state: State, action: Action): State {
           };
         });
       });
+    case 'LOAD_EPIC':
+      return [...action.epics];
     case 'DROP_EPIC':
       return [];
     default:
