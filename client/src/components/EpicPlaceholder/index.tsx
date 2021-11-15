@@ -9,9 +9,9 @@ interface EpicPlaceholderProps {
 const EpicPlaceholder = ({ visible, handleSubmit }: EpicPlaceholderProps) => {
   const [value, setValue] = React.useState<string>('');
 
-  const handleEnter = (ev: React.KeyboardEvent) => {
+  const handleEnter = async (ev: React.KeyboardEvent) => {
     if (value === '' || ev.key !== 'Enter') return;
-    handleSubmit(value);
+    await handleSubmit(value);
     setValue('');
   };
 
