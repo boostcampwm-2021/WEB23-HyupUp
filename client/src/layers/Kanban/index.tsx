@@ -1,5 +1,5 @@
 import React from 'react';
-import Styled from '@/components/Kanban/style';
+import Styled from '@/layers/Kanban/style';
 import KanbanTodo from '@/components/KanbanTodo';
 
 const Kanban = () => {

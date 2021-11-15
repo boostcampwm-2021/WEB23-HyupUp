@@ -1,7 +1,7 @@
 import React from 'react';
-import Profile from '@/lib/common/Profile';
+import Profile from '@/components/Profile';
 import { PageIcon } from '@/lib/design/PageIcon';
-import { Styled } from '@/lib/common/Header/style';
+import { Styled } from '@/layers/Header/style';
 
 const Header = () => {
   return (

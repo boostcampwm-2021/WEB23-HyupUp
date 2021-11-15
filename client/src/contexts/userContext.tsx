@@ -1,22 +1,7 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import produce from 'immer';
-
-export type ProjectType = {
-  id: number;
-  name: string;
-};
-
-export interface PrivateTask {
-  id: number;
-  name: string;
-  status: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ProjectTask extends PrivateTask {
-  project: ProjectType;
-}
+import { ProjectType } from '@/types/project';
+import { PrivateTask, ProjectTask } from '@/types/task';
 
 export type UserState = {
   id?: number;

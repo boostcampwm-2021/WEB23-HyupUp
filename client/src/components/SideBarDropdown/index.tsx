@@ -1,16 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
-
 import DropDown from '@/lib/design/DropDown';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getAllProjects } from '@/lib/api/project';
 import { useUserDispatch, useUserState } from '@/lib/hooks/useContextHooks';
-const Title = styled.p`
-  margin: 5px;
-
-  font: ${({ theme }) => theme.font.body_regular};
-`;
+import S from '@/components/SideBarDropdown/style';
 
 const SideBarDropDown = () => {
   const userState = useUserState();
@@ -50,7 +44,7 @@ const SideBarDropDown = () => {
   return (
     <div>
       <DropDown
-        Title={<Title>{titleState}</Title>}
+        Title={<S.Title>{titleState}</S.Title>}
         list={listState}
         handleClick={itemClickHandler}
       />

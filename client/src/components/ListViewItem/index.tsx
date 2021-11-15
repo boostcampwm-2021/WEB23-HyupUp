@@ -1,6 +1,6 @@
 import React from 'react';
-import Styled from '@/components/ListViewLayer/ListViewItem/style';
-import { TaskProp } from '@/components/ListViewLayer/ListView';
+import Styled from '@/components/ListViewItem/style';
+import { TaskProp } from '@/layers/ListView';
 import Button from '@/lib/design/Button';
 
 const ListViewItem = ({ task }: { task: TaskProp }) => {

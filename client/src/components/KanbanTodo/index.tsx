@@ -4,9 +4,8 @@ import { createStory, getAllStories } from '@/lib/api/story';
 import useInput from '@/lib/hooks/useInput';
 import Styled from '@/components/KanbanTodo/style';
 import Button from '@/lib/design/Button';
-import { Story } from '@/contexts/storyContext';
+import { StoryType, StatusType } from '@/types/story';
 
-type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
 interface StoryObject {
   id: number;
   name: string;
@@ -34,6 +33,7 @@ const KanbanTodo = () => {
     createStory(StoryObject.id, StoryObject.status, 1, StoryObject.name, 1);
     // createStory(StoryObject.id, StoryObject.status, userState.currentProjectId as number, '', '');
   };
+
   return (
     <Styled.Column>
       <h4>To do</h4>

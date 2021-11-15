@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Button from '@/lib/design/Button';
 import S from './style';
-import EpicPlaceholder from '../EpicPlaceholder';
+import EpicPlaceholder from '../../components/EpicPlaceholder';
 import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
 import { createEpic } from '@/lib/api/epic';
 

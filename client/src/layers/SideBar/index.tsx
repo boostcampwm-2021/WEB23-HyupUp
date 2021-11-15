@@ -1,7 +1,6 @@
 import * as React from 'react';
-import S from './style';
-
-import SideBarDropDown from './SideBarDropDown';
+import S from '@/layers/SideBar/style';
+import SideBarDropDown from '@/components/SideBarDropdown';
 
 interface SideBarProps {
   entries: React.ReactNode[];
