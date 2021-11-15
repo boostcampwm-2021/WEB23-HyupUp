@@ -1,6 +1,6 @@
 import React from 'react';
-import Styled from '@/components/ListViewLayer/ListViewHeader/style';
-import { ListState } from '../ListView';
+import Styled from '@/components/ListViewHeader/style';
+import { ListState } from '../../layers/ListView';
 
 type ListProps = {
   listState: ListState;

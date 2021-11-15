@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Header from '@/layers/Header';
 import TodoInputBar from '@/components/TodoInputBar';
-import ListView from '@/components/ListViewLayer/ListView';
+import ListView from '@/layers/ListView';
 import CoworkerStatus from '@/components/CoworkerStatus';
 
 const MainPage = () => {
