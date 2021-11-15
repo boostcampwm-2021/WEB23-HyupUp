@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { Story } from '@/contexts/storyContext';
 
 type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
@@ -13,7 +14,7 @@ export const getAllStories = async (projectId: number | string) => {
     const result: { data: Story[] } = await instance.get(`?projectId=${projectId}`);
     return result.data;
   } catch (e) {
-    console.error('[FAIL] 스토리 조회 실패');
+    toast.error('[FAIL] 스토리 조회 실패');
     throw e;
   }
 };
