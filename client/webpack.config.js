@@ -29,6 +29,10 @@ module.exports = {
         type: 'asset/resource',
       },
       {
+        test: /\.(sa|sc|c)ss$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         type: 'asset',
         parser: {
