@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import SideBar from '@/components/SideBar';
+import SideBar from '@/layers/SideBar';
 import SideBarEntry from '@/components/SideBarEntry';
 import Roadmap from '@/layers/Roadmap';
 import Kanban from '@/layers/Kanban';
