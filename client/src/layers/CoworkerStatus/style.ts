@@ -2,9 +2,13 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   width: 367px;
-  height: 784px;
 
-  padding-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 25px;
+  padding-bottom: 29px;
 
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.gray100};
@@ -23,9 +27,16 @@ const StatusContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-
-  margin-top: 13px;
-  margin-bottom: 13px;
 `;
 
-export { Container, Name, StatusContainer };
+const UsersContainer = styled.div`
+  width: 310px;
+  height: 650px;
+
+  padding-top: 29px;
+
+  border-radius: 8px;
+  background: ${({ theme }) => theme.color.white};
+`;
+
+export { Container, Name, StatusContainer, UsersContainer };

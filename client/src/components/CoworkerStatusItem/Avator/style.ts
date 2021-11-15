@@ -4,7 +4,7 @@ const AvatorContainer = styled.div`
   width: 55px;
   height: 49px;
 
-  margin-left: 45px;
+  margin-left: 29px;
 
   background-color: none;
 `;
