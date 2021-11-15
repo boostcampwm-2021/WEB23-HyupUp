@@ -1,7 +1,5 @@
 import axios from 'axios';
-import { Story } from '@/contexts/storyContext';
-
-type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
+import { StoryType, StatusType } from '@/types/story';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/stories',
@@ -10,7 +8,7 @@ const instance = axios.create({
 
 export const getAllStories = async (projectId: number | string) => {
   try {
-    const result: { data: Story[] } = await instance.get(`?projectId=${projectId}`);
+    const result: { data: StoryType[] } = await instance.get(`?projectId=${projectId}`);
     return result.data;
   } catch (e) {
     console.error('[FAIL] 스토리 조회 실패');

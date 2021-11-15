@@ -4,9 +4,8 @@ import { createStory, getAllStories } from '@/lib/api/story';
 import useInput from '@/lib/hooks/useInput';
 import Styled from '@/components/KanbanTodo/style';
 import Button from '@/lib/design/Button';
-import { Story } from '@/contexts/storyContext';
+import { StoryType, StatusType } from '@/types/story';
 
-type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
 interface StoryObject {
   id: number;
   name: string;
@@ -38,7 +37,7 @@ const KanbanTodo = () => {
     (async () => {
       //todo user의CurrentProjectId 가 없다면 Early Return, ProjectID 로 조회하게함
       const stories = await getAllStories(1);
-      stories.forEach((story: Story) => useDispatch({ type: `ADD_STORY`, story }));
+      stories.forEach((story: StoryType) => useDispatch({ type: `ADD_STORY`, story }));
     })();
   }, []);
   return (

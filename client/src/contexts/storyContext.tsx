@@ -1,46 +1,23 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import producer from 'immer';
+import { StoryType } from '@/types/story';
 
-type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
+type StoryState = Array<StoryType>;
 
-export type Story = {
-  id: number;
-  name: string;
-  status: StatusType;
-  epicName?: string;
-  epicId?: number;
-};
-
-type CreateStory = {
-  id: number;
-  name: string;
-  status: StatusType;
-};
-
-type UpdateStory = {
-  id: number;
-  name?: string;
-  status?: string;
-  epicName?: string;
-  epicId?: number;
-};
-
-type State = Array<Story>;
-
-type Action =
-  | { type: 'ADD_STORY'; story: CreateStory }
+type StoryAction =
+  | { type: 'ADD_STORY'; story: StoryType }
   | { type: 'REMOVE_STORY'; id: number }
-  | { type: 'UPDATE_STORY'; story: UpdateStory }
+  | { type: 'UPDATE_STORY'; story: StoryType }
   | { type: 'DROP_STORY' };
 
-type StoryDispatch = Dispatch<Action>;
+type StoryDispatch = Dispatch<StoryAction>;
 
-const StoryStateContext = createContext<State | null>(null);
+const StoryStateContext = createContext<StoryState | null>(null);
 const StoryDispatchContext = createContext<StoryDispatch | null>(null);
 
 // to-do 필요한 action이 있으면, 아래에 추가할 것
 // to-do immutable 방식을 더 생각해볼 것
-function reducer(state: State, action: Action): State {
+function reducer(state: StoryState, action: StoryAction): StoryState {
   switch (action.type) {
     case 'ADD_STORY':
       return producer(state, (draft) => {
