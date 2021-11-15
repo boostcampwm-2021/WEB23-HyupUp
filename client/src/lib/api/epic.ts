@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { EpicType } from '@/types/epic';
+import { toast } from 'react-toastify';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/epics',
@@ -11,7 +12,7 @@ export const getEpicsByProjectId = async (projectId: number | string) => {
     const result: { data: EpicType[] } = await instance.get(`?projectId=${projectId}`);
     return result.data;
   } catch (e) {
-    console.error('failed to fetch epic data');
+    toast.error('failed to fetch epic data');
     throw e;
   }
 };

@@ -8,6 +8,7 @@ type EpicAction =
   | { type: 'ADD_EPIC'; epic: EpicType }
   | { type: 'REMOVE_EPIC'; id: number }
   | { type: 'UPDATE_EPIC'; epic: EpicType }
+  | { type: 'LOAD_EPIC'; epics: EpicType[] }
   | { type: 'DROP_EPIC' };
 
 type EpicDispatch = Dispatch<EpicAction>;
@@ -37,6 +38,8 @@ function reducer(state: EpicState, action: EpicAction): EpicState {
           };
         });
       });
+    case 'LOAD_EPIC':
+      return [...action.epics];
     case 'DROP_EPIC':
       return [];
     default:

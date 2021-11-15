@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { StoryType, StatusType } from '@/types/story';
 
 const instance = axios.create({
@@ -11,10 +12,11 @@ export const getAllStories = async (projectId: number | string) => {
     const result: { data: StoryType[] } = await instance.get(`?projectId=${projectId}`);
     return result.data;
   } catch (e) {
-    console.error('[FAIL] 스토리 조회 실패');
+    toast.error('스토리 조회에 실패하였습니다');
     throw e;
   }
 };
+
 /**
  * @param storyId 스토리 id
  * @param status 스토리의 상태

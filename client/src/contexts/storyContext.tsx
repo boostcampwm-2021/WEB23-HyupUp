@@ -8,6 +8,7 @@ type StoryAction =
   | { type: 'ADD_STORY'; story: StoryType }
   | { type: 'REMOVE_STORY'; id: number }
   | { type: 'UPDATE_STORY'; story: StoryType }
+  | { type: 'LOAD_STORY'; stories: StoryType[] }
   | { type: 'DROP_STORY' };
 
 type StoryDispatch = Dispatch<StoryAction>;
@@ -34,9 +35,11 @@ function reducer(state: StoryState, action: StoryAction): StoryState {
           return {
             ...el,
             ...action.story,
-          };
+          } as Story;
         });
       });
+    case 'LOAD_STORY':
+      return [...action.stories];
     case 'DROP_STORY':
       return [];
     default:
