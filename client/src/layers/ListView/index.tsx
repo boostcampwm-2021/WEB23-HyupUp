@@ -3,7 +3,8 @@ import Styled from '@/layers/ListView/style';
 import { useUserState } from '@/lib/hooks/useContextHooks';
 import ListViewHeader from '@/components/ListViewHeader';
 import ListViewItem from '@/components/ListViewItem';
-import { PrivateTask, ProjectType } from '@/contexts/userContext';
+import { PrivateTask } from '@/types/task';
+import { ProjectType } from '@/types/project';
 
 export type ListState = 'all' | 'private' | 'project' | 'done';
 
