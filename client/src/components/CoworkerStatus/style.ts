@@ -10,39 +10,6 @@ const Container = styled.div`
   background-color: ${({ theme }) => theme.color.gray100};
 `;
 
-const AvatorContainer = styled.div`
-  width: 55px;
-  height: 49px;
-
-  margin-left: 45px;
-
-  background-color: none;
-`;
-
-const AvatorImage = styled.img`
-  width: 45px;
-  height: 45px;
-
-  border-radius: 25px;
-`;
-
-interface Props {
-  backgroundColor: string;
-}
-
-const AvatorStatus = styled.div<Props>`
-  width: 20px;
-  height: 20px;
-
-  position: relative;
-  bottom: 20px;
-  float: right;
-
-  border: 3px solid ${({ theme }) => theme.color.white};
-  border-radius: 15px;
-  background-color: ${({ theme, backgroundColor }) => theme.color[backgroundColor]};
-`;
-
 const Name = styled.p`
   margin-left: 32px;
 
@@ -61,4 +28,4 @@ const StatusContainer = styled.div`
   margin-bottom: 13px;
 `;
 
-export { Container, AvatorContainer, AvatorImage, AvatorStatus, Name, StatusContainer };
+export { Container, Name, StatusContainer };
