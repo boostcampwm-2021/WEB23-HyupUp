@@ -13,14 +13,14 @@ const SideBarDropDown = () => {
   const [listState, listStateHandler] = useState<Array<ProjectType>>([]);
   const [titleState, titleStateHandler] = useState('프로젝트');
   const itemClickHandler = (e: React.MouseEvent) => {
-    const target = e.target as HTMLElement;
+    const target = e.target as HTMLLIElement;
     if (target.tagName === 'LI') {
       titleStateHandler(target.innerText);
       userDispatcher({
         type: 'UPDATE_USER',
         payload: {
           currentProjectName: target.innerText,
-          currentProjectId: +target.id,
+          currentProjectId: +target.value,
         },
       });
     }

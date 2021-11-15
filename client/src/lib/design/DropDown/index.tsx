@@ -116,12 +116,14 @@ const DropDown = (props: dropDownProps) => {
       <Box onClick={selectItem} state={clickState}>
         {list.map((el, i) =>
           i === list.length - 1 ? (
-            <Item key={el.id} theme={fontTheme}>
+            <Item key={el.id} theme={fontTheme} value={el.id}>
               {el.name}
             </Item>
           ) : (
             <div key={el.id}>
-              <Item theme={fontTheme}>{el.name}</Item>
+              <Item theme={fontTheme} value={el.id}>
+                {el.name}
+              </Item>
               <Line />
             </div>
           ),
