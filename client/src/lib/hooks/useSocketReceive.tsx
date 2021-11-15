@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { SocketContext } from '@/contexts/socketContext';
-import { toast } from 'react-toastify';
 
 /**
  *
