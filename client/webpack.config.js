@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
 module.exports = {
@@ -56,6 +55,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
+    clean: true,
   },
 
   plugins: [
@@ -69,7 +69,6 @@ module.exports = {
             }
           : false,
     }),
-    new CleanWebpackPlugin(),
     new Dotenv(),
   ],
 };

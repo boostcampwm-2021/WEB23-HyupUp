@@ -14,11 +14,12 @@ import board from '@public/icons/board-icon.svg';
 import backlog from '@public/icons/time-icon.svg';
 
 import { getEpicsByProjectId } from '@/lib/api/epic';
-import { useEpicDispatch, useUserState } from '@/lib/hooks/useContextHooks';
-import { Epic } from '@/contexts/epicContext';
+import { useEpicDispatch, useStoryDispatch, useUserState } from '@/lib/hooks/useContextHooks';
+import { getAllStories } from '@/lib/api/story';
 
 const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
+  const storyDispatcher = useStoryDispatch();
   const user = useUserState();
 
   const tabs = [
@@ -39,9 +40,11 @@ const WorkPage = () => {
       if (!user.currentProjectId) return;
       // TODO: App에 진입시 요청하도록 수정
       const epics = await getEpicsByProjectId(user.currentProjectId);
-      epics.forEach((epic: Epic) => epicDispatcher({ type: `ADD_EPIC`, epic }));
+      const stories = await getAllStories(user.currentProjectId);
+      epicDispatcher({ type: 'LOAD_EPIC', epics });
+      storyDispatcher({ type: 'LOAD_STORY', stories });
     })();
-  }, []);
+  }, [epicDispatcher, storyDispatcher, user]);
 
   return (
     <>
