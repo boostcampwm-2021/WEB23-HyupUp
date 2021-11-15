@@ -11,9 +11,7 @@ interface RoadmapProps {
 
 const Roadmap = ({ projectId }: RoadmapProps) => {
   const [inputVisible, setInputVisible] = React.useState(false);
-  const epics = useEpicState();
-  // TODO: 현재 프로젝트 이름을 context에서 받아오도록 수정
-  const epicsOnProject = epics;
+  const epicsOnProject = useEpicState();
   const epicDispatcher = useEpicDispatch();
 
   return (
