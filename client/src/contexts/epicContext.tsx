@@ -1,36 +1,29 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import producer from 'immer';
 
-export type Epic = {
+export type EpicType = {
   id: number;
   name: string;
   startAt: Date;
   endAt: Date;
 };
 
-type UpdateEpic = {
-  id: number;
-  name?: string;
-  startAt?: Date;
-  endAt?: Date;
-};
+type EpicState = Array<EpicType>;
 
-type State = Array<Epic>;
-
-type Action =
-  | { type: 'ADD_EPIC'; epic: Epic }
+type EpicAction =
+  | { type: 'ADD_EPIC'; epic: EpicType }
   | { type: 'REMOVE_EPIC'; id: number }
-  | { type: 'UPDATE_EPIC'; epic: UpdateEpic }
+  | { type: 'UPDATE_EPIC'; epic: EpicType }
   | { type: 'DROP_EPIC' };
 
-type EpicDispatch = Dispatch<Action>;
+type EpicDispatch = Dispatch<EpicAction>;
 
-const EpicStateContext = createContext<State | null>(null);
+const EpicStateContext = createContext<EpicState | null>(null);
 const EpicDispatchContext = createContext<EpicDispatch | null>(null);
 
 // to-do 필요한 action이 있으면, 아래에 추가할 것
 // to-do immutable 방식을 더 생각해볼 것
-function reducer(state: State, action: Action): State {
+function reducer(state: EpicState, action: EpicAction): EpicState {
   switch (action.type) {
     case 'ADD_EPIC':
       return producer(state, (draft) => {

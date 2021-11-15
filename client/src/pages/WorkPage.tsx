@@ -15,7 +15,7 @@ import backlog from '@public/icons/time-icon.svg';
 
 import { getEpicsByProjectId } from '@/lib/api/epic';
 import { useEpicDispatch, useUserState } from '@/lib/hooks/useContextHooks';
-import { Epic } from '@/contexts/epicContext';
+import { EpicType } from '@/contexts/epicContext';
 
 const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
@@ -39,7 +39,7 @@ const WorkPage = () => {
       if (!user.currentProjectId) return;
       // TODO: App에 진입시 요청하도록 수정
       const epics = await getEpicsByProjectId(user.currentProjectId);
-      epics.forEach((epic: Epic) => epicDispatcher({ type: `ADD_EPIC`, epic }));
+      epics.forEach((epic: EpicType) => epicDispatcher({ type: `ADD_EPIC`, epic }));
     })();
   }, []);
 

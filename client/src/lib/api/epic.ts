@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Epic } from '@/contexts/epicContext';
+import { EpicType } from '@/contexts/epicContext';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/epics',
@@ -8,7 +8,7 @@ const instance = axios.create({
 
 export const getEpicsByProjectId = async (projectId: number | string) => {
   try {
-    const result: { data: Epic[] } = await instance.get(`?projectId=${projectId}`);
+    const result: { data: EpicType[] } = await instance.get(`?projectId=${projectId}`);
     return result.data;
   } catch (e) {
     console.error('failed to fetch epic data');
