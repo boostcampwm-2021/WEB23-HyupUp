@@ -1,11 +1,11 @@
 import React from 'react';
 import * as S from './style';
 
-const Avator = ({ src }: { src: string }) => {
+const Avator = ({ src, status }: { src: string; status: boolean }) => {
   return (
     <S.AvatorContainer>
       <S.AvatorImage src={src} />
-      <S.AvatorStatus backgroundColor={'green300'} />
+      <S.AvatorStatus status={status} />
     </S.AvatorContainer>
   );
 };
