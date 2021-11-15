@@ -35,7 +35,7 @@ function reducer(state: StoryState, action: StoryAction): StoryState {
           return {
             ...el,
             ...action.story,
-          } as Story;
+          };
         });
       });
     case 'LOAD_STORY':
