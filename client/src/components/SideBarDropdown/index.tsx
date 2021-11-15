@@ -37,10 +37,17 @@ const SideBarDropDown = () => {
           projects: projects,
         },
       });
+      userDispatcher({
+        type: 'UPDATE_USER',
+        payload: {
+          currentProjectName: projects[0].name,
+          currentProjectId: projects[0].id,
+        },
+      });
       listStateHandler(projects);
-      titleStateHandler(userState.currentProjectName ? userState.currentProjectName : '선택하세요');
+      titleStateHandler(projects[0].name);
     })();
-  }, [userDispatcher, userState.currentProjectName, userState.id, userState.organization]);
+  }, [userDispatcher, userState.id, userState.organization]);
 
   return (
     <div>
