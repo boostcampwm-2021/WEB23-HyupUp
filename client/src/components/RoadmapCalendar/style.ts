@@ -9,9 +9,29 @@ const S = {
     background-color: ${({ theme }) => theme.color.white};
     border-radius: 8px;
   `,
-  CalendarHead: styled.h3`
+  CalendarHead: styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
     margin-bottom: 24px;
+  `,
+  MonthLabel: styled.h3`
     font: ${({ theme }) => theme.font.bold_medium};
+  `,
+  ButtonWrapper: styled.div`
+    display: flex;
+  `,
+  CalendarButton: styled.button`
+    width: 30px;
+    height: 30px;
+
+    background-color: ${({ theme }) => theme.color.blue100};
+    border-radius: 8px;
+
+    & + & {
+      margin-left: 4px;
+    }
   `,
   DaysWrapper: styled.div`
     display: flex;

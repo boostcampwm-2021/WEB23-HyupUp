@@ -5,7 +5,13 @@ const RoadmapCalendar = () => {
   const [date, setDate] = useState(new Date());
   return (
     <S.RoadmapCalendar>
-      <S.CalendarHead>{date.getMonth() + 1}월</S.CalendarHead>
+      <S.CalendarHead>
+        <S.MonthLabel>{date.getMonth() + 1}월</S.MonthLabel>
+        <S.ButtonWrapper>
+          <S.CalendarButton></S.CalendarButton>
+          <S.CalendarButton></S.CalendarButton>
+        </S.ButtonWrapper>
+      </S.CalendarHead>
       <S.DaysWrapper>
         {Array.from(new Array(14), (_, i) => (
           // TODO: key props를 index 값이 아닌 date 값과 연관한 값으로 변경
