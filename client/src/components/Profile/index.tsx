@@ -1,4 +1,4 @@
-import { Styled } from '@/lib/common/Profile/style';
+import { Styled } from '@/components/Profile/style';
 import React, { useState, useRef } from 'react';
 import useOutSideClick from '@/lib/hooks/useOutSideClick';
 

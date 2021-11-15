@@ -7,7 +7,7 @@ import Roadmap from '@/components/Roadmap';
 import Kanban from '@/components/Kanban';
 import Backlog from '@/components/Backlog';
 import useTabs from '@/lib/hooks/useTabs';
-import Header from '@/lib/common/Header';
+import Header from '@/layers/Header';
 
 import roadmap from '@public/icons/calendar-icon.svg';
 import board from '@public/icons/board-icon.svg';

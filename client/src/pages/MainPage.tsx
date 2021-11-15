@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Header from '@/lib/common/Header';
+import Header from '@/layers/Header';
 import TodoInputBar from '@/components/TodoInputBar';
 import ListView from '@/components/ListViewLayer/ListView';
 import CoworkerStatus from '@/components/CoworkerStatus';
