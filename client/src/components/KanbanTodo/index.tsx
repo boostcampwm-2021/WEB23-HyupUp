@@ -35,16 +35,18 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
   return (
     <Styled.Column>
       <h4>To do</h4>
+
       {storyArray?.map((story) => {
         return (
           <Styled.KanBanItem key={story.id}>
             <input
               type="text"
-              placeholder="type a todo..."
+              placeholder={story.name ? story.name : 'type a todo...'}
               data-key={story.id}
               onChange={handleChange}
               onBlur={useUpdateStory}
             />
+            <Styled.CancelIcon />
           </Styled.KanBanItem>
         );
       })}
