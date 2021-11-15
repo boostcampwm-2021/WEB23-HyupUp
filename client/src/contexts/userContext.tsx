@@ -22,7 +22,10 @@ type UserAction =
   | { type: 'GET_USER'; payload: UserState }
   | { type: 'LOGOUT' }
   | { type: 'UPDATE_USER'; payload: UserState }
-  | { type: 'ADD_PRIVATE_TASK'; payload: PrivateTask };
+  | { type: 'ADD_PRIVATE_TASK'; payload: PrivateTask }
+  | { type: 'DELETE_PRIVATE_TASK'; payload: number }
+  | { type: 'FINISH_PRIVATE_TASK'; payload: number }
+  | { type: 'FINISH_PROJECT_TASK'; payload: number };
 
 type ContextType = {
   userState: UserState | null;
@@ -54,6 +57,24 @@ const reducer = (state: UserState, action: UserAction): UserState => {
       return produce(state, (draft) => {
         draft.privateTasks?.unshift(action.payload);
       });
+
+    case 'DELETE_PRIVATE_TASK':
+      return produce(state, (draft) => {
+        draft.privateTasks = draft.privateTasks!.filter((task) => task.id !== action.payload);
+      });
+
+    case 'FINISH_PRIVATE_TASK':
+      return produce(state, (draft) => {
+        const finishedTask = draft.privateTasks!.find((task) => task.id === action.payload);
+        finishedTask!.status = true;
+      });
+
+    case 'FINISH_PROJECT_TASK':
+      return produce(state, (draft) => {
+        const finishedTask = draft.projectTasks!.find((task) => task.id === action.payload);
+        finishedTask!.status = true;
+      });
+
     default:
       return {
         ...state,
