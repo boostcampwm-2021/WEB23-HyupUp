@@ -34,3 +34,19 @@ export const createEpic = async (projectId: number | string, epicName: string) =
     return { id: -1 };
   }
 };
+
+/**
+ *
+ * @param epicId 에픽 id, 데이터를 조회할 에픽의 id
+ * @returns 에픽 데이터를 가지고 있는 객체
+ */
+export const getEpicById = async (epicId: number) => {
+  try {
+    const result: {
+      data: { id: number };
+    } = await instance.post(`/${epicId}`);
+    return result.data;
+  } catch (e) {
+    toast.error('에픽 정보 조회에 실패하였습니다.');
+  }
+};
