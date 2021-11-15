@@ -56,14 +56,6 @@ const S = {
       margin-top: 64px;
     }
   `,
-  RoadmapCalendar: styled.section`
-    width: 100%;
-    height: 100%;
-    padding: 16px;
-
-    background-color: ${({ theme }) => theme.color.white};
-    border-radius: 8px;
-  `,
 };
 
 export default S;

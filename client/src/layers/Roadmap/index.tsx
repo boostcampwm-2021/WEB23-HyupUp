@@ -5,6 +5,7 @@ import EpicPlaceholder from '../../components/EpicPlaceholder';
 import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
 import { createEpic } from '@/lib/api/epic';
 import useSocketSend from '@/lib/hooks/useSocketSend';
+import RoadmapCalendar from '@/components/RoadmapCalendar';
 import Button from '@/lib/design/Button';
 
 interface RoadmapProps {
@@ -56,7 +57,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
             + Add item
           </Button>
         </S.EpicEntry>
-        <S.RoadmapCalendar>content</S.RoadmapCalendar>
+        <RoadmapCalendar></RoadmapCalendar>
       </S.Content>
     </S.Container>
   );
