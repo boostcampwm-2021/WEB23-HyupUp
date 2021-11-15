@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import SideBar from '@/components/SideBar';
 import SideBarEntry from '@/components/SideBarEntry';
 import Roadmap from '@/components/Roadmap';
-import Kanban from '@/components/Kanban';
+import Kanban from '@/layers/Kanban';
 import Backlog from '@/components/Backlog';
 import useTabs from '@/lib/hooks/useTabs';
 import Header from '@/layers/Header';
