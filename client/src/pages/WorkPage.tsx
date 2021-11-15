@@ -13,7 +13,7 @@ import roadmap from '@public/icons/calendar-icon.svg';
 import board from '@public/icons/board-icon.svg';
 import backlog from '@public/icons/time-icon.svg';
 
-import { getEpicsByProjectId } from '@/lib/api/epic';
+import { getEpicById, getEpicsByProjectId } from '@/lib/api/epic';
 import { getAllStories } from '@/lib/api/story';
 import { useEpicDispatch, useStoryDispatch, useUserState } from '@/lib/hooks/useContextHooks';
 import useSocketReceive from '@/lib/hooks/useSocketReceive';
@@ -23,8 +23,14 @@ const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
   const storyDispatcher = useStoryDispatch();
   const user = useUserState();
-  useSocketReceive('GET_EPIC', (epicId: number) => {
-    toast.success(epicId);
+  useSocketReceive('GET_EPIC', async (epicId: number) => {
+    try {
+      const data = await getEpicById(epicId);
+      if (!data) throw new Error('에픽 정보를 조회할 수 없습니다');
+      epicDispatcher({ type: `ADD_EPIC`, epic: data });
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
   });
 
   const tabs = [
