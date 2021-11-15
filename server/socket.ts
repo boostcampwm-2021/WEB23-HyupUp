@@ -12,6 +12,10 @@ io.on('connection', (socket) => {
   socket.on('LOGOUT', (userId) => {
     socket.to('TEAM42').emit('OFF', userId);
   });
+
+  socket.on('NEW_EPIC', (epicId: number) => {
+    socket.broadcast.emit('GET_EPIC', epicId);
+  });
 });
 
 export default io;
