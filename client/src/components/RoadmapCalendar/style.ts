@@ -26,7 +26,7 @@ const S = {
     width: 30px;
     height: 30px;
 
-    background-color: ${({ theme }) => theme.color.blue100};
+    background-color: ${({ theme }) => theme.color.gray100};
     border-radius: 8px;
 
     & + & {
