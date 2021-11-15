@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { queryValidator } from '../../lib/utils/requestValidator';
-import { getRepository } from 'typeorm';
+import { getRepository, getConnection } from 'typeorm';
 import Stories from './Stories.entity';
 
 export const getAllStoriesByProject = async (req: Request, res: Response) => {
@@ -54,6 +54,24 @@ export const postStory = async (req: Request, res: Response) => {
       })
       .execute();
     res.status(201).json({ id: result.raw.insertId });
+  } catch (e) {
+    res.status(400).json({
+      message: (e as Error).message,
+    });
+  }
+};
+
+export const updateStoryWithName = async (req: Request, res: Response) => {
+  const { id, name, status } = req.body;
+  try {
+    await getConnection()
+      .createQueryBuilder()
+      .update(Stories)
+      .set({ id: id, name: name, status: status })
+      .where('id = :id', { id: id })
+      .execute();
+
+    res.status(201).json({ id: id, name: name });
   } catch (e) {
     res.status(400).json({
       message: (e as Error).message,
