@@ -5,11 +5,12 @@ import { useEffect } from 'react';
 import { getAllProjects } from '@/lib/api/project';
 import { useUserDispatch, useUserState } from '@/lib/hooks/useContextHooks';
 import S from '@/components/SideBarDropdown/style';
+import { ProjectType } from '@/types/project';
 
 const SideBarDropDown = () => {
   const userState = useUserState();
   const userDispatcher = useUserDispatch();
-  const [listState, listStateHandler] = useState<Array<string>>([]);
+  const [listState, listStateHandler] = useState<Array<ProjectType>>([]);
   const [titleState, titleStateHandler] = useState('프로젝트');
   const itemClickHandler = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
@@ -18,7 +19,8 @@ const SideBarDropDown = () => {
       userDispatcher({
         type: 'UPDATE_USER',
         payload: {
-          currentProject: target.innerText,
+          currentProjectName: target.innerText,
+          currentProjectId: +target.id,
         },
       });
     }
@@ -35,11 +37,10 @@ const SideBarDropDown = () => {
           projects: projects,
         },
       });
-      const projectNames = projects.map((project) => project.name);
-      listStateHandler(projectNames);
-      projectNames.length ? titleStateHandler(projectNames[0]) : '';
+      listStateHandler(projects);
+      titleStateHandler(userState.currentProjectName ? userState.currentProjectName : '선택하세요');
     })();
-  }, []);
+  }, [userDispatcher, userState.currentProjectName, userState.id, userState.organization]);
 
   return (
     <div>

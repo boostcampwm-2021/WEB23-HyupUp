@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import arrow from '@public/image/arrow_drop_down.png';
 import theme from '@/styles/theme';
 import { useState } from 'react';
+import { ProjectType } from '@/types/project';
 
 interface Props {
   state: boolean;
@@ -70,9 +71,14 @@ const Line = styled.hr`
   background-color: ${({ theme }) => theme.color.gray300};
 `;
 
+interface IncludeId {
+  id: number;
+  name: string;
+}
+
 interface dropDownProps {
   Title: React.ReactNode;
-  list: Array<string>;
+  list: Array<IncludeId>;
   font?: string;
   handleClick: (e: React.MouseEvent) => void;
 }
@@ -108,14 +114,14 @@ const DropDown = (props: dropDownProps) => {
         <ArrowImage src={arrow} state={clickState} />
       </ContextContainer>
       <Box onClick={selectItem} state={clickState}>
-        {list.map((el: string, i: number) =>
+        {list.map((el, i) =>
           i === list.length - 1 ? (
-            <Item key={i} theme={fontTheme}>
-              {el}
+            <Item key={el.id} theme={fontTheme}>
+              {el.name}
             </Item>
           ) : (
-            <div key={i}>
-              <Item theme={fontTheme}>{el}</Item>
+            <div key={el.id}>
+              <Item theme={fontTheme}>{el.name}</Item>
               <Line />
             </div>
           ),
