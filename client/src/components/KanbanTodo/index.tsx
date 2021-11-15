@@ -6,7 +6,11 @@ import Styled from '@/components/KanbanTodo/style';
 import Button from '@/lib/design/Button';
 import { StoryType } from '@/types/story';
 
-const KanbanTodo = () => {
+interface KanbanProps {
+  projectId?: number;
+}
+
+const KanbanTodo = ({ projectId }: KanbanProps) => {
   const storyArray = useStoryState();
   const useDispatch = useStoryDispatch();
 
@@ -20,11 +24,7 @@ const KanbanTodo = () => {
 
   const useAddStory = () => {
     useDispatch({ type: 'ADD_STORY', story: StoryObject });
-
-    //todo 현재 CurrentProjectId 와 EPIC ID 를 하드코딩함
-    // CurrentProjectID 는 세션으로 유저 정보 조회 후 가져올 예정
-    createStory(StoryObject.id, StoryObject.status, 1, StoryObject.name, 1);
-    // createStory(StoryObject.id, StoryObject.status, userState.currentProjectId as number, '', '');
+    createStory({ ...StoryObject, projectId });
   };
 
   return (

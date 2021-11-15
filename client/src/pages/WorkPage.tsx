@@ -25,7 +25,7 @@ const WorkPage = () => {
 
   const tabs = [
     <Roadmap key={0} projectId={user?.currentProjectId} />,
-    <Kanban key={1} />,
+    <Kanban key={1} projectId={user?.currentProjectId} />,
     <Backlog key={2} />,
   ];
   const { currentIndex, currentTab, changeTab } = useTabs(0, tabs);
