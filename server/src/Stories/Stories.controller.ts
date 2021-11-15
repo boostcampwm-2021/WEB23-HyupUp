@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { queryValidator } from '../../lib/utils/requestValidator';
 import { getRepository } from 'typeorm';
 import Stories from './Stories.entity';
@@ -46,8 +46,9 @@ export const postStory = async (req: Request, res: Response) => {
       .insert()
       .into(Stories)
       .values({
-        id: req.body.storyId,
-        name: req.body.storyName,
+        id: req.body.id,
+        name: req.body.name,
+        status: req.body.status,
         projects: () => req.body.projectId,
         epics: () => req.body.epicId,
       })
