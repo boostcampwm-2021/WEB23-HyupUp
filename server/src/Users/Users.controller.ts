@@ -35,6 +35,7 @@ export const getUsersByOrganization = async (req: Request, res: Response) => {
     const nameAndProfiles = users.map((el) => ({
       name: el.name,
       imageURL: el.imageURL,
+      index: el.id,
     }));
     res.status(200).json(nameAndProfiles);
   } catch (e) {
