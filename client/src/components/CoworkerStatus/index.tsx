@@ -19,8 +19,17 @@ const CoworkerStatus = () => {
   const [usersIdList, usersIdListHandler] = useState<Array<number>>([]);
   const socketSend = useSocketSend('LOGIN');
   const userState = useUserState();
+
   useSocketReceive('LOGIN_CALLBACK', (userIds: Array<number>) => {
     usersIdListHandler(userIds);
+  });
+
+  useSocketReceive('ON', (userId: number) => {
+    usersIdListHandler([...usersIdList, userId]);
+  });
+
+  useSocketReceive('OFF', (userId: number) => {
+    usersIdListHandler(usersIdList.filter((el) => el !== userId));
   });
 
   useEffect(() => {
@@ -30,7 +39,8 @@ const CoworkerStatus = () => {
   useEffect(() => {
     (async () => {
       const users = await getUsersByOrganization(userState.organization as number);
-      const updateUsers = users.map((el) => {
+      const usersWithOutMe = users.filter((el) => el.index !== userState.id);
+      const updateUsers = usersWithOutMe.map((el) => {
         if (usersIdList.includes(el.index))
           return {
             ...el,
@@ -44,6 +54,7 @@ const CoworkerStatus = () => {
       usersListHandler(updateUsers);
     })();
   }, [usersIdList]);
+
   return (
     <S.Container>
       {usersList.map((el) => (
