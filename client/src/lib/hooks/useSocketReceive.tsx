@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { SocketContext } from '@/contexts/socketContext';
+import { toast } from 'react-toastify';
 
 /**
  *
@@ -16,9 +17,7 @@ function useSocketReceive(channel: string, onReceive: (...payload: any[]) => voi
 
   // 해당 훅을 사용한 컴포넌트가 마운트되면 이벤트 핸들러를 등록, 언마운트되면 제거함
   React.useEffect(() => {
-    connection.on(channel, (payload) => {
-      onReceive(payload);
-    });
+    connection.on(channel, onReceive);
     return () => {
       connection.off(channel, onReceive);
     };
