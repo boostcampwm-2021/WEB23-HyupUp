@@ -10,6 +10,8 @@
     "dev:client" : "yarn workspace client dev",
     "dev:server" : "yarn workspace server dev",
     "build:client" : "yarn workspace client build",
+    "test:server": "yarn workspace server test",
+    "test:client" : "yarn workspace client test",
     "ci": "echo 'hello' && yarn install --frozen-lockfile",
     "lint": "eslint ./"
   },
