@@ -27,7 +27,7 @@ const RoadmapCalendar = () => {
       </S.CalendarHead>
       <S.DaysWrapper>
         {makeDayRow(date).map((day: number) => (
-          <div key={day}>{day + 1}</div>
+          <S.DayLabel key={day}>{day + 1}</S.DayLabel>
         ))}
       </S.DaysWrapper>
       <S.DayColumnWrapper>
