@@ -21,8 +21,8 @@ export const handleGet = async (req: Request, res: Response, next: NextFunction)
       projectTasks: tasks,
     });
   } catch (err) {
-    const result = (err as Error).message;
-    res.status(400).json({ result });
+    const message = (err as Error).message;
+    res.status(400).json({ message });
     next(err);
   }
 };
