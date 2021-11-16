@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { setupCache } from 'axios-cache-adapter';
 import { toast } from 'react-toastify';
 
 export interface TaskProps {
@@ -8,9 +9,14 @@ export interface TaskProps {
   userImage: string;
 }
 
+const cache = setupCache({
+  maxAge: 10 * 1000,
+});
+
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/tasks',
   withCredentials: true,
+  adapter: cache.adapter,
 });
 
 export const getTasksByStoryId = async (storyId: number) => {
