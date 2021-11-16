@@ -22,9 +22,12 @@ export const isLeapYear = (year: number) => {
 
 export const getLastDate = ({ year, month }: { year: number; month: number }) => {
   switch (month) {
-    case 2:
+    case 1:
       return isLeapYear(year) ? 29 : 28;
-    case 4 | 6 | 9 | 11:
+    case 3:
+    case 5:
+    case 8:
+    case 10:
       return 30;
     default:
       return 31;
