@@ -31,7 +31,7 @@ export const createEpic = async (projectId: number | string, epicName: string) =
     });
     return result.data;
   } catch (e) {
-    return { id: -1 };
+    toast.error('에픽 생성에 실패했습니다.');
   }
 };
 

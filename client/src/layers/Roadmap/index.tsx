@@ -32,7 +32,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     try {
       if (!projectId) throw new Error('유저 정보 없음');
       const result = await createEpic(projectId, value);
-      if (!result.id) throw new Error('에픽 생성 실패');
+      if (!result) return;
 
       epicDispatcher(makeNewAction(result.id, value));
       setInputVisible(false);
