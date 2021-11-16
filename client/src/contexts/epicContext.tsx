@@ -1,14 +1,14 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import producer from 'immer';
-import { EpicType, EpicWithString } from '@/types/epic';
+import { EpicType, EpicWithString, isEpicType } from '@/types/epic';
 import { makeEpicWithDate } from '@/lib/utils/date';
 
 type EpicState = Array<EpicType>;
 
 type EpicAction =
-  | { type: 'ADD_EPIC'; epic: EpicType }
+  | { type: 'ADD_EPIC'; epic: EpicType | EpicWithString }
   | { type: 'REMOVE_EPIC'; id: number }
-  | { type: 'UPDATE_EPIC'; epic: EpicType }
+  | { type: 'UPDATE_EPIC'; epic: EpicType | EpicWithString }
   | { type: 'LOAD_EPIC'; epics: EpicWithString[] }
   | { type: 'DROP_EPIC' };
 
@@ -23,7 +23,7 @@ function reducer(state: EpicState, action: EpicAction): EpicState {
   switch (action.type) {
     case 'ADD_EPIC':
       return producer(state, (draft) => {
-        draft.push(action.epic);
+        draft.push(isEpicType(action.epic) ? action.epic : makeEpicWithDate(action.epic));
       });
     case 'REMOVE_EPIC':
       return producer(state, (draft) => {
@@ -32,10 +32,11 @@ function reducer(state: EpicState, action: EpicAction): EpicState {
     case 'UPDATE_EPIC':
       return producer(state, (draft) => {
         return draft.map((el) => {
-          if (el.id !== action.epic.id) return el;
+          const newEpic = isEpicType(action.epic) ? action.epic : makeEpicWithDate(action.epic);
+          if (el.id !== newEpic.id) return el;
           return {
             ...el,
-            ...action.epic,
+            ...newEpic,
           };
         });
       });
