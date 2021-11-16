@@ -11,9 +11,13 @@ const ItemContainer = styled.div`
 
   margin-top: 8px;
   margin-bottom: 8px;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.color.white};
 `;
 
 const StoryText = styled.span`
+  margin-left: 30px;
+
   font: ${({ theme }) => theme.font.body_medium};
 `;
 
