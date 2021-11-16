@@ -6,11 +6,13 @@ import * as S from './style';
 const Backlog = () => {
   const stories = useStoryState();
   return (
-    <S.ItemContainer>
-      {stories.map((el) => (
-        <BackLogItem name={el.name} key={el.id} />
-      ))}
-    </S.ItemContainer>
+    <S.Container>
+      <S.ItemContainer>
+        {stories.map((el) => (
+          <BackLogItem name={el.name} key={el.id} id={el.id} />
+        ))}
+      </S.ItemContainer>
+    </S.Container>
   );
 };
 
