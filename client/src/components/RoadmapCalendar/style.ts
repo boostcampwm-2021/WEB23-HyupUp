@@ -37,6 +37,12 @@ const S = {
     display: flex;
     justify-content: space-between;
   `,
+  DayLabel: styled.div`
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+  `,
   DayColumnWrapper: styled.section`
     display: flex;
     justify-content: space-between;
