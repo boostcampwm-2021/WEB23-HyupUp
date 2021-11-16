@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Styled from '@/layers/ListView/style';
-import { useUserState } from '@/lib/hooks/useContextHooks';
+import { useUserDispatch, useUserState } from '@/lib/hooks/useContextHooks';
 import ListViewHeader from '@/components/ListViewHeader';
 import ListViewItem from '@/components/ListViewItem';
 import { PrivateTask } from '@/types/task';
@@ -16,6 +16,7 @@ type AllTasks = TaskProp[];
 
 const ListView = () => {
   const userState = useUserState();
+  const userDispatch = useUserDispatch();
   const [listState, setListState] = useState<ListState>('all');
   const allTasks: AllTasks = useMemo(
     () =>
@@ -30,6 +31,19 @@ const ListView = () => {
     const target = event.target as HTMLElement;
     if (!target.id) return;
     setListState(target.id as ListState);
+  };
+
+  const onClickFinish = (task: TaskProp) => {
+    if (task.project) {
+      userDispatch({ type: 'FINISH_PROJECT_TASK', payload: task.id });
+    } else {
+      userDispatch({ type: 'FINISH_PRIVATE_TASK', payload: task.id });
+    }
+  };
+
+  const onClickDelete = (task: TaskProp) => {
+    if (task.project) return;
+    userDispatch({ type: 'DELETE_PRIVATE_TASK', payload: task.id });
   };
 
   useEffect(() => {
@@ -49,7 +63,11 @@ const ListView = () => {
       <ListViewHeader listState={listState} handleListState={handleListState} />
       <Styled.ItemWrapper>
         {renderTasks.map((task, i) => (
-          <ListViewItem task={task} key={'' + i + task.id} />
+          <ListViewItem
+            task={task}
+            key={'' + i + task.id}
+            onClickMethod={listState === 'done' ? onClickDelete : onClickFinish}
+          />
         ))}
       </Styled.ItemWrapper>
     </Styled.Container>

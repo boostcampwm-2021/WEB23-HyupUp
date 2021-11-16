@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { StoryType, StatusType } from '@/types/story';
+import { StoryType } from '@/types/story';
 import { errorMessage } from '../common/message';
 
 const instance = axios.create({
@@ -26,23 +26,34 @@ export const getAllStories = async (projectId: number | string) => {
  * @param epicId 에픽 id
  * @returns id 를 프로퍼티로 가지는 객체, 스토리 생성 성공시 생성된 스토리의 id, 실패시 -1값 { id: number }
  */
-export const createStory = async (
-  storyId: number | string,
-  status: StatusType,
-  projectId: number,
-  storyName?: string,
-  epicId?: number | string,
-) => {
+export const createStory = async ({ id, status, name, projectId = 1, epicId = 1 }: StoryType) => {
   try {
     const result: { data: { id: number } } = await instance.post('', {
-      storyId: storyId,
-      status: status,
-      projectId: projectId,
-      storyName: storyName,
-      epicId: epicId,
+      id,
+      status,
+      name,
+      projectId,
+      epicId,
     });
     return result.data;
   } catch (e) {
     return { id: -1 };
+  }
+};
+
+export const updateStoryWithName = async ({ id, status, name, projectId, epicId }: StoryType) => {
+  if (name === '') return;
+  try {
+    const result: { data: { id: number } } = await instance.patch('/name', {
+      id,
+      status,
+      name,
+      projectId,
+      epicId,
+    });
+    return result.data;
+  } catch (e) {
+    toast.error('스토리 이름 변경에 실패하였습니다');
+    throw e;
   }
 };

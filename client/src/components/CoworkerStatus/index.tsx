@@ -13,7 +13,6 @@ const CoworkerStatus = () => {
   useEffect(() => {
     (async () => {
       const users = await getUsersByOrganization(1);
-      console.log(users);
       usersListHandler(users);
     })();
   }, []);

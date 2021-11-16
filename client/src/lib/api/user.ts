@@ -4,6 +4,7 @@ import { UserState } from '@/contexts/userContext';
 import { errorMessage } from '../common/message';
 
 export interface UserProfile {
+  index: number;
   name: string;
   imageURL: string;
 }
