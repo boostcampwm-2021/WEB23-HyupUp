@@ -11,10 +11,10 @@ const SideBarDropDown = () => {
   const userDispatcher = useUserDispatch();
   const [listState, listStateHandler] = useState<Array<string>>([]);
   const [titleState, titleStateHandler] = useState('프로젝트');
-  console.log(userState);
+
   const itemClickHandler = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
-    console.log(target);
+
     if (target.tagName === 'LI') {
       titleStateHandler(target.innerText);
       userDispatcher({
@@ -27,11 +27,11 @@ const SideBarDropDown = () => {
   };
   useEffect(() => {
     (async () => {
-      // const projects = await getAllProjects(
-      //   userState.id as number,
-      //   userState.organization as number,
-      // );
-      const projects = await getAllProjects(1, 1);
+      const projects = await getAllProjects(
+        userState.id as number,
+        userState.organization as number,
+      );
+
       userDispatcher({
         type: 'UPDATE_USER',
         payload: {

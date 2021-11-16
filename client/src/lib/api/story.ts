@@ -40,13 +40,7 @@ export const createStory = async ({ id, status, name, projectId = 1, epicId = 1 
   }
 };
 
-export const updateStoryWithName = async ({
-  id,
-  status,
-  name,
-  projectId = 1,
-  epicId = 1,
-}: StoryType) => {
+export const updateStoryWithName = async ({ id, status, name, projectId, epicId }: StoryType) => {
   if (name === '') return;
   try {
     const result: { data: { id: number } } = await instance.patch('/name', {
