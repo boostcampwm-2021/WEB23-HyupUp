@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import S from '@/components/RoadmapCalendar/style';
 import { getLastDate, getYMD } from '@/lib/utils/date';
+import RoadmapItem from '@/components/RoadmapItem';
 
 const WEEK_OFFSET = 14;
 const FRONT_HALF = 8;
@@ -57,6 +58,7 @@ const RoadmapCalendar = () => {
           <S.DayColumn key={day} />
         ))}
       </S.DayColumnWrapper>
+      <RoadmapItem />
     </S.RoadmapCalendar>
   );
 };
