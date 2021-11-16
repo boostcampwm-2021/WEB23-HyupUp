@@ -12,8 +12,9 @@ interface KanbanProps {
 }
 
 const extractLastID = (array: Array<StoryType>) => {
-  if (array.length === 0) return 0;
-  return array.sort((a, b) => b.id - a.id)[0].id;
+  if (!array || array.length === 0) return 0;
+  const id = Math.max(...array.map((v) => v.id));
+  return id;
 };
 
 const KanbanTodo = ({ projectId }: KanbanProps) => {
@@ -22,8 +23,8 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
   const { key, value, onChange } = useInput('');
   const [showModal, setShowModal] = useState(false);
   const [shouldDeleteKey, setDeleteKey] = useState(0);
+  const lastStoryId: number = extractLastID(storyArray);
 
-  const lastStoryId = extractLastID(storyArray);
   const StoryObject: StoryType = {
     id: lastStoryId + 1,
     name: '',
@@ -35,9 +36,9 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
     createStory({ ...StoryObject, projectId });
   };
 
-  const useDeleteStory = () => {
+  const useDeleteStory = async () => {
     useDispatch({ type: 'REMOVE_STORY', id: shouldDeleteKey });
-    deleteStoryWitId(shouldDeleteKey);
+    await deleteStoryWitId(shouldDeleteKey);
   };
 
   const useUpdateStoryName = () => {
