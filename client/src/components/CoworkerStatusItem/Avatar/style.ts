@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const AvatorContainer = styled.div`
+const AvatarContainer = styled.div`
   width: 55px;
   height: 49px;
 
@@ -9,18 +9,18 @@ const AvatorContainer = styled.div`
   background-color: none;
 `;
 
-const AvatorImage = styled.img`
+const AvatarImage = styled.img`
   width: 45px;
   height: 45px;
 
   border-radius: 25px;
 `;
 
-interface UserAvatorProps {
-  status: boolean;
+interface UserAvatarProps {
+  isOnline: boolean;
 }
 
-const AvatorStatus = styled.div<UserAvatorProps>`
+const AvatarStatus = styled.div<UserAvatarProps>`
   width: 20px;
   height: 20px;
 
@@ -30,7 +30,8 @@ const AvatorStatus = styled.div<UserAvatorProps>`
 
   border: 3px solid ${({ theme }) => theme.color.white};
   border-radius: 15px;
-  background-color: ${({ theme, status }) => (status ? theme.color.green300 : theme.color.gray300)};
+  background-color: ${({ theme, isOnline }) =>
+    isOnline ? theme.color.green300 : theme.color.gray300};
 `;
 
-export { AvatorImage, AvatorContainer, AvatorStatus };
+export { AvatarImage, AvatarContainer, AvatarStatus };
