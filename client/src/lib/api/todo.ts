@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { errorMessage } from '../common/message';
 
 const instance = axios.create({
-  baseURL: process.env.SERVER_URL,
+  baseURL: process.env.SERVER_URL + '/api/todo',
   withCredentials: true,
 });
 
@@ -17,7 +17,7 @@ interface Todo {
 
 export const createTodo = async (name: string, userId: number) => {
   try {
-    const result: { data: Todo } = await instance.post('/api/todo', {
+    const result: { data: Todo } = await instance.post('', {
       name: name,
       userId: userId,
     });
@@ -25,5 +25,18 @@ export const createTodo = async (name: string, userId: number) => {
   } catch (e) {
     toast.error(errorMessage.CREATE_TODO);
     throw e;
+  }
+};
+
+export const updateTodo = async (id: number, name: string, status: boolean) => {
+  try {
+    const result = await instance.patch('', {
+      id,
+      name,
+      status,
+    });
+    if (result.data !== 'ok') throw Error();
+  } catch (e) {
+    toast.error(errorMessage.UPDATE_TODO);
   }
 };

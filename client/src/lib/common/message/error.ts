@@ -19,4 +19,8 @@ export default {
   GET_STORY,
   CREATE_EPIC,
   CREATE_TODO,
+  UPDATE_TODO,
+  UPDATE_TASK,
+  DELETE_TODO,
+  DELETE_TASK,
 };
