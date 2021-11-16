@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { StoryType, StatusType } from '@/types/story';
+import { errorMessage } from '../common/message';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/stories',
@@ -12,7 +13,7 @@ export const getAllStories = async (projectId: number | string) => {
     const result: { data: StoryType[] } = await instance.get(`?projectId=${projectId}`);
     return result.data;
   } catch (e) {
-    toast.error('스토리 조회에 실패하였습니다');
+    toast.error(errorMessage.GET_STORY);
     throw e;
   }
 };

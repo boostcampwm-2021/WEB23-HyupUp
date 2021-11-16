@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { UserState } from '@/contexts/userContext';
+import { errorMessage } from '../common/message';
 
 export interface UserProfile {
   name: string;
@@ -18,7 +19,7 @@ export const getUser = async (email: string) => {
     // 추후 로그인된이메일 확인은 세션에서 (get요청이므로 데이터 없애야함)
     return result.data;
   } catch (e) {
-    toast.error('유저 정보 요청에 실패하였습니다');
+    toast.error(errorMessage.GET_USER);
     throw e;
   }
 };
@@ -30,7 +31,7 @@ export const getUsersByOrganization = async (id: number): Promise<Array<UserProf
     );
     return result.data;
   } catch (e) {
-    toast.error('유저 정보 요청 실패');
+    toast.error(errorMessage.GET_USER);
     return [];
   }
 };

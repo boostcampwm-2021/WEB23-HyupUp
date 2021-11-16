@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { EpicType } from '@/types/epic';
 import { toast } from 'react-toastify';
+import { errorMessage, successMessage } from '../common/message';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/epics',
@@ -12,7 +13,7 @@ export const getEpicsByProjectId = async (projectId: number | string) => {
     const result: { data: EpicType[] } = await instance.get(`?projectId=${projectId}`);
     return result.data;
   } catch (e) {
-    toast.error('failed to fetch epic data');
+    toast.error(errorMessage.GET_EPIC);
     throw e;
   }
 };
@@ -32,7 +33,7 @@ export const createEpic = async (projectId: number | string, epicName: string) =
     });
     return result.data;
   } catch (e) {
-    toast.error('에픽 생성에 실패했습니다.');
+    toast.error(successMessage.CREATE_EPIC);
   }
 };
 
@@ -47,7 +48,7 @@ export const getEpicById = async (epicId: number) => {
       code: number;
       data: { id: number; name: string; startAt: Date; endAt: Date };
     } = await instance.get(`/${epicId}`);
-    if (result.code / 100 >= 4) throw new Error('에픽 정보 조회에 실패하였습니다.');
+    if (result.code / 100 >= 4) throw new Error(errorMessage.GET_EPIC);
     return result.data;
   } catch (e) {
     toast.error((e as Error).message);

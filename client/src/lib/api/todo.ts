@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { errorMessage } from '../common/message';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL,
@@ -22,7 +23,7 @@ export const createTodo = async (name: string, userId: number) => {
     });
     return result.data;
   } catch (e) {
-    toast.error('TODO 생성 실패');
+    toast.error(errorMessage.CREATE_TODO);
     throw e;
   }
 };
