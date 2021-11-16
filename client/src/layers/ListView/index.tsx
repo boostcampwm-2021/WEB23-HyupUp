@@ -70,7 +70,7 @@ const ListView = () => {
         {renderTasks.map((task, i) => (
           <ListViewItem
             task={task}
-            key={'' + i + task.id}
+            key={i + '-' + task.id}
             onClickMethod={listState === 'done' ? onClickDelete : onClickFinish}
           />
         ))}
