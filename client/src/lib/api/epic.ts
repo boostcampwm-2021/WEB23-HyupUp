@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { EpicType } from '@/types/epic';
 import { toast } from 'react-toastify';
 import { errorMessage, successMessage } from '../common/message';
+import { EpicType } from '@/types/epic';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/epics',
@@ -46,7 +46,7 @@ export const getEpicById = async (epicId: number) => {
   try {
     const result: {
       code: number;
-      data: { id: number; name: string; startAt: Date; endAt: Date };
+      data: EpicType;
     } = await instance.get(`/${epicId}`);
     if (result.code / 100 >= 4) throw new Error(errorMessage.GET_EPIC);
     return result.data;
