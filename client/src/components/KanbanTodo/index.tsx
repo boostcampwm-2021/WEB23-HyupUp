@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStoryState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
-import { createStory, updateStoryWithName } from '@/lib/api/story';
+import { createStory, updateStoryWithName, deleteStoryWitId } from '@/lib/api/story';
 import useInput from '@/lib/hooks/useInput';
 import Styled from '@/components/KanbanTodo/style';
 import Button from '@/lib/design/Button';
@@ -21,9 +21,9 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
   const useDispatch = useStoryDispatch();
   const { key, value, onChange } = useInput('');
   const [showModal, setShowModal] = useState(false);
+  const [shouldDeleteKey, setDeleteKey] = useState(0);
 
   const lastStoryId = extractLastID(storyArray);
-
   const StoryObject: StoryType = {
     id: lastStoryId + 1,
     name: '',
@@ -33,6 +33,11 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
   const useAddStory = () => {
     useDispatch({ type: 'ADD_STORY', story: StoryObject });
     createStory({ ...StoryObject, projectId });
+  };
+
+  const useDeleteStory = () => {
+    useDispatch({ type: 'REMOVE_STORY', id: shouldDeleteKey });
+    deleteStoryWitId(shouldDeleteKey);
   };
 
   const useUpdateStoryName = () => {
@@ -53,7 +58,12 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
               onChange={onChange}
               onBlur={useUpdateStoryName}
             />
-            <Styled.CancelIcon onClick={() => setShowModal(true)}></Styled.CancelIcon>
+            <Styled.CancelIcon
+              onClick={() => {
+                setShowModal(true);
+                setDeleteKey(story.id);
+              }}
+            ></Styled.CancelIcon>
           </Styled.KanBanItem>
         );
       })}
@@ -65,6 +75,8 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
         title={'스토리를 삭제하시겠습니까?'}
         visible={showModal}
         onClose={() => setShowModal(false)}
+        onClickCancel={() => setShowModal(false)}
+        onClickOk={useDeleteStory}
       ></Modal>
     </Styled.Column>
   );
