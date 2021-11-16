@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import S from '@/components/RoadmapCalendar/style';
-import { getYMD } from '@/lib/utils/date';
+import { getLastDate, getYMD } from '@/lib/utils/date';
 
 const WEEK_OFFSET = 14;
 const FRONT_HALF = 8;
@@ -10,13 +10,18 @@ const RoadmapCalendar = () => {
   const [date, setDate] = useState(new Date());
 
   const makeDayRow = (date: Date) => {
+    const { year, month } = getYMD(date);
+    const lastDate = getLastDate({ year, month });
+    const formerLastDate = getLastDate({ year, month: month - 1 });
     const daysArray = new Array<number>();
     [...Array(FRONT_HALF)]
       .map((_, i) => date.getDate() - i)
+      .map((day) => (day < 0 ? formerLastDate + day : day))
       .reverse()
       .forEach((day: number) => daysArray.push(day));
     [...Array(REAR_HALF)]
       .map((_, i) => date.getDate() + i + 1)
+      .map((day) => (day >= lastDate ? day - lastDate : day))
       .forEach((day: number) => daysArray.push(day));
     return daysArray;
   };
