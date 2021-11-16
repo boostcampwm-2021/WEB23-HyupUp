@@ -77,3 +77,19 @@ export const updateStoryWithName = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const deleteStoryWithKey = async (req: Request, res: Response) => {
+  const { id } = req.body;
+  try {
+    await getConnection()
+      .createQueryBuilder()
+      .delete()
+      .from(Stories)
+      .where('id = :id', { id: id })
+      .execute();
+  } catch (e) {
+    res.status(400).json({
+      message: (e as Error).message,
+    });
+  }
+};
