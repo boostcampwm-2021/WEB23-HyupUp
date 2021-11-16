@@ -36,3 +36,20 @@ export default async function createTodo(req: Request, res: Response) {
     }
   }
 }
+
+export const updateTodo = async (req: Request, res: Response) => {
+  try {
+    if (!bodyValidator(req.body, ['id', 'name', 'status'])) {
+      throw Error('body is not valid');
+    }
+    const todoRepository = getRepository(Todo);
+    await todoRepository.update(req.body.id, {
+      name: req.body.name,
+      status: req.body.status,
+    });
+    res.json('ok');
+  } catch (error) {
+    const message = (error as Error).message;
+    res.json(message);
+  }
+};

@@ -1,8 +1,9 @@
 import express from 'express';
-import createTodo from './Todo.controller';
+import createTodo, { updateTodo } from './Todo.controller';
 
 const router = express.Router();
 
 router.post('/', createTodo);
+router.patch('/', updateTodo);
 
 export default router;
