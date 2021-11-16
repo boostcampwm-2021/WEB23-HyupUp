@@ -19,7 +19,7 @@ const extractLastID = (array: Array<StoryType>) => {
 const KanbanTodo = ({ projectId }: KanbanProps) => {
   const storyArray = useStoryState();
   const useDispatch = useStoryDispatch();
-  const [key, value, handleChange] = useInput();
+  const { key, value, onChange } = useInput('');
   const [showModal, setShowModal] = useState(false);
 
   const lastStoryId = extractLastID(storyArray);
@@ -50,7 +50,7 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
               type="text"
               placeholder={story.name ? story.name : 'type a todo...'}
               data-key={story.id}
-              onChange={handleChange}
+              onChange={onChange}
               onBlur={useUpdateStoryName}
             />
             <Styled.CancelIcon onClick={() => setShowModal(true)}></Styled.CancelIcon>
