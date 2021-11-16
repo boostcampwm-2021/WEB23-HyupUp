@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import Button from '@/lib/design/Button';
 
 const S = {
   Container: styled.div`
@@ -107,22 +108,26 @@ const Modal = ({
         {children}
         {shouldConfirm ? (
           <S.ButtonWrapper>
-            <button
+            <Button
+              size={'small'}
+              category={'cancel'}
               onClick={(e) => {
                 onClickCancel && onClickCancel(e);
                 onClose(e);
               }}
             >
-              cancel
-            </button>
-            <button
+              취소
+            </Button>
+            <Button
+              size={'small'}
+              category={'confirm'}
               onClick={(e) => {
                 onClickOk && onClickOk(e);
                 onClose(e);
               }}
             >
-              ok
-            </button>
+              확인
+            </Button>
           </S.ButtonWrapper>
         ) : undefined}
       </S.Body>
