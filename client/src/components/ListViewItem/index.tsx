@@ -9,21 +9,28 @@ interface ListItemProp {
 }
 
 const ListViewItem = ({ task, onClickMethod }: ListItemProp) => {
+  const buttonComponent = () => {
+    if (!task.status) {
+      // 할 일
+      return (
+        <Button size="small" category="default" onClick={() => onClickMethod(task)}>
+          완료
+        </Button>
+      );
+    } else if (!task.project) {
+      return (
+        <Button size="small" category="confirm" onClick={() => onClickMethod(task)}>
+          삭제
+        </Button>
+      );
+    }
+  };
+
   return (
     <Styled.Container>
       <Styled.Title>{task.project ? task.project.name : 'TODO'}</Styled.Title>
       <Styled.Content>{task.name}</Styled.Content>
-      {!task.status ? (
-        <Button size="small" category="default" onClick={() => onClickMethod(task)}>
-          완료
-        </Button>
-      ) : (
-        !task.project && (
-          <Button size="small" category="confirm" onClick={() => onClickMethod(task)}>
-            삭제
-          </Button>
-        )
-      )}
+      {buttonComponent()}
     </Styled.Container>
   );
 };
