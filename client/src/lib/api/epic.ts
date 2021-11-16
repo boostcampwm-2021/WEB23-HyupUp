@@ -28,8 +28,10 @@ export const getEpicsByProjectId = async (projectId: number | string) => {
 export const createEpic = async (projectId: number | string, epicName: string) => {
   try {
     const result: { data: { id: number } } = await instance.post('', {
-      projectName: projectId,
       name: epicName,
+      projectId,
+      startAt: new Date(),
+      endAt: new Date(),
     });
     return result.data;
   } catch (e) {
