@@ -9,8 +9,8 @@ interface EpicPlaceholderProps {
 const EpicPlaceholder = ({ visible, handleSubmit }: EpicPlaceholderProps) => {
   const [value, setValue] = React.useState<string>('');
 
-  const handleEnter = async (ev: React.KeyboardEvent) => {
-    if (value === '' || ev.key !== 'Enter') return;
+  const handleFormSubmit = async (ev: React.FormEvent) => {
+    ev.preventDefault();
     await handleSubmit(value);
     setValue('');
   };
@@ -21,9 +21,9 @@ const EpicPlaceholder = ({ visible, handleSubmit }: EpicPlaceholderProps) => {
 
   return (
     <S.Container>
-      {visible ? (
-        <input type="text" value={value} onKeyPress={handleEnter} onChange={handleChange} />
-      ) : undefined}
+      <form onSubmit={handleFormSubmit}>
+        {visible ? <input type="text" value={value} onChange={handleChange} /> : undefined}
+      </form>
     </S.Container>
   );
 };
