@@ -18,6 +18,7 @@ import { getAllStories } from '@/lib/api/story';
 import { useEpicDispatch, useStoryDispatch, useUserState } from '@/lib/hooks/useContextHooks';
 import useSocketReceive from '@/lib/hooks/useSocketReceive';
 import { toast } from 'react-toastify';
+import { errorMessage } from '@/lib/common/message';
 
 const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
@@ -26,7 +27,7 @@ const WorkPage = () => {
   useSocketReceive('GET_EPIC', async (epicId: number) => {
     try {
       const data = await getEpicById(epicId);
-      if (!data) throw new Error('에픽 정보를 조회할 수 없습니다');
+      if (!data) throw new Error(errorMessage.GET_EPIC);
       epicDispatcher({ type: `ADD_EPIC`, epic: data });
     } catch (e) {
       toast.error((e as Error).message);

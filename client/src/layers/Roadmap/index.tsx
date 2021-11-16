@@ -7,6 +7,7 @@ import { createEpic } from '@/lib/api/epic';
 import useSocketSend from '@/lib/hooks/useSocketSend';
 import RoadmapCalendar from '@/components/RoadmapCalendar';
 import Button from '@/lib/design/Button';
+import { errorMessage, successMessage } from '@/lib/common/message';
 
 interface RoadmapProps {
   projectId?: number;
@@ -30,7 +31,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
 
   const handleSubmit = async (value: string) => {
     try {
-      if (!projectId) throw new Error('유저 정보 없음');
+      if (!projectId) throw new Error(errorMessage.GET_PROJECT);
       const result = await createEpic(projectId, value);
       // FIXME: 에러 핸들링을 어디서 처리해야하나?
       // createEpic의 결과를 확인하고 여기서 에러처리
@@ -43,7 +44,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       setInputVisible(false);
       emitNewEpic(result.id);
 
-      toast.success('에픽 생성 완료!');
+      toast.success(successMessage.CREATE_EPIC);
     } catch (e) {
       toast.error((e as Error).message);
     }
