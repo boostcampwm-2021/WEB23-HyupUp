@@ -67,7 +67,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
             + Add item
           </Button>
         </S.EpicEntry>
-        <RoadmapCalendar></RoadmapCalendar>
+        <RoadmapCalendar />
       </S.Content>
     </S.Container>
   );
