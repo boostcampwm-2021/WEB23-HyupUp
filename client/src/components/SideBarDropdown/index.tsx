@@ -12,6 +12,7 @@ const SideBarDropDown = () => {
   const userDispatcher = useUserDispatch();
   const [listState, listStateHandler] = useState<Array<ProjectType>>([]);
   const [titleState, titleStateHandler] = useState('프로젝트');
+
   const itemClickHandler = (e: React.MouseEvent) => {
     const target = e.target as HTMLLIElement;
     if (target.tagName !== 'LI') return;

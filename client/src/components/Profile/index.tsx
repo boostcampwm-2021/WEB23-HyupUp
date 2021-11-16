@@ -6,7 +6,7 @@ const Profile = () => {
   const [openState, setOpenState] = useState(false);
   const toggleDropDown = () => setOpenState((openState) => !openState);
   const handleOutClick = () => setOpenState((openState) => !openState);
-  const handleLogout = () => console.log('Logout');
+  // const handleLogout = () => {};
   const ref = useRef(null);
 
   useOutSideClick(ref, handleOutClick);
@@ -17,9 +17,7 @@ const Profile = () => {
         <div className="list-container" ref={ref}>
           <ul className="dropdown-list">
             <li>이름</li>
-            <li className="logout" onClick={handleLogout}>
-              로그아웃
-            </li>
+            <li className="logout">로그아웃</li>
           </ul>
         </div>
       )}
