@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import S from '@/components/RoadmapCalendar/style';
 import { getYMD } from '@/lib/utils/date';
 
+const WEEK_OFFSET = 14;
+
 const RoadmapCalendar = () => {
   const [date, setDate] = useState(new Date());
 
@@ -19,13 +21,13 @@ const RoadmapCalendar = () => {
 
   const toNext = () => {
     const { year, month, day } = getYMD(date);
-    const newDate = new Date(year, month, day + 14);
+    const newDate = new Date(year, month, day + WEEK_OFFSET);
     setDate(newDate);
   };
 
   const toPrev = () => {
     const { year, month, day } = getYMD(date);
-    const newDate = new Date(year, month, day - 14);
+    const newDate = new Date(year, month, day - WEEK_OFFSET);
     setDate(newDate);
   };
 
