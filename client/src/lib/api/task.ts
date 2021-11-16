@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { errorMessage } from '../common/message';
+import { errorMessage } from '@/lib/common/message';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/tasks',
@@ -16,6 +16,15 @@ export const updateTask = async (id: number, name: string, status: boolean) => {
     });
     if (result.data !== 'ok') throw Error();
   } catch (e) {
-    toast.error(errorMessage.UPDATE_TODO);
+    toast.error(errorMessage.UPDATE_TASK);
+  }
+};
+
+export const deleteTask = async (id: number) => {
+  try {
+    const result = await instance.delete(`?id=${id}`);
+    if (result.data !== 'ok') throw Error();
+  } catch (e) {
+    toast.error(errorMessage.DELETE_TASK);
   }
 };

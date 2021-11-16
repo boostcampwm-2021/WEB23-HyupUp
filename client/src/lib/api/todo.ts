@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { errorMessage } from '../common/message';
+import { errorMessage } from '@/lib/common/message';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/todo',
