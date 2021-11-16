@@ -14,16 +14,15 @@ const SideBarDropDown = () => {
   const [titleState, titleStateHandler] = useState('프로젝트');
   const itemClickHandler = (e: React.MouseEvent) => {
     const target = e.target as HTMLLIElement;
-    if (target.tagName === 'LI') {
-      titleStateHandler(target.innerText);
-      userDispatcher({
-        type: 'UPDATE_USER',
-        payload: {
-          currentProjectName: target.innerText,
-          currentProjectId: +target.value,
-        },
-      });
-    }
+    if (target.tagName !== 'LI') return;
+    titleStateHandler(target.innerText);
+    userDispatcher({
+      type: 'UPDATE_USER',
+      payload: {
+        currentProjectName: target.innerText,
+        currentProjectId: +target.value,
+      },
+    });
   };
   useEffect(() => {
     (async () => {
@@ -31,18 +30,17 @@ const SideBarDropDown = () => {
         userState.id as number,
         userState.organization as number,
       );
+      const defaultProject = projects.length !== 0 ? projects[0] : undefined;
+      const payload = defaultProject
+        ? {
+            projects: projects,
+            currentProjectName: defaultProject.name,
+            currentProjectId: defaultProject.id,
+          }
+        : { projects: projects };
       userDispatcher({
         type: 'UPDATE_USER',
-        payload: {
-          projects: projects,
-        },
-      });
-      userDispatcher({
-        type: 'UPDATE_USER',
-        payload: {
-          currentProjectName: projects[0].name,
-          currentProjectId: projects[0].id,
-        },
+        payload: payload,
       });
       listStateHandler(projects);
       titleStateHandler(projects[0].name);
