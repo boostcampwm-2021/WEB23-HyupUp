@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useStoryState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
-import { createStory, updateStoryWithName, deleteStoryWitId } from '@/lib/api/story';
-import useInput from '@/lib/hooks/useInput';
+import { createStory, deleteStoryWitId } from '@/lib/api/story';
 import Styled from '@/components/KanbanTodo/style';
-import Button from '@/lib/design/Button';
-import Modal from '@/lib/design/Modal';
+import { Button, Modal } from '@/lib/design';
+import { KanbanItem } from '@/components';
 import { StoryType } from '@/types/story';
 
 interface KanbanProps {
@@ -20,20 +19,15 @@ const extractLastID = (array: Array<StoryType>) => {
 const KanbanTodo = ({ projectId }: KanbanProps) => {
   const storyArray = useStoryState();
   const useDispatch = useStoryDispatch();
-  const { key, value, onChange } = useInput('');
-  const [showModal, setShowModal] = useState(false);
-  const [shouldDeleteKey, setDeleteKey] = useState(0);
   const lastStoryId: number = extractLastID(storyArray);
 
-  const StoryObject: StoryType = {
-    id: lastStoryId + 1,
-    name: '',
-    status: 'TODO',
-  };
+  const [showModal, setShowModal] = useState(false);
+  const [shouldDeleteKey, setDeleteKey] = useState(0);
+  const storyObj = { id: lastStoryId + 1, name: '', status: 'TODO' };
 
   const useAddStory = () => {
-    useDispatch({ type: 'ADD_STORY', story: StoryObject });
-    createStory({ ...StoryObject, projectId });
+    useDispatch({ type: 'ADD_STORY', story: storyObj });
+    createStory({ ...storyObj, projectId });
   };
 
   const useDeleteStory = async () => {
@@ -41,33 +35,18 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
     await deleteStoryWitId(shouldDeleteKey);
   };
 
-  const useUpdateStoryName = () => {
-    useDispatch({ type: 'UPDATE_STORY', story: { ...StoryObject, id: key, name: value } });
-    updateStoryWithName({ ...StoryObject, id: key, name: value });
-  };
-
   return (
     <Styled.Column>
       <h4>To do</h4>
-      {storyArray?.map((story) => {
-        return (
-          <Styled.KanBanItem key={story.id}>
-            <input
-              type="text"
-              placeholder={story.name ? story.name : 'type a todo...'}
-              data-key={story.id}
-              onChange={onChange}
-              onBlur={useUpdateStoryName}
-            />
-            <Styled.CancelIcon
-              onClick={() => {
-                setShowModal(true);
-                setDeleteKey(story.id);
-              }}
-            ></Styled.CancelIcon>
-          </Styled.KanBanItem>
-        );
-      })}
+      {storyArray?.map((story) => (
+        <KanbanItem
+          key={story.id}
+          story={story}
+          storyObj={storyObj}
+          setDeleteKey={setDeleteKey}
+          setShowModal={setShowModal}
+        />
+      ))}
       <Button size={'large'} category={'cancel'} onClick={useAddStory}>
         Add Todo
       </Button>
