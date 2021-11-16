@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { UserState } from '@/contexts/userContext';
 
 export interface UserProfile {
+  index: number;
   name: string;
   imageURL: string;
 }

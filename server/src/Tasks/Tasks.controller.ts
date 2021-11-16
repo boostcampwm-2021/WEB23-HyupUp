@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { getRepository } from 'typeorm';
 import Tasks from './Tasks.entity';
+import Stories from '../Stories/Stories.entity';
 
 export const getAllTasksByProject = async (req: Request, res: Response) => {
   try {
@@ -19,5 +20,34 @@ export const getAllTasksByProject = async (req: Request, res: Response) => {
     if (result === 'query is not vaild') {
       res.status(400).json(result);
     }
+  }
+};
+
+export const getTasksByStoryId = async (req: Request, res: Response) => {
+  try {
+    if (!req.params.id === undefined) {
+      throw new Error('story id is not valid');
+    }
+    const storyRepostory = getRepository(Stories);
+    const taskRepository = getRepository(Tasks);
+    const story = await storyRepostory.findOne(req.params.id);
+    if (story === undefined) throw new Error('story id is not valid');
+    const tasks = await taskRepository.find({
+      relations: ['users'],
+      where: { stories: { id: +req.params.id } },
+    });
+    res
+      .status(200)
+      .json(
+        tasks.map((el) => ({
+          id: el.id,
+          name: el.name,
+          user: el.users.name,
+          userImage: el.users.imageURL,
+        })),
+      );
+  } catch (e) {
+    const result = (e as Error).message;
+    if (result === 'story id is not valid') res.status(400).json(result).end();
   }
 };

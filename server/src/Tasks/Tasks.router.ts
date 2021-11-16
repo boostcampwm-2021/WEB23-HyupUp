@@ -1,10 +1,10 @@
 import express from 'express';
-import cors from 'cors';
-import options from '../../lib/config/corsConfig';
-import { getAllTasksByProject } from './Tasks.controller';
+import { getAllTasksByProject, getTasksByStoryId } from './Tasks.controller';
 
 const router = express.Router();
 
-router.get('/', cors(options), getAllTasksByProject);
+router.get('/', getAllTasksByProject);
+
+router.get('/:id', getTasksByStoryId);
 
 export default router;
