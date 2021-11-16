@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 const S = {
   RoadmapCalendar: styled.section`
+    position: relative;
+
     width: 100%;
     height: 100%;
     padding: 16px;
@@ -37,6 +39,7 @@ const S = {
     display: flex;
     justify-content: space-between;
 
+    margin-bottom: 18px;
     padding: 8px 0;
 
     border-bottom: 1px solid ${({ theme }) => theme.color.gray100};
@@ -50,7 +53,9 @@ const S = {
   DayColumnWrapper: styled.section`
     display: flex;
     justify-content: space-between;
+    position: absolute;
 
+    width: calc(100% - 32px);
     height: 100%;
   `,
   DayColumn: styled.section`
