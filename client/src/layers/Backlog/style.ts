@@ -5,6 +5,7 @@ const Container = styled.section`
   min-height: 600px;
 
   margin-left: 26px;
+  padding: 18px;
 
   background-color: ${({ theme }) => theme.color.gray100};
   border-radius: 8px;
@@ -16,4 +17,9 @@ const ItemContainer = styled.div`
   margin-top: 30px;
 `;
 
-export { ItemContainer, Container };
+const Title = styled.h3`
+  height: 50px;
+  font: ${({ theme }) => theme.font.bold_medium};
+`;
+
+export { ItemContainer, Container, Title };
