@@ -58,7 +58,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
           {epicsOnProject?.map(({ name }, i) => (
             <S.EpicEntryItem key={name + i.toString()}>{name}</S.EpicEntryItem>
           ))}
-          <EpicPlaceholder visible={inputVisible} handleSubmit={handleSubmit}></EpicPlaceholder>
+          <EpicPlaceholder visible={inputVisible} handleSubmit={handleSubmit} />
           <Button
             size={'small'}
             category={'cancel'}

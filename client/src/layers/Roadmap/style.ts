@@ -52,6 +52,7 @@ const S = {
 
     font: ${({ theme }) => theme.font.body_regular};
     color: ${({ theme }) => theme.color.gray400};
+    white-space: nowrap;
 
     &:nth-child(1) {
       margin-top: 64px;
