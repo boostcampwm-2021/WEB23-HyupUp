@@ -9,9 +9,9 @@ interface EpicPlaceholderProps {
 const EpicPlaceholder = ({ visible, handleSubmit }: EpicPlaceholderProps) => {
   const [value, setValue] = React.useState<string>('');
 
-  const handleFormSubmit = async (ev: React.FormEvent) => {
+  const handleFormSubmit = (ev: React.FormEvent) => {
     ev.preventDefault();
-    await handleSubmit(value);
+    handleSubmit(value);
     setValue('');
   };
 
