@@ -48,13 +48,9 @@ const S = {
     justify-content: space-between;
 
     height: 100%;
-
-    border: 1px solid red;
   `,
   DayColumn: styled.section`
     width: 100%;
-
-    border: 1px solid blue;
   `,
 };
 
