@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { setupCache } from 'axios-cache-adapter';
 import { toast } from 'react-toastify';
+import { errorMessage } from '../common/message';
 
 export interface TaskProps {
   id: number;
@@ -24,7 +25,7 @@ export const getTasksByStoryId = async (storyId: number) => {
     const result: { data: Array<TaskProps> } = await instance.get(`/${storyId}`);
     return result.data;
   } catch (e) {
-    toast.error('task를 가져오는데 실패했습니다.');
+    toast.error(errorMessage.GET_TASK);
     throw e;
   }
 };
