@@ -61,10 +61,10 @@ export const createEpic = async (req: Request, res: Response) => {
       .insert()
       .into(Epics)
       .values({
-        startAt: new Date(),
-        endAt: new Date(),
-        projects: () => req.body.projectName,
         name: req.body.name,
+        projects: req.body.projectId,
+        startAt: req.body.startAt,
+        endAt: req.body.endAt,
       })
       .execute();
     res.status(201).json({ id: result.raw.insertId });
