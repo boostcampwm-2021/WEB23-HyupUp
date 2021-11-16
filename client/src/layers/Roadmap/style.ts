@@ -6,9 +6,8 @@ const S = {
     flex-direction: column;
 
     width: 941px;
-    height: 600px;
 
-    margin: 0 0 0 26px;
+    margin: 0 0 64px 26px;
     padding: 18px;
 
     border-radius: 8px;
@@ -16,8 +15,6 @@ const S = {
 
     font: ${({ theme }) => theme.font.body_regular};
     color: ${({ theme }) => theme.color.gray400};
-
-    overflow: scroll;
   `,
   Title: styled.h2`
     margin-bottom: 16px;
@@ -58,14 +55,6 @@ const S = {
     &:nth-child(1) {
       margin-top: 64px;
     }
-  `,
-  RoadmapCalendar: styled.section`
-    width: 100%;
-    height: 100%;
-    padding: 16px;
-
-    background-color: ${({ theme }) => theme.color.white};
-    border-radius: 8px;
   `,
 };
 

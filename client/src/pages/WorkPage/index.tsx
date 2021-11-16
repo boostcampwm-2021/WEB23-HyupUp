@@ -13,15 +13,26 @@ import roadmap from '@public/icons/calendar-icon.svg';
 import board from '@public/icons/board-icon.svg';
 import backlog from '@public/icons/time-icon.svg';
 
-import { getEpicsByProjectId } from '@/lib/api/epic';
+import { getEpicById, getEpicsByProjectId } from '@/lib/api/epic';
 import { getAllStories } from '@/lib/api/story';
 import { useEpicDispatch, useStoryDispatch, useUserState } from '@/lib/hooks/useContextHooks';
-import { EpicType } from '@/types/epic';
+import useSocketReceive from '@/lib/hooks/useSocketReceive';
+import { toast } from 'react-toastify';
+import { errorMessage } from '@/lib/common/message';
 
 const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
   const storyDispatcher = useStoryDispatch();
   const user = useUserState();
+  useSocketReceive('GET_EPIC', async (epicId: number) => {
+    try {
+      const data = await getEpicById(epicId);
+      if (!data) throw new Error(errorMessage.GET_EPIC);
+      epicDispatcher({ type: `ADD_EPIC`, epic: data });
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
+  });
 
   const tabs = [
     <Roadmap key={0} projectId={user?.currentProjectId} />,
