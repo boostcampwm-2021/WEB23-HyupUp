@@ -3,17 +3,19 @@ import S from '@/components/RoadmapCalendar/style';
 import { getYMD } from '@/lib/utils/date';
 
 const WEEK_OFFSET = 14;
+const FRONT_HALF = 8;
+const REAR_HALF = 7;
 
 const RoadmapCalendar = () => {
   const [date, setDate] = useState(new Date());
 
   const makeDayRow = (date: Date) => {
     const daysArray = new Array<number>();
-    [...Array(8)]
+    [...Array(FRONT_HALF)]
       .map((_, i) => date.getDate() - i)
       .reverse()
       .forEach((day: number) => daysArray.push(day));
-    [...Array(7)]
+    [...Array(REAR_HALF)]
       .map((_, i) => date.getDate() + i + 1)
       .forEach((day: number) => daysArray.push(day));
     return daysArray;
