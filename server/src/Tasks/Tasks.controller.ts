@@ -67,3 +67,17 @@ export const updateTask = async (req: Request, res: Response) => {
     res.json(message);
   }
 };
+
+export const deleteTask = async (req: Request, res: Response) => {
+  try {
+    if (!bodyValidator(req.body, ['id'])) {
+      throw Error('body is not valid');
+    }
+    const taskRepository = getRepository(Tasks);
+    await taskRepository.delete({ id: req.body.id });
+    res.json('ok');
+  } catch (error) {
+    const message = (error as Error).message;
+    res.json(message);
+  }
+};
