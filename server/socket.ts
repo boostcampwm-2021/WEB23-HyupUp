@@ -30,12 +30,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnecting', () => {
-    const id = usersList.TEAM42.filter((el) => el.sid === socket.id);
-    if (id.length === 0) return;
-    usersList.TEAM42 = [
-      ...usersList.TEAM42.filter((el) => el.sid !== socket.id).map((el) => ({ ...el })),
-    ];
-    socket.to('TEAM42').emit('OFF', id[0].userId);
+    const disconnectedUser = usersList.TEAM42.find((el) => el.sid === socket.id);
+    if (!disconnectedUser) return;
+    usersList.TEAM42 = usersList.TEAM42.filter((el) => el.sid !== socket.id);
+    socket.to('TEAM42').emit('OFF', disconnectedUser.userId);
   });
 });
 
