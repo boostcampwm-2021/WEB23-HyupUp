@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import S from '@/components/RoadmapCalendar/style';
+import { getYMD } from '@/lib/utils/date';
 
 const RoadmapCalendar = () => {
   const [date, setDate] = useState(new Date());
@@ -16,13 +17,25 @@ const RoadmapCalendar = () => {
     return daysArray;
   };
 
+  const toNext = () => {
+    const { year, month, day } = getYMD(date);
+    const newDate = new Date(year, month, day + 14);
+    setDate(newDate);
+  };
+
+  const toPrev = () => {
+    const { year, month, day } = getYMD(date);
+    const newDate = new Date(year, month, day - 14);
+    setDate(newDate);
+  };
+
   return (
     <S.RoadmapCalendar>
       <S.CalendarHead>
         <S.MonthLabel>{date.getMonth() + 1}월</S.MonthLabel>
         <S.ButtonWrapper>
-          <S.CalendarButton>&lt;</S.CalendarButton>
-          <S.CalendarButton>&gt;</S.CalendarButton>
+          <S.CalendarButton onClick={() => toPrev()}>&lt;</S.CalendarButton>
+          <S.CalendarButton onClick={() => toNext()}>&gt;</S.CalendarButton>
         </S.ButtonWrapper>
       </S.CalendarHead>
       <S.DaysWrapper>
