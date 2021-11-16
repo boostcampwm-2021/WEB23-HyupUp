@@ -38,4 +38,15 @@ const ToggleButton = styled.button`
   right: 10px;
 `;
 
-export default { ItemContainer, StoryText, ToggleImg, ToggleButton };
+const TaskContainer = styled.ul<IsClick>`
+  ${({ check }) => (!check ? 'height: 0px; position:absolute;' : undefined)};
+  visibility: ${({ check }) => (check ? 'visible' : 'hidden')};
+  opacity: ${({ check }) => (check ? '1' : '0')};
+
+  transform: ${({ check }) => (check ? 'translateY(0px)' : 'translateY(-10px)')};
+  z-index: ${({ check }) => (check ? '1' : '-1')};
+  transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
+  transition-delay: ${({ check }) => (check ? '0s' : ' 0s, 0s, 0.3s;')};
+`;
+
+export default { ItemContainer, StoryText, ToggleImg, ToggleButton, TaskContainer };
