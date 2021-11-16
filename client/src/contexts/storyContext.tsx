@@ -35,11 +35,7 @@ function reducer(state: StoryState, action: StoryAction): StoryState {
           return {
             ...el,
             ...action.story,
-<<<<<<< HEAD
-          } as StoryType;
-=======
           };
->>>>>>> f2913279014a59790db882c92e9a4b9f11661369
         });
       });
     case 'LOAD_STORY':
