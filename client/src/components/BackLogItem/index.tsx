@@ -1,6 +1,6 @@
 import React from 'react';
 import S from './style';
-import arrow from '@public/image/arrow_drop_down.png';
+import arrow from '@public/icons/chevron-down.svg';
 import { useState } from 'react';
 
 const BackLogItem = ({ name }: { name: string }) => {
