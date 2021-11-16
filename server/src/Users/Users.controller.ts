@@ -21,7 +21,8 @@ export const handleGet = async (req: Request, res: Response, next: NextFunction)
       projectTasks: tasks,
     });
   } catch (err) {
-    res.status(400).json({ message: '유저 정보 없음' });
+    const result = (err as Error).message;
+    res.status(400).json({ result });
     next(err);
   }
 };
@@ -35,6 +36,7 @@ export const getUsersByOrganization = async (req: Request, res: Response) => {
     const nameAndProfiles = users.map((el) => ({
       name: el.name,
       imageURL: el.imageURL,
+      index: el.id,
     }));
     res.status(200).json(nameAndProfiles);
   } catch (e) {

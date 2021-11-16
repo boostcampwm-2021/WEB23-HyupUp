@@ -44,7 +44,7 @@ const WorkPage = () => {
       epicDispatcher({ type: 'LOAD_EPIC', epics });
       storyDispatcher({ type: 'LOAD_STORY', stories });
     })();
-  }, [epicDispatcher, storyDispatcher, user]);
+  }, [epicDispatcher, storyDispatcher, user.currentProjectId]);
 
   return (
     <>

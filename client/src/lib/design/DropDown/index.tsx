@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import arrow from '@public/image/arrow_drop_down.png';
+import arrow from '@public/icons/chevron-down.svg';
 import theme from '@/styles/theme';
-import { useState } from 'react';
 
-interface Props {
+interface IsVisibleProps {
   state: boolean;
 }
 
-const Box = styled.ul<Props>`
+interface FontProps {
+  fontTheme: { font: string };
+}
+
+const Box = styled.ul<IsVisibleProps>`
   position: absolute;
 
   display: flex;
@@ -32,14 +35,14 @@ const Box = styled.ul<Props>`
   transition-delay: ${(props) => (props.state ? '0s' : ' 0s, 0s, 0.3s;')};
 `;
 
-const Item = styled.li`
+const Item = styled.li<FontProps>`
   min-width: 100px;
   margin: 16px;
 
-  font: ${(props) => props.theme.font};
+  font: ${(props) => props.fontTheme.font};
 `;
 
-const ArrowImage = styled.img<Props>`
+const ArrowImage = styled.img<IsVisibleProps>`
   transform: ${(props) => (props.state ? 'rotate(0deg)' : 'rotate(90deg)')};
   transition-duration: ${(props) => (props.state ? '0.1s' : '0.1s')};
 `;
@@ -70,9 +73,14 @@ const Line = styled.hr`
   background-color: ${({ theme }) => theme.color.gray300};
 `;
 
-interface dropDownProps {
+interface IncludeId {
+  id: number;
+  name: string;
+}
+
+interface DropDownProps {
   Title: React.ReactNode;
-  list: Array<string>;
+  list: Array<IncludeId>;
   font?: string;
   handleClick: (e: React.MouseEvent) => void;
 }
@@ -83,7 +91,7 @@ interface dropDownProps {
  * title은 react Node, list는 Array<string>, click은 ul 태그에 붙일 이벤트 리스너, font는 font에 적용할 특징
  * @returns DropDown Component
  */
-const DropDown = (props: dropDownProps) => {
+const DropDown = (props: DropDownProps) => {
   const { Title, list, font, handleClick } = props;
   const fontTheme = {
     font: font ? font : theme.font.body_regular,
@@ -108,14 +116,16 @@ const DropDown = (props: dropDownProps) => {
         <ArrowImage src={arrow} state={clickState} />
       </ContextContainer>
       <Box onClick={selectItem} state={clickState}>
-        {list.map((el: string, i: number) =>
+        {list.map((el, i) =>
           i === list.length - 1 ? (
-            <Item key={i} theme={fontTheme}>
-              {el}
+            <Item key={el.id} fontTheme={fontTheme} value={el.id}>
+              {el.name}
             </Item>
           ) : (
-            <div key={i}>
-              <Item theme={fontTheme}>{el}</Item>
+            <div key={el.id}>
+              <Item fontTheme={fontTheme} value={el.id}>
+                {el.name}
+              </Item>
               <Line />
             </div>
           ),
