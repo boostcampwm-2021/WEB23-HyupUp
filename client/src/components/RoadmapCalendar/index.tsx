@@ -3,19 +3,31 @@ import S from '@/components/RoadmapCalendar/style';
 
 const RoadmapCalendar = () => {
   const [date, setDate] = useState(new Date());
+
+  const makeDayRow = (date: Date) => {
+    const daysArray = new Array<number>();
+    [...Array(8)]
+      .map((_, i) => date.getDate() - i)
+      .reverse()
+      .forEach((day: number) => daysArray.push(day));
+    [...Array(7)]
+      .map((_, i) => date.getDate() + i + 1)
+      .forEach((day: number) => daysArray.push(day));
+    return daysArray;
+  };
+
   return (
     <S.RoadmapCalendar>
       <S.CalendarHead>
         <S.MonthLabel>{date.getMonth() + 1}월</S.MonthLabel>
         <S.ButtonWrapper>
-          <S.CalendarButton></S.CalendarButton>
-          <S.CalendarButton></S.CalendarButton>
+          <S.CalendarButton>&lt;</S.CalendarButton>
+          <S.CalendarButton>&gt;</S.CalendarButton>
         </S.ButtonWrapper>
       </S.CalendarHead>
       <S.DaysWrapper>
-        {Array.from(new Array(14), (_, i) => (
-          // TODO: key props를 index 값이 아닌 date 값과 연관한 값으로 변경
-          <div key={i}>{i + 1}</div>
+        {makeDayRow(date).map((day: number) => (
+          <div key={day}>{day + 1}</div>
         ))}
       </S.DaysWrapper>
     </S.RoadmapCalendar>
