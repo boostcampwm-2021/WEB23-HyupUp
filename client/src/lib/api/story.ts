@@ -58,6 +58,7 @@ export const updateStoryWithName = async ({
     });
     return result.data;
   } catch (e) {
-    return { id: -1 };
+    toast.error('스토리 이름 변경에 실패하였습니다');
+    throw e;
   }
 };

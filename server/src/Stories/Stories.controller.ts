@@ -25,7 +25,6 @@ export const getAllStoriesByProject = async (req: Request, res: Response) => {
 
     res.status(200).json(storiesWithEpicName);
   } catch (e) {
-    console.log(e);
     const result = (e as Error).message;
     if (result === 'query is not vaild') {
       res.status(400).json(result);

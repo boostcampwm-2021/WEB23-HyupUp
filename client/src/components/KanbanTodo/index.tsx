@@ -24,7 +24,6 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
 
   const lastStoryId = extractLastID(storyArray);
 
-  console.log(lastStoryId);
   const StoryObject: StoryType = {
     id: lastStoryId + 1,
     name: '',
@@ -65,8 +64,6 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
         shouldConfirm
         title={'스토리를 삭제하시겠습니까?'}
         visible={showModal}
-        onClickCancel={() => console.log('cancel!')}
-        onClickOk={() => console.log('ok!')}
         onClose={() => setShowModal(false)}
       ></Modal>
     </Styled.Column>
