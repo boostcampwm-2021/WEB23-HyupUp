@@ -29,7 +29,7 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
     createStory({ ...StoryObject, projectId });
   };
 
-  const useUpdateStory = () => {
+  const useUpdateStoryName = () => {
     useDispatch({ type: 'UPDATE_STORY', story: { ...StoryObject, id: key, name: value } });
     updateStoryWithName({ ...StoryObject, id: key, name: value });
   };
@@ -45,7 +45,7 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
               placeholder={story.name ? story.name : 'type a todo...'}
               data-key={story.id}
               onChange={handleChange}
-              onBlur={useUpdateStory}
+              onBlur={useUpdateStoryName}
             />
             <Styled.CancelIcon onClick={() => setShowModal(true)}></Styled.CancelIcon>
           </Styled.KanBanItem>
