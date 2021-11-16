@@ -40,3 +40,12 @@ export const updateTodo = async (id: number, name: string, status: boolean) => {
     toast.error(errorMessage.UPDATE_TODO);
   }
 };
+
+export const deleteTodo = async (id: number) => {
+  try {
+    const result = await instance.delete(`?id=${id}`);
+    if (result.data !== 'ok') throw Error();
+  } catch (e) {
+    toast.error(errorMessage.DELETE_TODO);
+  }
+};
