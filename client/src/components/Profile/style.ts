@@ -14,6 +14,8 @@ export const Styled = {
       height: 50px;
       border-radius: 50%;
       background-color: black;
+
+      cursor: pointer;
     }
 
     .list-container {
