@@ -30,6 +30,11 @@ const RoadmapCalendar = () => {
           <div key={day}>{day + 1}</div>
         ))}
       </S.DaysWrapper>
+      <S.DayColumnWrapper>
+        {makeDayRow(date).map((day: number) => (
+          <S.DayColumn key={day} />
+        ))}
+      </S.DayColumnWrapper>
     </S.RoadmapCalendar>
   );
 };

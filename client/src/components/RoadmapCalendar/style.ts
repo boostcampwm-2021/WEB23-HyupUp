@@ -37,6 +37,19 @@ const S = {
     display: flex;
     justify-content: space-between;
   `,
+  DayColumnWrapper: styled.section`
+    display: flex;
+    justify-content: space-between;
+
+    height: 100%;
+
+    border: 1px solid red;
+  `,
+  DayColumn: styled.section`
+    width: 100%;
+
+    border: 1px solid blue;
+  `,
 };
 
 export default S;
