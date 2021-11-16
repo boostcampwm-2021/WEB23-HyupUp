@@ -36,6 +36,10 @@ const S = {
   DaysWrapper: styled.div`
     display: flex;
     justify-content: space-between;
+
+    padding: 8px 0;
+
+    border-bottom: 1px solid ${({ theme }) => theme.color.gray100};
   `,
   DayLabel: styled.div`
     display: flex;

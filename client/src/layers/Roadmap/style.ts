@@ -37,6 +37,7 @@ const S = {
 
     width: 221px;
     padding: 16px;
+    padding-top: 64px;
 
     border-right: 3px solid ${({ theme }) => theme.color.gray100};
 
