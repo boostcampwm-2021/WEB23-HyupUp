@@ -1,13 +1,8 @@
 import styled from 'styled-components';
 
-const ItemContainer = styled.section`
+const Container = styled.section`
   width: 947px;
   min-height: 600px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 
   margin-left: 26px;
 
@@ -15,4 +10,10 @@ const ItemContainer = styled.section`
   border-radius: 8px;
 `;
 
-export { ItemContainer };
+const ItemContainer = styled.div`
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 30px;
+`;
+
+export { ItemContainer, Container };
