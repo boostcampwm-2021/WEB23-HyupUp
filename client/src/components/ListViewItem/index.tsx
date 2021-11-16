@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import projectIcon from '@public/icons/project-icon.svg';
+import personalIcon from '@public/icons/personal-icon.svg';
 import Styled from '@/components/ListViewItem/style';
 import { TaskProp } from '@/layers/ListView';
 import Button from '@/lib/design/Button';
@@ -9,9 +11,8 @@ interface ListItemProp {
 }
 
 const ListViewItem = ({ task, onClickMethod }: ListItemProp) => {
-  const buttonComponent = () => {
+  const buttonComponent = useMemo(() => {
     if (!task.status) {
-      // 할 일
       return (
         <Button size="small" category="default" onClick={() => onClickMethod(task)}>
           완료
@@ -24,13 +25,16 @@ const ListViewItem = ({ task, onClickMethod }: ListItemProp) => {
         </Button>
       );
     }
-  };
+  }, [task, onClickMethod]);
 
   return (
     <Styled.Container>
-      <Styled.Title>{task.project ? task.project.name : 'TODO'}</Styled.Title>
+      <Styled.Title>
+        <img src={task.project ? projectIcon : personalIcon} />
+        <h3>{task.project ? 'PROJECT' : 'PERSONAL'}</h3>
+      </Styled.Title>
       <Styled.Content>{task.name}</Styled.Content>
-      {buttonComponent()}
+      {buttonComponent}
     </Styled.Container>
   );
 };
