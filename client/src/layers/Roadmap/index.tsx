@@ -32,6 +32,11 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     try {
       if (!projectId) throw new Error('유저 정보 없음');
       const result = await createEpic(projectId, value);
+      // FIXME: 에러 핸들링을 어디서 처리해야하나?
+      // createEpic의 결과를 확인하고 여기서 에러처리
+      // 또는 createEpic 내부에서 에러처리
+      // 현재는 후자의 방법을 사용중
+      // 전자의 방법을 사용한다면 createEpic 함수 내부의 toast 알림 제거 후 return 문을 throw문으로 교체
       if (!result) return;
 
       epicDispatcher(makeNewAction(result.id, value));
