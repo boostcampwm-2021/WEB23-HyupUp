@@ -15,3 +15,18 @@ export const getYMD = (date: Date) => {
   const day = date.getDate();
   return { year, month, day };
 };
+
+export const isLeapYear = (year: number) => {
+  return year % 4 === 0 && year % 100 !== 0;
+};
+
+export const getLastDate = ({ year, month }: { year: number; month: number }) => {
+  switch (month) {
+    case 2:
+      return isLeapYear(year) ? 29 : 28;
+    case 4 | 6 | 9 | 11:
+      return 30;
+    default:
+      return 31;
+  }
+};
