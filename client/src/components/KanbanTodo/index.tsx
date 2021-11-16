@@ -11,13 +11,20 @@ interface KanbanProps {
   projectId?: number;
 }
 
+const extractLastID = (array: Array<StoryType>) => {
+  if (array.length === 0) return 0;
+  return array.sort((a, b) => b.id - a.id)[0].id;
+};
+
 const KanbanTodo = ({ projectId }: KanbanProps) => {
   const storyArray = useStoryState();
   const useDispatch = useStoryDispatch();
   const [key, value, handleChange] = useInput();
   const [showModal, setShowModal] = useState(false);
 
-  const lastStoryId = storyArray.length > 0 ? storyArray[storyArray.length - 1]?.id : 0;
+  const lastStoryId = extractLastID(storyArray);
+
+  console.log(lastStoryId);
   const StoryObject: StoryType = {
     id: lastStoryId + 1,
     name: '',
