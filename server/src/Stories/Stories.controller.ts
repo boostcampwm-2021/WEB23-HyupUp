@@ -78,8 +78,8 @@ export const updateStoryWithName = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteStoryWithKey = async (req: Request, res: Response) => {
-  const { id } = req.body;
+export const deleteStoryWithId = async (req: Request, res: Response) => {
+  const { id } = req.query;
   try {
     await getConnection()
       .createQueryBuilder()
