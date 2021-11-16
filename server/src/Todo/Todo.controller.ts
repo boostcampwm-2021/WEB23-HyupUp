@@ -1,10 +1,10 @@
 import Users from '../Users/Users.entity';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { bodyValidator } from '../../lib/utils/requestValidator';
 import Todo from './Todo.entity';
 
-export default async function createTodo(req: Request, res: Response) {
+export async function createTodo(req: Request, res: Response) {
   try {
     if (!bodyValidator(req.body, ['name', 'userId'])) {
       throw new Error('body is not vaild');
@@ -47,6 +47,20 @@ export const updateTodo = async (req: Request, res: Response) => {
       name: req.body.name,
       status: req.body.status,
     });
+    res.json('ok');
+  } catch (error) {
+    const message = (error as Error).message;
+    res.json(message);
+  }
+};
+
+export const deleteTodo = async (req: Request, res: Response) => {
+  try {
+    if (!bodyValidator(req.body, ['id'])) {
+      throw Error('body is not valid');
+    }
+    const todoRepository = getRepository(Todo);
+    await todoRepository.delete({ id: req.body.id });
     res.json('ok');
   } catch (error) {
     const message = (error as Error).message;
