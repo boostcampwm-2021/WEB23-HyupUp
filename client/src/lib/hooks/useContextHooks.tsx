@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 
 import { EpicStateContext, EpicDispatchContext } from '@/contexts/epicContext';
 import { StoryStateContext, StoryDispatchContext } from '@/contexts/storyContext';
