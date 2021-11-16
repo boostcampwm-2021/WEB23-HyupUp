@@ -1,6 +1,7 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import producer from 'immer';
-import { EpicType } from '@/types/epic';
+import { EpicType, EpicWithString } from '@/types/epic';
+import { makeEpicWithDate } from '@/lib/utils/date';
 
 type EpicState = Array<EpicType>;
 
@@ -8,7 +9,7 @@ type EpicAction =
   | { type: 'ADD_EPIC'; epic: EpicType }
   | { type: 'REMOVE_EPIC'; id: number }
   | { type: 'UPDATE_EPIC'; epic: EpicType }
-  | { type: 'LOAD_EPIC'; epics: EpicType[] }
+  | { type: 'LOAD_EPIC'; epics: EpicWithString[] }
   | { type: 'DROP_EPIC' };
 
 type EpicDispatch = Dispatch<EpicAction>;
@@ -39,7 +40,7 @@ function reducer(state: EpicState, action: EpicAction): EpicState {
         });
       });
     case 'LOAD_EPIC':
-      return [...action.epics];
+      return [...action.epics.map((epic) => makeEpicWithDate(epic))];
     case 'DROP_EPIC':
       return [];
     default:
