@@ -56,11 +56,11 @@ export const updateTodo = async (req: Request, res: Response) => {
 
 export const deleteTodo = async (req: Request, res: Response) => {
   try {
-    if (!bodyValidator(req.body, ['id'])) {
+    if (!req.query.id) {
       throw Error('body is not valid');
     }
     const todoRepository = getRepository(Todo);
-    await todoRepository.delete({ id: req.body.id });
+    await todoRepository.delete({ id: +req.query.id });
     res.json('ok');
   } catch (error) {
     const message = (error as Error).message;
