@@ -18,22 +18,26 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   const epicDispatcher = useEpicDispatch();
   const emitNewEpic = useSocketSend('NEW_EPIC');
 
+  const makeNewAction = (id: number, name: string) => ({
+    type: 'ADD_EPIC' as const,
+    epic: {
+      id,
+      name,
+      startAt: new Date(),
+      endAt: new Date(),
+    },
+  });
+
   const handleSubmit = async (value: string) => {
     try {
       if (!projectId) throw new Error('유저 정보 없음');
-      const { id } = await createEpic(projectId, value);
-      if (id === -1) throw new Error('에픽 생성 실패');
-      epicDispatcher({
-        type: 'ADD_EPIC',
-        epic: {
-          id: id,
-          name: value,
-          startAt: new Date(),
-          endAt: new Date(),
-        },
-      });
+      const result = await createEpic(projectId, value);
+      if (!result.id) throw new Error('에픽 생성 실패');
+
+      epicDispatcher(makeNewAction(result.id, value));
       setInputVisible(false);
-      emitNewEpic(id);
+      emitNewEpic(result.id);
+
       toast.success('에픽 생성 완료!');
     } catch (e) {
       toast.error((e as Error).message);
