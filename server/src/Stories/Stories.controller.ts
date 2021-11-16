@@ -79,13 +79,13 @@ export const updateStoryWithName = async (req: Request, res: Response) => {
 };
 
 export const deleteStoryWithId = async (req: Request, res: Response) => {
-  const { id } = req.query;
+  const { storyId } = req.query;
   try {
     await getConnection()
       .createQueryBuilder()
       .delete()
       .from(Stories)
-      .where('id = :id', { id: id })
+      .where('id = :id', { id: storyId })
       .execute();
   } catch (e) {
     res.status(400).json({

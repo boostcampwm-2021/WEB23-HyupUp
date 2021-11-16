@@ -58,7 +58,7 @@ export const updateStoryWithName = async ({ id, status, name, projectId, epicId 
   }
 };
 
-export const deleteStoryWitId = async ({ id }: { id: number }) => {
+export const deleteStoryWitId = async (id: number) => {
   try {
     await instance.delete(`?storyId=${id}`);
   } catch (e) {
