@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStory } from '@/lib/api/story';
 import { Button } from '@/lib/design';
-import { useStoryDispatch, useStoryState } from '@/lib/hooks/useContextHooks';
+import { useStoryDispatch, useStoryState, useUserState } from '@/lib/hooks/useContextHooks';
 import { StoryType } from '@/types/story';
 
 const extractLastID = (array: Array<StoryType>): number => {
@@ -10,6 +10,7 @@ const extractLastID = (array: Array<StoryType>): number => {
 };
 
 const KanbanAddBtn = () => {
+  const userState = useUserState();
   const storyList = useStoryState();
   const dispatchStory = useStoryDispatch();
   const lastStoryId = extractLastID(storyList);
@@ -17,7 +18,7 @@ const KanbanAddBtn = () => {
 
   const addStory = () => {
     dispatchStory({ type: 'ADD_STORY', story: initStoryData });
-    createStory({ ...initStoryData, projectId: 1 });
+    createStory({ ...initStoryData, projectId: userState.currentProjectId });
   };
 
   return (
