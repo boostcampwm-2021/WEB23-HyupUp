@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { useStoryState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
-import { createStory, deleteStoryWitId } from '@/lib/api/story';
 import Styled from '@/components/KanbanTodo/style';
-import { Button, Modal } from '@/lib/design';
-import { KanbanItem } from '@/components';
 import { StoryType } from '@/types/story';
+import { deleteStoryWitId } from '@/lib/api/story';
+import { useStoryState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
+import { Modal } from '@/lib/design';
+import { KanbanItem, KanbanAddBtn } from '@/components';
 
-interface KanbanProps {
+type KanbanProps = {
   projectId?: number;
-}
+};
 
 const extractLastID = (array: Array<StoryType>) => {
   if (!array?.length) return 0;
@@ -18,16 +18,9 @@ const extractLastID = (array: Array<StoryType>) => {
 const KanbanTodo = ({ projectId }: KanbanProps) => {
   const storyArray = useStoryState();
   const dispatchStory = useStoryDispatch();
-  const lastStoryId: number = extractLastID(storyArray);
-
   const [showModal, setShowModal] = useState(false);
   const [shouldDeleteKey, setDeleteKey] = useState(0);
-  const initStoryData = { id: lastStoryId + 1, name: '', status: 'TODO' };
-
-  const addStory = () => {
-    dispatchStory({ type: 'ADD_STORY', story: initStoryData });
-    createStory({ ...initStoryData, projectId });
-  };
+  const lastStoryId: number = extractLastID(storyArray);
 
   const deleteStory = async () => {
     dispatchStory({ type: 'REMOVE_STORY', id: shouldDeleteKey });
@@ -45,9 +38,7 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
           setShowModal={setShowModal}
         />
       ))}
-      <Button size={'large'} category={'cancel'} onClick={addStory}>
-        Add Todo
-      </Button>
+      <KanbanAddBtn lastStoryId={lastStoryId} projectId={projectId} />
       <Modal
         shouldConfirm
         title={'스토리를 삭제하시겠습니까?'}
@@ -55,7 +46,7 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
         onClose={() => setShowModal(false)}
         onClickCancel={() => setShowModal(false)}
         onClickOk={deleteStory}
-      ></Modal>
+      />
     </Styled.Column>
   );
 };
