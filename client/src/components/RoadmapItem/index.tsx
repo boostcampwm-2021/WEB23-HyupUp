@@ -2,13 +2,11 @@ import React from 'react';
 import S from './style';
 
 interface RoadmapItemProps {
-  from: Date;
-  to: Date;
   columns: number;
   index: number;
 }
 
-const RoadmapItem = ({ from, to, columns, index }: RoadmapItemProps) => {
+const RoadmapItem = ({ columns, index }: RoadmapItemProps) => {
   return (
     <S.Container columns={columns}>
       {[...Array(columns)].map((_, i) =>
