@@ -17,8 +17,8 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
   const dispatchStory = useStoryDispatch();
   const [showModal, setShowModal] = useState(false);
   const [shouldDeleteKey, setDeleteKey] = useState(0);
-  const draggingItem = useRef<number | null>(null);
-  const dragoverItem = useRef<number | null>(null);
+  const draggingItem = useRef<number | null>(0);
+  const dragoverItem = useRef<number | null>(0);
 
   const deleteStory = async () => {
     dispatchStory({ type: 'REMOVE_STORY', id: shouldDeleteKey });
@@ -27,19 +27,20 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
 
   const handleDragStart = (e: React.SyntheticEvent<HTMLElement>, position: number) => {
     draggingItem.current = position;
-    console.log(e);
   };
 
   const handleDragEnter = (e: React.SyntheticEvent<HTMLElement>, position: number) => {
     dragoverItem.current = position;
     const listCopy = [...storyList] as CopyList;
+
     const draggingItemContent = listCopy[draggingItem.current as number];
+    // debugger;
     listCopy.splice(draggingItem.current as number, 1);
     listCopy.splice(dragoverItem.current as number, 0, draggingItemContent);
 
     draggingItem.current = dragoverItem.current;
-    dispatchStory({ type: 'LOAD_STORY', stories: listCopy });
     dragoverItem.current = null;
+    dispatchStory({ type: 'LOAD_STORY', stories: listCopy });
   };
 
   return (
