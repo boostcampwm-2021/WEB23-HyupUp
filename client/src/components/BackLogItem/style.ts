@@ -22,15 +22,15 @@ const StoryText = styled.span`
 `;
 
 interface IsClick {
-  check: boolean;
+  click: boolean;
 }
 
 const ToggleImg = styled.img<IsClick>`
   width: 25px;
   height: 25px;
 
-  transform: ${(props) => (props.check ? 'rotate(0deg)' : 'rotate(90deg)')};
-  transition-duration: ${(props) => (props.check ? '0.1s' : '0.1s')};
+  transform: ${(props) => (props.click ? 'rotate(0deg)' : 'rotate(90deg)')};
+  transition-duration: ${(props) => (props.click ? '0.1s' : '0.1s')};
 `;
 
 const ToggleButton = styled.button`
@@ -39,14 +39,14 @@ const ToggleButton = styled.button`
 `;
 
 const TaskContainer = styled.ul<IsClick>`
-  ${({ check }) => (!check ? 'height: 0px; position:absolute;' : undefined)};
-  visibility: ${({ check }) => (check ? 'visible' : 'hidden')};
-  opacity: ${({ check }) => (check ? '1' : '0')};
+  ${({ click }) => (!click ? 'height: 0px; position:absolute;' : undefined)};
+  visibility: ${({ click }) => (click ? 'visible' : 'hidden')};
+  opacity: ${({ click }) => (click ? '1' : '0')};
 
-  transform: ${({ check }) => (check ? 'translateY(0px)' : 'translateY(-10px)')};
-  z-index: ${({ check }) => (check ? '1' : '-1')};
+  transform: ${({ click }) => (click ? 'translateY(0px)' : 'translateY(-10px)')};
+  z-index: ${({ click }) => (click ? '1' : '-1')};
   transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
-  transition-delay: ${({ check }) => (check ? '0s' : ' 0s, 0s, 0.3s;')};
+  transition-delay: ${({ click }) => (click ? '0s' : ' 0s, 0s, 0.3s;')};
 `;
 
 export default { ItemContainer, StoryText, ToggleImg, ToggleButton, TaskContainer };
