@@ -47,13 +47,32 @@ const S = {
   DayLabel: styled.div`
     display: flex;
     justify-content: center;
+    align-items: center;
 
     width: 100%;
+
+    font: ${({ theme }) => theme.font.body_small};
+  `,
+  DayLabelToday: styled.div`
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 25px;
+    height: 25px;
+
+    background-color: ${({ theme }) => theme.color.red100};
+    border-radius: 30px;
+
+    color: ${({ theme }) => theme.color.red400};
+    font: ${({ theme }) => theme.font.bold_small};
   `,
   DayColumnWrapper: styled.section`
     display: flex;
     justify-content: space-between;
     position: absolute;
+    top: 0;
 
     width: calc(100% - 32px);
     height: 100%;
