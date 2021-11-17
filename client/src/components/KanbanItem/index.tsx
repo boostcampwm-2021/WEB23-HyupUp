@@ -14,10 +14,10 @@ type KanbanItem = {
 
 const KanbanItem = ({ story, storyObj, setDeleteKey, setShowModal }: KanbanItem) => {
   const { key, value, onChange } = useInput('');
-  const useDispatch = useStoryDispatch();
+  const dispatchStory = useStoryDispatch();
 
   const useUpdateStoryName = () => {
-    useDispatch({ type: 'UPDATE_STORY', story: { ...storyObj, id: key, name: value } });
+    dispatchStory({ type: 'UPDATE_STORY', story: { ...storyObj, id: key, name: value } });
     updateStoryWithName({ ...storyObj, id: key, name: value });
   };
 
