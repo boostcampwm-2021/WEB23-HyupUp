@@ -35,14 +35,14 @@ const RoadmapBars = ({ rangeFrom, rangeTo }: RoadmapBarsProps) => {
 
   return (
     <S.Container>
-      {epics.map((epic) => {
+      {epics.map(({ id, startAt, endAt }) => {
         const render = shouldRender({
-          start: epic.startAt,
-          end: epic.endAt,
+          start: startAt,
+          end: endAt,
           from: rangeFrom,
           to: rangeTo,
         });
-        return <RoadmapItem key={epic.id} columns={15} index={0} length={render ? 3 : 0} />;
+        return <RoadmapItem key={id} columns={15} index={0} length={render ? 3 : 0} />;
       })}
     </S.Container>
   );
