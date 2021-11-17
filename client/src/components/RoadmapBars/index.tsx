@@ -9,7 +9,7 @@ const RoadmapBars = () => {
   return (
     <S.Container>
       {epics.map((epic) => (
-        <RoadmapItem key={epic.id} from={epic.startAt} to={epic.endAt} columns={15} index={0} />
+        <RoadmapItem key={epic.id} columns={15} index={0} />
       ))}
     </S.Container>
   );
