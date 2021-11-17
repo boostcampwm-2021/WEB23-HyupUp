@@ -3,13 +3,21 @@ import styled from 'styled-components';
 const HANDLE_WIDTH = '12px';
 
 const S = {
-  Container: styled.div`
+  Container: styled.div<{ columns: number }>`
+    display: grid;
+    grid-template-columns: repeat(${({ columns }) => columns}, 1fr);
+
+    margin: 25px 0;
+  `,
+  Spacer: styled.div`
+    width: 100%;
+  `,
+  Bar: styled.div`
     display: flex;
     justify-content: space-between;
 
-    width: 40px;
+    width: 100%;
     height: 23px;
-    margin: 25px 0;
 
     background-color: ${({ theme }) => theme.color.blue300};
     border-radius: 8px;
