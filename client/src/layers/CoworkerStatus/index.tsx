@@ -25,8 +25,9 @@ const CoworkerStatus = () => {
   const emitLoginEvent = useSocketSend('LOGIN');
   const userState = useUserState();
 
-  useSocketReceive('LOGIN_CALLBACK', (userIds: Array<UserSocketInstance>) => {
-    const ids = userIds.map((el) => el.userId);
+  useSocketReceive('LOGIN_CALLBACK', (userInfo: Array<UserSocketInstance>) => {
+    if (userInfo.length === 0) return;
+    const ids = userInfo.map((el) => el.userId);
     setUsersIdList(ids);
   });
 
@@ -38,9 +39,9 @@ const CoworkerStatus = () => {
     setUsersIdList(usersIdList.filter((el) => el !== userId));
   });
 
-  // todo error 발생 원인 찾기
   useEffect(() => {
-    emitLoginEvent(userState.id as number);
+    if (!userState.id || !userState.organization) return;
+    emitLoginEvent({ userId: userState.id, organizationId: userState.organization });
   }, [userState]);
 
   useEffect(() => {
