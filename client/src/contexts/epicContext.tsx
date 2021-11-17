@@ -1,7 +1,7 @@
 import React, { createContext, Dispatch, useReducer } from 'react';
 import producer from 'immer';
 import { EpicType, EpicWithString, isEpicType } from '@/types/epic';
-import { makeEpicWithDate } from '@/lib/utils/date';
+import { makeEpicWithDate } from '@/lib/utils/epic';
 
 type EpicState = Array<EpicType>;
 
