@@ -30,6 +30,7 @@ const S = {
 
     background-color: ${({ theme }) => theme.color.gray100};
     border-radius: 8px;
+    z-index: 9;
 
     & + & {
       margin-left: 4px;
