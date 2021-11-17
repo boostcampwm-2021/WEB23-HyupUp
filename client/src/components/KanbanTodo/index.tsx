@@ -49,9 +49,10 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
   return (
     <Styled.Column>
       <h4>To do</h4>
-      {storyArray?.map((story) => (
+      {storyArray?.map((story, index) => (
         <KanbanItem
           key={story.id}
+          index={index}
           story={story}
           setDeleteKey={setDeleteKey}
           setShowModal={setShowModal}

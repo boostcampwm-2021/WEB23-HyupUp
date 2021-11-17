@@ -7,6 +7,7 @@ import { updateStoryWithName } from '@/lib/api/story';
 
 interface KanbanItem {
   story: StoryType;
+  index: number;
   setDeleteKey(arg: number): void;
   setShowModal(arg: boolean): void;
   handleDragStart(e: React.SyntheticEvent<HTMLElement>, position: number): void;
@@ -14,7 +15,7 @@ interface KanbanItem {
 }
 
 const KanbanItem = (props: KanbanItem) => {
-  const { story, setDeleteKey, setShowModal, handleDragStart, handleDragEnter } = props;
+  const { index, story, setDeleteKey, setShowModal, handleDragStart, handleDragEnter } = props;
   const { key, value, onChange } = useInput('');
   const dispatchStory = useStoryDispatch();
 
