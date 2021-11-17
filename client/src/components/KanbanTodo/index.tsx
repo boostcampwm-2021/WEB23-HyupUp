@@ -11,7 +11,7 @@ interface KanbanProps {
 }
 
 const extractLastID = (array: Array<StoryType>) => {
-  if (!array || array.length === 0) return 0;
+  if (!array?.length) return 0;
   const id = Math.max(...array.map((v) => v.id));
   return id;
 };
