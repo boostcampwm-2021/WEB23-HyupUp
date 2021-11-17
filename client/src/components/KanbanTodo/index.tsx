@@ -12,8 +12,7 @@ interface KanbanProps {
 
 const extractLastID = (array: Array<StoryType>) => {
   if (!array?.length) return 0;
-  const id = Math.max(...array.map((v) => v.id));
-  return id;
+  return Math.max(...array.map((v) => v.id));
 };
 
 const KanbanTodo = ({ projectId }: KanbanProps) => {
@@ -23,11 +22,11 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
 
   const [showModal, setShowModal] = useState(false);
   const [shouldDeleteKey, setDeleteKey] = useState(0);
-  const storyObj = { id: lastStoryId + 1, name: '', status: 'TODO' };
+  const initStoryData = { id: lastStoryId + 1, name: '', status: 'TODO' };
 
   const addStory = () => {
-    dispatchStory({ type: 'ADD_STORY', story: storyObj });
-    createStory({ ...storyObj, projectId });
+    dispatchStory({ type: 'ADD_STORY', story: initStoryData });
+    createStory({ ...initStoryData, projectId });
   };
 
   const deleteStory = async () => {
@@ -43,7 +42,7 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
           draggable
           key={story.id}
           story={story}
-          storyObj={storyObj}
+          initStoryData={initStoryData}
           setDeleteKey={setDeleteKey}
           setShowModal={setShowModal}
         />
