@@ -60,7 +60,9 @@ export const isFormer = (target: Date, date: Date): boolean => {
   const targetYMD = getYMD(target);
   const dateYMD = getYMD(date);
   return (
-    targetYMD.year < dateYMD.year || targetYMD.month < dateYMD.month || targetYMD.day < dateYMD.day
+    targetYMD.year < dateYMD.year ||
+    targetYMD.month < dateYMD.month ||
+    (targetYMD.month === dateYMD.month && targetYMD.day < dateYMD.day)
   );
 };
 
@@ -73,7 +75,9 @@ export const isLatter = (target: Date, date: Date): boolean => {
   const targetYMD = getYMD(target);
   const dateYMD = getYMD(date);
   return (
-    targetYMD.year > dateYMD.year || targetYMD.month > dateYMD.month || targetYMD.day > dateYMD.day
+    targetYMD.year > dateYMD.year ||
+    targetYMD.month > dateYMD.month ||
+    (targetYMD.month === dateYMD.month && targetYMD.day > dateYMD.day)
   );
 };
 
