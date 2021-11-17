@@ -1,4 +1,3 @@
-import { KanbanModalContext } from './KanbanModal/index';
 // Header
 export { default as Profile } from './Profile/index';
 

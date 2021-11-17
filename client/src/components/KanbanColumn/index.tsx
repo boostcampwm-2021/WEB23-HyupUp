@@ -1,39 +1,15 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import Styled from '@/components/KanbanColumn/style';
-import { StoryType } from '@/types/story';
-import { useStoryState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
 import { KanbanItem, KanbanAddBtn } from '@/components';
-
+import { StoryType } from '@/types/story';
 interface KanbanProps {
+  storyList: Array<StoryType>;
+  handleDragStart: (e: React.SyntheticEvent<HTMLElement>, position: number) => void;
+  handleDragEnter: (e: React.SyntheticEvent<HTMLElement>, position: number) => void;
   projectId?: number;
 }
 
-type CopyList = [StoryType];
-
-const KanbanColumn = ({ projectId }: KanbanProps) => {
-  const storyList = useStoryState();
-  const dispatchStory = useStoryDispatch();
-  const draggingItem = useRef<number | null>(0);
-  const dragoverItem = useRef<number | null>(0);
-
-  const handleDragStart = (e: React.SyntheticEvent<HTMLElement>, position: number) => {
-    draggingItem.current = position;
-  };
-
-  const handleDragEnter = (e: React.SyntheticEvent<HTMLElement>, position: number) => {
-    dragoverItem.current = position;
-    const listCopy = [...storyList] as CopyList;
-
-    const draggingItemContent = listCopy[draggingItem.current as number];
-    // debugger;
-    listCopy.splice(draggingItem.current as number, 1);
-    listCopy.splice(dragoverItem.current as number, 0, draggingItemContent);
-
-    draggingItem.current = dragoverItem.current;
-    dragoverItem.current = null;
-    dispatchStory({ type: 'LOAD_STORY', stories: listCopy });
-  };
-
+const KanbanColumn = ({ storyList, handleDragStart, handleDragEnter, projectId }: KanbanProps) => {
   return (
     <Styled.Column>
       <h4>To do</h4>
