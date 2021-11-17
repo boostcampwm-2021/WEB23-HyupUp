@@ -42,3 +42,11 @@ export const makeDayRow = (date: Date) => {
     .forEach((day: number) => daysArray.push(day));
   return daysArray;
 };
+
+export const getRangeFromDate = (date: Date) => {
+  const { year, month, day } = getYMD(date);
+  return {
+    from: new Date(year, month, day - FRONT_HALF + 1),
+    to: new Date(year, month, day + REAR_HALF),
+  };
+};
