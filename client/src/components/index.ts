@@ -5,7 +5,6 @@ export { default as Profile } from './Profile/index';
 export { default as TodoInputBar } from './TodoInputBar/index';
 export { default as ListViewHeader } from './ListViewHeader/index';
 export { default as ListViewItem } from './ListViewItem/index';
-export { default as CoworkerStatus } from './CoworkerStatus/index';
 
 // SideBar
 export { default as SideBarDropDown } from './SideBarDropdown/index';
