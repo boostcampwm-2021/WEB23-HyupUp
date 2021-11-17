@@ -10,7 +10,6 @@ type KanbanItem = {
   initStoryData: StoryType;
   setDeleteKey(arg: number): void;
   setShowModal(arg: boolean): void;
-  draggable: boolean;
 };
 
 const KanbanItem = ({ story, initStoryData, setDeleteKey, setShowModal }: KanbanItem) => {
@@ -23,7 +22,7 @@ const KanbanItem = ({ story, initStoryData, setDeleteKey, setShowModal }: Kanban
   };
 
   return (
-    <Styled.KanBanItem>
+    <Styled.KanBanItem draggable>
       <input
         type="text"
         placeholder={story.name ? story.name : 'type a todo...'}
