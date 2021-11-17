@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Styled from '@/components/KanbanTodo/style';
 import { StoryType } from '@/types/story';
 import { deleteStoryWitId } from '@/lib/api/story';
@@ -10,7 +10,7 @@ type KanbanProps = {
   projectId?: number;
 };
 
-const extractLastID = (array: Array<StoryType>) => {
+const extractLastID = (array: Array<StoryType>): number => {
   if (!array?.length) return 0;
   return Math.max(...array.map((v) => v.id));
 };
@@ -18,9 +18,11 @@ const extractLastID = (array: Array<StoryType>) => {
 const KanbanTodo = ({ projectId }: KanbanProps) => {
   const storyArray = useStoryState();
   const dispatchStory = useStoryDispatch();
+  const lastStoryId = extractLastID(storyArray);
   const [showModal, setShowModal] = useState(false);
   const [shouldDeleteKey, setDeleteKey] = useState(0);
-  const lastStoryId: number = extractLastID(storyArray);
+  const draggingItem = useRef(0);
+  const dragoverItem = useRef(0);
 
   const deleteStory = async () => {
     dispatchStory({ type: 'REMOVE_STORY', id: shouldDeleteKey });
