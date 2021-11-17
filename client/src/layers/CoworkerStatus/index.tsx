@@ -42,7 +42,7 @@ const CoworkerStatus = () => {
   useEffect(() => {
     if (!userState.id || !userState.organization) return;
     emitLoginEvent({ userId: userState.id, organizationId: userState.organization });
-  }, [userState]);
+  }, [emitLoginEvent, userState]);
 
   useEffect(() => {
     (async () => {
@@ -58,18 +58,13 @@ const CoworkerStatus = () => {
       status: usersIdList.includes(el.index),
     }));
 
-    const logInUsers = updateUsers.filter((el) => el.status === true);
-    const logOutUsers = updateUsers.filter((el) => el.status === false);
-
     const sorted = updateUsers.sort((a, b) => {
       if (a.status && !b.status) return -1;
       if (!a.status && b.status) return 1;
       return -1;
     });
 
-    console.log(sorted);
-
-    setUsersList([...logInUsers, ...logOutUsers]);
+    setUsersList(sorted);
   }, [userState.id, users, usersIdList]);
 
   return (
