@@ -4,9 +4,11 @@ import { useUserState } from '@/lib/hooks/useContextHooks';
 import LandingPage from './pages/LandingPage';
 import MainPage from './pages/MainPage';
 import WorkPage from './pages/WorkPage';
+import { useRecoilValue } from 'recoil';
+import user from '@/recoil/user';
 
 const Router = () => {
-  const userState = useUserState();
+  const userState = useRecoilValue(user);
   return (
     <>
       <Switch>
