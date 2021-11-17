@@ -24,8 +24,8 @@ type UserAction =
   | { type: 'UPDATE_USER'; payload: UserState }
   | { type: 'ADD_PRIVATE_TASK'; payload: PrivateTask }
   | { type: 'DELETE_PRIVATE_TASK'; payload: number }
-  | { type: 'FINISH_PRIVATE_TASK'; payload: number }
-  | { type: 'FINISH_PROJECT_TASK'; payload: number };
+  | { type: 'UPDATE_PRIVATE_TASK'; payload: PrivateTask }
+  | { type: 'UPDATE_PROJECT_TASK'; payload: PrivateTask };
 
 type ContextType = {
   userState: UserState | null;
@@ -63,16 +63,18 @@ const reducer = (state: UserState, action: UserAction): UserState => {
         draft.privateTasks = draft.privateTasks!.filter((task) => task.id !== action.payload);
       });
 
-    case 'FINISH_PRIVATE_TASK':
+    case 'UPDATE_PRIVATE_TASK':
       return produce(state, (draft) => {
-        const finishedTask = draft.privateTasks!.find((task) => task.id === action.payload);
-        finishedTask!.status = true;
+        const newTask = draft.privateTasks!.find((task) => task.id === action.payload.id);
+        newTask!.name = action.payload.name;
+        newTask!.status = action.payload.status;
       });
 
-    case 'FINISH_PROJECT_TASK':
+    case 'UPDATE_PROJECT_TASK':
       return produce(state, (draft) => {
-        const finishedTask = draft.projectTasks!.find((task) => task.id === action.payload);
-        finishedTask!.status = true;
+        const newTask = draft.projectTasks!.find((task) => task.id === action.payload.id);
+        newTask!.name = action.payload.name;
+        newTask!.status = action.payload.status;
       });
 
     default:

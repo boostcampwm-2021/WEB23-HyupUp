@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.24.0",
+    "axios-cache-adapter": "^2.7.3",
     "dotenv-webpack": "^7.0.3",
     "immer": "^9.0.6",
     "react": "^17.0.2",
@@ -44,9 +45,9 @@
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.1-alpha-cb11155c8-20211112",
     "html-webpack-plugin": "^5.5.0",
-    "style-loader": "^3.3.1",
     "nth-check": "^2.0.1",
     "path": "^0.12.7",
+    "style-loader": "^3.3.1",
     "webpack": "^5.61.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.4.0"

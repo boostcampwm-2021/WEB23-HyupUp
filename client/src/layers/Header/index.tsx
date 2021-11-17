@@ -8,7 +8,7 @@ const Header = () => {
     <Styled.header>
       <Styled.logo to="/">HyupUp</Styled.logo>
       <Styled.iconList>
-        <PageIcon to="/" name="home" />
+        <PageIcon exact to="/" name="home" />
         <PageIcon to="/work" name="work" />
         <PageIcon to="/setting" name="setting" />
       </Styled.iconList>
