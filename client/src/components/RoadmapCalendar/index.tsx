@@ -25,8 +25,14 @@ const RoadmapCalendar = () => {
         </S.ButtonWrapper>
       </S.CalendarHead>
       <S.DaysWrapper>
-        {dayRow.map((day: number) => (
-          <S.DayLabel key={day}>{day}</S.DayLabel>
+        {dayRow.map((day: number, i) => (
+          <S.DayLabel key={day}>
+            {i === Math.floor(WEEK_OFFSET / 2) ? (
+              <S.DayLabelToday key={day}>{day}</S.DayLabelToday>
+            ) : (
+              day
+            )}
+          </S.DayLabel>
         ))}
       </S.DaysWrapper>
       <S.DayColumnWrapper>
