@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { MutableRefObject } from 'react';
 import Styled from '@/components/KanbanItem/style';
 import { StoryType } from '@/types/story';
 import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
-import useInput from '@/lib/hooks/useInput';
+import { useInput } from '@/lib/hooks';
 import { updateStoryWithName } from '@/lib/api/story';
 
-type KanbanItem = {
+interface KanbanItem {
   story: StoryType;
   setDeleteKey(arg: number): void;
   setShowModal(arg: boolean): void;
-};
+}
 
-const KanbanItem = ({ story, setDeleteKey, setShowModal }: KanbanItem) => {
+const KanbanItem = (props: KanbanItem) => {
+  const { story, setDeleteKey, setShowModal } = props;
   const { key, value, onChange } = useInput('');
   const dispatchStory = useStoryDispatch();
 
