@@ -29,12 +29,12 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
     await deleteStoryWitId(shouldDeleteKey);
   };
 
-  const handleDragStart = (e: typeof event, position: number) => {
+  const handleDragStart = (e: React.SyntheticEvent<HTMLElement>, position: number) => {
     draggingItem.current = position;
     console.log(e);
   };
 
-  const handleDragEnter = (e: typeof event, position: number) => {
+  const handleDragEnter = (e: React.SyntheticEvent<HTMLElement>, position: number) => {
     dragoverItem.current = position;
     const listCopy = [...storyArray];
     const draggingItemContent = listCopy[draggingItem.current];
@@ -55,6 +55,8 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
           story={story}
           setDeleteKey={setDeleteKey}
           setShowModal={setShowModal}
+          handleDragStart={handleDragStart}
+          handleDragEnter={handleDragEnter}
         />
       ))}
       <KanbanAddBtn lastStoryId={lastStoryId} projectId={projectId} />
