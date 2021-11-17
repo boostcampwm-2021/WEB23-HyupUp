@@ -1,3 +1,6 @@
+const FRONT_HALF = 8;
+const REAR_HALF = 7;
+
 export const getYMD = (date: Date) => {
   const year = date.getFullYear();
   const month = date.getMonth();
@@ -21,4 +24,21 @@ export const getLastDate = ({ year, month }: { year: number; month: number }) =>
     default:
       return 31;
   }
+};
+
+export const makeDayRow = (date: Date) => {
+  const { year, month } = getYMD(date);
+  const lastDate = getLastDate({ year, month });
+  const formerLastDate = getLastDate({ year, month: month - 1 });
+  const daysArray = new Array<number>();
+  [...Array(FRONT_HALF)]
+    .map((_, i) => date.getDate() - i)
+    .map((day) => (day < 1 ? formerLastDate + day : day))
+    .reverse()
+    .forEach((day: number) => daysArray.push(day));
+  [...Array(REAR_HALF)]
+    .map((_, i) => date.getDate() + i + 1)
+    .map((day) => (day >= lastDate ? day - lastDate : day))
+    .forEach((day: number) => daysArray.push(day));
+  return daysArray;
 };
