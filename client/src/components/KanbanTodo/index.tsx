@@ -18,20 +18,20 @@ const extractLastID = (array: Array<StoryType>) => {
 
 const KanbanTodo = ({ projectId }: KanbanProps) => {
   const storyArray = useStoryState();
-  const useDispatch = useStoryDispatch();
+  const dispatchStory = useStoryDispatch();
   const lastStoryId: number = extractLastID(storyArray);
 
   const [showModal, setShowModal] = useState(false);
   const [shouldDeleteKey, setDeleteKey] = useState(0);
   const storyObj = { id: lastStoryId + 1, name: '', status: 'TODO' };
 
-  const useAddStory = () => {
-    useDispatch({ type: 'ADD_STORY', story: storyObj });
+  const addStory = () => {
+    dispatchStory({ type: 'ADD_STORY', story: storyObj });
     createStory({ ...storyObj, projectId });
   };
 
-  const useDeleteStory = async () => {
-    useDispatch({ type: 'REMOVE_STORY', id: shouldDeleteKey });
+  const deleteStory = async () => {
+    dispatchStory({ type: 'REMOVE_STORY', id: shouldDeleteKey });
     await deleteStoryWitId(shouldDeleteKey);
   };
 
@@ -47,7 +47,7 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
           setShowModal={setShowModal}
         />
       ))}
-      <Button size={'large'} category={'cancel'} onClick={useAddStory}>
+      <Button size={'large'} category={'cancel'} onClick={addStory}>
         Add Todo
       </Button>
       <Modal
@@ -56,7 +56,7 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
         visible={showModal}
         onClose={() => setShowModal(false)}
         onClickCancel={() => setShowModal(false)}
-        onClickOk={useDeleteStory}
+        onClickOk={deleteStory}
       ></Modal>
     </Styled.Column>
   );
