@@ -100,3 +100,9 @@ export const shouldRender = ({
   else if (isLatter(start, to)) return false;
   return true;
 };
+
+export const getDateDiff = (target: Date, date: Date) => {
+  const diffAbs = Math.abs(date.getTime() - target.getTime());
+  const oneDay = 1000 * 60 * 60 * 24;
+  return Math.floor(diffAbs / oneDay);
+};
