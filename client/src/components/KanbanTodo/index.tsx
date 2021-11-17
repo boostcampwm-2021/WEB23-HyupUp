@@ -29,6 +29,23 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
     await deleteStoryWitId(shouldDeleteKey);
   };
 
+  const handleDragStart = (e: typeof event, position: number) => {
+    draggingItem.current = position;
+    console.log(e);
+  };
+
+  const handleDragEnter = (e: typeof event, position: number) => {
+    dragoverItem.current = position;
+    const listCopy = [...storyArray];
+    const draggingItemContent = listCopy[draggingItem.current];
+    listCopy.splice(draggingItem.current, 1);
+    listCopy.splice(dragoverItem.current, 0, draggingItemContent);
+
+    draggingItem.current = dragoverItem.current;
+    dispatchStory({ type: 'LOAD_STORY', stories: listCopy });
+    // dragoverItem.current = null;
+  };
+
   return (
     <Styled.Column>
       <h4>To do</h4>
