@@ -39,14 +39,20 @@ const ToggleButton = styled.button`
 `;
 
 const TaskContainer = styled.ul<IsClick>`
-  ${({ click }) => (!click ? 'height: 0px; position:absolute;' : undefined)};
-  visibility: ${({ click }) => (click ? 'visible' : 'hidden')};
-  opacity: ${({ click }) => (click ? '1' : '0')};
+  display: ${({ click }) => (click ? 'block' : 'none')};
+  animation-duration: 0.3s;
+  animation-name: slidein;
+  @keyframes slidein {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
 
-  transform: ${({ click }) => (click ? 'translateY(0px)' : 'translateY(-10px)')};
-  z-index: ${({ click }) => (click ? '1' : '-1')};
-  transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
-  transition-delay: ${({ click }) => (click ? '0s' : ' 0s, 0s, 0.3s;')};
+    to {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+  }
 `;
 
 export default { ItemContainer, StoryText, ToggleImg, ToggleButton, TaskContainer };
