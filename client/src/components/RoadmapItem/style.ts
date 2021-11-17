@@ -13,6 +13,7 @@ const S = {
     width: 100%;
   `,
   Bar: styled.div`
+    position: relative;
     display: flex;
     justify-content: space-between;
 
@@ -20,7 +21,6 @@ const S = {
     height: 23px;
 
     background-color: ${({ theme }) => theme.color.blue300};
-    border-radius: 8px;
   `,
   FrontHandle: styled.div`
     width: ${HANDLE_WIDTH};
@@ -30,6 +30,9 @@ const S = {
     z-index: 9;
   `,
   RearHandle: styled.div`
+    position: absolute;
+    right: 0px;
+
     width: ${HANDLE_WIDTH};
     height: 100%;
 

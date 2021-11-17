@@ -4,21 +4,28 @@ import S from './style';
 interface RoadmapItemProps {
   columns: number;
   index: number;
+  length: number;
 }
 
-const RoadmapItem = ({ columns, index }: RoadmapItemProps) => {
+const RoadmapItem = ({ columns, index, length }: RoadmapItemProps) => {
   return (
     <S.Container columns={columns}>
-      {[...Array(columns)].map((_, i) =>
-        i === index ? (
-          <S.Bar key={i}>
-            <S.FrontHandle />
-            <S.RearHandle />
-          </S.Bar>
-        ) : (
-          <S.Spacer key={i}></S.Spacer>
-        ),
-      )}
+      {[...Array(columns)].map((_, i) => {
+        if (i === index)
+          return (
+            <S.Bar>
+              <S.FrontHandle />
+            </S.Bar>
+          );
+        else if (i === index + length)
+          return (
+            <S.Bar>
+              <S.RearHandle />
+            </S.Bar>
+          );
+        else if (i < index + length && i > index) return <S.Bar />;
+        else return <S.Spacer />;
+      })}
     </S.Container>
   );
 };
