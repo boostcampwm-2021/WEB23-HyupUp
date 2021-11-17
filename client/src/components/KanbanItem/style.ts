@@ -8,7 +8,7 @@ const Styled = {
     border-radius: 8px;
     margin-top: 10px;
     display: flex;
-
+    cursor: move;
     background-color: ${({ theme }) => theme.color.gray100};
 
     input {

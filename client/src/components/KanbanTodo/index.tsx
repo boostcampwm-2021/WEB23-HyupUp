@@ -40,6 +40,7 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
       <h4>To do</h4>
       {storyArray?.map((story) => (
         <KanbanItem
+          draggable
           key={story.id}
           story={story}
           storyObj={storyObj}

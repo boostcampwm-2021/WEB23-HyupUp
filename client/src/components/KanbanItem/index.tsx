@@ -10,6 +10,7 @@ type KanbanItem = {
   storyObj: StoryType;
   setDeleteKey(arg: number): void;
   setShowModal(arg: boolean): void;
+  draggable: boolean;
 };
 
 const KanbanItem = ({ story, storyObj, setDeleteKey, setShowModal }: KanbanItem) => {
