@@ -13,18 +13,18 @@ const RoadmapItem = ({ columns, index, length }: RoadmapItemProps) => {
       {[...Array(columns)].map((_, i) => {
         if (i === index)
           return (
-            <S.Bar>
+            <S.Bar key={i}>
               <S.FrontHandle />
             </S.Bar>
           );
         else if (i === index + length)
           return (
-            <S.Bar>
+            <S.Bar key={i}>
               <S.RearHandle />
             </S.Bar>
           );
-        else if (i < index + length && i > index) return <S.Bar />;
-        else return <S.Spacer />;
+        else if (i < index + length && i > index) return <S.Bar key={i} />;
+        else return <S.Spacer key={i} />;
       })}
     </S.Container>
   );
