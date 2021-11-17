@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import Styled from '@/components/KanbanTodo/style';
+import Styled from '@/components/KanbanColumn/style';
 import { StoryType } from '@/types/story';
 import { deleteStoryWitId } from '@/lib/api/story';
 import { useStoryState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
@@ -12,7 +12,7 @@ interface KanbanProps {
 
 type CopyList = [StoryType];
 
-const KanbanTodo = ({ projectId }: KanbanProps) => {
+const KanbanColumn = ({ projectId }: KanbanProps) => {
   const storyList = useStoryState();
   const dispatchStory = useStoryDispatch();
   const [showModal, setShowModal] = useState(false);
@@ -70,4 +70,4 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
   );
 };
 
-export default KanbanTodo;
+export default KanbanColumn;
