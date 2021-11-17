@@ -39,7 +39,6 @@ const S = {
     display: flex;
     justify-content: space-between;
 
-    margin-bottom: 18px;
     padding: 8px 0;
 
     border-bottom: 1px solid ${({ theme }) => theme.color.gray100};

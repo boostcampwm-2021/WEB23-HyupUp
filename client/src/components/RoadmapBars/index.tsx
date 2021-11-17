@@ -1,7 +1,16 @@
 import React from 'react';
+import S from './style';
+import RoadmapItem from '@/components/RoadmapItem';
 
 const RoadmapBars = () => {
-  return <div>this will be bars</div>;
+  return (
+    <S.Container>
+      <RoadmapItem></RoadmapItem>
+      <RoadmapItem></RoadmapItem>
+      <RoadmapItem></RoadmapItem>
+      <RoadmapItem></RoadmapItem>
+    </S.Container>
+  );
 };
 
 export default RoadmapBars;
