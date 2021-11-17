@@ -5,17 +5,14 @@ import { KanbanModalContext } from '@/components/KanbanModal';
 import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
 import { useInput } from '@/lib/hooks';
 import { updateStoryWithName } from '@/lib/api/story';
+import { KanbanDefaultType } from '@/layers/Kanban';
 
-interface KanbanItem {
-  story: StoryType;
+interface KanbanItemType extends KanbanDefaultType {
   index: number;
-  handleDragStart(e: React.SyntheticEvent<HTMLElement>, position: number): void;
-  handleDragEnter(e: React.SyntheticEvent<HTMLElement>, position: number): void;
+  story: StoryType;
 }
 
-const KanbanItem = (props: KanbanItem) => {
-  const { index, story, handleDragStart, handleDragEnter } = props;
-  //TODO null 이 assign 되지 않음
+const KanbanItem = ({ index, story, handleDragStart, handleDragEnter }: KanbanItemType) => {
   const modalConsumer = useContext(KanbanModalContext);
 
   const { key, value, onChange } = useInput('');
@@ -28,10 +25,9 @@ const KanbanItem = (props: KanbanItem) => {
 
   return (
     <Styled.KanBanItem
-      data-status={story.status}
       data-key={story.id}
-      onDragStart={(e) => handleDragStart(e, index)}
-      onDragEnter={(e) => handleDragEnter(e, index)}
+      onDragStart={(e) => handleDragStart(e, index, story.status)}
+      onDragEnter={(e) => handleDragEnter(e, index, story.status)}
       onDragOver={(e) => e.preventDefault()}
       draggable
     >

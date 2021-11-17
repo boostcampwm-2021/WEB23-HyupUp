@@ -3,16 +3,13 @@ import { createStory } from '@/lib/api/story';
 import { Button } from '@/lib/design';
 import { useStoryDispatch, useStoryState } from '@/lib/hooks/useContextHooks';
 import { StoryType } from '@/types/story';
-interface KanbanAddBtnType {
-  projectId?: number;
-}
 
 const extractLastID = (array: Array<StoryType>): number => {
   if (!array?.length) return 0;
   return Math.max(...array.map((v) => v.id));
 };
 
-const KanbanAddBtn = ({ projectId }: KanbanAddBtnType) => {
+const KanbanAddBtn = () => {
   const storyList = useStoryState();
   const dispatchStory = useStoryDispatch();
   const lastStoryId = extractLastID(storyList);
@@ -20,7 +17,7 @@ const KanbanAddBtn = ({ projectId }: KanbanAddBtnType) => {
 
   const addStory = () => {
     dispatchStory({ type: 'ADD_STORY', story: initStoryData });
-    createStory({ ...initStoryData, projectId });
+    createStory({ ...initStoryData, projectId: 1 });
   };
 
   return (

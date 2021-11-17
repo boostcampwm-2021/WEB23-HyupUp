@@ -1,22 +1,14 @@
 import React from 'react';
 import Styled from '@/components/KanbanColumn/style';
 import { KanbanItem, KanbanAddBtn } from '@/components';
-import { StoryType } from '@/types/story';
-interface KanbanProps {
-  category: string;
+import { StatusType, StoryType } from '@/types/story';
+import { KanbanDefaultType } from '@/layers/Kanban';
+interface KanbanProps extends KanbanDefaultType {
   storyList: Array<StoryType>;
-  handleDragStart: (e: React.SyntheticEvent<HTMLElement>, position: number) => void;
-  handleDragEnter: (e: React.SyntheticEvent<HTMLElement>, position: number) => void;
-  projectId?: number;
+  category: StatusType;
 }
 
-const KanbanColumn = ({
-  category,
-  storyList,
-  handleDragStart,
-  handleDragEnter,
-  projectId,
-}: KanbanProps) => {
+const KanbanColumn = ({ category, storyList, handleDragStart, handleDragEnter }: KanbanProps) => {
   return (
     <Styled.Column>
       <h4>{category}</h4>
@@ -29,7 +21,7 @@ const KanbanColumn = ({
           handleDragEnter={handleDragEnter}
         />
       ))}
-      <KanbanAddBtn projectId={projectId} />
+      <KanbanAddBtn />
     </Styled.Column>
   );
 };
