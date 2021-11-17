@@ -9,3 +9,10 @@ export interface PrivateTask {
 export interface ProjectTask extends PrivateTask {
   project: ProjectType;
 }
+
+export interface BackLogTaskProps {
+  id: number;
+  name: string;
+  user: string;
+  userImage: string;
+}
