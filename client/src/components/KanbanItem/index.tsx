@@ -25,14 +25,16 @@ const KanbanItem = (props: KanbanItem) => {
   };
 
   return (
-    <Styled.KanBanItem draggable>
+    <Styled.KanBanItem
+      draggable
+      onDragStart={(e) => handleDragStart(e, index)}
+      onDragOver={(e) => e.preventDefault()}
+      onDragEnter={(e) => handleDragEnter(e, index)}
+    >
       <input
         type="text"
         placeholder={story.name ? story.name : 'type a todo...'}
         data-key={story.id}
-        onDragStart={(e) => handleDragStart(e, index)}
-        onDragEnter={(e) => handleDragEnter(e, index)}
-        onDragEnd={(e) => e.preventDefault()}
         onChange={onChange}
         onBlur={useUpdateStoryName}
       />
