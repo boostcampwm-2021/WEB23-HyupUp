@@ -1,15 +1,22 @@
 import React from 'react';
 import { createStory } from '@/lib/api/story';
 import { Button } from '@/lib/design';
-import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
+import { useStoryDispatch, useStoryState } from '@/lib/hooks/useContextHooks';
 
-type KanbanAddBtnType = {
-  lastStoryId: number;
+interface KanbanAddBtnType {
   projectId?: number;
+}
+
+const extractLastID = (array: Array<StoryType>): number => {
+  if (!array?.length) return 0;
+  return Math.max(...array.map((v) => v.id));
 };
 
-const KanbanAddBtn = ({ lastStoryId, projectId }: KanbanAddBtnType) => {
+const KanbanAddBtn = ({ projectId }: KanbanAddBtnType) => {
+  const storyList = useStoryState();
+  console.log(storyList);
   const dispatchStory = useStoryDispatch();
+  const lastStoryId = extractLastID(storyList);
   const initStoryData = { id: lastStoryId + 1, name: '', status: 'TODO' };
 
   const addStory = () => {
