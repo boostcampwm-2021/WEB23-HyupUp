@@ -61,10 +61,10 @@ export const updateTask = async (req: Request, res: Response) => {
       name: req.body.name,
       status: req.body.status,
     });
-    res.json('ok');
+    res.end();
   } catch (error) {
     const message = (error as Error).message;
-    res.json(message);
+    res.status(401).json({ message });
   }
 };
 
@@ -75,9 +75,9 @@ export const deleteTask = async (req: Request, res: Response) => {
     }
     const taskRepository = getRepository(Tasks);
     await taskRepository.delete({ id: +req.query.id });
-    res.json('ok');
+    res.end();
   } catch (error) {
     const message = (error as Error).message;
-    res.json(message);
+    res.status(401).json({ message });
   }
 };

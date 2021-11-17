@@ -47,10 +47,10 @@ export const updateTodo = async (req: Request, res: Response) => {
       name: req.body.name,
       status: req.body.status,
     });
-    res.json('ok');
+    res.end();
   } catch (error) {
     const message = (error as Error).message;
-    res.json(message);
+    res.status(401).json({ message });
   }
 };
 
@@ -61,9 +61,9 @@ export const deleteTodo = async (req: Request, res: Response) => {
     }
     const todoRepository = getRepository(Todo);
     await todoRepository.delete({ id: +req.query.id });
-    res.json('ok');
+    res.end();
   } catch (error) {
     const message = (error as Error).message;
-    res.json(message);
+    res.status(401).json({ message });
   }
 };
