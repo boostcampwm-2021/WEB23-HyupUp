@@ -41,7 +41,6 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
         <KanbanItem
           key={story.id}
           story={story}
-          initStoryData={initStoryData}
           setDeleteKey={setDeleteKey}
           setShowModal={setShowModal}
         />

@@ -7,18 +7,17 @@ import { updateStoryWithName } from '@/lib/api/story';
 
 type KanbanItem = {
   story: StoryType;
-  initStoryData: StoryType;
   setDeleteKey(arg: number): void;
   setShowModal(arg: boolean): void;
 };
 
-const KanbanItem = ({ story, initStoryData, setDeleteKey, setShowModal }: KanbanItem) => {
+const KanbanItem = ({ story, setDeleteKey, setShowModal }: KanbanItem) => {
   const { key, value, onChange } = useInput('');
   const dispatchStory = useStoryDispatch();
 
   const useUpdateStoryName = () => {
-    dispatchStory({ type: 'UPDATE_STORY', story: { ...initStoryData, id: key, name: value } });
-    updateStoryWithName({ ...initStoryData, id: key, name: value });
+    dispatchStory({ type: 'UPDATE_STORY', story: { status: 'TODO', id: key, name: value } });
+    updateStoryWithName({ status: 'TODO', id: key, name: value });
   };
 
   return (
