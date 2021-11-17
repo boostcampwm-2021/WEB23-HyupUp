@@ -1,6 +1,8 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import Button from '@/lib/design/Button';
+import cancelicon from '@public/icons/cancel-icon.svg';
 
 const S = {
   Container: styled.div`
@@ -54,7 +56,12 @@ const S = {
     height: 16px;
 
     border-radius: 8px;
-    background-color: ${({ theme }) => theme.color.gray300};
+    background-image: url(${cancelicon});
+    background-repeat: no-repeat;
+    background-position: center;
+    :hover {
+      cursor: pointer;
+    }
   `,
   ButtonWrapper: styled.div`
     display: flex;
@@ -107,22 +114,26 @@ const Modal = ({
         {children}
         {shouldConfirm ? (
           <S.ButtonWrapper>
-            <button
+            <Button
+              size={'small'}
+              category={'cancel'}
               onClick={(e) => {
                 onClickCancel && onClickCancel(e);
                 onClose(e);
               }}
             >
-              cancel
-            </button>
-            <button
+              취소
+            </Button>
+            <Button
+              size={'small'}
+              category={'confirm'}
               onClick={(e) => {
                 onClickOk && onClickOk(e);
                 onClose(e);
               }}
             >
-              ok
-            </button>
+              확인
+            </Button>
           </S.ButtonWrapper>
         ) : undefined}
       </S.Body>

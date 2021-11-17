@@ -57,3 +57,12 @@ export const updateStoryWithName = async ({ id, status, name, projectId, epicId 
     throw e;
   }
 };
+
+export const deleteStoryWitId = async (id: number) => {
+  try {
+    await instance.delete(`?storyId=${id}`);
+  } catch (e) {
+    toast.error('스토리 삭제에 실패하였습니다');
+    throw e;
+  }
+};

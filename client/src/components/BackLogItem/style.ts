@@ -11,22 +11,26 @@ const ItemContainer = styled.div`
 
   margin-top: 8px;
   margin-bottom: 8px;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.color.white};
 `;
 
 const StoryText = styled.span`
+  margin-left: 30px;
+
   font: ${({ theme }) => theme.font.body_medium};
 `;
 
 interface IsClick {
-  check: boolean;
+  click: boolean;
 }
 
 const ToggleImg = styled.img<IsClick>`
   width: 25px;
   height: 25px;
 
-  transform: ${(props) => (props.check ? 'rotate(0deg)' : 'rotate(90deg)')};
-  transition-duration: ${(props) => (props.check ? '0.1s' : '0.1s')};
+  transform: ${(props) => (props.click ? 'rotate(0deg)' : 'rotate(90deg)')};
+  transition-duration: ${(props) => (props.click ? '0.1s' : '0.1s')};
 `;
 
 const ToggleButton = styled.button`
@@ -34,4 +38,21 @@ const ToggleButton = styled.button`
   right: 10px;
 `;
 
-export default { ItemContainer, StoryText, ToggleImg, ToggleButton };
+const TaskContainer = styled.ul<IsClick>`
+  display: ${({ click }) => (click ? 'block' : 'none')};
+  animation-duration: 0.3s;
+  animation-name: slidein;
+  @keyframes slidein {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+  }
+`;
+
+export default { ItemContainer, StoryText, ToggleImg, ToggleButton, TaskContainer };

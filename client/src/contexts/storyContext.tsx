@@ -26,7 +26,7 @@ function reducer(state: StoryState, action: StoryAction): StoryState {
       });
     case 'REMOVE_STORY':
       return producer(state, (draft) => {
-        return draft.filter((el) => el.epicId !== action.id);
+        return draft.filter((el) => el.id !== action.id);
       });
     case 'UPDATE_STORY':
       return producer(state, (draft) => {
