@@ -2,7 +2,7 @@ import React from 'react';
 import S from './style';
 import RoadmapItem from '@/components/RoadmapItem';
 import { useEpicState } from '@/lib/hooks/useContextHooks';
-import { getDateDiff, isFormer, isLatter } from '@/lib/utils/date';
+import { getDateDiff, isFormer, isLatter, shouldRender } from '@/lib/utils/date';
 
 const COLUMNS = 15;
 
@@ -27,7 +27,7 @@ interface RoadmapBarsProps {
 // <------>
 //   |--|
 //
-// 4: startAt이 rangeFrom 앞, endAt이 rangeTo 뒤 (완전히 밖에있는 경우)
+// 4: startAt이 rangeFrom 앞, endAt이 rangeTo 뒤 (완전히 포함하는 경우)
 //    <------>
 // |-----------|
 //
@@ -43,7 +43,16 @@ const RoadmapBars = ({ rangeFrom, rangeTo }: RoadmapBarsProps) => {
         const case3 = isLatter(startAt, rangeFrom) && isFormer(endAt, rangeTo);
         const case4 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeTo);
 
-        const startIndex = case1 || case4 ? 0 : Math.min(getDateDiff(rangeFrom, startAt), 15);
+        const render = shouldRender({
+          start: startAt,
+          end: endAt,
+          from: rangeFrom,
+          to: rangeTo,
+        });
+        let startIndex = COLUMNS;
+        if (case1 || case4) startIndex = 0;
+        else if (render) startIndex = Math.min(getDateDiff(rangeFrom, startAt), COLUMNS);
+
         let length = 0;
         if (case1) length = getDateDiff(rangeFrom, endAt);
         else if (case2) length = getDateDiff(startAt, rangeTo);
