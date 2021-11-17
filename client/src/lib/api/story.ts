@@ -14,7 +14,6 @@ export const getAllStories = async (projectId: number | string) => {
     return result.data;
   } catch (e) {
     toast.error(errorMessage.GET_STORY);
-    throw e;
   }
 };
 
@@ -37,7 +36,7 @@ export const createStory = async ({ id, status, name, projectId = 1, epicId = 1 
     });
     return result.data;
   } catch (e) {
-    return { id: -1 };
+    toast.error(errorMessage.CREATE_STORY);
   }
 };
 
@@ -53,8 +52,7 @@ export const updateStoryWithName = async ({ id, status, name, projectId, epicId 
     });
     return result.data;
   } catch (e) {
-    toast.error('스토리 이름 변경에 실패하였습니다');
-    throw e;
+    toast.error(errorMessage.UPDATE_STORY);
   }
 };
 
@@ -62,7 +60,6 @@ export const deleteStoryWitId = async (id: number) => {
   try {
     await instance.delete(`?storyId=${id}`);
   } catch (e) {
-    toast.error('스토리 삭제에 실패하였습니다');
-    throw e;
+    toast.error(errorMessage.DELETE_STORY);
   }
 };
