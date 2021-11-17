@@ -14,7 +14,7 @@ export const updateTask = async (id: number, name: string, status: boolean) => {
       name,
       status,
     });
-    if (result.data !== 'ok') throw Error();
+    if (result.status >= 400) throw Error();
   } catch (e) {
     toast.error(errorMessage.UPDATE_TASK);
   }
@@ -23,7 +23,7 @@ export const updateTask = async (id: number, name: string, status: boolean) => {
 export const deleteTask = async (id: number) => {
   try {
     const result = await instance.delete(`?id=${id}`);
-    if (result.data !== 'ok') throw Error();
+    if (result.status >= 400) throw Error();
   } catch (e) {
     toast.error(errorMessage.DELETE_TASK);
   }
