@@ -1,3 +1,4 @@
+import { KanbanModalContext } from './KanbanModal/index';
 // Header
 export { default as Profile } from './Profile/index';
 
@@ -15,5 +16,6 @@ export { default as EpicPlaceholer } from './EpicPlaceholder/index';
 
 // KanBan
 export { default as KanbanItem } from './KanbanItem/index';
-export { default as KanBanColumn } from './KanbanColumn/index';
+export { default as KanbanColumn } from './KanbanColumn/index';
 export { default as KanbanAddBtn } from './KanbanAddBtn/index';
+export { default as KanbanModal } from './KanbanModal/index';
