@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import S from '@/components/RoadmapCalendar/style';
-import { getYMD, makeDayRow } from '@/lib/utils/date';
+import { getRangeFromDate, getYMD, makeDayRow } from '@/lib/utils/date';
 import RoadmapBars from '@/components/RoadmapBars';
 
 const WEEK_OFFSET = 14;
@@ -8,6 +8,7 @@ const WEEK_OFFSET = 14;
 const RoadmapCalendar = () => {
   const [date, setDate] = useState(new Date());
   const dayRow = makeDayRow(date);
+  const dateRange = getRangeFromDate(date);
 
   const moveCalendar = (isNext: boolean) => {
     const { year, month, day } = getYMD(date);
@@ -35,7 +36,7 @@ const RoadmapCalendar = () => {
           </S.DayLabel>
         ))}
       </S.DaysWrapper>
-      <RoadmapBars />
+      <RoadmapBars rangeFrom={dateRange.from} rangeTo={dateRange.to} />
       <S.DayColumnWrapper>
         {dayRow.map((day: number) => (
           <S.DayColumn key={day} />
