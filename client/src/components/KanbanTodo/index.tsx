@@ -12,15 +12,9 @@ interface KanbanProps {
 
 type CopyList = [StoryType];
 
-const extractLastID = (array: Array<StoryType>): number => {
-  if (!array?.length) return 0;
-  return Math.max(...array.map((v) => v.id));
-};
-
 const KanbanTodo = ({ projectId }: KanbanProps) => {
-  const storyArray = useStoryState();
+  const storyList = useStoryState();
   const dispatchStory = useStoryDispatch();
-  const lastStoryId = extractLastID(storyArray);
   const [showModal, setShowModal] = useState(false);
   const [shouldDeleteKey, setDeleteKey] = useState(0);
   const draggingItem = useRef<number | null>(null);
@@ -38,7 +32,7 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
 
   const handleDragEnter = (e: React.SyntheticEvent<HTMLElement>, position: number) => {
     dragoverItem.current = position;
-    const listCopy = [...storyArray] as CopyList;
+    const listCopy = [...storyList] as CopyList;
     const draggingItemContent = listCopy[draggingItem.current as number];
     listCopy.splice(draggingItem.current as number, 1);
     listCopy.splice(dragoverItem.current as number, 0, draggingItemContent);
@@ -51,7 +45,7 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
   return (
     <Styled.Column>
       <h4>To do</h4>
-      {storyArray?.map((story, index) => (
+      {storyList?.map((story, index) => (
         <KanbanItem
           key={story.id}
           index={index}
@@ -62,7 +56,7 @@ const KanbanTodo = ({ projectId }: KanbanProps) => {
           handleDragEnter={handleDragEnter}
         />
       ))}
-      <KanbanAddBtn lastStoryId={lastStoryId} projectId={projectId} />
+      <KanbanAddBtn projectId={projectId} />
       <Modal
         shouldConfirm
         title={'스토리를 삭제하시겠습니까?'}
