@@ -28,10 +28,12 @@ const KanbanItem = (props: KanbanItem) => {
 
   return (
     <Styled.KanBanItem
-      draggable
+      data-status={story.status}
+      data-key={story.id}
       onDragStart={(e) => handleDragStart(e, index)}
-      onDragOver={(e) => e.preventDefault()}
       onDragEnter={(e) => handleDragEnter(e, index)}
+      onDragOver={(e) => e.preventDefault()}
+      draggable
     >
       <input
         type="text"
