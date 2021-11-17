@@ -5,36 +5,59 @@ import KanbanModal from '@/components/KanbanModal';
 import { StoryType, StatusType } from '@/types/story';
 import { useStoryState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
 
-interface KanbanProps {
-  projectId?: number;
+export interface KanbanDefaultType {
+  handleDragStart(e: React.DragEvent<HTMLElement>, position: number, category: StatusType): void;
+  handleDragEnter(e: React.DragEvent<HTMLElement>, position: number, category: StatusType): void;
 }
 
 const filteredList = (storyList: Array<StoryType>, status: StatusType) => {
   return storyList.filter((item) => item.status === status);
 };
 
-const Kanban = ({ projectId }: KanbanProps) => {
+const Kanban = () => {
   const draggingItem = useRef<number | null>(0);
   const dragoverItem = useRef<number | null>(0);
+  const dragStartItem = useRef<string | null>('');
+  const test = useRef<number | null>(0);
   const dispatchStory = useStoryDispatch();
   const storyList: Array<StoryType> = useStoryState();
 
-  const handleDragStart = (e: React.SyntheticEvent<HTMLElement>, position: number) => {
+  const handleDragStart = (
+    e: React.DragEvent<HTMLElement>,
+    position: number,
+    category: StatusType,
+  ) => {
     draggingItem.current = position;
+    dragStartItem.current = category;
+    test.current = Number(e.currentTarget.dataset.key);
   };
 
-  const handleDragEnter = (e: React.SyntheticEvent<HTMLElement>, position: number) => {
+  const handleDragEnter = (
+    e: React.DragEvent<HTMLElement>,
+    position: number,
+    category: StatusType,
+  ) => {
     dragoverItem.current = position;
-    // const copyList = filteredList(storyList, e.currentTarget.dataset.status as StatusType);
     const listCopy = [...storyList] as [StoryType];
-
     const draggingItemContent = listCopy[draggingItem.current as number];
-    listCopy.splice(draggingItem.current as number, 1);
-    listCopy.splice(dragoverItem.current as number, 0, draggingItemContent);
 
-    draggingItem.current = dragoverItem.current;
-    dragoverItem.current = null;
-    dispatchStory({ type: 'LOAD_STORY', stories: listCopy });
+    if (category !== dragStartItem.current)
+      dispatchStory({
+        type: 'UPDATE_STORY',
+        story: {
+          id: test.current as number,
+          name: storyList.filter((v) => v.id === test.current)[0]?.name,
+          status: category,
+        },
+      });
+    else {
+      listCopy.splice(draggingItem.current as number, 1);
+      listCopy.splice(dragoverItem.current as number, 0, draggingItemContent);
+
+      draggingItem.current = dragoverItem.current;
+      dragoverItem.current = null;
+      dispatchStory({ type: 'LOAD_STORY', stories: listCopy });
+    }
   };
 
   return (
@@ -43,23 +66,20 @@ const Kanban = ({ projectId }: KanbanProps) => {
         <Styled.Title>프로젝트 칸반보드</Styled.Title>
         <Styled.ColumnContainer>
           <KanbanColumn
-            category={'To Do'}
+            category={'TODO'}
             storyList={filteredList(storyList, 'TODO')}
-            projectId={projectId}
             handleDragStart={handleDragStart}
             handleDragEnter={handleDragEnter}
           />
           <KanbanColumn
-            category={'In Progress'}
+            category={'IN_PROGRESS'}
             storyList={filteredList(storyList, 'IN_PROGRESS')}
-            projectId={projectId}
             handleDragStart={handleDragStart}
             handleDragEnter={handleDragEnter}
           />
           <KanbanColumn
-            category={'Done'}
+            category={'DONE'}
             storyList={filteredList(storyList, 'DONE')}
-            projectId={projectId}
             handleDragStart={handleDragStart}
             handleDragEnter={handleDragEnter}
           />
