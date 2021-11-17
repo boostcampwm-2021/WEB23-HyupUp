@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { useUserState } from '@/lib/hooks/useContextHooks';
 import LandingPage from './pages/LandingPage';
 import MainPage from './pages/MainPage';
 import WorkPage from './pages/WorkPage';

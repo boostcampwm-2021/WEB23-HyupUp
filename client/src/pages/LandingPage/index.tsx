@@ -1,16 +1,17 @@
 import React from 'react';
 import Button from '@/lib/design/Button';
-import { useUserDispatch } from '@/lib/hooks/useContextHooks';
 import { getUser } from '@/lib/api/user';
 import { Styled } from './style';
+import { useSetRecoilState } from 'recoil';
+import user from '@/recoil/user';
 
 const LandingPage = () => {
-  const dispatch = useUserDispatch();
+  const setUserState = useSetRecoilState(user);
 
   const onClickLogin = async (email: string) => {
     // App 의 useEffect로 들어가야할 로직
-    const user = await getUser(email);
-    dispatch({ type: 'GET_USER', payload: user });
+    const newUser = await getUser(email);
+    setUserState(newUser);
   };
 
   return (
