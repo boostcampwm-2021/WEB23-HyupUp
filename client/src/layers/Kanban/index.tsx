@@ -2,18 +2,22 @@ import React, { useRef } from 'react';
 import Styled from '@/layers/Kanban/style';
 import KanbanColumn from '@/components/KanbanColumn';
 import KanbanModal from '@/components/KanbanModal';
-import { StoryType } from '@/types/story';
+import { StoryType, StatusType } from '@/types/story';
 import { useStoryState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
 
 interface KanbanProps {
   projectId?: number;
 }
 
+const filteredList = (storyList: Array<StoryType>, status: StatusType) => {
+  return storyList.filter((item) => item.status === status);
+};
+
 const Kanban = ({ projectId }: KanbanProps) => {
-  const storyList: Array<StoryType> = useStoryState();
-  const dispatchStory = useStoryDispatch();
   const draggingItem = useRef<number | null>(0);
   const dragoverItem = useRef<number | null>(0);
+  const dispatchStory = useStoryDispatch();
+  const storyList: Array<StoryType> = useStoryState();
 
   const handleDragStart = (e: React.SyntheticEvent<HTMLElement>, position: number) => {
     draggingItem.current = position;
@@ -21,6 +25,7 @@ const Kanban = ({ projectId }: KanbanProps) => {
 
   const handleDragEnter = (e: React.SyntheticEvent<HTMLElement>, position: number) => {
     dragoverItem.current = position;
+    // const copyList = filteredList(storyList, e.currentTarget.dataset.status as StatusType);
     const listCopy = [...storyList] as [StoryType];
 
     const draggingItemContent = listCopy[draggingItem.current as number];
@@ -38,19 +43,22 @@ const Kanban = ({ projectId }: KanbanProps) => {
         <Styled.Title>프로젝트 칸반보드</Styled.Title>
         <Styled.ColumnContainer>
           <KanbanColumn
-            storyList={storyList}
+            category={'To Do'}
+            storyList={filteredList(storyList, 'TODO')}
             projectId={projectId}
             handleDragStart={handleDragStart}
             handleDragEnter={handleDragEnter}
           />
           <KanbanColumn
-            storyList={storyList}
+            category={'In Progress'}
+            storyList={filteredList(storyList, 'IN_PROGRESS')}
             projectId={projectId}
             handleDragStart={handleDragStart}
             handleDragEnter={handleDragEnter}
           />
           <KanbanColumn
-            storyList={storyList}
+            category={'Done'}
+            storyList={filteredList(storyList, 'DONE')}
             projectId={projectId}
             handleDragStart={handleDragStart}
             handleDragEnter={handleDragEnter}
