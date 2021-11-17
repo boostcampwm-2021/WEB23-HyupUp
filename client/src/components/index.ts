@@ -16,3 +16,4 @@ export { default as EpicPlaceholer } from './EpicPlaceholder/index';
 // KanBan
 export { default as KanbanItem } from './KanbanItem/index';
 export { default as KanBanTodo } from './KanbanTodo/index';
+export { default as KanbanAddBtn } from './KanbanAddBtn/index';
