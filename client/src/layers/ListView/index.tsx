@@ -35,20 +35,20 @@ const ListView = () => {
     setListState(target.id as ListState);
   };
 
-  const onClickFinish = (task: TaskProp) => {
+  const onClickFinish = async (task: TaskProp) => {
     if (task.project) {
-      userDispatch({ type: 'FINISH_PROJECT_TASK', payload: task.id });
-      updateTask(task.id, task.name, !task.status);
+      userDispatch({ type: 'UPDATE_PROJECT_TASK', payload: { ...task, status: true } });
+      await updateTask(task.id, task.name, !task.status);
     } else {
-      userDispatch({ type: 'FINISH_PRIVATE_TASK', payload: task.id });
-      updateTodo(task.id, task.name, !task.status);
+      userDispatch({ type: 'UPDATE_PRIVATE_TASK', payload: { ...task, status: true } });
+      await updateTodo(task.id, task.name, !task.status);
     }
   };
 
-  const onClickDelete = (task: TaskProp) => {
+  const onClickDelete = async (task: TaskProp) => {
     if (task.project) return;
     userDispatch({ type: 'DELETE_PRIVATE_TASK', payload: task.id });
-    deleteTodo(task.id);
+    await deleteTodo(task.id);
   };
 
   useEffect(() => {
