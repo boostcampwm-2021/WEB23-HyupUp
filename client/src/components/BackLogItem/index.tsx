@@ -3,25 +3,27 @@ import S from './style';
 import arrow from '@public/icons/chevron-down.svg';
 import BackLogTask from '../BackLogTask';
 import { getTasksByStoryId } from '@/lib/api/task';
-import { TaskProps } from '@/lib/api/task';
+import { BackLogTaskProps } from '@/types/task';
 
 const BackLogItem = ({ name, id }: { name: string; id: number }) => {
-  const [isClick, isClickHandler] = useState(false);
-  const [tasks, setTasks] = useState<Array<TaskProps>>([]);
+  const [clicked, setClicked] = useState(false);
+  const [tasks, setTasks] = useState<Array<BackLogTaskProps>>([]);
   const clickEventListener = async () => {
-    isClickHandler(!isClick);
-    if (isClick === true) return;
-    setTasks(await getTasksByStoryId(id));
+    const newClicked = !clicked;
+    setClicked(newClicked);
+    if (!newClicked) return;
+    const newTasks = await getTasksByStoryId(id);
+    setTasks(newTasks ?? []);
   };
   return (
     <div>
       <S.ItemContainer>
         <S.StoryText>{name}</S.StoryText>
         <S.ToggleButton onClick={clickEventListener}>
-          <S.ToggleImg src={arrow} check={isClick} />
+          <S.ToggleImg src={arrow} click={clicked} />
         </S.ToggleButton>
       </S.ItemContainer>
-      <S.TaskContainer check={isClick}>
+      <S.TaskContainer click={clicked}>
         {tasks.map((el) => (
           <BackLogTask key={el.id} name={el.user} imageURL={el.userImage} task={el.name} />
         ))}
