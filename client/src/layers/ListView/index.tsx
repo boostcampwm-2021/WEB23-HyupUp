@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Styled from '@/layers/ListView/style';
 import { useUserDispatch, useUserState } from '@/lib/hooks/useContextHooks';
+import { updateTask } from '@/lib/api/task';
+import { updateTodo, deleteTodo } from '@/lib/api/todo';
 import ListViewHeader from '@/components/ListViewHeader';
 import ListViewItem from '@/components/ListViewItem';
 import { PrivateTask } from '@/types/task';
@@ -33,17 +35,20 @@ const ListView = () => {
     setListState(target.id as ListState);
   };
 
-  const onClickFinish = (task: TaskProp) => {
+  const onClickFinish = async (task: TaskProp) => {
     if (task.project) {
-      userDispatch({ type: 'FINISH_PROJECT_TASK', payload: task.id });
+      userDispatch({ type: 'UPDATE_PROJECT_TASK', payload: { ...task, status: true } });
+      await updateTask(task.id, task.name, !task.status);
     } else {
-      userDispatch({ type: 'FINISH_PRIVATE_TASK', payload: task.id });
+      userDispatch({ type: 'UPDATE_PRIVATE_TASK', payload: { ...task, status: true } });
+      await updateTodo(task.id, task.name, !task.status);
     }
   };
 
-  const onClickDelete = (task: TaskProp) => {
+  const onClickDelete = async (task: TaskProp) => {
     if (task.project) return;
     userDispatch({ type: 'DELETE_PRIVATE_TASK', payload: task.id });
+    await deleteTodo(task.id);
   };
 
   useEffect(() => {
@@ -65,7 +70,7 @@ const ListView = () => {
         {renderTasks.map((task, i) => (
           <ListViewItem
             task={task}
-            key={'' + i + task.id}
+            key={i + '-' + task.id}
             onClickMethod={listState === 'done' ? onClickDelete : onClickFinish}
           />
         ))}

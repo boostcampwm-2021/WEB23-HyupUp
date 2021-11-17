@@ -19,10 +19,19 @@ const Styled = {
     }
   `,
   Title: styled.div`
+    display: flex;
+    align-items: center;
+
     width: 120px;
     margin-right: 60px;
 
     overflow-x: hidden;
+    & img {
+      margin-right: 10px;
+    }
+    & h3 {
+      font: ${({ theme }) => theme.font.bold_regular};
+    }
   `,
   Content: styled.div`
     width: 350px;

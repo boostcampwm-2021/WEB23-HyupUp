@@ -1,10 +1,10 @@
 import Users from '../Users/Users.entity';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { bodyValidator } from '../../lib/utils/requestValidator';
 import Todo from './Todo.entity';
 
-export default async function createTodo(req: Request, res: Response) {
+export async function createTodo(req: Request, res: Response) {
   try {
     if (!bodyValidator(req.body, ['name', 'userId'])) {
       throw new Error('body is not vaild');
@@ -36,3 +36,34 @@ export default async function createTodo(req: Request, res: Response) {
     }
   }
 }
+
+export const updateTodo = async (req: Request, res: Response) => {
+  try {
+    if (!bodyValidator(req.body, ['id', 'name', 'status'])) {
+      throw Error('body is not valid');
+    }
+    const todoRepository = getRepository(Todo);
+    await todoRepository.update(req.body.id, {
+      name: req.body.name,
+      status: req.body.status,
+    });
+    res.end();
+  } catch (error) {
+    const message = (error as Error).message;
+    res.status(401).json({ message });
+  }
+};
+
+export const deleteTodo = async (req: Request, res: Response) => {
+  try {
+    if (!req.query.id) {
+      throw Error('body is not valid');
+    }
+    const todoRepository = getRepository(Todo);
+    await todoRepository.delete({ id: +req.query.id });
+    res.end();
+  } catch (error) {
+    const message = (error as Error).message;
+    res.status(401).json({ message });
+  }
+};
