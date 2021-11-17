@@ -2,7 +2,9 @@ import React from 'react';
 import S from './style';
 import RoadmapItem from '@/components/RoadmapItem';
 import { useEpicState } from '@/lib/hooks/useContextHooks';
-import { shouldRender } from '@/lib/utils/date';
+import { getDateDiff, isFormer, isLatter } from '@/lib/utils/date';
+
+const COLUMNS = 15;
 
 interface RoadmapBarsProps {
   rangeFrom: Date;
@@ -13,7 +15,7 @@ interface RoadmapBarsProps {
 // startAt은 에픽 항목의 시작일자, endAt은 에픽 항목의 끝 일자
 //
 // 에픽 막대를 렌더링해야하는 케이스 (<--> : 캘린더뷰, |--|: 에픽 항목)
-// 1: startAt이 rangeFrom 앞, endAt이 rangeTo 뒤 (왼쪽에 걸쳐있는 경우)
+// 1: startAt이 rangeFrom 앞, endAt이 rangeFrom 뒤 (왼쪽에 걸쳐있는 경우)
 //    <------>
 // |----|
 //
@@ -36,13 +38,19 @@ const RoadmapBars = ({ rangeFrom, rangeTo }: RoadmapBarsProps) => {
   return (
     <S.Container>
       {epics.map(({ id, startAt, endAt }) => {
-        const render = shouldRender({
-          start: startAt,
-          end: endAt,
-          from: rangeFrom,
-          to: rangeTo,
-        });
-        return <RoadmapItem key={id} columns={15} index={0} length={render ? 3 : 0} />;
+        const case1 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeFrom);
+        const case2 = isFormer(startAt, rangeTo) && isLatter(endAt, rangeTo);
+        const case3 = isLatter(startAt, rangeFrom) && isFormer(endAt, rangeTo);
+        const case4 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeTo);
+
+        const startIndex = case1 || case4 ? 0 : Math.min(getDateDiff(rangeFrom, startAt), 15);
+        let length = 0;
+        if (case1) length = getDateDiff(rangeFrom, endAt);
+        else if (case2) length = getDateDiff(startAt, rangeTo);
+        else if (case3) length = getDateDiff(startAt, endAt);
+        else if (case4) length = getDateDiff(rangeFrom, rangeTo);
+
+        return <RoadmapItem key={id} columns={COLUMNS} index={startIndex} length={length} />;
       })}
     </S.Container>
   );
