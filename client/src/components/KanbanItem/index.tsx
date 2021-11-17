@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Styled from '@/components/KanbanItem/style';
 import { StoryType } from '@/types/story';
+import { KanbanModalContext } from '@/components/KanbanModal';
 import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
 import { useInput } from '@/lib/hooks';
 import { updateStoryWithName } from '@/lib/api/story';
@@ -8,14 +9,15 @@ import { updateStoryWithName } from '@/lib/api/story';
 interface KanbanItem {
   story: StoryType;
   index: number;
-  setDeleteKey(arg: number): void;
-  setShowModal(arg: boolean): void;
   handleDragStart(e: React.SyntheticEvent<HTMLElement>, position: number): void;
   handleDragEnter(e: React.SyntheticEvent<HTMLElement>, position: number): void;
 }
 
 const KanbanItem = (props: KanbanItem) => {
-  const { index, story, setDeleteKey, setShowModal, handleDragStart, handleDragEnter } = props;
+  const { index, story, handleDragStart, handleDragEnter } = props;
+  //TODO null 이 assign 되지 않음
+  const modalConsumer = useContext(KanbanModalContext);
+
   const { key, value, onChange } = useInput('');
   const dispatchStory = useStoryDispatch();
 
@@ -40,8 +42,8 @@ const KanbanItem = (props: KanbanItem) => {
       />
       <Styled.CancelIcon
         onClick={() => {
-          setShowModal(true);
-          setDeleteKey(story.id);
+          modalConsumer?.setShowModal(true);
+          modalConsumer?.setDeleteItem(story.id);
         }}
       ></Styled.CancelIcon>
     </Styled.KanBanItem>
