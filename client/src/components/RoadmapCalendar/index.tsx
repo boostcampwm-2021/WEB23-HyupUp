@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import S from '@/components/RoadmapCalendar/style';
 import { getRangeFromDate, getYMD, isSameDay, makeDayRow } from '@/lib/utils/date';
 import RoadmapBars from '@/components/RoadmapBars';
+import { toast } from 'react-toastify';
 
 const WEEK_OFFSET = 14;
 
@@ -46,6 +47,9 @@ const RoadmapCalendar = () => {
             highlightColumn={Math.floor(WEEK_OFFSET / 2 + 1)}
             isToday={isToday}
             data-index={i}
+            onDragOver={(e) => e.preventDefault()}
+            onDragEnter={(e) => toast.success(`entered ${(e.target as HTMLElement).dataset.index}`)}
+            onDrop={() => toast.success('dropped')}
           />
         ))}
       </S.DayColumnWrapper>
