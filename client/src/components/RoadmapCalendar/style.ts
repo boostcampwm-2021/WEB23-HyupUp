@@ -77,10 +77,10 @@ const S = {
     width: calc(100% - 32px);
     height: 100%;
   `,
-  DayColumn: styled.section<{ highlightColumn: number }>`
+  DayColumn: styled.section<{ highlightColumn: number; isToday: boolean }>`
     width: 100%;
 
-    &:nth-child(${({ highlightColumn }) => highlightColumn}) {
+    &:nth-child(${({ highlightColumn, isToday }) => (isToday ? highlightColumn : 0)}) {
       display: flex;
 
       &:after {
