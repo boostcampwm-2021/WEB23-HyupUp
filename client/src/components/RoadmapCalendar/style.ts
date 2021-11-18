@@ -83,7 +83,7 @@ const S = {
     &:nth-child(${({ highlightColumn, isToday }) => (isToday ? highlightColumn : 0)}) {
       display: flex;
 
-      &:after {
+      &::after {
         content: '';
         width: 50%;
         margin-top: 100px;

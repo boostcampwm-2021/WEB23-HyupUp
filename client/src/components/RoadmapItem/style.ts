@@ -32,7 +32,7 @@ const S = {
     cursor: col-resize;
     z-index: 9;
 
-    &:after {
+    &::after {
       content: '';
       width: 100%;
       height: 100%;
@@ -53,7 +53,7 @@ const S = {
     cursor: col-resize;
     z-index: 9;
 
-    &:after {
+    &::after {
       content: '';
       width: 100%;
       height: 100%;
