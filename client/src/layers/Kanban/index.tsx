@@ -1,26 +1,31 @@
-import React, { useRef, Dispatch } from 'react';
+import React, { useRef } from 'react';
 import Styled from '@/layers/Kanban/style';
 import KanbanColumn from '@/components/KanbanColumn';
 import KanbanModal from '@/components/KanbanModal';
 import { StoryType, StatusType } from '@/types/story';
-import { useStoryState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
+import { useStoryState } from '@/lib/hooks/useContextHooks';
 
 export interface KanbanDefaultType {
-  handleDragStart(e: React.DragEvent<HTMLElement>, position: number, category: StatusType): void;
-  handleDragEnter(e: React.DragEvent<HTMLElement>, position: number, category: StatusType): void;
+  handleDragStart(e: React.DragEvent<HTMLElement>, order: number, category: StatusType): void;
+  handleDragEnter(e: React.DragEvent<HTMLElement>, order: number, category: StatusType): void;
 }
 
 const Kanban = () => {
   const draggingItem = useRef<number | null>(0);
-  const dragoverItem = useRef<number | null>(0);
-  const dragStartItem = useRef<string | null>('');
+  const dragOverItem = useRef<number | null>(0);
+  const cateogryRef = useRef<StatusType>('TODO');
   const test = useRef<number | null>(0);
-  const dispatchStory = useStoryDispatch();
   const storyList: StoryType[] = useStoryState();
 
-  const todoList = storyList.filter((item) => item.status === 'TODO');
-  const onGoingList = storyList.filter((item) => item.status === 'IN_PROGRESS');
-  const finishList = storyList.filter((item) => item.status === 'DONE');
+  const todoList = storyList
+    .filter((item) => item.status === 'TODO')
+    .sort((a, b) => a.order - b.order);
+  const onGoingList = storyList
+    .filter((item) => item.status === 'IN_PROGRESS')
+    .sort((a, b) => a.order - b.order);
+  const finishList = storyList
+    .filter((item) => item.status === 'DONE')
+    .sort((a, b) => a.order - b.order);
 
   // const handleDragEnter = (
   //   e: React.DragEvent<HTMLElement>,
@@ -55,7 +60,13 @@ const Kanban = () => {
       <Styled.Container>
         <Styled.Title>프로젝트 칸반보드</Styled.Title>
         <Styled.ColumnContainer>
-          <KanbanColumn draggingItem={draggingItem} category={'TODO'} storyList={todoList} />
+          <KanbanColumn
+            draggingItem={draggingItem}
+            dragOverItem={dragOverItem}
+            categoryRef={cateogryRef}
+            category={'TODO'}
+            storyList={todoList}
+          />
           <KanbanColumn category={'IN_PROGRESS'} storyList={onGoingList} />
           <KanbanColumn category={'DONE'} storyList={finishList} />
         </Styled.ColumnContainer>
