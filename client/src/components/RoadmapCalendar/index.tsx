@@ -8,6 +8,7 @@ const WEEK_OFFSET = 14;
 const RoadmapCalendar = () => {
   const [date, setDate] = useState(new Date());
   const today = new Date();
+  const isToday = isSameDay(today, date);
   const dayRow = makeDayRow(date);
   const dateRange = getRangeFromDate(date);
 
@@ -29,7 +30,7 @@ const RoadmapCalendar = () => {
       <S.DaysWrapper>
         {dayRow.map((day: number, i) => (
           <S.DayLabel key={day}>
-            {i === Math.floor(WEEK_OFFSET / 2) && isSameDay(date, today) ? (
+            {i === Math.floor(WEEK_OFFSET / 2) && isToday ? (
               <S.DayLabelToday>{day}</S.DayLabelToday>
             ) : (
               day
@@ -40,7 +41,11 @@ const RoadmapCalendar = () => {
       <RoadmapBars rangeFrom={dateRange.from} rangeTo={dateRange.to} />
       <S.DayColumnWrapper>
         {dayRow.map((day: number) => (
-          <S.DayColumn key={day} highlightColumn={Math.floor(WEEK_OFFSET / 2 + 1)} />
+          <S.DayColumn
+            key={day}
+            highlightColumn={Math.floor(WEEK_OFFSET / 2 + 1)}
+            isToday={isToday}
+          />
         ))}
       </S.DayColumnWrapper>
     </S.RoadmapCalendar>
