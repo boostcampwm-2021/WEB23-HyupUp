@@ -1,12 +1,11 @@
 import express from 'express';
-import cors from 'cors';
-import options from '../../lib/config/corsConfig';
-import { createEpic, findEpicById, getAllEpicsByProject } from './Epics.controller';
+import { createEpic, deleteEpicById, findEpicById, getAllEpicsByProject } from './Epics.controller';
 
 const router = express.Router();
 
-router.get('/', cors(options), getAllEpicsByProject);
-router.get('/:id', cors(options), findEpicById);
+router.get('/', getAllEpicsByProject);
+router.get('/:id', findEpicById);
+router.delete('/:id', deleteEpicById);
 router.post('/', createEpic);
 
 export default router;

@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
-import PretendardRegular from '@/styles/fonts/Pretendard-Regular.woff2';
-import PretendardBold from '@/styles/fonts/Pretendard-Bold.woff2';
+import PretendardBold from '../../public/fonts/Pretendard-Bold.woff2';
+import PretendardRegular from '../../public/fonts/Pretendard-Regular.woff2';
 
 const GlobalStyle = createGlobalStyle`
   ${reset}

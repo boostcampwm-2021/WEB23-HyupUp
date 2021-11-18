@@ -1,7 +1,9 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { errorMessage } from '@/lib/common/message';
 
 const instance = axios.create({
-  baseURL: process.env.SERVER_URL,
+  baseURL: process.env.SERVER_URL + '/api/todo',
   withCredentials: true,
 });
 
@@ -15,13 +17,35 @@ interface Todo {
 
 export const createTodo = async (name: string, userId: number) => {
   try {
-    const result: { data: Todo } = await instance.post('/api/todo', {
+    const result: { data: Todo } = await instance.post('', {
       name: name,
       userId: userId,
     });
     return result.data;
   } catch (e) {
-    console.error('TODO 생성 실패');
+    toast.error(errorMessage.CREATE_TODO);
     throw e;
+  }
+};
+
+export const updateTodo = async (id: number, name: string, status: boolean) => {
+  try {
+    const result = await instance.patch('', {
+      id,
+      name,
+      status,
+    });
+    if (result.status >= 400) throw Error();
+  } catch (e) {
+    toast.error(errorMessage.UPDATE_TODO);
+  }
+};
+
+export const deleteTodo = async (id: number) => {
+  try {
+    const result = await instance.delete(`?id=${id}`);
+    if (result.status >= 400) throw Error();
+  } catch (e) {
+    toast.error(errorMessage.DELETE_TODO);
   }
 };

@@ -61,15 +61,36 @@ export const createEpic = async (req: Request, res: Response) => {
       .insert()
       .into(Epics)
       .values({
-        startAt: new Date(),
-        endAt: new Date(),
-        projects: () => req.body.projectName,
         name: req.body.name,
+        projects: req.body.projectId,
+        startAt: req.body.startAt,
+        endAt: req.body.endAt,
       })
       .execute();
     res.status(201).json({ id: result.raw.insertId });
   } catch (e) {
     res.status(400).json({
+      message: (e as Error).message,
+    });
+  }
+};
+
+/**
+ *
+ * @param id: 삭제하려는 에픽의 id
+ * @response 실행 결과를 나타내는 문자열
+ */
+export const deleteEpicById = async (req: Request, res: Response) => {
+  try {
+    await getRepository(Epics)
+      .createQueryBuilder()
+      .delete()
+      .from(Epics)
+      .where('id = :id', { id: req.params.id })
+      .execute();
+    res.status(200).json({ message: 'successfully deleted' });
+  } catch (e) {
+    res.status(404).json({
       message: (e as Error).message,
     });
   }

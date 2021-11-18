@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { errorMessage } from '../common/message';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL,
@@ -17,7 +19,7 @@ export const getAllProjects = async (userId: number, organizationId: number) => 
     );
     return result.data;
   } catch (e) {
-    console.error('Project 검색 실패');
+    toast.error(errorMessage.GET_PROJECT);
     throw e;
   }
 };

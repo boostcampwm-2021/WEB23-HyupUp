@@ -4,14 +4,19 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --inspect --watch -- ./bin/www.ts"
+    "dev": "ts-node-dev --inspect --watch -- ./bin/www.ts",
+    "test": "jest --setupFiles dotenv/config --forceExit --detectOpenHandles"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",
     "@types/debug": "^4.1.7",
     "@types/express": "^4.17.13",
     "@types/http-errors": "^1.8.1",
+    "@types/jsonwebtoken": "^8.5.6",
     "@types/morgan": "^1.9.3",
+    "@types/multer": "^1.4.7",
+    "@types/nodemailer": "^6.4.4",
+    "ts-jest": "^27.0.7",
     "ts-node-dev": "^1.1.8"
   },
   "dependencies": {
@@ -22,8 +27,11 @@
     "express": "^4.17.1",
     "http": "^0.0.1-security",
     "http-errors": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
+    "multer": "^1.4.3",
     "mysql2": "^2.3.2",
+    "nodemailer": "^6.7.1",
     "reflect-metadata": "^0.1.13",
     "socket.io": "^4.3.1",
     "typeorm": "^0.2.38"

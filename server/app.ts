@@ -15,6 +15,7 @@ import epicRouter from './src/Epics/Epics.router';
 import storyRouter from './src/Stories/Stories.router';
 import taskRouter from './src/Tasks/Tasks.router';
 import todoRouter from './src/Todo/Todo.router';
+import emailRouter from './src/Email/Email.router';
 
 const app = express();
 dotenv.config();
@@ -29,7 +30,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'upload')));
 
 // to-do router 설정
 app.use('/api/users', userRouter);
@@ -38,6 +39,7 @@ app.use('/api/epics', epicRouter);
 app.use('/api/stories', storyRouter);
 app.use('/api/tasks', taskRouter);
 app.use('/api/todo', todoRouter);
+app.use('/api/email', emailRouter);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   next(createError(404));
