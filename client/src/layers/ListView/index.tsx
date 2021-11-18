@@ -1,12 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Styled from '@/layers/ListView/style';
-import { useUserDispatch, useUserState } from '@/lib/hooks/useContextHooks';
 import { updateTask } from '@/lib/api/task';
 import { updateTodo, deleteTodo } from '@/lib/api/todo';
 import ListViewHeader from '@/components/ListViewHeader';
 import ListViewItem from '@/components/ListViewItem';
 import { PrivateTask } from '@/types/task';
 import { ProjectType } from '@/types/project';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { privateTasksSelector, projectTasksSelector } from '@/recoil/user';
+import { allTasksSelector } from '@/recoil/user/selector';
 
 export type ListState = 'all' | 'private' | 'project' | 'done';
 
@@ -17,16 +19,11 @@ export interface TaskProp extends PrivateTask {
 type AllTasks = TaskProp[];
 
 const ListView = () => {
-  const userState = useUserState();
-  const userDispatch = useUserDispatch();
+  const [privateTasks, setPrivateTasks] = useRecoilState(privateTasksSelector);
+  const [projectTasks, setProjectTasks] = useRecoilState(projectTasksSelector);
+  const allTasks = useRecoilValue(allTasksSelector);
+
   const [listState, setListState] = useState<ListState>('all');
-  const allTasks: AllTasks = useMemo(
-    () =>
-      [...userState.privateTasks!, ...userState.projectTasks!].sort((a, b) =>
-        a.updatedAt < b.updatedAt ? 1 : -1,
-      ),
-    [userState],
-  );
   const [renderTasks, setRenderTasks] = useState<AllTasks>([]);
 
   const handleListState = (event: React.MouseEvent) => {
@@ -37,31 +34,43 @@ const ListView = () => {
 
   const onClickFinish = async (task: TaskProp) => {
     if (task.project) {
-      userDispatch({ type: 'UPDATE_PROJECT_TASK', payload: { ...task, status: true } });
+      setProjectTasks((prev) => [
+        {
+          ...task,
+          status: !task.status,
+        },
+        ...prev.filter((el) => el.id !== task.id),
+      ]);
       await updateTask(task.id, task.name, !task.status);
     } else {
-      userDispatch({ type: 'UPDATE_PRIVATE_TASK', payload: { ...task, status: true } });
+      setPrivateTasks((prev) => [
+        {
+          ...task,
+          status: !task.status,
+        },
+        ...prev.filter((el) => el.id !== task.id),
+      ]);
       await updateTodo(task.id, task.name, !task.status);
     }
   };
 
   const onClickDelete = async (task: TaskProp) => {
     if (task.project) return;
-    userDispatch({ type: 'DELETE_PRIVATE_TASK', payload: task.id });
+    setPrivateTasks((prev) => [...prev.filter((el) => el.id !== task.id)]);
     await deleteTodo(task.id);
   };
 
   useEffect(() => {
     if (listState === 'all') {
-      setRenderTasks(allTasks.filter((task) => task.status === false));
+      setRenderTasks(allTasks.filter((task) => !task.status));
     } else if (listState === 'private') {
-      setRenderTasks(allTasks.filter((task) => !task.project && task.status === false));
+      setRenderTasks(privateTasks.filter((task) => !task.status));
     } else if (listState === 'project') {
-      setRenderTasks(allTasks.filter((task) => task.project?.name && task.status === false));
+      setRenderTasks(projectTasks.filter((task) => !task.status));
     } else {
       setRenderTasks(allTasks.filter((task) => task.status));
     }
-  }, [listState, userState]);
+  }, [listState, privateTasks, projectTasks, allTasks]);
 
   return (
     <Styled.Container>
