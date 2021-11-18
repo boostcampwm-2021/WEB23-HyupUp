@@ -1,4 +1,5 @@
 import React from 'react';
+import { RecoilRoot } from 'recoil';
 import GlobalStyle from './styles/GlobalStyle';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,11 +11,13 @@ function App() {
   return (
     <>
       <ContextProvider>
-        <BrowserRouter>
-          <GlobalStyle />
-          <Router />
-          <ToastContainer style={{ fontSize: 13 }} />
-        </BrowserRouter>
+        <RecoilRoot>
+          <BrowserRouter>
+            <GlobalStyle />
+            <Router />
+            <ToastContainer style={{ fontSize: 13 }} />
+          </BrowserRouter>
+        </RecoilRoot>
       </ContextProvider>
     </>
   );

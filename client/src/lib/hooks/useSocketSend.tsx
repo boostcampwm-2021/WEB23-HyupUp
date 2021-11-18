@@ -14,9 +14,12 @@ function useSocketSend(channel: string) {
   const { connection } = React.useContext(SocketContext);
 
   // emit(1, 2, 3) 과 emit([1, 2, 3]) 이 동일한 기능을 하기 위한 로직
-  return (...dataToEmit: any[]) => {
-    connection.emit(channel, dataToEmit.length ? dataToEmit[0] : dataToEmit);
-  };
+  return React.useCallback(
+    (...dataToEmit: any[]) => {
+      connection.emit(channel, dataToEmit.length ? dataToEmit[0] : dataToEmit);
+    },
+    [channel, connection],
+  );
 }
 
 export default useSocketSend;

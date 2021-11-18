@@ -7,14 +7,20 @@ import Button from '@/lib/design/Button';
 
 interface ListItemProp {
   task: TaskProp;
-  onClickMethod: (task: TaskProp) => void;
+  onClickMethod: (task: TaskProp) => Promise<void>;
 }
 
 const ListViewItem = ({ task, onClickMethod }: ListItemProp) => {
   const buttonComponent = useMemo(() => {
     if (!task.status) {
       return (
-        <Button size="small" category="default" onClick={() => onClickMethod(task)}>
+        <Button
+          size="small"
+          category="default"
+          onClick={() => {
+            onClickMethod(task);
+          }}
+        >
           완료
         </Button>
       );

@@ -7,7 +7,7 @@ export interface PrivateTask {
 }
 
 export interface ProjectTask extends PrivateTask {
-  project: ProjectType;
+  project?: ProjectType;
 }
 
 export interface BackLogTaskProps {

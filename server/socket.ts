@@ -1,5 +1,4 @@
 import { Server } from 'socket.io';
-
 const io = new Server();
 
 interface userInstance {
@@ -9,31 +8,35 @@ interface userInstance {
 
 // to-do 메모리 상에서 관리하는 것 말고, redis나 다른 DB 생각해보기
 // to-do room을 활용하여 관리하는 방법을 찾아보기
-const usersList: { [index: string]: userInstance[] } = {
-  TEAM42: [],
-};
+const usersList: { [index: string]: userInstance[] } = {};
 
 io.on('connection', (socket) => {
-  socket.join('TEAM42'); // to-do organization이 여러가지인 경우, 이를 따로 관리하는 로직 작성, usersList에 추가하기
-
-  socket.on('LOGIN', (userId: number) => {
-    socket.to('TEAM42').emit('ON', userId);
-    io.to(socket.id).emit('LOGIN_CALLBACK', usersList.TEAM42);
-    usersList.TEAM42 = [...usersList.TEAM42, { userId: userId, sid: socket.id }];
+  socket.on('LOGIN', ({ userId, organizationId }: { userId: number; organizationId: number }) => {
+    const roomName = organizationId.toString();
+    socket.data = roomName;
+    socket.join(roomName);
+    if (Object.keys(usersList).includes(roomName)) {
+      socket.to(roomName).emit('ON', userId);
+      io.to(socket.id).emit('LOGIN_CALLBACK', usersList[roomName]);
+      usersList[roomName] = [...usersList[roomName], { userId: userId, sid: socket.id }];
+    } else usersList[roomName] = [{ userId: userId, sid: socket.id }];
   });
 
   socket.on('LOGOUT', (userId: number) => {
-    socket.to('TEAM42').emit('OFF', userId);
-    usersList.TEAM42 = [
-      ...usersList.TEAM42.filter((el) => el.userId !== userId).map((el) => ({ ...el })),
+    socket.to(socket.data).emit('OFF', userId);
+    usersList[socket.data] = [
+      ...usersList[socket.data].filter((el) => el.userId !== userId).map((el) => ({ ...el })),
     ];
+    if (usersList[socket.data].length === 0) delete usersList[socket.data];
   });
 
   socket.on('disconnecting', () => {
-    const disconnectedUser = usersList.TEAM42.find((el) => el.sid === socket.id);
+    if (!Object.keys(usersList).includes(socket.data)) return;
+    const disconnectedUser = usersList[socket.data].find((el) => el.sid === socket.id);
     if (!disconnectedUser) return;
-    usersList.TEAM42 = usersList.TEAM42.filter((el) => el.sid !== socket.id);
-    socket.to('TEAM42').emit('OFF', disconnectedUser.userId);
+    usersList[socket.data] = usersList[socket.data].filter((el) => el.sid !== socket.id);
+    socket.to([socket.data]).emit('OFF', disconnectedUser.userId);
+    if (usersList[socket.data].length === 0) delete usersList[socket.data];
   });
 
   socket.on('NEW_EPIC', (epicId: number) => {

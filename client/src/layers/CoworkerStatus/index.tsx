@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-
 import { getUsersByOrganization, UserProfile } from '@/lib/api/user';
-import { useUserState } from '@/lib/hooks/useContextHooks';
 import useSocketSend from '@/lib/hooks/useSocketSend';
 import useSocketReceive from '@/lib/hooks/useSocketReceive';
-
 import Avatar from '@/components/CoworkerStatusItem/Avatar';
 import * as S from './style';
 import StatusTitle from '@/components/CoworkerStatusItem/StatusTitle';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
 
 interface UserStatus extends UserProfile {
   status: boolean;
@@ -23,10 +22,11 @@ const CoworkerStatus = () => {
   const [usersIdList, setUsersIdList] = useState<Array<number>>([]);
   const [users, setUsers] = useState<Array<UserProfile>>([]);
   const emitLoginEvent = useSocketSend('LOGIN');
-  const userState = useUserState();
+  const userState = useRecoilValue(userAtom);
 
-  useSocketReceive('LOGIN_CALLBACK', (userIds: Array<UserSocketInstance>) => {
-    const ids = userIds.map((el) => el.userId);
+  useSocketReceive('LOGIN_CALLBACK', (userInfo: Array<UserSocketInstance>) => {
+    if (userInfo.length === 0) return;
+    const ids = userInfo.map((el) => el.userId);
     setUsersIdList(ids);
   });
 
@@ -38,10 +38,9 @@ const CoworkerStatus = () => {
     setUsersIdList(usersIdList.filter((el) => el !== userId));
   });
 
-  // todo error 발생 원인 찾기
   useEffect(() => {
-    emitLoginEvent(userState.id as number);
-  }, [userState]);
+    emitLoginEvent({ userId: userState.id, organizationId: userState.organization });
+  }, [emitLoginEvent, userState]);
 
   useEffect(() => {
     (async () => {
@@ -57,18 +56,13 @@ const CoworkerStatus = () => {
       status: usersIdList.includes(el.index),
     }));
 
-    const logInUsers = updateUsers.filter((el) => el.status === true);
-    const logOutUsers = updateUsers.filter((el) => el.status === false);
-
     const sorted = updateUsers.sort((a, b) => {
       if (a.status && !b.status) return -1;
       if (!a.status && b.status) return 1;
       return -1;
     });
 
-    console.log(sorted);
-
-    setUsersList([...logInUsers, ...logOutUsers]);
+    setUsersList(sorted);
   }, [userState.id, users, usersIdList]);
 
   return (
