@@ -1,14 +1,18 @@
 import { Styled } from '@/components/Profile/style';
 import React, { useState, useRef } from 'react';
 import useOutSideClick from '@/lib/hooks/useOutSideClick';
-import { useUserDispatch } from '@/lib/hooks/useContextHooks';
+import { useUserDispatch, useUserState } from '@/lib/hooks/useContextHooks';
+import { useSocketSend } from '@/lib/hooks';
 
 const Profile = () => {
   const [openState, setOpenState] = useState(false);
+  const userState = useUserState();
   const userDispatch = useUserDispatch();
   const toggleDropDown = () => setOpenState((openState) => !openState);
   const handleOutClick = () => setOpenState((openState) => !openState);
+  const emitLogout = useSocketSend('LOGOUT');
   const handleLogout = () => {
+    emitLogout(userState.id);
     userDispatch({ type: 'LOGOUT' });
     location.pathname = '/'; // TODO: 세션 제거 로직 필요
   };
