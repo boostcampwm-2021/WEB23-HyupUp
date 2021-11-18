@@ -8,6 +8,7 @@ import userAtom from '@/recoil/user';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { getUsersByOrganization, UserProfile } from '@/lib/api/user';
+import TeamInviteBar from '@/components/TeamInviteBar';
 
 const dropDownListForAdmin = [
   {
@@ -42,6 +43,7 @@ export const GroupManagement = () => {
   }, [userState.organization]);
   return (
     <S.Container>
+      <TeamInviteBar />
       <S.ItemListViewer>
         {userList.map((el) => (
           <TeamManagementItem
