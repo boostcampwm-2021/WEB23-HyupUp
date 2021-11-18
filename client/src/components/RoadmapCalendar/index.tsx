@@ -40,11 +40,12 @@ const RoadmapCalendar = () => {
       </S.DaysWrapper>
       <RoadmapBars rangeFrom={dateRange.from} rangeTo={dateRange.to} />
       <S.DayColumnWrapper>
-        {dayRow.map((day: number) => (
+        {dayRow.map((day: number, i) => (
           <S.DayColumn
             key={day}
             highlightColumn={Math.floor(WEEK_OFFSET / 2 + 1)}
             isToday={isToday}
+            data-index={i}
           />
         ))}
       </S.DayColumnWrapper>
