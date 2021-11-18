@@ -22,16 +22,6 @@ const Kanban = () => {
   const onGoingList = storyList.filter((item) => item.status === 'IN_PROGRESS');
   const finishList = storyList.filter((item) => item.status === 'DONE');
 
-  // const handleDragStart = (
-  //   e: React.DragEvent<HTMLElement>,
-  //   position: number,
-  //   category: StatusType,
-  // ) => {
-  //   draggingItem.current = position;
-  //   dragStartItem.current = category;
-  //   test.current = Number(e.currentTarget.dataset.key);
-  // };
-
   // const handleDragEnter = (
   //   e: React.DragEvent<HTMLElement>,
   //   position: number,
@@ -65,24 +55,9 @@ const Kanban = () => {
       <Styled.Container>
         <Styled.Title>프로젝트 칸반보드</Styled.Title>
         <Styled.ColumnContainer>
-          <KanbanColumn
-            category={'TODO'}
-            storyList={todoList}
-            // handleDragStart={handleDragStart}
-            // handleDragEnter={handleDragEnter}
-          />
-          <KanbanColumn
-            category={'IN_PROGRESS'}
-            storyList={onGoingList}
-            // handleDragStart={handleDragStart}
-            // handleDragEnter={handleDragEnter}
-          />
-          <KanbanColumn
-            category={'DONE'}
-            storyList={finishList}
-            // handleDragStart={handleDragStart}
-            // handleDragEnter={handleDragEnter}
-          />
+          <KanbanColumn draggingItem={draggingItem} category={'TODO'} storyList={todoList} />
+          <KanbanColumn category={'IN_PROGRESS'} storyList={onGoingList} />
+          <KanbanColumn category={'DONE'} storyList={finishList} />
         </Styled.ColumnContainer>
       </Styled.Container>
     </KanbanModal>
