@@ -80,12 +80,12 @@ export const updateStoryWithName = async (req: Request, res: Response) => {
 };
 
 export const updateStoryWithId = async (req: Request, res: Response) => {
-  const { id, status, order } = req.body;
+  const { id, name, status, order } = req.body;
   try {
     await getConnection()
       .createQueryBuilder()
       .update(Stories)
-      .set({ id: id, status: status, order: order })
+      .set({ id: id, name: name, status: status, order: order })
       .where('id = :id', { id: id })
       .execute();
 
