@@ -24,9 +24,9 @@ export const inviteByEmail = (req: Request, res: Response) => {
 export const isValidEmail = (req: Request, res: Response) => {
   try {
     if (!req.params.token) throw new Error('token is undefined');
-    // to-do token을 decoding해서 email과 organization 정보를 뽑아냄
     // to-do token에 들어 있는 정보가 맞는지 확인
     // to-do organization 정보를 포함하여 redirect
+    const decodedToken = jwt.decode(req.params.token);
     res.end();
   } catch (e) {
     res.status(400).json({ message: (e as Error).message });

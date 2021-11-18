@@ -23,7 +23,7 @@ export const sendMail = async (to: string, code: string) => {
     html: `
         <h1> Hyupup에 당신을 초대합니다. </h1>
         <p> 팀원과 함께 멋진 프로젝트를 완성해보세요! </p>
-        <a href="${process.env.CLIENT_URL}/email/${code}"> 당신의 팀 대시보드로 가서 프로젝트를 함께 시작해세요. </a>
+        <a href="${process.env.SERVER_URL}/api/email/verify/${code}"> 당신의 팀 대시보드로 가서 프로젝트를 함께 시작해세요. </a>
         `,
   };
 
