@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const ItemContainer = styled.div`
-  width: 825px;
+  width: 800px;
   height: 70px;
 
   display: flex;
@@ -9,6 +9,7 @@ const ItemContainer = styled.div`
   align-items: center;
 
   margin: 15px 0px;
+  padding-right: 25px;
 
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.white};
