@@ -11,6 +11,7 @@ const S = {
   `,
   Spacer: styled.div`
     width: 100%;
+    height: 23px;
   `,
   Bar: styled.div`
     position: relative;
