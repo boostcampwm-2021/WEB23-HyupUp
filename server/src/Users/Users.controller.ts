@@ -37,6 +37,8 @@ export const getUsersByOrganization = async (req: Request, res: Response) => {
       name: el.name,
       imageURL: el.imageURL,
       index: el.id,
+      job: el.job,
+      admin: el.admin,
     }));
     res.status(200).json(nameAndProfiles);
   } catch (e) {
