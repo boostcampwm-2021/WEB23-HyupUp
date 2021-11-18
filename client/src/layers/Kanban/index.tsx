@@ -10,8 +10,11 @@ export interface KanbanDefaultType {
   handleDragEnter(e: React.DragEvent<HTMLElement>, position: number, category: StatusType): void;
 }
 
-const filteredList = (storyList: Array<StoryType>, status: StatusType) => {
-  return storyList.filter((item) => item.status === status);
+const filterOrderedList = (storyList: Array<StoryType>, status: StatusType) => {
+  const filterList = storyList.filter((item) => item.status === status);
+  if (filterList.length < 2) return filterList;
+  // if (filterList.length === 2 || filterList.map(v => v.order).filter(v => v === 0).length )
+  else return filterList;
 };
 
 const Kanban = () => {
@@ -22,43 +25,47 @@ const Kanban = () => {
   const dispatchStory = useStoryDispatch();
   const storyList: Array<StoryType> = useStoryState();
 
-  const handleDragStart = (
-    e: React.DragEvent<HTMLElement>,
-    position: number,
-    category: StatusType,
-  ) => {
-    draggingItem.current = position;
-    dragStartItem.current = category;
-    test.current = Number(e.currentTarget.dataset.key);
-  };
+  const todoList = filterOrderedList(storyList, 'TODO');
+  const onGoingList = filterOrderedList(storyList, 'IN_PROGRESS');
+  const finishList = filterOrderedList(storyList, 'DONE');
+  // const
+  // const handleDragStart = (
+  //   e: React.DragEvent<HTMLElement>,
+  //   position: number,
+  //   category: StatusType,
+  // ) => {
+  //   draggingItem.current = position;
+  //   dragStartItem.current = category;
+  //   test.current = Number(e.currentTarget.dataset.key);
+  // };
 
-  const handleDragEnter = (
-    e: React.DragEvent<HTMLElement>,
-    position: number,
-    category: StatusType,
-  ) => {
-    dragoverItem.current = position;
-    const listCopy = [...storyList] as [StoryType];
-    const draggingItemContent = listCopy[draggingItem.current as number];
+  // const handleDragEnter = (
+  //   e: React.DragEvent<HTMLElement>,
+  //   position: number,
+  //   category: StatusType,
+  // ) => {
+  //   dragoverItem.current = position;
+  //   const listCopy = [...storyList] as [StoryType];
+  //   const draggingItemContent = listCopy[draggingItem.current as number];
 
-    if (category !== dragStartItem.current)
-      dispatchStory({
-        type: 'UPDATE_STORY',
-        story: {
-          id: test.current as number,
-          name: storyList.filter((v) => v.id === test.current)[0]?.name,
-          status: category,
-        },
-      });
-    else {
-      listCopy.splice(draggingItem.current as number, 1);
-      listCopy.splice(dragoverItem.current as number, 0, draggingItemContent);
+  //   if (category !== dragStartItem.current)
+  //     dispatchStory({
+  //       type: 'UPDATE_STORY',
+  //       story: {
+  //         id: test.current as number,
+  //         name: storyList.filter((v) => v.id === test.current)[0]?.name,
+  //         status: category,
+  //       },
+  //     });
+  //   else {
+  //     listCopy.splice(draggingItem.current as number, 1);
+  //     listCopy.splice(dragoverItem.current as number, 0, draggingItemContent);
 
-      draggingItem.current = dragoverItem.current;
-      dragoverItem.current = null;
-      dispatchStory({ type: 'LOAD_STORY', stories: listCopy });
-    }
-  };
+  //     draggingItem.current = dragoverItem.current;
+  //     dragoverItem.current = null;
+  //     dispatchStory({ type: 'LOAD_STORY', stories: listCopy });
+  //   }
+  // };
 
   return (
     <KanbanModal>
@@ -67,21 +74,21 @@ const Kanban = () => {
         <Styled.ColumnContainer>
           <KanbanColumn
             category={'TODO'}
-            storyList={filteredList(storyList, 'TODO')}
-            handleDragStart={handleDragStart}
-            handleDragEnter={handleDragEnter}
+            storyList={todoList}
+            // handleDragStart={handleDragStart}
+            // handleDragEnter={handleDragEnter}
           />
           <KanbanColumn
             category={'IN_PROGRESS'}
-            storyList={filteredList(storyList, 'IN_PROGRESS')}
-            handleDragStart={handleDragStart}
-            handleDragEnter={handleDragEnter}
+            storyList={onGoingList}
+            // handleDragStart={handleDragStart}
+            // handleDragEnter={handleDragEnter}
           />
           <KanbanColumn
             category={'DONE'}
-            storyList={filteredList(storyList, 'DONE')}
-            handleDragStart={handleDragStart}
-            handleDragEnter={handleDragEnter}
+            storyList={finishList}
+            // handleDragStart={handleDragStart}
+            // handleDragEnter={handleDragEnter}
           />
         </Styled.ColumnContainer>
       </Styled.Container>
