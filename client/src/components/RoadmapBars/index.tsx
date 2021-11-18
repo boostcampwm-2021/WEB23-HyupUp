@@ -2,7 +2,7 @@ import React from 'react';
 import S from './style';
 import RoadmapItem from '@/components/RoadmapItem';
 import { useEpicState } from '@/lib/hooks/useContextHooks';
-import { getDateDiff, isFormer, isLatter, shouldRender } from '@/lib/utils/date';
+import { getDateDiff, isFormer, isLatter, isSameDay, shouldRender } from '@/lib/utils/date';
 
 const COLUMNS = 15;
 
@@ -50,7 +50,9 @@ const RoadmapBars = ({ rangeFrom, rangeTo }: RoadmapBarsProps) => {
           to: rangeTo,
         });
         let startIndex = COLUMNS;
-        if (case1 || case4) startIndex = 0;
+        if (isSameDay(endAt, rangeFrom)) startIndex = 0;
+        else if (isSameDay(startAt, rangeTo)) startIndex = COLUMNS - 1;
+        else if (case1 || case4) startIndex = 0;
         else if (render) startIndex = Math.min(getDateDiff(rangeFrom, startAt), COLUMNS);
 
         let length = 0;
