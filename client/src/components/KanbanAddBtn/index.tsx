@@ -14,7 +14,7 @@ const KanbanAddBtn = () => {
   const storyList = useStoryState();
   const dispatchStory = useStoryDispatch();
   const lastStoryId = extractLastID(storyList);
-  const initStoryData = { id: lastStoryId + 1, name: '', status: 'TODO', order: 0 };
+  const initStoryData = { id: lastStoryId + 1, name: '', status: 'TODO', order: 1 };
 
   const addStory = () => {
     dispatchStory({ type: 'ADD_STORY', story: initStoryData });
