@@ -19,15 +19,18 @@ const KanbanItem = ({ index, story, handleDragStart, handleDragEnter }: KanbanIt
   const dispatchStory = useStoryDispatch();
 
   const useUpdateStoryName = () => {
-    dispatchStory({ type: 'UPDATE_STORY', story: { status: 'TODO', id: key, name: value } });
-    updateStoryWithName({ status: 'TODO', id: key, name: value });
+    dispatchStory({
+      type: 'UPDATE_STORY',
+      story: { status: 'TODO', id: key, order: story.order, name: value },
+    });
+    updateStoryWithName({ status: 'TODO', id: key, order: story.order, name: value });
   };
 
   return (
     <Styled.KanBanItem
       data-key={story.id}
-      onDragStart={(e) => handleDragStart(e, index, story.status)}
-      onDragEnter={(e) => handleDragEnter(e, index, story.status)}
+      onDragStart={(e) => handleDragStart(e, story.order, story.status)}
+      // onDragEnter={(e) => handleDragEnter(e, index, story.status)}
       onDragOver={(e) => e.preventDefault()}
       draggable
     >
