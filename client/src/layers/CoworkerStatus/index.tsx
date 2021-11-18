@@ -40,7 +40,6 @@ const CoworkerStatus = () => {
   });
 
   useEffect(() => {
-    if (!userState.id || !userState.organization) return;
     emitLoginEvent({ userId: userState.id, organizationId: userState.organization });
   }, [emitLoginEvent, userState]);
 
