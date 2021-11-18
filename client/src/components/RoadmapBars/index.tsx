@@ -61,8 +61,8 @@ const RoadmapBars = ({ rangeFrom, rangeTo }: RoadmapBarsProps) => {
         else if (case3) length = getDateDiff(startAt, endAt);
         else if (case4) length = getDateDiff(rangeFrom, rangeTo);
 
-        const exceedsLeft = !isSameDay(startAt, rangeFrom) && isFormer(startAt, rangeFrom);
-        const exceedsRight = !isSameDay(endAt, rangeTo) && isLatter(endAt, rangeTo);
+        const exceedsLeft = isSameDay(startAt, rangeFrom) || isFormer(startAt, rangeFrom);
+        const exceedsRight = isSameDay(endAt, rangeTo) || isLatter(endAt, rangeTo);
         return (
           <RoadmapItem
             key={id}
