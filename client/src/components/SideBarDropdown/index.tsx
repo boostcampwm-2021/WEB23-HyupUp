@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
 import DropDown from '@/lib/design/DropDown';
-import { useState } from 'react';
-import { useEffect } from 'react';
 import { getAllProjects } from '@/lib/api/project';
 import { useUserDispatch, useUserState } from '@/lib/hooks/useContextHooks';
 import S from '@/components/SideBarDropdown/style';
 import { ProjectType } from '@/types/project';
+import userAtom from '@/recoil/user';
 
 const SideBarDropDown = () => {
-  const userState = useUserState();
+  //const userState = useUserState();
+  const userState = useRecoilValue(userAtom);
   const userDispatcher = useUserDispatch();
   const [listState, listStateHandler] = useState<Array<ProjectType>>([]);
   const [titleState, titleStateHandler] = useState('프로젝트');
