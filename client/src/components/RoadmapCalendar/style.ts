@@ -77,8 +77,19 @@ const S = {
     width: calc(100% - 32px);
     height: 100%;
   `,
-  DayColumn: styled.section`
+  DayColumn: styled.section<{ highlightColumn: number }>`
     width: 100%;
+
+    &:nth-child(${({ highlightColumn }) => highlightColumn}) {
+      display: flex;
+
+      &:after {
+        content: '';
+        width: 50%;
+        margin-top: 100px;
+        border-right: 1px solid ${({ theme }) => theme.color.red400};
+      }
+    }
   `,
 };
 
