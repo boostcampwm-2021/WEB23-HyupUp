@@ -34,7 +34,6 @@ export const getAllStoriesByProject = async (req: Request, res: Response) => {
 };
 
 /**
- *
  * @body projectName: string | number 대상 프로젝트의 id값
  * @body name: string 새롭게 생성하는 에픽의 이름
  * @response id: number 새롭게 생성된 에픽의 id값
@@ -63,12 +62,30 @@ export const postStory = async (req: Request, res: Response) => {
 };
 
 export const updateStoryWithName = async (req: Request, res: Response) => {
-  const { id, name, status, order } = req.body;
+  const { id, name, status } = req.body;
   try {
     await getConnection()
       .createQueryBuilder()
       .update(Stories)
-      .set({ id: id, name: name, status: status, order: order })
+      .set({ id: id, name: name, status: status })
+      .where('id = :id', { id: id })
+      .execute();
+
+    res.status(201).json({ id: id, name: name });
+  } catch (e) {
+    res.status(400).json({
+      message: (e as Error).message,
+    });
+  }
+};
+
+export const updateStoryWithId = async (req: Request, res: Response) => {
+  const { id, status, order } = req.body;
+  try {
+    await getConnection()
+      .createQueryBuilder()
+      .update(Stories)
+      .set({ id: id, status: status, order: order })
       .where('id = :id', { id: id })
       .execute();
 
