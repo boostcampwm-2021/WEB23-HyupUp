@@ -48,13 +48,45 @@ export const createStory = async ({
   }
 };
 
-export const updateStoryWithName = async ({ id, status, name, projectId, epicId }: StoryType) => {
+export const updateStoryWithName = async ({
+  id,
+  status,
+  name,
+  order,
+  projectId,
+  epicId,
+}: StoryType) => {
   if (name === '') return;
   try {
     const result: { data: { id: number } } = await instance.patch('/name', {
       id,
       status,
       name,
+      order,
+      projectId,
+      epicId,
+    });
+    return result.data;
+  } catch (e) {
+    toast.error(errorMessage.UPDATE_STORY);
+  }
+};
+
+export const updateStoryWithId = async ({
+  id,
+  status,
+  name,
+  order,
+  projectId,
+  epicId,
+}: StoryType) => {
+  if (name === '') return;
+  try {
+    const result: { data: { id: number } } = await instance.patch('/order', {
+      id,
+      status,
+      name,
+      order,
       projectId,
       epicId,
     });
