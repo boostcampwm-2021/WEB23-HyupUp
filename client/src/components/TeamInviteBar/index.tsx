@@ -3,14 +3,20 @@ import React, { useState, ChangeEvent } from 'react';
 import { Button } from '@/lib/design';
 
 import * as S from './style';
+import { sendEmail } from '@/lib/api/email';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
+
+const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
 const TeamInviteBar = () => {
   const [value, setValue] = useState('');
   const [flag, setFlag] = useState(true);
+  const userState = useRecoilValue(userAtom);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // to-do email 형식으로 value 확인
-    if (e.target.value) return;
+    if (!regExp.test(e.target.value)) return;
+    if (!flag) return;
     const newFlag = !flag;
     setValue(e.target.value);
     setFlag(newFlag);
@@ -19,7 +25,8 @@ const TeamInviteBar = () => {
   const onClick = () => {
     const newFlag = !flag;
     setFlag(newFlag);
-    // to-do email api 넣기
+    setValue('');
+    sendEmail(userState.organization as number, value);
   };
 
   return (
