@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import S from './style';
 import RoadmapItem from '@/components/RoadmapItem';
 import { useEpicState } from '@/lib/hooks/useContextHooks';
@@ -37,6 +37,7 @@ interface RoadmapBarsProps {
 // 그 외의 경우는 캘린더 뷰에 렌더링하지 않아야함
 const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) => {
   const epics = useEpicState();
+  const [nowDraggingId, setDraggingId] = useState(-1);
 
   return (
     <>
@@ -75,6 +76,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
               length={length}
               exceedsLeft={exceedsLeft}
               exceedsRight={exceedsRight}
+              handleDragStart={() => setDraggingId(id)}
             />
           );
         })}
@@ -88,7 +90,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
             data-index={i}
             onDragOver={(e) => e.preventDefault()}
             onDragEnter={(e) => toast.success(`entered ${(e.target as HTMLElement).dataset.index}`)}
-            onDrop={() => toast.success('dropped')}
+            onDrop={() => toast.success(`id ${nowDraggingId} dropped!!`)}
           />
         ))}
       </S.DayColumnWrapper>
