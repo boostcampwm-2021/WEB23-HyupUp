@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, Dispatch } from 'react';
 import Styled from '@/layers/Kanban/style';
 import KanbanColumn from '@/components/KanbanColumn';
 import KanbanModal from '@/components/KanbanModal';
@@ -10,11 +10,36 @@ export interface KanbanDefaultType {
   handleDragEnter(e: React.DragEvent<HTMLElement>, position: number, category: StatusType): void;
 }
 
-const filterOrderedList = (storyList: Array<StoryType>, status: StatusType) => {
-  const filterList = storyList.filter((item) => item.status === status);
-  if (filterList.length < 2) return filterList;
-  // if (filterList.length === 2 || filterList.map(v => v.order).filter(v => v === 0).length )
-  else return filterList;
+type StoryAction = Dispatch<{ type: 'UPDATE_STORY'; story: StoryType }>;
+
+// 길이가 2 일 때, 마지막 id 를 1 로 바꿔준다
+// 길이가 2 가 넘을 때 마지막을 1 로, 마지막 - 1 을(마지막 - 2) 번째 요소 + 1 // 2 한 값으로 order 를 초기화
+const sortListByOrder = (todoList: StoryType[], dispatchStory: StoryAction) => {
+  if (todoList.length === 2) {
+    dispatchStory({ type: 'UPDATE_STORY', story: { ...todoList[1], order: 1 } });
+    return;
+  } else {
+    dispatchStory({
+      type: 'UPDATE_STORY',
+      story: { ...todoList[todoList.length - 2], order: todoList[todoList.length - 3] + 1 / 2 },
+    });
+    dispatchStory({
+      type: 'UPDATE_STORY',
+      story: { ...todoList[todoList.length - 1], order: 1 },
+    });
+  }
+};
+
+// 새로운 아이템을 추가할 때 활용되기 위한 함수
+// 길이가 0 또는 1 이라면 그대로 반환
+// 길이가 2 인데 둘 다 0 이라면 마지막 요소의 order 를 1 로 변경
+const isOrdered = (storyList: StoryType[]) => {
+  if (storyList.length < 2) return false;
+  if (storyList.length === 2 && storyList.filter((v) => v.order > 0).length !== 0) return true;
+  // 소수점을 0 과 같다고 할 수 있을지?
+  if (storyList.length > 2 && storyList.map((v) => v.order).filter((v) => v === 0).length > 1)
+    return true;
+  return false;
 };
 
 const Kanban = () => {
@@ -23,11 +48,15 @@ const Kanban = () => {
   const dragStartItem = useRef<string | null>('');
   const test = useRef<number | null>(0);
   const dispatchStory = useStoryDispatch();
-  const storyList: Array<StoryType> = useStoryState();
+  const storyList: StoryType[] = useStoryState();
 
-  const todoList = filterOrderedList(storyList, 'TODO');
-  const onGoingList = filterOrderedList(storyList, 'IN_PROGRESS');
-  const finishList = filterOrderedList(storyList, 'DONE');
+  const todoList = storyList.filter((item) => item.status === 'TODO');
+  const onGoingList = storyList.filter((item) => item.status === 'IN_PROGRESS');
+  const finishList = storyList.filter((item) => item.status === 'DONE');
+
+  if (isOrdered(todoList)) sortListByOrder(todoList, dispatchStory);
+  console.log(todoList);
+  // shouldSort
   // const
   // const handleDragStart = (
   //   e: React.DragEvent<HTMLElement>,
