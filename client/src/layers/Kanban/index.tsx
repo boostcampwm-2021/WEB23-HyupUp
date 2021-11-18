@@ -11,10 +11,9 @@ export interface KanbanDefaultType {
 }
 
 const Kanban = () => {
-  const draggingItem = useRef<number | null>(0);
-  const dragOverItem = useRef<number | null>(0);
+  const draggingRef = useRef<number | null>(0);
+  const dragOverRef = useRef<number | null>(0);
   const cateogryRef = useRef<StatusType>('TODO');
-  const test = useRef<number | null>(0);
   const storyList: StoryType[] = useStoryState();
 
   const todoList = storyList
@@ -27,42 +26,14 @@ const Kanban = () => {
     .filter((item) => item.status === 'DONE')
     .sort((a, b) => a.order - b.order);
 
-  // const handleDragEnter = (
-  //   e: React.DragEvent<HTMLElement>,
-  //   position: number,
-  //   category: StatusType,
-  // ) => {
-  //   dragoverItem.current = position;
-  //   const listCopy = [...storyList] as [StoryType];
-  //   const draggingItemContent = listCopy[draggingItem.current as number];
-
-  //   if (category !== dragStartItem.current)
-  //     dispatchStory({
-  //       type: 'UPDATE_STORY',
-  //       story: {
-  //         id: test.current as number,
-  //         name: storyList.filter((v) => v.id === test.current)[0]?.name,
-  //         status: category,
-  //       },
-  //     });
-  //   else {
-  //     listCopy.splice(draggingItem.current as number, 1);
-  //     listCopy.splice(dragoverItem.current as number, 0, draggingItemContent);
-
-  //     draggingItem.current = dragoverItem.current;
-  //     dragoverItem.current = null;
-  //     dispatchStory({ type: 'LOAD_STORY', stories: listCopy });
-  //   }
-  // };
-
   return (
     <KanbanModal>
       <Styled.Container>
         <Styled.Title>프로젝트 칸반보드</Styled.Title>
         <Styled.ColumnContainer>
           <KanbanColumn
-            draggingItem={draggingItem}
-            dragOverItem={dragOverItem}
+            draggingRef={draggingRef}
+            dragOverRef={dragOverRef}
             categoryRef={cateogryRef}
             category={'TODO'}
             storyList={todoList}
