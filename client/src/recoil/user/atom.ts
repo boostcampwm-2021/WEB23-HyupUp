@@ -17,9 +17,9 @@ export type UserState = {
   projectTasks?: Array<ProjectTask>;
 };
 
-const user = atom({
-  key: 'userState',
-  default: {} as UserState,
+const userAtom = atom<UserState>({
+  key: 'userAtom',
+  default: {},
 });
 
-export default user;
+export default userAtom;
