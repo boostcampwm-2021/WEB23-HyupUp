@@ -3,8 +3,24 @@ import * as S from './style';
 import { DropDown } from '@/lib/design';
 import dots from '@public/icons/more_horiz.svg';
 import TeamManagementItem from '@/components/TeamManagementItem';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { getUsersByOrganization, UserProfile } from '@/lib/api/user';
 
-const dropDownList = [
+const dropDownListForAdmin = [
+  {
+    id: 1,
+    name: '팀원에서 제외',
+  },
+  {
+    id: 2,
+    name: '팀원으로 변경',
+  },
+];
+
+const dropDownListForMember = [
   {
     id: 1,
     name: '팀원에서 제외',
@@ -16,35 +32,33 @@ const dropDownList = [
 ];
 
 export const GroupManagement = () => {
+  const userState = useRecoilValue(userAtom);
+  const [userList, setUserList] = useState<Array<UserProfile>>([]);
+  useEffect(() => {
+    (async () => {
+      const newUserList = await getUsersByOrganization(userState.organization as number);
+      setUserList(newUserList);
+    })();
+  }, [userState.organization]);
   return (
     <S.Container>
       <S.ItemListViewer>
-        <TeamManagementItem
-          imageURL="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
-          name="이찬호"
-          job="개발자"
-          admin={true}
-          dropDown={
-            <DropDown
-              Title={<S.ThreeDot src={dots} />}
-              list={dropDownList}
-              handleClick={(e) => e}
-            />
-          }
-        />
-        <TeamManagementItem
-          imageURL="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
-          name="이찬호"
-          job="BIZ HR"
-          admin={true}
-          dropDown={
-            <DropDown
-              Title={<S.ThreeDot src={dots} />}
-              list={dropDownList}
-              handleClick={(e) => e}
-            />
-          }
-        />
+        {userList.map((el) => (
+          <TeamManagementItem
+            key={el.index}
+            imageURL={el.imageURL}
+            name={el.name}
+            job={el.job}
+            admin={el.admin}
+            dropDown={
+              <DropDown
+                Title={<S.ThreeDot src={dots} />}
+                list={el.admin ? dropDownListForAdmin : dropDownListForMember}
+                handleClick={(e) => e}
+              />
+            }
+          />
+        ))}
       </S.ItemListViewer>
     </S.Container>
   );
