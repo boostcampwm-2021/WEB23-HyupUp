@@ -61,7 +61,7 @@ const WorkPage = () => {
     <>
       <Header />
       <S.Container>
-        <SideBar entries={sideBarEntries} changeTab={changeTab}></SideBar>
+        <SideBar entries={sideBarEntries} changeTab={changeTab} needDropDown={true}></SideBar>
         {currentTab}
       </S.Container>
     </>

@@ -4,6 +4,7 @@ import SideBarDropDown from '@/components/SideBarDropdown';
 
 interface SideBarProps {
   entries: React.ReactNode[];
+  needDropDown: boolean;
   changeTab: (tabIndex: number) => void;
 }
 
@@ -13,10 +14,10 @@ interface SideBarProps {
  * @param changeTab 현재 보고있는 화면을 로드맵, 칸반보드, 백로그 페이지에서 바꿔줄 함수
  * @returns
  */
-const SideBar = ({ entries, changeTab }: SideBarProps) => {
+const SideBar = ({ entries, changeTab, needDropDown }: SideBarProps) => {
   return (
     <S.Container>
-      <SideBarDropDown />
+      {needDropDown ? <SideBarDropDown /> : undefined}
       <S.Entry>
         {entries.map((entry, i) => (
           <S.EntryItem key={i} onClick={() => changeTab(i)}>
