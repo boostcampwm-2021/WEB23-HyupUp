@@ -80,7 +80,6 @@ export const updateStoryWithId = async ({
   projectId,
   epicId,
 }: StoryType) => {
-  if (name === '') return;
   try {
     const result: { data: { id: number } } = await instance.patch('/order', {
       id,
