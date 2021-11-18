@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createStory, updateStoryWithId } from '@/lib/api/story';
 import { Button } from '@/lib/design';
 import { useStoryDispatch, useStoryState, useUserState } from '@/lib/hooks/useContextHooks';
@@ -15,40 +15,35 @@ const KanbanAddBtn = () => {
   const dispatchStory = useStoryDispatch();
   const lastStoryId = extractLastID(storyList);
   const todoList = storyList.filter((item) => item.status === 'TODO');
-  const [isInitial, setIsInitial] = useState(true);
+  //Todo 수정해야함
   const initialItem = {
     id: lastStoryId + 1,
     name: '',
     status: 'TODO',
     order: 1,
+    projectId: 1,
+    epicId: 1,
   };
 
-  useEffect(() => {
-    if (isInitial && todoList.length > 1) {
-      if (todoList.length === 2) {
-        dispatchStory({ type: 'UPDATE_STORY', story: { ...todoList[0], order: 0 } });
-        updateStoryWithId({ ...todoList[0], order: 0 });
-      } else {
+  const addStory = async () => {
+    const lastTodo = todoList?.length > 0 ? todoList[todoList.length - 1] : initialItem;
+    const beforeLastTodo = todoList?.length > 1 ? todoList[todoList.length - 2] : initialItem;
+    switch (todoList.length) {
+      case 0:
+        break;
+      case 1:
+        dispatchStory({ type: 'UPDATE_STORY', story: { ...lastTodo, order: 0 } });
+        updateStoryWithId({ ...lastTodo, order: 0 });
+        break;
+      default:
         dispatchStory({
           type: 'UPDATE_STORY',
-          story: {
-            ...todoList[todoList.length - 2],
-            order: (todoList[todoList.length - 3]?.order + 1) / 2,
-          },
+          story: { ...lastTodo, order: (1 + Number(beforeLastTodo.order)) / 2 },
         });
-        updateStoryWithId({
-          ...todoList[todoList.length - 2],
-          order: (todoList[todoList.length - 3]?.order + 1) / 2,
-        });
-      }
-      setIsInitial((prev) => !prev);
+        updateStoryWithId({ ...lastTodo, order: (1 + Number(beforeLastTodo.order)) / 2 });
     }
-  }, [todoList, dispatchStory, isInitial]);
-
-  const addStory = () => {
     dispatchStory({ type: 'ADD_STORY', story: initialItem });
     createStory({ ...initialItem, projectId: userState.currentProjectId });
-    setIsInitial((prev) => !prev);
   };
 
   return (
