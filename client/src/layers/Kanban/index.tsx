@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, Dispatch } from 'react';
+import React, { useRef, Dispatch } from 'react';
 import Styled from '@/layers/Kanban/style';
 import KanbanColumn from '@/components/KanbanColumn';
 import KanbanModal from '@/components/KanbanModal';
@@ -9,33 +9,6 @@ export interface KanbanDefaultType {
   handleDragStart(e: React.DragEvent<HTMLElement>, position: number, category: StatusType): void;
   handleDragEnter(e: React.DragEvent<HTMLElement>, position: number, category: StatusType): void;
 }
-
-type StoryAction = Dispatch<{ type: 'UPDATE_STORY'; story: StoryType }>;
-
-const sortListByOrder = (todoList: StoryType[], dispatchStory: StoryAction) => {
-  if (todoList.length === 2) {
-    dispatchStory({ type: 'UPDATE_STORY', story: { ...todoList[0], order: 0 } });
-    return;
-  } else {
-    dispatchStory({
-      type: 'UPDATE_STORY',
-      story: {
-        ...todoList[todoList.length - 2],
-        order: todoList[todoList.length - 3].order + 1 / 2,
-      },
-    });
-  }
-};
-
-const isOrdered = (todoList: StoryType[]) => {
-  if (todoList.length < 2 && todoList.filter((v) => v.status)) return false;
-  if (todoList.length === 2 && todoList.filter((v) => Number(v.order) === 1).length == 2) {
-    return true;
-  }
-  if (todoList.length > 2 && todoList.map((v) => v.order).filter((v) => v === 1).length > 1)
-    return true;
-  return false;
-};
 
 const Kanban = () => {
   const draggingItem = useRef<number | null>(0);
@@ -48,11 +21,6 @@ const Kanban = () => {
   const todoList = storyList.filter((item) => item.status === 'TODO');
   const onGoingList = storyList.filter((item) => item.status === 'IN_PROGRESS');
   const finishList = storyList.filter((item) => item.status === 'DONE');
-
-  useEffect(() => {
-    const filteredList = storyList.filter((v) => v.status === 'TODO');
-    if (isOrdered(filteredList)) sortListByOrder(filteredList, dispatchStory);
-  }, [dispatchStory, storyList]);
 
   // const handleDragStart = (
   //   e: React.DragEvent<HTMLElement>,
