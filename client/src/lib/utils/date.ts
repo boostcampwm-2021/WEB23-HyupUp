@@ -51,19 +51,17 @@ export const getRangeFromDate = (date: Date) => {
   };
 };
 
+const dateFormat = { year: 'numeric' as const, month: '2-digit' as const, day: '2-digit' as const };
+
 /**
  *
  * @param target date 보다 앞에있는지 확인할 date 객체
  * @param date 확인의 기준이 되는 date 객체
  */
 export const isFormer = (target: Date, date: Date): boolean => {
-  const targetYMD = getYMD(target);
-  const dateYMD = getYMD(date);
-  return (
-    targetYMD.year < dateYMD.year ||
-    targetYMD.month < dateYMD.month ||
-    (targetYMD.month === dateYMD.month && targetYMD.day < dateYMD.day)
-  );
+  const targetString = target.toLocaleString('ko-kr', dateFormat);
+  const dateString = date.toLocaleString('ko-kr', dateFormat);
+  return targetString < dateString;
 };
 
 /**
@@ -72,13 +70,9 @@ export const isFormer = (target: Date, date: Date): boolean => {
  * @param date 확인의 기준이 되는 date 객체
  */
 export const isLatter = (target: Date, date: Date): boolean => {
-  const targetYMD = getYMD(target);
-  const dateYMD = getYMD(date);
-  return (
-    targetYMD.year > dateYMD.year ||
-    targetYMD.month > dateYMD.month ||
-    (targetYMD.month === dateYMD.month && targetYMD.day > dateYMD.day)
-  );
+  const targetString = target.toLocaleString('ko-kr', dateFormat);
+  const dateString = date.toLocaleString('ko-kr', dateFormat);
+  return targetString > dateString;
 };
 
 /**
