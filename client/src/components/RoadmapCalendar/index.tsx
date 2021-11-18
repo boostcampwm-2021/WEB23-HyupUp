@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import S from '@/components/RoadmapCalendar/style';
-import { getRangeFromDate, getYMD, makeDayRow } from '@/lib/utils/date';
+import { getRangeFromDate, getYMD, isSameDay, makeDayRow } from '@/lib/utils/date';
 import RoadmapBars from '@/components/RoadmapBars';
 
 const WEEK_OFFSET = 14;
 
 const RoadmapCalendar = () => {
   const [date, setDate] = useState(new Date());
+  const today = new Date();
   const dayRow = makeDayRow(date);
   const dateRange = getRangeFromDate(date);
 
@@ -28,7 +29,11 @@ const RoadmapCalendar = () => {
       <S.DaysWrapper>
         {dayRow.map((day: number, i) => (
           <S.DayLabel key={day}>
-            {i === Math.floor(WEEK_OFFSET / 2) ? <S.DayLabelToday>{day}</S.DayLabelToday> : day}
+            {i === Math.floor(WEEK_OFFSET / 2) && isSameDay(date, today) ? (
+              <S.DayLabelToday>{day}</S.DayLabelToday>
+            ) : (
+              day
+            )}
           </S.DayLabel>
         ))}
       </S.DaysWrapper>
