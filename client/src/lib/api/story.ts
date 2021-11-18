@@ -25,12 +25,20 @@ export const getAllStories = async (projectId: number | string) => {
  * @param epicId 에픽 id
  * @returns id 를 프로퍼티로 가지는 객체, 스토리 생성 성공시 생성된 스토리의 id, 실패시 -1값 { id: number }
  */
-export const createStory = async ({ id, status, name, projectId = 1, epicId = 1 }: StoryType) => {
+export const createStory = async ({
+  id,
+  status,
+  name,
+  order,
+  projectId = 1,
+  epicId = 1,
+}: StoryType) => {
   try {
     const result: { data: { id: number } } = await instance.post('', {
       id,
       status,
       name,
+      order,
       projectId,
       epicId,
     });

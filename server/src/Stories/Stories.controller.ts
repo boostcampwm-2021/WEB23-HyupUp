@@ -19,6 +19,7 @@ export const getAllStoriesByProject = async (req: Request, res: Response) => {
     const storiesWithEpicName = stories.map((el) => ({
       id: el.id,
       name: el.name,
+      order: el.order,
       status: el.status,
       epic: el.epics.name,
     }));
@@ -48,6 +49,7 @@ export const postStory = async (req: Request, res: Response) => {
         id: req.body.id,
         name: req.body.name,
         status: req.body.status,
+        order: req.body.order,
         projects: () => req.body.projectId,
         epics: () => req.body.epicId,
       })
@@ -61,12 +63,12 @@ export const postStory = async (req: Request, res: Response) => {
 };
 
 export const updateStoryWithName = async (req: Request, res: Response) => {
-  const { id, name, status } = req.body;
+  const { id, name, status, order } = req.body;
   try {
     await getConnection()
       .createQueryBuilder()
       .update(Stories)
-      .set({ id: id, name: name, status: status })
+      .set({ id: id, name: name, status: status, order: order })
       .where('id = :id', { id: id })
       .execute();
 
