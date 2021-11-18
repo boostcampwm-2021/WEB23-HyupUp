@@ -15,6 +15,7 @@ const RoadmapItem = ({ columns, index, length }: RoadmapItemProps) => {
           return (
             <S.Bar key={i}>
               <S.FrontHandle />
+              {length === 0 ? <S.RearHandle /> : undefined}
             </S.Bar>
           );
         else if (i === index + length)
