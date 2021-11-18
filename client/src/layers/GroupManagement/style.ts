@@ -19,4 +19,8 @@ const ItemListViewer = styled.div`
   align-items: center;
 `;
 
-export { Container, ItemListViewer };
+const ThreeDot = styled.img`
+  padding: 0px 10px;
+`;
+
+export { Container, ItemListViewer, ThreeDot };

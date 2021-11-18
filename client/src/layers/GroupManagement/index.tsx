@@ -25,7 +25,11 @@ export const GroupManagement = () => {
           job="개발자"
           admin={true}
           dropDown={
-            <DropDown Title={<img src={dots} />} list={dropDownList} handleClick={(e) => e} />
+            <DropDown
+              Title={<S.ThreeDot src={dots} />}
+              list={dropDownList}
+              handleClick={(e) => e}
+            />
           }
         />
         <TeamManagementItem
@@ -34,7 +38,11 @@ export const GroupManagement = () => {
           job="BIZ HR"
           admin={true}
           dropDown={
-            <DropDown Title={<img src={dots} />} list={dropDownList} handleClick={(e) => e} />
+            <DropDown
+              Title={<S.ThreeDot src={dots} />}
+              list={dropDownList}
+              handleClick={(e) => e}
+            />
           }
         />
       </S.ItemListViewer>
