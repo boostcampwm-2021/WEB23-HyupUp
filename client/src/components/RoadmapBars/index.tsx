@@ -68,7 +68,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo }: RoadmapBarsProps) => {
             index={startIndex}
             length={length}
             exceedsLeft={!isSameDay(startAt, rangeFrom) && isFormer(startAt, rangeFrom)}
-            exceedsRight={false}
+            exceedsRight={!isSameDay(endAt, rangeTo) && isLatter(endAt, rangeTo)}
           />
         );
       })}
