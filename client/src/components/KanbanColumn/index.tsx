@@ -3,31 +3,37 @@ import Styled from '@/components/KanbanColumn/style';
 import { KanbanItem, KanbanAddBtn } from '@/components';
 import { StatusType, StoryType } from '@/types/story';
 
-interface KanbanProps {
+interface KanbanType {
   storyList: Array<StoryType>;
   category: StatusType;
   draggingItem: React.MutableRefObject<number | null>;
+  dragOverItem: React.MutableRefObject<number | null>;
+  categoryRef: React.MutableRefObject<StatusType>;
 }
 
-const KanbanColumn = ({ category, storyList, draggingItem }: KanbanProps) => {
+const KanbanColumn = ({
+  category,
+  storyList,
+  draggingItem,
+  dragOverItem,
+  categoryRef,
+}: KanbanType) => {
   const handleDragStart = (
     e: React.DragEvent<HTMLElement>,
-    position: number,
+    order: number,
     category: StatusType,
   ) => {
-    draggingItem.current = position;
-    console.log(draggingItem.current);
-    // dragStartItem.current = category;
+    draggingItem.current = order;
+    categoryRef.current = category;
     // test.current = Number(e.currentTarget.dataset.key);
   };
 
   return (
     <Styled.Column>
       <h4>{category}</h4>
-      {storyList?.map((story, index) => (
+      {storyList?.map((story) => (
         <KanbanItem
           key={story.id}
-          index={index}
           story={story}
           handleDragStart={handleDragStart}
           // handleDragEnter={handleDragEnter}
