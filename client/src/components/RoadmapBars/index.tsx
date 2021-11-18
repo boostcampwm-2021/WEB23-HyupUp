@@ -61,7 +61,16 @@ const RoadmapBars = ({ rangeFrom, rangeTo }: RoadmapBarsProps) => {
         else if (case3) length = getDateDiff(startAt, endAt);
         else if (case4) length = getDateDiff(rangeFrom, rangeTo);
 
-        return <RoadmapItem key={id} columns={COLUMNS} index={startIndex} length={length} />;
+        return (
+          <RoadmapItem
+            key={id}
+            columns={COLUMNS}
+            index={startIndex}
+            length={length}
+            exceedsLeft={!isSameDay(startAt, rangeFrom) && isFormer(startAt, rangeFrom)}
+            exceedsRight={false}
+          />
+        );
       })}
     </S.Container>
   );
