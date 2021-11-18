@@ -16,12 +16,14 @@ const RoadmapItem = ({ columns, index, length, exceedsLeft, exceedsRight }: Road
         if (i === index)
           return (
             <S.Bar key={i}>
-              {exceedsLeft ? undefined : <S.FrontHandle />}
-              {length === 0 && !exceedsRight ? <S.RearHandle /> : undefined}
+              {exceedsLeft ? undefined : <S.FrontHandle draggable="true" />}
+              {length === 0 && !exceedsRight ? <S.RearHandle draggable="true" /> : undefined}
             </S.Bar>
           );
         else if (i === index + length)
-          return <S.Bar key={i}>{exceedsRight ? undefined : <S.RearHandle />}</S.Bar>;
+          return (
+            <S.Bar key={i}>{exceedsRight ? undefined : <S.RearHandle draggable="true" />}</S.Bar>
+          );
         else if (i < index + length && i > index) return <S.Bar key={i} />;
         else return <S.Spacer key={i} />;
       })}
