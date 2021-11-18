@@ -1,12 +1,13 @@
 import React, { ChangeEvent, useRef, useState } from 'react';
 import * as S from './style';
 import Button from '@/lib/design/Button';
-import { useUserDispatch, useUserState } from '@/lib/hooks/useContextHooks';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { createTodo } from '@/lib/api/todo';
+import userAtom, { privateTasksSelector } from '@/recoil/user';
 
 const TodoInputBar = () => {
-  const userState = useUserState();
-  const userDispatch = useUserDispatch();
+  const userState = useRecoilValue(userAtom);
+  const setTodoTasks = useSetRecoilState(privateTasksSelector);
 
   const [buttonDisabled, buttonDisableHandler] = useState(true);
   const todoInput = useRef<HTMLInputElement>(null);
@@ -24,7 +25,7 @@ const TodoInputBar = () => {
       const target = todoInput.current as HTMLInputElement;
       const todo = await createTodo(target.value, userState.id);
       if (todo) {
-        userDispatch({ type: 'ADD_PRIVATE_TASK', payload: todo });
+        setTodoTasks((prev) => [todo, ...prev]);
       }
       target.value = '';
       buttonDisableHandler(true);

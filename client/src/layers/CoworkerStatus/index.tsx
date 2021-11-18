@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-
 import { getUsersByOrganization, UserProfile } from '@/lib/api/user';
-import { useUserState } from '@/lib/hooks/useContextHooks';
 import useSocketSend from '@/lib/hooks/useSocketSend';
 import useSocketReceive from '@/lib/hooks/useSocketReceive';
-
 import Avatar from '@/components/CoworkerStatusItem/Avatar';
 import * as S from './style';
 import StatusTitle from '@/components/CoworkerStatusItem/StatusTitle';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
 
 interface UserStatus extends UserProfile {
   status: boolean;
@@ -23,7 +22,7 @@ const CoworkerStatus = () => {
   const [usersIdList, setUsersIdList] = useState<Array<number>>([]);
   const [users, setUsers] = useState<Array<UserProfile>>([]);
   const emitLoginEvent = useSocketSend('LOGIN');
-  const userState = useUserState();
+  const userState = useRecoilValue(userAtom);
 
   useSocketReceive('LOGIN_CALLBACK', (userInfo: Array<UserSocketInstance>) => {
     if (userInfo.length === 0) return;
