@@ -21,11 +21,7 @@ const RoadmapItem = ({ columns, index, length, exceedsLeft, exceedsRight }: Road
             </S.Bar>
           );
         else if (i === index + length)
-          return (
-            <S.Bar key={i}>
-              <S.RearHandle />
-            </S.Bar>
-          );
+          return <S.Bar key={i}>{exceedsRight ? undefined : <S.RearHandle />}</S.Bar>;
         else if (i < index + length && i > index) return <S.Bar key={i} />;
         else return <S.Spacer key={i} />;
       })}
