@@ -77,6 +77,17 @@ export const isLatter = (target: Date, date: Date): boolean => {
 
 /**
  *
+ * @param target date 와 같은 날짜인지 확인할 date 객체
+ * @param date 확인의 기준이 되는 date 객체
+ */
+export const isSameDay = (target: Date, date: Date) => {
+  const targetString = target.toLocaleString('ko-kr', dateFormat);
+  const dateString = date.toLocaleString('ko-kr', dateFormat);
+  return targetString === dateString;
+};
+
+/**
+ *
  * @param param.start 범위 내에 있는지 확인할 범위의 왼쪽 끝에 해당하는 날짜의 date 객체
  * @param param.end 범위 내에 있는지 확인할 범위의 오른쪽 끝에 해당하는 날짜의 date 객체
  * @param param.from 확인할 범위의 왼쪽 끝에 해당하는 날짜의 date 객체
