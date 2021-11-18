@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createStory } from '@/lib/api/story';
+import { createStory, updateStoryWithId } from '@/lib/api/story';
 import { Button } from '@/lib/design';
 import { useStoryDispatch, useStoryState, useUserState } from '@/lib/hooks/useContextHooks';
 import { StoryType } from '@/types/story';
@@ -27,6 +27,7 @@ const KanbanAddBtn = () => {
     if (isInitial && todoList.length > 1) {
       if (todoList.length === 2) {
         dispatchStory({ type: 'UPDATE_STORY', story: { ...todoList[0], order: 0 } });
+        updateStoryWithId({ ...todoList[0], order: 0 });
       } else {
         dispatchStory({
           type: 'UPDATE_STORY',
@@ -34,6 +35,10 @@ const KanbanAddBtn = () => {
             ...todoList[todoList.length - 2],
             order: (todoList[todoList.length - 3]?.order + 1) / 2,
           },
+        });
+        updateStoryWithId({
+          ...todoList[todoList.length - 2],
+          order: (todoList[todoList.length - 3]?.order + 1) / 2,
         });
       }
       setIsInitial((prev) => !prev);
