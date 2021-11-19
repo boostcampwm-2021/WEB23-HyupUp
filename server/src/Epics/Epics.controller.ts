@@ -50,7 +50,7 @@ export const findEpicById = async (req: Request, res: Response) => {
 
 /**
  *
- * @body projectName: string | number 대상 프로젝트의 id값
+ * @body projectId: string | number 대상 프로젝트의 id값
  * @body name: string 새롭게 생성하는 에픽의 이름
  * @response id: number 새롭게 생성된 에픽의 id값
  */
