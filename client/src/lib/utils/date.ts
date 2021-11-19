@@ -38,7 +38,7 @@ export const makeDayRow = (date: Date) => {
     .forEach((day: number) => daysArray.push(day));
   [...Array(REAR_HALF)]
     .map((_, i) => date.getDate() + i + 1)
-    .map((day) => (day >= lastDate ? day - lastDate : day))
+    .map((day) => (day > lastDate ? day - lastDate : day))
     .forEach((day: number) => daysArray.push(day));
   return daysArray;
 };
