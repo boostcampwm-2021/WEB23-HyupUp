@@ -77,6 +77,35 @@ export const createEpic = async (req: Request, res: Response) => {
 
 /**
  *
+ * @params id: number 수정하려는 에픽의 id값
+ * @body name: string 수정하려는 에픽의 이름
+ * @body startAt: 수정하려는 에픽의 시작일
+ * @body endAt: 수정하려는 에픽의 종료일
+ * @response message: string 응답결과 메시지
+ */
+export const updateEpicById = async (req: Request, res: Response) => {
+  try {
+    const { name, startAt, endAt } = req.body;
+    await getRepository(Epics)
+      .createQueryBuilder()
+      .update()
+      .set({
+        name: name,
+        startAt: startAt,
+        endAt: endAt,
+      })
+      .where('id = :id', { id: req.params.id })
+      .execute();
+    res.status(200).json({ message: 'epic update successful' });
+  } catch (e) {
+    res.status(400).json({
+      message: (e as Error).message,
+    });
+  }
+};
+
+/**
+ *
  * @param id: 삭제하려는 에픽의 id
  * @response 실행 결과를 나타내는 문자열
  */
