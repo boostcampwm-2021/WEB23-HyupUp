@@ -59,7 +59,6 @@ export const createEpic = async (req: Request, res: Response) => {
     const result = await getRepository(Epics)
       .createQueryBuilder()
       .insert()
-      .into(Epics)
       .values({
         name: req.body.name,
         projects: req.body.projectId,
@@ -114,7 +113,6 @@ export const deleteEpicById = async (req: Request, res: Response) => {
     await getRepository(Epics)
       .createQueryBuilder()
       .delete()
-      .from(Epics)
       .where('id = :id', { id: req.params.id })
       .execute();
     res.status(200).json({ message: 'successfully deleted' });
