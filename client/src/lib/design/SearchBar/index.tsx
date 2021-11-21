@@ -11,8 +11,8 @@ interface Props {
 
 const SearchBar = ({ color, value, size, onChange, onSubmit }: Props) => {
   return (
-    <Styled.Form color={color} onSubmit={onSubmit}>
-      <Styled.Input value={value} onChange={onChange} inputSize={size} />
+    <Styled.Form inputSize={size} color={color} onSubmit={onSubmit}>
+      <Styled.Input value={value} onChange={onChange} />
       <Styled.Button />
     </Styled.Form>
   );
