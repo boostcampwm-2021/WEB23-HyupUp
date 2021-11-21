@@ -25,7 +25,7 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(png|jp(e)g|gif|svg)$/,
+        test: /\.(png|jp(e)g|gif|svg|ico)$/,
         type: 'asset/resource',
       },
       {
@@ -60,7 +60,8 @@ module.exports = {
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: '/public/index.html',
+      favicon: 'public/favicon.ico',
       minify:
         process.env.NODE_ENV === 'production'
           ? {
