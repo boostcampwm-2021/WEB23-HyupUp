@@ -33,11 +33,6 @@ export const getAllStoriesByProject = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * @body projectName: string | number 대상 프로젝트의 id값
- * @body name: string 새롭게 생성하는 에픽의 이름
- * @response id: number 새롭게 생성된 에픽의 id값
- */
 export const postStory = async (req: Request, res: Response) => {
   try {
     const result = await getRepository(Stories)
@@ -45,7 +40,6 @@ export const postStory = async (req: Request, res: Response) => {
       .insert()
       .into(Stories)
       .values({
-        id: req.body.id,
         name: req.body.name,
         status: req.body.status,
         order: req.body.order,
@@ -53,7 +47,9 @@ export const postStory = async (req: Request, res: Response) => {
         epics: () => req.body.epicId,
       })
       .execute();
-    res.status(201).json({ id: result.raw.insertId });
+
+    const { id, status } = result.generatedMaps[0];
+    res.status(201).json({ id, status });
   } catch (e) {
     res.status(400).json({
       message: (e as Error).message,
