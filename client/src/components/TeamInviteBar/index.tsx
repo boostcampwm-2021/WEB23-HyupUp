@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 
 import { Button } from '@/lib/design';
 
@@ -7,34 +7,36 @@ import { sendEmail } from '@/lib/api/email';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
 
-const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-
-const TeamInviteBar = () => {
+const TeamInviteBar = ({ onCloseClick }: { onCloseClick: (e: React.MouseEvent) => void }) => {
   const [value, setValue] = useState('');
-  const [flag, setFlag] = useState(true);
   const userState = useRecoilValue(userAtom);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!regExp.test(e.target.value)) return;
-    if (!flag) return;
-    const newFlag = !flag;
     setValue(e.target.value);
-    setFlag(newFlag);
   };
 
-  const onClick = () => {
-    const newFlag = !flag;
-    setFlag(newFlag);
-    setValue('');
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
     sendEmail(userState.organization as number, value);
+    setValue('');
   };
 
   return (
-    <S.EmailInputBarContainer>
-      <Button category="confirm" size="small" disabled={flag} onClick={onClick}>
-        초대하기
-      </Button>
-      <S.InputBox placeholder="초대할 사람의 이메일을 입력하세요." onChange={onChange} />
+    <S.EmailInputBarContainer onSubmit={onSubmit}>
+      <S.InputBox
+        placeholder="이메일을 여기에 입력하세요."
+        onChange={onChange}
+        value={value}
+        type="email"
+      />
+      <S.ButtonContainer>
+        <Button size="small" category="cancel" onClick={onCloseClick} type="button">
+          취소
+        </Button>
+        <Button size="small" category="confirm" type="submit">
+          발송
+        </Button>
+      </S.ButtonContainer>
     </S.EmailInputBarContainer>
   );
 };
