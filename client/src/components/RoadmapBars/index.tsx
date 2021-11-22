@@ -23,12 +23,22 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
   const [isDraggingLeft, setDraggingLeft] = useState(false);
   const epicRenderInfo = makeEpicRenderInfo(epics, { rangeFrom, rangeTo, columns: COLUMNS });
 
-  const handleDragEnter = (e: React.DragEvent) => {
+  const getCurrentDragInfo = (e: React.DragEvent) => {
     const nowDraggingEpic = epics.find((epic) => epic.id === nowDraggingId)!; // 현재 드래그 중인 에픽 객체
     const currentItem = epicRenderInfo.find((epic) => epic.id === nowDraggingId)!; // 현재 드래그 중인 에픽의 렌더링 정보 객체
     const currentIndex = currentItem.index + currentItem.length; // 현재 드래그 중인 에픽의 오른쪽 핸들이 몇번째 column에 위치하는지
     const intersectingIndex = (e.target as HTMLElement).dataset.index!; // 드래그 중일 때 마우스 커서가 몇번째 column에 위치하는지
 
+    return {
+      nowDraggingEpic,
+      currentItem,
+      currentIndex,
+      intersectingIndex,
+    };
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    const { nowDraggingEpic, currentItem, currentIndex, intersectingIndex } = getCurrentDragInfo(e);
     const offset =
       parseInt(intersectingIndex) - (isDraggingLeft ? currentItem.index : currentIndex);
     dispatchEpic({
@@ -45,11 +55,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
   };
 
   const handleDrop = (e: React.DragEvent) => {
-    const nowDraggingEpic = epics.find((epic) => epic.id === nowDraggingId)!; // 현재 드래그 중인 에픽 객체
-    const currentItem = epicRenderInfo.find((epic) => epic.id === nowDraggingEpic.id)!; // 현재 드래그 중인 에픽의 렌더링 정보 객체
-    const currentIndex = currentItem.index + currentItem.length; // 현재 드래그 중인 에픽의 오른쪽 핸들이 몇번째 column에 위치하는지
-    const intersectingIndex = (e.target as HTMLElement).dataset.index!; // 드래그 중일 때 마우스 커서가 몇번째 column에 위치하는지
-
+    const { nowDraggingEpic, currentItem, currentIndex, intersectingIndex } = getCurrentDragInfo(e);
     const offset =
       parseInt(intersectingIndex) - (isDraggingLeft ? currentItem.index : currentIndex);
     updateEpicById(nowDraggingId, {
