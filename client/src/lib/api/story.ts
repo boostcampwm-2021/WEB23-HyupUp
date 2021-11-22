@@ -51,7 +51,7 @@ export const updateStoryWithName = async ({
 }: StoryType) => {
   if (name === '') return;
   try {
-    const result: { data: { id: number } } = await instance.patch('/name', {
+    const result: { data: { id: number } } = await instance.patch(`/name/${id}`, {
       id,
       status,
       name,
@@ -74,8 +74,7 @@ export const updateStoryWithId = async ({
   epicId,
 }: StoryType) => {
   try {
-    const result: { data: { id: number } } = await instance.patch('/order', {
-      id,
+    const result: { data: { id: number } } = await instance.patch(`/order/${id}`, {
       status,
       name,
       order,
