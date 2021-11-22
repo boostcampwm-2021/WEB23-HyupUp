@@ -81,7 +81,6 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
       exceedsRight,
     };
   });
-  console.log(epicRenderInfo);
 
   return (
     <>
@@ -111,9 +110,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
               const currentItem = epicRenderInfo.find((epic) => epic.id === nowDraggingEpic.id)!; // 현재 드래그 중인 에픽의 렌더링 정보 객체
               const currentIndex = currentItem.index + currentItem.length; // 현재 드래그 중인 에픽의 오른쪽 핸들이 몇번째 column에 위치하는지
               const intersectingIndex = (e.target as HTMLElement).dataset.index!; // 드래그 중일 때 마우스 커서가 몇번째 column에 위치하는지
-              const offset = currentIndex - parseInt(intersectingIndex); // 드래그 중인 에픽의 오른쪽 핸들과 드래그 중인 마우스 커서의 column 인덱스 차이
-              console.log('current index', currentIndex);
-              console.log('intersecting index', intersectingIndex);
+              const offset = parseInt(intersectingIndex) - currentIndex; // 드래그 중인 에픽의 오른쪽 핸들과 드래그 중인 마우스 커서의 column 인덱스 차이
 
               dispatchEpic({
                 type: 'UPDATE_EPIC',
