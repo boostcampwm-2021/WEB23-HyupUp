@@ -4,7 +4,12 @@ import { KanbanItemType } from '@/types/story';
 import { KanbanModalContext } from '@/components/KanbanModal';
 import { KanbanItemInput } from '@/components';
 
-const KanbanItem = ({ story, handleDragStart, handleDragEnter }: KanbanItemType) => {
+const KanbanItem = ({
+  story,
+  handleDragStart,
+  handleDragEnter,
+  handleDragDrop,
+}: KanbanItemType) => {
   const modalConsumer = useContext(KanbanModalContext);
   const [isDragEnter, setDragEnter] = useState(false);
 
@@ -19,6 +24,10 @@ const KanbanItem = ({ story, handleDragStart, handleDragEnter }: KanbanItemType)
         handleDragEnter(e, story.order as number, story.status);
         setDragEnter((isDragEnter) => !isDragEnter);
       }}
+      onDrop={(e) => {
+        handleDragDrop(e, story.order as number, story.status);
+        setDragEnter(false);
+      }}
       onDragLeave={() => setDragEnter((isDragEnter) => !isDragEnter)}
       onDragOver={(e) => e.preventDefault()}
       isDragEnter={isDragEnter}
@@ -30,7 +39,7 @@ const KanbanItem = ({ story, handleDragStart, handleDragEnter }: KanbanItemType)
           modalConsumer?.setShowModal(true);
           modalConsumer?.setDeleteItem(story.id as number);
         }}
-      ></Styled.CancelIcon>
+      />
     </Styled.KanBanItem>
   );
 };
