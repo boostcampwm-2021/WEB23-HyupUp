@@ -53,6 +53,7 @@ export const getStoryById = async (req: Request, res: Response) => {
 
 export const postStory = async (req: Request, res: Response) => {
   try {
+    //TODO 생성 후 생성 결과를 반환하도록 query 문 작성
     const result = await getRepository(Stories)
       .createQueryBuilder()
       .insert()
