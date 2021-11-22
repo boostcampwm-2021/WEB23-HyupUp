@@ -2,6 +2,10 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { bodyValidator } from '../../lib/utils/requestValidator';
 import { sendMail } from './Email.service';
+import { createClient } from 'redis';
+import { v4 } from 'uuid';
+
+const client = createClient({ host: 'localhost' });
 
 export const inviteByEmail = (req: Request, res: Response) => {
   try {
@@ -9,11 +13,12 @@ export const inviteByEmail = (req: Request, res: Response) => {
       throw Error('body is not valid');
     }
     const secret = process.env.SECRET as string;
-    const token = jwt.sign({ id: req.body.organizationId, email: req.body.email }, secret, {
+    const key = v4();
+    const token = jwt.sign({ id: key }, secret, {
       algorithm: 'HS256',
       expiresIn: '1h',
     });
-    // to-do JWT를 저장
+    client.set(key, JSON.stringify({ organizationId: req.body.organizationId }));
     sendMail(req.body.email, token);
     res.status(201).end();
   } catch (e) {
@@ -24,11 +29,23 @@ export const inviteByEmail = (req: Request, res: Response) => {
 export const isValidEmail = (req: Request, res: Response) => {
   try {
     if (!req.params.token) throw new Error('token is undefined');
-    // to-do token에 들어 있는 정보가 맞는지 확인
-    // to-do organization 정보를 포함하여 redirect
-    const decodedToken = jwt.decode(req.params.token);
-    res.end();
+    // TODO organization 정보를 포함하여 redirect
+    const decodedToken = jwt.verify(
+      req.params.token,
+      process.env.SECRET as string,
+    ) as jwt.JwtPayload;
+    client.get(decodedToken.id, (err, reply) => {
+      if (err) throw new Error(err.message);
+      res.send(JSON.parse(reply as string)).end();
+    });
   } catch (e) {
-    res.status(400).json({ message: (e as Error).message });
+    const err = e as Error;
+    res.status(400).json({ message: err.message });
+    if (err.message === 'jwt expired') {
+      res.status(401).json({ message: err.message });
+    } else if (err.message === 'invalid token') {
+      res.status(403).json({ message: err.message });
+    }
+    res.end();
   }
 };
