@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import Styled from '@/components/KanbanItem/style';
 import { KanbanItemType } from '@/types/story';
 import { KanbanModalContext } from '@/components/KanbanModal';
-import { KanbanInput } from '@/components';
+import { KanbanItemInput } from '@/components';
 
 const KanbanItem = ({ story, handleDragStart, handleDragEnter }: KanbanItemType) => {
   const modalConsumer = useContext(KanbanModalContext);
@@ -24,7 +24,7 @@ const KanbanItem = ({ story, handleDragStart, handleDragEnter }: KanbanItemType)
       isDragEnter={isDragEnter}
       draggable
     >
-      <KanbanInput story={story} />
+      <KanbanItemInput story={story} />
       <Styled.CancelIcon
         onClick={() => {
           modalConsumer?.setShowModal(true);
