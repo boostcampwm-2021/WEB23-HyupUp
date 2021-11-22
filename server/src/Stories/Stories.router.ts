@@ -14,8 +14,8 @@ router
   .get('/', getAllStoriesByProject)
   .get('/:id', getStoryById)
   .post('/', postStory)
-  .patch('/name', updateStoryWithName)
-  .patch('/order', updateStoryWithId)
+  .patch('/name/:id', updateStoryWithName)
+  .patch('/order/:id', updateStoryWithId)
   .delete('/', deleteStoryWithId);
 
 export default router;

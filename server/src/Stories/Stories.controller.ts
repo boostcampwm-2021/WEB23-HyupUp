@@ -75,16 +75,20 @@ export const postStory = async (req: Request, res: Response) => {
 };
 
 export const updateStoryWithName = async (req: Request, res: Response) => {
-  const { id, name, status } = req.body;
+  if (!req.params.id) {
+    throw new Error('유효한 ID 가 존재하지 않습니다.');
+  }
+  const { id } = req.params;
+  const { name, status } = req.body;
   try {
     await getConnection()
       .createQueryBuilder()
       .update(Stories)
-      .set({ id: id, name: name, status: status })
+      .set({ name: name, status: status })
       .where('id = :id', { id: id })
       .execute();
 
-    res.status(201).json({ id: id, name: name });
+    res.end();
   } catch (e) {
     res.status(400).json({
       message: (e as Error).message,
@@ -93,16 +97,20 @@ export const updateStoryWithName = async (req: Request, res: Response) => {
 };
 
 export const updateStoryWithId = async (req: Request, res: Response) => {
-  const { id, name, status, order } = req.body;
+  if (!req.params.id) {
+    throw new Error('유효한 ID 가 존재하지 않습니다.');
+  }
+  const { id } = req.params;
+  const { name, status, order } = req.body;
   try {
     await getConnection()
       .createQueryBuilder()
       .update(Stories)
-      .set({ id: id, name: name, status: status, order: order })
+      .set({ name: name, status: status, order: order })
       .where('id = :id', { id: id })
       .execute();
 
-    res.status(201).json({ id: id, name: name });
+    res.end();
   } catch (e) {
     res.status(400).json({
       message: (e as Error).message,
@@ -119,6 +127,8 @@ export const deleteStoryWithId = async (req: Request, res: Response) => {
       .from(Stories)
       .where('id = :id', { id: storyId })
       .execute();
+
+    res.end();
   } catch (e) {
     res.status(400).json({
       message: (e as Error).message,
