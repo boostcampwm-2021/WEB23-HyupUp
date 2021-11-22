@@ -17,11 +17,10 @@ const SideBarDropDown = () => {
     if (target.tagName !== 'LI') return;
     titleStateHandler(target.innerText);
     setUserState((prev) =>
-      produce(prev, (draft) => ({
-        ...draft,
-        currentProjectName: target.innerText,
-        currentProjectId: +target.value,
-      })),
+      produce(prev, (draft) => {
+        draft.currentProjectName = target.innerText;
+        draft.currentProjectId = +target.value;
+      }),
     );
   };
   useEffect(() => {
