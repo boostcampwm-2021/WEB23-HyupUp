@@ -2,6 +2,7 @@ import { DefaultValue, selector, selectorFamily } from 'recoil';
 import produce from 'immer';
 import userAtom from '@/recoil/user/atom';
 import { PrivateTask, ProjectTask } from '@/types/task';
+import { taskSortByUpdate } from '@/lib/utils/sort';
 
 export const privateTasksSelector = selector<PrivateTask[]>({
   key: 'privateTasksSelector',
@@ -48,7 +49,7 @@ export const allTasksSelector = selector<ProjectTask[] | PrivateTask[]>({
   get: ({ get }) => {
     const privateTasks = get(privateTasksSelector);
     const projectTasks = get(projectTasksSelector);
-    return [...privateTasks, ...projectTasks];
+    return [...privateTasks, ...projectTasks].sort((a, b) => taskSortByUpdate(a, b));
   },
 });
 

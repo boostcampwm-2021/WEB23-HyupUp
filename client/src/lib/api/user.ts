@@ -7,6 +7,8 @@ export interface UserProfile {
   index: number;
   name: string;
   imageURL: string;
+  job: string;
+  admin: boolean;
 }
 
 const instance = axios.create({

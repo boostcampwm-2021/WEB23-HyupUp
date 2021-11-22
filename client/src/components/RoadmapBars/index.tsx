@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import S from './style';
 import RoadmapItem from '@/components/RoadmapItem';
 import { useEpicState } from '@/lib/hooks/useContextHooks';
-import { getDateDiff, isFormer, isLatter, shouldRender } from '@/lib/utils/date';
+import { getDateDiff, isFormer, isLatter, isSameDay, shouldRender } from '@/lib/utils/date';
+import { toast } from 'react-toastify';
 
 const COLUMNS = 15;
 
 interface RoadmapBarsProps {
   rangeFrom: Date;
   rangeTo: Date;
+  dayRow: number[];
+  isToday: boolean;
 }
 
 // rangeFrom은 현재 캘린더뷰의 시작일자, rangeTo는 끝 일자
@@ -32,36 +35,66 @@ interface RoadmapBarsProps {
 // |-----------|
 //
 // 그 외의 경우는 캘린더 뷰에 렌더링하지 않아야함
-const RoadmapBars = ({ rangeFrom, rangeTo }: RoadmapBarsProps) => {
+const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) => {
   const epics = useEpicState();
+  const [nowDraggingId, setDraggingId] = useState(-1);
 
   return (
-    <S.Container>
-      {epics.map(({ id, startAt, endAt }) => {
-        const case1 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeFrom);
-        const case2 = isFormer(startAt, rangeTo) && isLatter(endAt, rangeTo);
-        const case3 = isLatter(startAt, rangeFrom) && isFormer(endAt, rangeTo);
-        const case4 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeTo);
+    <>
+      <S.Container>
+        {epics.map(({ id, startAt, endAt }) => {
+          const case1 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeFrom);
+          const case2 = isFormer(startAt, rangeTo) && isLatter(endAt, rangeTo);
+          const case3 = isLatter(startAt, rangeFrom) && isFormer(endAt, rangeTo);
+          const case4 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeTo);
 
-        const render = shouldRender({
-          start: startAt,
-          end: endAt,
-          from: rangeFrom,
-          to: rangeTo,
-        });
-        let startIndex = COLUMNS;
-        if (case1 || case4) startIndex = 0;
-        else if (render) startIndex = Math.min(getDateDiff(rangeFrom, startAt), COLUMNS);
+          const render = shouldRender({
+            start: startAt,
+            end: endAt,
+            from: rangeFrom,
+            to: rangeTo,
+          });
+          let startIndex = COLUMNS;
+          if (isSameDay(endAt, rangeFrom)) startIndex = 0;
+          else if (isSameDay(startAt, rangeTo)) startIndex = COLUMNS - 1;
+          else if (case1 || case4) startIndex = 0;
+          else if (render) startIndex = Math.min(getDateDiff(rangeFrom, startAt), COLUMNS);
 
-        let length = 0;
-        if (case1) length = getDateDiff(rangeFrom, endAt);
-        else if (case2) length = getDateDiff(startAt, rangeTo);
-        else if (case3) length = getDateDiff(startAt, endAt);
-        else if (case4) length = getDateDiff(rangeFrom, rangeTo);
+          let length = 0;
+          if (case1) length = getDateDiff(rangeFrom, endAt);
+          else if (case2) length = getDateDiff(startAt, rangeTo);
+          else if (case3) length = getDateDiff(startAt, endAt);
+          else if (case4) length = getDateDiff(rangeFrom, rangeTo);
 
-        return <RoadmapItem key={id} columns={COLUMNS} index={startIndex} length={length} />;
-      })}
-    </S.Container>
+          const exceedsLeft = isSameDay(startAt, rangeFrom) || isFormer(startAt, rangeFrom);
+          const exceedsRight = isSameDay(endAt, rangeTo) || isLatter(endAt, rangeTo);
+          return (
+            <RoadmapItem
+              key={id}
+              columns={COLUMNS}
+              index={startIndex}
+              length={length}
+              exceedsLeft={exceedsLeft}
+              exceedsRight={exceedsRight}
+              handleDragStart={() => setDraggingId(id)}
+            />
+          );
+        })}
+      </S.Container>
+      <S.DayColumnWrapper>
+        {dayRow.map((day: number, i) => (
+          <S.DayColumn
+            key={day}
+            highlightColumn={Math.floor((COLUMNS - 1) / 2 + 1)}
+            isToday={isToday}
+            data-index={i}
+            onDragOver={(e) => e.preventDefault()}
+            onDragEnter={(e) => toast.success(`entered ${(e.target as HTMLElement).dataset.index}`)}
+            onDrop={() => toast.success(`id ${nowDraggingId} dropped!!`)}
+          />
+        ))}
+      </S.DayColumnWrapper>
+    </>
   );
 };
 

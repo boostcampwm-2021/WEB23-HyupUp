@@ -11,7 +11,7 @@ interface Project {
   name: string;
   id: number;
 }
-
+// TODO: 현재 쓰이지 않는 함수
 export const getAllProjects = async (userId: number, organizationId: number) => {
   try {
     const result: { data: Array<Project> } = await instance.get(

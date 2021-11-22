@@ -8,26 +8,27 @@ import { updateStoryWithName } from '@/lib/api/story';
 import { KanbanDefaultType } from '@/layers/Kanban';
 
 interface KanbanItemType extends KanbanDefaultType {
-  index: number;
   story: StoryType;
 }
 
-const KanbanItem = ({ index, story, handleDragStart, handleDragEnter }: KanbanItemType) => {
+const KanbanItem = ({ story, handleDragStart, handleDragEnter }: KanbanItemType) => {
   const modalConsumer = useContext(KanbanModalContext);
-
-  const { key, value, onChange } = useInput('');
   const dispatchStory = useStoryDispatch();
+  const { key, value, onChange } = useInput('');
 
   const useUpdateStoryName = () => {
-    dispatchStory({ type: 'UPDATE_STORY', story: { status: 'TODO', id: key, name: value } });
-    updateStoryWithName({ status: 'TODO', id: key, name: value });
+    dispatchStory({
+      type: 'UPDATE_STORY',
+      story: { status: 'TODO', id: key, order: story.order, name: value },
+    });
+    updateStoryWithName({ status: 'TODO', id: key, order: story.order, name: value });
   };
 
   return (
     <Styled.KanBanItem
       data-key={story.id}
-      onDragStart={(e) => handleDragStart(e, index, story.status)}
-      onDragEnter={(e) => handleDragEnter(e, index, story.status)}
+      onDragStart={(e) => handleDragStart(e, story.order, story.status)}
+      onDragEnter={(e) => handleDragEnter(e, story.order, story.status)}
       onDragOver={(e) => e.preventDefault()}
       draggable
     >
