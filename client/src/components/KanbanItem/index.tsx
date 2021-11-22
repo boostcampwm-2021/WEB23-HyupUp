@@ -28,7 +28,10 @@ const KanbanItem = ({ story, handleDragStart, handleDragEnter }: KanbanItemType)
   return (
     <Styled.KanBanItem
       data-key={story.id}
-      onDragStart={(e) => handleDragStart(e, story.order as number, story.status)}
+      onDragStart={(e) => {
+        handleDragStart(e, story.order as number, story.status);
+        setDragEnter(false);
+      }}
       onDragEnter={(e) => {
         handleDragEnter(e, story.order as number, story.status);
         setDragEnter((isDragEnter) => !isDragEnter);
