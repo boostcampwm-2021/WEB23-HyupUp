@@ -24,20 +24,16 @@ const RoadmapItem = ({
         if (i === index)
           return (
             <S.Bar key={i}>
-              {exceedsLeft ? undefined : (
-                <S.FrontHandle draggable="true" onDragStart={handleDragStart} />
-              )}
-              {length === 0 && !exceedsRight ? (
+              {!exceedsLeft && <S.FrontHandle draggable="true" onDragStart={handleDragStart} />}
+              {length === 0 && !exceedsRight && (
                 <S.RearHandle draggable="true" onDragStart={handleDragStart} />
-              ) : undefined}
+              )}
             </S.Bar>
           );
         else if (i === index + length)
           return (
             <S.Bar key={i}>
-              {exceedsRight ? undefined : (
-                <S.RearHandle draggable="true" onDragStart={handleDragStart} />
-              )}
+              {!exceedsRight && <S.RearHandle draggable="true" onDragStart={handleDragStart} />}
             </S.Bar>
           );
         else if (i < index + length && i > index) return <S.Bar key={i} />;
