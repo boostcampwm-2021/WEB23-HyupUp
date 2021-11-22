@@ -61,24 +61,14 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
     const currentIndex = currentItem.index + currentItem.length; // 현재 드래그 중인 에픽의 오른쪽 핸들이 몇번째 column에 위치하는지
     const intersectingIndex = (e.target as HTMLElement).dataset.index!; // 드래그 중일 때 마우스 커서가 몇번째 column에 위치하는지
 
-    let offset = 0;
-    if (!isDraggingLeft) {
-      offset = parseInt(intersectingIndex) - currentIndex; // 드래그 중인 에픽의 오른쪽 핸들과 드래그 중인 마우스 커서의 column 인덱스 차이
-      updateEpicById(nowDraggingId, {
-        id: nowDraggingId,
-        name: nowDraggingEpic.name,
-        startAt: nowDraggingEpic.startAt,
-        endAt: addDate(nowDraggingEpic.endAt, offset),
-      });
-    } else {
-      offset = parseInt(intersectingIndex) - currentItem.index;
-      updateEpicById(nowDraggingId, {
-        id: nowDraggingId,
-        name: nowDraggingEpic.name,
-        startAt: addDate(nowDraggingEpic.startAt, offset),
-        endAt: nowDraggingEpic.endAt,
-      });
-    }
+    const offset =
+      parseInt(intersectingIndex) - (isDraggingLeft ? currentItem.index : currentIndex);
+    updateEpicById(nowDraggingId, {
+      id: nowDraggingId,
+      name: nowDraggingEpic.name,
+      startAt: isDraggingLeft ? addDate(nowDraggingEpic.startAt, offset) : nowDraggingEpic.startAt,
+      endAt: isDraggingLeft ? nowDraggingEpic.endAt : addDate(nowDraggingEpic.endAt, offset),
+    });
   };
 
   return (
