@@ -10,7 +10,7 @@ const Styled = {
     width: 90%;
     height: 65px;
     border-radius: 8px;
-    margin-top: 10px;
+
     display: flex;
     cursor: grab;
     background-color: ${({ theme }) => theme.color.gray100};

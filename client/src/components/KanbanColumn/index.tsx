@@ -27,7 +27,6 @@ const KanbanColumn = ({
     category: StatusType,
   ) => {
     dragOverRef.current = order;
-    // 바닥에 파란색 선이 나타나도록 작성
     const dragOverItem = storyList.find((v) => v.id === dragOverRef.current);
     // TODO immerJS 를 통해서 새로운 배열을 만들고, 이에 대해서 update 하는 함수
     draggingRef.current = dragOverRef.current;
@@ -36,12 +35,13 @@ const KanbanColumn = ({
 
   return (
     <Styled.Column>
-      <h4
+      <Styled.KanBanColumnTitle
         onDragEnter={() => setTopEnter((isTopEnter) => !isTopEnter)}
         onDragLeave={() => setTopEnter(false)}
+        isTopEnter={isTopEnter}
       >
         {category}
-      </h4>
+      </Styled.KanBanColumnTitle>
       {storyList?.map((story) => (
         <KanbanItem
           key={story.id}
@@ -50,7 +50,7 @@ const KanbanColumn = ({
           handleDragEnter={handleDragEnter}
         />
       ))}
-      <KanbanAddBtn />
+      {category === 'TODO' && <KanbanAddBtn />}
     </Styled.Column>
   );
 };

@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface KanbanColumnPropType {
+  isTopEnter: boolean;
+}
+
 const Styled = {
   Column: styled.div`
     width: 30%;
@@ -14,20 +18,31 @@ const Styled = {
     border-radius: 8px;
     background-color: ${({ theme }) => theme.color.white};
 
-    h4 {
-      padding-top: 12px;
-      font: ${({ theme }) => theme.font.bold_regular};
-    }
-
     button {
       width: 250px;
       height: 50px;
-
       position: absolute;
       bottom: 15px;
-
       color: ${({ theme }) => theme.color.gray400};
     }
+
+    article {
+      margin-top: 10px;
+    }
+
+    article:nth-child(2) {
+      margin-top: 0px;
+    }
+  `,
+  KanBanColumnTitle: styled.h4<KanbanColumnPropType>`
+    width: 90%;
+    text-align: center;
+    padding-top: 12px;
+    padding-bottom: 8px;
+    font: ${({ theme }) => theme.font.bold_regular};
+    border-bottom: 4px solid transparent;
+    border-bottom: ${({ isTopEnter, theme }) => isTopEnter && `4px solid${theme.color.blue200}`};
+    z-index: 2;
   `,
 };
 
