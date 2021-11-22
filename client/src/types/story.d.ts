@@ -1,3 +1,4 @@
+import { dragRefObjectType } from './story.d';
 export type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
 export type StoryType = {
@@ -9,17 +10,24 @@ export type StoryType = {
   epicId?: number;
 };
 
+export type dragRefObjectType = React.MutableRefObject<number | null>;
+export type dragCategoryType = React.MutableRefObject<StatusType>;
+
 export interface KanbanType {
   storyList: Array<StoryType>;
   category: StatusType;
-  draggingRef: React.MutableRefObject<number | null>;
-  dragOverRef: React.MutableRefObject<number | null>;
-  categoryRef: React.MutableRefObject<StatusType>;
+  draggingRef: dragRefObjectType;
+  dragOverRef: dragRefObjectType;
+  draggingCategory: dragCategoryType;
+  dragOverCategory: dragCategoryType;
 }
 
+//TODO Extends 를 통한 상속
 export interface KanbanItemType {
   story: StoryType;
-  handleDragStart(e: React.DragEvent<HTMLElement>, order: number, category: StatusType): void;
-  handleDragEnter(e: React.DragEvent<HTMLElement>, order: number, category: StatusType): void;
-  handleDragDrop(e: React.DragEvent<HTMLElement>, order: number, category: StatusType): void;
+  draggingRef: dragRefObjectType;
+  dragOverRef: dragRefObjectType;
+  draggingCategory: dragCategoryType;
+  dragOverCategory: dragCategoryType;
+  handleDragDrop(category: StatusType): void;
 }
