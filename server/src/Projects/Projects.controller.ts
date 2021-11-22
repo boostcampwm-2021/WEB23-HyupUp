@@ -1,25 +1,35 @@
 import { Request, Response, NextFunction } from 'express';
-import { queryValidator } from '../../lib/utils/requestValidator';
+import { bodyValidator } from '../../lib/utils/requestValidator';
 import { getRepository } from 'typeorm';
 
 import Users from '../Users/Users.entity';
+import Projects from './Projects.entity';
 
+// TODO: User이용하여 조회
 export const getAllProjects = async (req: Request, res: Response, next: NextFunction) => {
+  return;
+};
+
+export const createProject = async (req: Request, res: Response) => {
   try {
-    if (!queryValidator(req.query, ['userId', 'organizationId'])) {
-      throw new Error('query is not vaild');
+    if (!bodyValidator(req.body, ['name', 'userId'])) {
+      throw new Error('body is not vaild');
     }
-    const { userId, organizationId } = req.query;
     const userRepository = getRepository(Users);
-    const projects = await userRepository.find({
-      relations: ['projects', 'org'],
-      where: { id: +(userId as string), org: { id: +(organizationId as string) } },
+    const projectRepository = getRepository(Projects);
+    const newProject = await projectRepository.save({
+      name: req.body.name,
     });
-    res.status(200).json(projects[0].projects);
-  } catch (e) {
-    const result = (e as Error).message;
-    if (result === 'query is not vaild') {
-      res.status(400).json(result);
-    }
+    const user = await userRepository.findOne({
+      relations: ['projects'],
+      where: { id: req.body.userId },
+    });
+    if (!user) throw Error('유저 없음');
+    user.projects.push(newProject);
+    await userRepository.save(user);
+    res.json(newProject);
+  } catch (error) {
+    const message = (error as Error).message;
+    res.status(401).json({ message });
   }
 };
