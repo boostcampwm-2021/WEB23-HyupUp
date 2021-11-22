@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import Styled from '@/components/KanbanColumn/style';
 import { KanbanItem, KanbanAddBtn } from '@/components';
-import { StatusType, KanbanType } from '@/types/story';
+import { StatusType, KanbanType, dragCategoryType } from '@/types/story';
 import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
+
+const isEqualCategory = (draggingCategory: dragCategoryType, dropCategory: StatusType) => {
+  return draggingCategory.current === dropCategory;
+};
 
 const KanbanColumn = ({
   category,
@@ -15,9 +19,9 @@ const KanbanColumn = ({
   const [isTopEnter, setTopEnter] = useState(false);
   const dispatchStory = useStoryDispatch();
 
-  const handleDragDrop = (category?: StatusType) => {
-    // 동일한 칼럼 내의 제일 상단에 Item 을 놓을 때
-    if (isTopEnter) {
+  const handleDragDrop = (category: StatusType) => {
+    // 동일한 칼럼 내의 최상단
+    if (isTopEnter && isEqualCategory(draggingCategory, category)) {
       const toBeChangeItem = storyList.find((v) => v.order === draggingRef.current);
       if (!toBeChangeItem) return;
       const firstnSecondItem = storyList
@@ -38,8 +42,8 @@ const KanbanColumn = ({
       return;
     }
 
-    // 동일한 컬럼 내의 Item 의 사이 또는 최하단 위치
-    if (!isTopEnter) {
+    // 동일한 컬럼 내의 Item 사이 또는 최하단
+    if (!isTopEnter && isEqualCategory(draggingCategory, category)) {
       const toBeChangeItem = storyList.find((v) => v.order === draggingRef.current);
       const dragOverOrderList = storyList
         .map((v) => Number(v.order))
@@ -63,7 +67,7 @@ const KanbanColumn = ({
         onDragOver={(e) => e.preventDefault()}
         onDragEnter={() => setTopEnter((isTopEnter) => !isTopEnter)}
         onDragLeave={() => setTopEnter(false)}
-        onDrop={() => handleDragDrop('TODO')}
+        onDrop={() => handleDragDrop(category)}
         isTopEnter={isTopEnter}
       >
         {category}
