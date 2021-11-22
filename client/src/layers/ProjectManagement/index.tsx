@@ -18,23 +18,22 @@ export const ProjectManagement = () => {
   };
 
   useEffect(() => {
-    (async () => {
+    const updateProjectList = async () => {
       const projects = await getAllOrgProjects(userState.organization!);
       if (!projects) return;
-      console.log(projects);
       setProjectList([...projects]);
-    })();
+    };
+    updateProjectList();
   }, [userState.organization]);
 
   return (
-    <>
+    <div>
       <ProjectCreateForm onSubmitNewProject={onSubmitNewProject} onChange={onChange} />
-      {projectList.map((project, index) => {
+      {projectList.map((project, index) => (
         <div key={index}>
-          <div>test</div>
-          <div>{project.name}</div>;
-        </div>;
-      })}
-    </>
+          <div style={{ fontSize: 20 }}>{project.name}</div>
+        </div>
+      ))}
+    </div>
   );
 };
