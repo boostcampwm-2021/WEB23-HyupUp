@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Styled from '@/components/KanbanColumn/style';
 import { KanbanItem, KanbanAddBtn } from '@/components';
+import { updateStoryWithId } from '@/lib/api/story';
 import { StatusType, KanbanType, dragCategoryType } from '@/types/story';
 import { useStoryDispatch, useStoryState } from '@/lib/hooks/useContextHooks';
 
@@ -22,7 +23,7 @@ const KanbanColumn = ({
     .filter((item) => item.status === category)
     .sort((a, b) => Number(a.order) - Number(b.order));
 
-  const handleDragDrop = (category: StatusType) => {
+  const handleDragDrop = async (category: StatusType) => {
     // 동일한 칼럼 내의 최상단
     if (isTopEnter && isEqualCategory(draggingCategory, category)) {
       const toBeChangeItem = filterList.find((v) => v.order === draggingRef.current);
@@ -40,6 +41,8 @@ const KanbanColumn = ({
         type: 'UPDATE_STORY',
         story: { ...firstnSecondItem[0], order: averageOrder },
       });
+      await updateStoryWithId({ ...toBeChangeItem, order: 0 });
+      await updateStoryWithId({ ...firstnSecondItem[0], order: averageOrder });
       setTopEnter((isTopEnter) => !isTopEnter);
       draggingRef.current = null;
       dragOverRef.current = null;
@@ -58,6 +61,7 @@ const KanbanColumn = ({
 
       if (!toBeChangeItem) return;
       dispatchStory({ type: 'UPDATE_STORY', story: { ...toBeChangeItem, order: avgOrderSum } });
+      await updateStoryWithId({ ...toBeChangeItem, order: avgOrderSum });
       draggingRef.current = null;
       dragOverRef.current = null;
       return;
@@ -79,6 +83,7 @@ const KanbanColumn = ({
         type: 'UPDATE_STORY',
         story: { ...toBeChangeItem, status: category, order: avgOrderSum },
       });
+      await updateStoryWithId({ ...toBeChangeItem, status: category, order: avgOrderSum });
       draggingRef.current = null;
       dragOverRef.current = null;
       return;
@@ -99,6 +104,7 @@ const KanbanColumn = ({
         type: 'UPDATE_STORY',
         story: { ...toBeChangeItem, status: category, order: 0 },
       });
+      await updateStoryWithId({ ...toBeChangeItem, status: category, order: 0 });
 
       setTopEnter((isTopEnter) => !isTopEnter);
       draggingRef.current = null;
@@ -109,7 +115,7 @@ const KanbanColumn = ({
         type: 'UPDATE_STORY',
         story: { ...firstnSecondItem[0], order: averageOrder },
       });
-
+      await updateStoryWithId({ ...firstnSecondItem[0], order: averageOrder });
       return;
     }
   };
