@@ -8,6 +8,7 @@ interface RoadmapItemProps {
   exceedsLeft: boolean;
   exceedsRight: boolean;
   handleDragStart: () => void;
+  handleDragStartLeft: () => void;
 }
 
 const RoadmapItem = ({
@@ -17,6 +18,7 @@ const RoadmapItem = ({
   exceedsLeft,
   exceedsRight,
   handleDragStart,
+  handleDragStartLeft,
 }: RoadmapItemProps) => {
   return (
     <S.Container columns={columns}>
@@ -24,7 +26,7 @@ const RoadmapItem = ({
         if (i === index)
           return (
             <S.Bar key={i}>
-              {!exceedsLeft && <S.FrontHandle draggable="true" onDragStart={handleDragStart} />}
+              {!exceedsLeft && <S.FrontHandle draggable="true" onDragStart={handleDragStartLeft} />}
               {length === 0 && !exceedsRight && (
                 <S.RearHandle draggable="true" onDragStart={handleDragStart} />
               )}
