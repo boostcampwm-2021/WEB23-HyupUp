@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Styled from '@/components/KanbanItem/style';
 import { StoryType } from '@/types/story';
 import { KanbanModalContext } from '@/components/KanbanModal';
@@ -15,6 +15,7 @@ const KanbanItem = ({ story, handleDragStart, handleDragEnter }: KanbanItemType)
   const modalConsumer = useContext(KanbanModalContext);
   const dispatchStory = useStoryDispatch();
   const { key, value, onChange } = useInput('');
+  const [isDragEnter, setDragEnter] = useState(false);
 
   const useUpdateStoryName = () => {
     dispatchStory({
@@ -27,9 +28,14 @@ const KanbanItem = ({ story, handleDragStart, handleDragEnter }: KanbanItemType)
   return (
     <Styled.KanBanItem
       data-key={story.id}
-      onDragStart={(e) => handleDragStart(e, story.order, story.status)}
-      onDragEnter={(e) => handleDragEnter(e, story.order, story.status)}
+      onDragStart={(e) => handleDragStart(e, story.order as number, story.status)}
+      onDragEnter={(e) => {
+        handleDragEnter(e, story.order as number, story.status);
+        setDragEnter((isDragEnter) => !isDragEnter);
+      }}
+      onDragLeave={(e) => setDragEnter((isDragEnter) => !isDragEnter)}
       onDragOver={(e) => e.preventDefault()}
+      isDragEnter={isDragEnter}
       draggable
     >
       <input
@@ -42,7 +48,7 @@ const KanbanItem = ({ story, handleDragStart, handleDragEnter }: KanbanItemType)
       <Styled.CancelIcon
         onClick={() => {
           modalConsumer?.setShowModal(true);
-          modalConsumer?.setDeleteItem(story.id);
+          modalConsumer?.setDeleteItem(story.id as number);
         }}
       ></Styled.CancelIcon>
     </Styled.KanBanItem>
