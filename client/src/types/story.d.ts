@@ -8,3 +8,17 @@ export type StoryType = {
   projectId?: number;
   epicId?: number;
 };
+
+export interface KanbanType {
+  storyList: Array<StoryType>;
+  category: StatusType;
+  draggingRef: React.MutableRefObject<number | null>;
+  dragOverRef: React.MutableRefObject<number | null>;
+  categoryRef: React.MutableRefObject<StatusType>;
+}
+
+export interface KanbanItemType {
+  story: StoryType;
+  handleDragStart(e: React.DragEvent<HTMLElement>, order: number, category: StatusType): void;
+  handleDragEnter(e: React.DragEvent<HTMLElement>, order: number, category: StatusType): void;
+}
