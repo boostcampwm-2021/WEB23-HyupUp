@@ -13,6 +13,5 @@ export const sendEmail = async (organizationId: number, email: string) => {
     if (result.status === 201) toast.success(successMessage.SEND_EMAIL);
   } catch (e) {
     toast.error(errorMessage.SEND_EMAIL);
-    throw e;
   }
 };
