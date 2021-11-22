@@ -24,7 +24,10 @@ export const getAllProjects = async (userId: number, organizationId: number) => 
 
 export const createProject = async (name: string, userId: number) => {
   try {
-    const newProject = await instance.post('/', { name, userId });
+    const newProject: { data: Project; status: number } = await instance.post('/', {
+      name,
+      userId,
+    });
     if (newProject.status >= 400) throw new Error();
     return newProject.data;
   } catch (error) {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import produce from 'immer';
 import userAtom from '@/recoil/user';
 import { createProject, getAllOrgProjects } from '@/lib/api/project';
 import { useInput } from '@/lib/hooks';
@@ -15,6 +16,12 @@ export const ProjectManagement = () => {
     e.preventDefault();
     if (!value.length) return;
     const newProject = await createProject(value, userState.id as number);
+    if (!newProject) return;
+    setProjectList((prev) =>
+      produce(prev, (draft) => {
+        draft.push(newProject);
+      }),
+    );
   };
 
   useEffect(() => {
