@@ -18,13 +18,13 @@ const Kanban = () => {
 
   const todoList = storyList
     .filter((item) => item.status === 'TODO')
-    .sort((a, b) => a.order - b.order);
+    .sort((a, b) => Number(a.order) - Number(b.order));
   const onGoingList = storyList
     .filter((item) => item.status === 'IN_PROGRESS')
-    .sort((a, b) => a.order - b.order);
+    .sort((a, b) => Number(a.order) - Number(b.order));
   const finishList = storyList
     .filter((item) => item.status === 'DONE')
-    .sort((a, b) => a.order - b.order);
+    .sort((a, b) => Number(a.order) - Number(b.order));
 
   return (
     <KanbanModal>
