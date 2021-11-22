@@ -14,7 +14,6 @@ export type dragRefObjectType = React.MutableRefObject<number | null>;
 export type dragCategoryType = React.MutableRefObject<StatusType>;
 
 export interface KanbanType {
-  storyList: Array<StoryType>;
   category: StatusType;
   draggingRef: dragRefObjectType;
   dragOverRef: dragRefObjectType;
