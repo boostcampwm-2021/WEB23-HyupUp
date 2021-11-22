@@ -38,48 +38,55 @@ interface RoadmapBarsProps {
 const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) => {
   const epics = useEpicState();
   const [nowDraggingId, setDraggingId] = useState(-1);
+  const epicRenderInfo = epics.map(({ id, startAt, endAt }) => {
+    const case1 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeFrom);
+    const case2 = isFormer(startAt, rangeTo) && isLatter(endAt, rangeTo);
+    const case3 = isLatter(startAt, rangeFrom) && isFormer(endAt, rangeTo);
+    const case4 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeTo);
+
+    const render = shouldRender({
+      start: startAt,
+      end: endAt,
+      from: rangeFrom,
+      to: rangeTo,
+    });
+    let startIndex = COLUMNS;
+    if (isSameDay(endAt, rangeFrom)) startIndex = 0;
+    else if (isSameDay(startAt, rangeTo)) startIndex = COLUMNS - 1;
+    else if (case1 || case4) startIndex = 0;
+    else if (render) startIndex = Math.min(getDateDiff(rangeFrom, startAt), COLUMNS);
+
+    let length = 0;
+    if (case1) length = getDateDiff(rangeFrom, endAt);
+    else if (case2) length = getDateDiff(startAt, rangeTo);
+    else if (case3) length = getDateDiff(startAt, endAt);
+    else if (case4) length = getDateDiff(rangeFrom, rangeTo);
+
+    const exceedsLeft = isSameDay(startAt, rangeFrom) || isFormer(startAt, rangeFrom);
+    const exceedsRight = isSameDay(endAt, rangeTo) || isLatter(endAt, rangeTo);
+    return {
+      index: startIndex,
+      id,
+      length,
+      exceedsLeft,
+      exceedsRight,
+    };
+  });
 
   return (
     <>
       <S.Container>
-        {epics.map(({ id, startAt, endAt }) => {
-          const case1 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeFrom);
-          const case2 = isFormer(startAt, rangeTo) && isLatter(endAt, rangeTo);
-          const case3 = isLatter(startAt, rangeFrom) && isFormer(endAt, rangeTo);
-          const case4 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeTo);
-
-          const render = shouldRender({
-            start: startAt,
-            end: endAt,
-            from: rangeFrom,
-            to: rangeTo,
-          });
-          let startIndex = COLUMNS;
-          if (isSameDay(endAt, rangeFrom)) startIndex = 0;
-          else if (isSameDay(startAt, rangeTo)) startIndex = COLUMNS - 1;
-          else if (case1 || case4) startIndex = 0;
-          else if (render) startIndex = Math.min(getDateDiff(rangeFrom, startAt), COLUMNS);
-
-          let length = 0;
-          if (case1) length = getDateDiff(rangeFrom, endAt);
-          else if (case2) length = getDateDiff(startAt, rangeTo);
-          else if (case3) length = getDateDiff(startAt, endAt);
-          else if (case4) length = getDateDiff(rangeFrom, rangeTo);
-
-          const exceedsLeft = isSameDay(startAt, rangeFrom) || isFormer(startAt, rangeFrom);
-          const exceedsRight = isSameDay(endAt, rangeTo) || isLatter(endAt, rangeTo);
-          return (
-            <RoadmapItem
-              key={id}
-              columns={COLUMNS}
-              index={startIndex}
-              length={length}
-              exceedsLeft={exceedsLeft}
-              exceedsRight={exceedsRight}
-              handleDragStart={() => setDraggingId(id)}
-            />
-          );
-        })}
+        {epicRenderInfo.map(({ id, length, exceedsLeft, exceedsRight, index }) => (
+          <RoadmapItem
+            key={id}
+            columns={COLUMNS}
+            index={index}
+            length={length}
+            exceedsLeft={exceedsLeft}
+            exceedsRight={exceedsRight}
+            handleDragStart={() => setDraggingId(id)}
+          />
+        ))}
       </S.Container>
       <S.DayColumnWrapper>
         {dayRow.map((day: number, i) => (
