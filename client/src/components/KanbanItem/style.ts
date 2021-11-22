@@ -17,19 +17,6 @@ const Styled = {
     border-bottom: ${({ isDragEnter, theme }) => isDragEnter && `4px solid ${theme.color.blue200}`};
     border-bottom-left-radius: ${({ isDragEnter }) => isDragEnter && '2px'};
     border-bottom-right-radius: ${({ isDragEnter }) => isDragEnter && '2px'};
-
-    input {
-      background-color: ${({ theme }) => theme.color.gray100};
-
-      margin-top: 15px;
-      padding: 15px;
-      width: 90%;
-      height: 30px;
-
-      font: ${({ theme }) => theme.font.bold_small};
-      font-size: 14px;
-      cursor: grab;
-    }
   `,
 
   CancelIcon: styled.p`

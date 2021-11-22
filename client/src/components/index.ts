@@ -14,7 +14,8 @@ export { default as SideBarEntry } from './SideBarEntry/index';
 export { default as EpicPlaceholer } from './EpicPlaceholder/index';
 
 // KanBan
-export { default as KanbanItem } from './KanbanItem/index';
 export { default as KanbanColumn } from './KanbanColumn/index';
+export { default as KanbanItem } from './KanbanItem/index';
+export { default as KanbanItemInput } from './KanbanItemInput/index';
 export { default as KanbanAddBtn } from './KanbanAddBtn/index';
 export { default as KanbanModal } from './KanbanModal/index';
