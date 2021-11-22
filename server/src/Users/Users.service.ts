@@ -2,36 +2,8 @@ import { getRepository } from 'typeorm';
 import Users from './Users.entity';
 import Todo from '../Todo/Todo.entity';
 import Tasks from '../Tasks/Tasks.entity';
+import { PrivateTask, ProjectTask, User } from '../../types/user';
 import Organizations from '../Organizations/Organizations.entity';
-
-interface ProjectType {
-  id: number;
-  name: string;
-}
-
-interface PrivateTask {
-  id: number;
-  name: string;
-  status: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface ProjectTask extends PrivateTask {
-  project: ProjectType;
-}
-
-interface User {
-  id: number;
-  name: string;
-  job: string;
-  email: string;
-  imageURL: string;
-  admin: boolean;
-  organization: number;
-  projects: Array<ProjectType>;
-  org?: object;
-}
 
 export const getUserTodos = async (email: string): Promise<PrivateTask[]> => {
   const todoRepository = getRepository(Todo);
