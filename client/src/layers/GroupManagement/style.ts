@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 
 const Container = styled.section`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-
   width: 941px;
+
+  flex-direction: column;
+  justify-content: center;
 
   margin: 0 0 0 26px;
   padding: 18px;
@@ -18,11 +16,21 @@ const Container = styled.section`
 const ItemListViewer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 
 const ThreeDot = styled.img`
   padding: 0px 10px;
 `;
 
-export { Container, ItemListViewer, ThreeDot };
+const SearchBarContainer = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 10px 0px;
+`;
+
+const ModalText = styled.div`
+  margin: 40px 0px;
+  font: ${({ theme }) => theme.font.body_regular};
+`;
+
+export { Container, ItemListViewer, ThreeDot, SearchBarContainer, ModalText };
