@@ -88,6 +88,7 @@ export const getUsers = async (id: number): Promise<Users[]> => {
   const organization = await organizationRepository.findOne(id);
   if (!organization) throw new Error('조직 없음');
   const users = await userRepository.find({
+    relations: ['projects'],
     where: { org: organization },
   });
   if (!users) throw Error('유저 없음');
