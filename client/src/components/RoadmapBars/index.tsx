@@ -12,6 +12,8 @@ import {
   shouldRender,
 } from '@/lib/utils/date';
 import { toast } from 'react-toastify';
+import { updateEpicById } from '@/lib/api/epic';
+import { successMessage } from '@/lib/common/message';
 
 const COLUMNS = 15;
 
@@ -145,7 +147,31 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
                 });
               }
             }}
-            onDrop={() => toast.success(`id ${nowDraggingId} dropped!!`)}
+            onDrop={(e) => {
+              const nowDraggingEpic = epics.find((epic) => epic.id === nowDraggingId)!; // 현재 드래그 중인 에픽 객체
+              const currentItem = epicRenderInfo.find((epic) => epic.id === nowDraggingEpic.id)!; // 현재 드래그 중인 에픽의 렌더링 정보 객체
+              const currentIndex = currentItem.index + currentItem.length; // 현재 드래그 중인 에픽의 오른쪽 핸들이 몇번째 column에 위치하는지
+              const intersectingIndex = (e.target as HTMLElement).dataset.index!; // 드래그 중일 때 마우스 커서가 몇번째 column에 위치하는지
+
+              let offset = 0;
+              if (!isDraggingLeft) {
+                offset = parseInt(intersectingIndex) - currentIndex; // 드래그 중인 에픽의 오른쪽 핸들과 드래그 중인 마우스 커서의 column 인덱스 차이
+                updateEpicById(nowDraggingId, {
+                  id: nowDraggingId,
+                  name: nowDraggingEpic.name,
+                  startAt: nowDraggingEpic.startAt,
+                  endAt: addDate(nowDraggingEpic.endAt, offset),
+                });
+              } else {
+                offset = parseInt(intersectingIndex) - currentItem.index;
+                updateEpicById(nowDraggingId, {
+                  id: nowDraggingId,
+                  name: nowDraggingEpic.name,
+                  startAt: addDate(nowDraggingEpic.startAt, offset),
+                  endAt: nowDraggingEpic.endAt,
+                });
+              }
+            }}
           />
         ))}
       </S.DayColumnWrapper>
