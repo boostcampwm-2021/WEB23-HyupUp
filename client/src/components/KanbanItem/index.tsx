@@ -1,15 +1,10 @@
 import React, { useContext, useState } from 'react';
 import Styled from '@/components/KanbanItem/style';
-import { StoryType } from '@/types/story';
+import { KanbanItemType } from '@/types/story';
 import { KanbanModalContext } from '@/components/KanbanModal';
 import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
 import { useInput } from '@/lib/hooks';
 import { updateStoryWithName } from '@/lib/api/story';
-import { KanbanDefaultType } from '@/layers/Kanban';
-
-interface KanbanItemType extends KanbanDefaultType {
-  story: StoryType;
-}
 
 const KanbanItem = ({ story, handleDragStart, handleDragEnter }: KanbanItemType) => {
   const modalConsumer = useContext(KanbanModalContext);
@@ -36,7 +31,7 @@ const KanbanItem = ({ story, handleDragStart, handleDragEnter }: KanbanItemType)
         handleDragEnter(e, story.order as number, story.status);
         setDragEnter((isDragEnter) => !isDragEnter);
       }}
-      onDragLeave={(e) => setDragEnter((isDragEnter) => !isDragEnter)}
+      onDragLeave={() => setDragEnter((isDragEnter) => !isDragEnter)}
       onDragOver={(e) => e.preventDefault()}
       isDragEnter={isDragEnter}
       draggable

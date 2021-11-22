@@ -5,11 +5,6 @@ import KanbanModal from '@/components/KanbanModal';
 import { StoryType, StatusType } from '@/types/story';
 import { useStoryState } from '@/lib/hooks/useContextHooks';
 
-export interface KanbanDefaultType {
-  handleDragStart(e: React.DragEvent<HTMLElement>, order: number, category: StatusType): void;
-  handleDragEnter(e: React.DragEvent<HTMLElement>, order: number, category: StatusType): void;
-}
-
 const Kanban = () => {
   const draggingRef = useRef<number | null>(0);
   const dragOverRef = useRef<number | null>(0);
