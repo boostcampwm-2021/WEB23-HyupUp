@@ -20,7 +20,7 @@ export default class Todo {
   @Column({ name: 'STATUS', type: 'boolean' })
   status!: boolean;
 
-  @ManyToOne(() => Users, (users) => users.id)
+  @ManyToOne(() => Users, (users) => users.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'USER_ID' })
   users!: Users;
 
