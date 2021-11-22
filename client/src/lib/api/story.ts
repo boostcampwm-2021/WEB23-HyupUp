@@ -19,7 +19,6 @@ export const getAllStories = async (projectId: number | string) => {
 
 export const getStoryByid = async (storyId: number | string) => {
   try {
-    console.log(storyId);
     const result: { data: StoryType } = await instance.get(`/${storyId}`);
     return result.data;
   } catch (e) {
