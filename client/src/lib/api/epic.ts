@@ -68,6 +68,7 @@ export const updateEpicById = async (epicId: number, payload: EpicType) => {
       code: number;
     } = await instance.patch(`/${epicId}`, payload);
     if (result.code / 100 >= 4) throw new Error(errorMessage.UPDATE_EPIC);
+    toast.success(successMessage.UPDATE_EPIC);
   } catch (e) {
     toast.error((e as Error).message);
   }
