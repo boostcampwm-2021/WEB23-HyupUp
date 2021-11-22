@@ -95,7 +95,7 @@ export const updateEpicById = async (req: Request, res: Response) => {
       })
       .where('id = :id', { id: req.params.id })
       .execute();
-    res.status(200).json({ message: 'epic update successful' });
+    res.status(200).end();
   } catch (e) {
     res.status(400).json({
       message: (e as Error).message,
@@ -115,7 +115,7 @@ export const deleteEpicById = async (req: Request, res: Response) => {
       .delete()
       .where('id = :id', { id: req.params.id })
       .execute();
-    res.status(200).json({ message: 'successfully deleted' });
+    res.status(200).end();
   } catch (e) {
     res.status(404).json({
       message: (e as Error).message,
