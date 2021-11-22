@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const ItemContainer = styled.div`
-  width: 800px;
   height: 70px;
 
   display: flex;
