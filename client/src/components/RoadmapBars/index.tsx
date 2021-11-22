@@ -1,8 +1,16 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useState } from 'react';
 import S from './style';
 import RoadmapItem from '@/components/RoadmapItem';
-import { useEpicState } from '@/lib/hooks/useContextHooks';
-import { getDateDiff, isFormer, isLatter, isSameDay, shouldRender } from '@/lib/utils/date';
+import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
+import {
+  addDate,
+  getDateDiff,
+  isFormer,
+  isLatter,
+  isSameDay,
+  shouldRender,
+} from '@/lib/utils/date';
 import { toast } from 'react-toastify';
 
 const COLUMNS = 15;
@@ -37,6 +45,7 @@ interface RoadmapBarsProps {
 // 그 외의 경우는 캘린더 뷰에 렌더링하지 않아야함
 const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) => {
   const epics = useEpicState();
+  const dispatchEpic = useEpicDispatch();
   const [nowDraggingId, setDraggingId] = useState(-1);
   const epicRenderInfo = epics.map(({ id, startAt, endAt }) => {
     const case1 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeFrom);
@@ -72,6 +81,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
       exceedsRight,
     };
   });
+  console.log(epicRenderInfo);
 
   return (
     <>
@@ -96,7 +106,25 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
             isToday={isToday}
             data-index={i}
             onDragOver={(e) => e.preventDefault()}
-            onDragEnter={(e) => toast.success(`entered ${(e.target as HTMLElement).dataset.index}`)}
+            onDragEnter={(e) => {
+              const nowDraggingEpic = epics.find((epic) => epic.id === nowDraggingId)!; // 현재 드래그 중인 에픽 객체
+              const currentItem = epicRenderInfo.find((epic) => epic.id === nowDraggingEpic.id)!; // 현재 드래그 중인 에픽의 렌더링 정보 객체
+              const currentIndex = currentItem.index + currentItem.length; // 현재 드래그 중인 에픽의 오른쪽 핸들이 몇번째 column에 위치하는지
+              const intersectingIndex = (e.target as HTMLElement).dataset.index!; // 드래그 중일 때 마우스 커서가 몇번째 column에 위치하는지
+              const offset = currentIndex - parseInt(intersectingIndex); // 드래그 중인 에픽의 오른쪽 핸들과 드래그 중인 마우스 커서의 column 인덱스 차이
+              console.log('current index', currentIndex);
+              console.log('intersecting index', intersectingIndex);
+
+              dispatchEpic({
+                type: 'UPDATE_EPIC',
+                epic: {
+                  id: nowDraggingId,
+                  name: nowDraggingEpic.name,
+                  startAt: nowDraggingEpic.startAt,
+                  endAt: addDate(nowDraggingEpic.endAt, offset),
+                },
+              });
+            }}
             onDrop={() => toast.success(`id ${nowDraggingId} dropped!!`)}
           />
         ))}
