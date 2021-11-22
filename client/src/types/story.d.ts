@@ -21,4 +21,5 @@ export interface KanbanItemType {
   story: StoryType;
   handleDragStart(e: React.DragEvent<HTMLElement>, order: number, category: StatusType): void;
   handleDragEnter(e: React.DragEvent<HTMLElement>, order: number, category: StatusType): void;
+  handleDragDrop(e: React.DragEvent<HTMLElement>, order: number, category: StatusType): void;
 }
