@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Styled from '@/components/KanbanColumn/style';
 import { KanbanItem, KanbanAddBtn } from '@/components';
 import { StatusType, KanbanType, dragCategoryType } from '@/types/story';
-import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
+import { useStoryDispatch, useStoryState } from '@/lib/hooks/useContextHooks';
 
 const isEqualCategory = (draggingCategory: dragCategoryType, dropCategory: StatusType) => {
   return draggingCategory.current === dropCategory;
@@ -10,7 +10,6 @@ const isEqualCategory = (draggingCategory: dragCategoryType, dropCategory: Statu
 
 const KanbanColumn = ({
   category,
-  storyList,
   draggingRef,
   dragOverRef,
   draggingCategory,
@@ -18,13 +17,17 @@ const KanbanColumn = ({
 }: KanbanType) => {
   const [isTopEnter, setTopEnter] = useState(false);
   const dispatchStory = useStoryDispatch();
+  const storyList = useStoryState();
+  const filterList = storyList
+    .filter((item) => item.status === category)
+    .sort((a, b) => Number(a.order) - Number(b.order));
 
   const handleDragDrop = (category: StatusType) => {
     // 동일한 칼럼 내의 최상단
     if (isTopEnter && isEqualCategory(draggingCategory, category)) {
-      const toBeChangeItem = storyList.find((v) => v.order === draggingRef.current);
+      const toBeChangeItem = filterList.find((v) => v.order === draggingRef.current);
       if (!toBeChangeItem) return;
-      const firstnSecondItem = storyList
+      const firstnSecondItem = filterList
         .sort((a, b) => Number(a.order) - Number(b.order))
         .slice(0, 2);
       const averageOrder = firstnSecondItem.length > 1 ? Number(firstnSecondItem[1].order) / 2 : 1;
@@ -44,8 +47,8 @@ const KanbanColumn = ({
 
     // 동일한 컬럼 내의 Item 사이 또는 최하단
     if (!isTopEnter && isEqualCategory(draggingCategory, category)) {
-      const toBeChangeItem = storyList.find((v) => v.order === draggingRef.current);
-      const dragOverOrderList = storyList
+      const toBeChangeItem = filterList.find((v) => v.order === draggingRef.current);
+      const dragOverOrderList = filterList
         .map((v) => Number(v.order))
         .filter((v) => v >= Number(dragOverRef.current))
         .slice(0, 2);
@@ -56,9 +59,29 @@ const KanbanColumn = ({
       dispatchStory({ type: 'UPDATE_STORY', story: { ...toBeChangeItem, order: avgOrderSum } });
       draggingRef.current = null;
       dragOverRef.current = null;
+      return;
     }
 
     // 다른 칼럼 내에 Item 이 위치
+    if (!isTopEnter && !isEqualCategory(draggingCategory, category)) {
+      const toBeChangeItem = storyList
+        .filter((v) => v.status === draggingCategory.current)
+        .find((v) => v.order === draggingRef.current);
+      const dragOverOrderList = filterList
+        .map((v) => Number(v.order))
+        .filter((v) => v >= Number(dragOverRef.current))
+        .slice(0, 2);
+      const orderSum = dragOverOrderList.reduce((prev, cur) => prev + cur, 0);
+      const avgOrderSum = dragOverOrderList.length > 1 ? orderSum / 2 : orderSum + 1;
+      if (!toBeChangeItem) return;
+      dispatchStory({
+        type: 'UPDATE_STORY',
+        story: { ...toBeChangeItem, status: category, order: avgOrderSum },
+      });
+      draggingRef.current = null;
+      dragOverRef.current = null;
+      return;
+    }
   };
 
   return (
@@ -72,7 +95,7 @@ const KanbanColumn = ({
       >
         {category}
       </Styled.KanBanColumnTitle>
-      {storyList?.map((story) => (
+      {filterList?.map((story) => (
         <KanbanItem
           key={story.id}
           story={story}
