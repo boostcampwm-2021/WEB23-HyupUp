@@ -8,7 +8,8 @@ import { useStoryState } from '@/lib/hooks/useContextHooks';
 const Kanban = () => {
   const draggingRef = useRef<number | null>(0);
   const dragOverRef = useRef<number | null>(0);
-  const cateogryRef = useRef<StatusType>('TODO');
+  const draggingCategory = useRef<StatusType>('TODO');
+  const dragOverCateogry = useRef<StatusType>('TODO');
   const storyList: StoryType[] = useStoryState();
 
   const todoList = storyList
@@ -27,14 +28,29 @@ const Kanban = () => {
         <Styled.Title>프로젝트 칸반보드</Styled.Title>
         <Styled.ColumnContainer>
           <KanbanColumn
-            draggingRef={draggingRef}
-            dragOverRef={dragOverRef}
-            categoryRef={cateogryRef}
             category={'TODO'}
             storyList={todoList}
+            draggingRef={draggingRef}
+            dragOverRef={dragOverRef}
+            draggingCategory={draggingCategory}
+            dragOverCategory={dragOverCateogry}
           />
-          <KanbanColumn category={'IN_PROGRESS'} storyList={onGoingList} />
-          <KanbanColumn category={'DONE'} storyList={finishList} />
+          <KanbanColumn
+            category={'IN_PROGRESS'}
+            storyList={onGoingList}
+            draggingRef={draggingRef}
+            dragOverRef={dragOverRef}
+            draggingCategory={draggingCategory}
+            dragOverCategory={dragOverCateogry}
+          />
+          <KanbanColumn
+            category={'DONE'}
+            storyList={finishList}
+            draggingRef={draggingRef}
+            dragOverRef={dragOverRef}
+            draggingCategory={draggingCategory}
+            dragOverCategory={dragOverCateogry}
+          />
         </Styled.ColumnContainer>
       </Styled.Container>
     </KanbanModal>

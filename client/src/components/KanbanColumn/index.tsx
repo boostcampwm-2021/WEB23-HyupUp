@@ -9,32 +9,13 @@ const KanbanColumn = ({
   storyList,
   draggingRef,
   dragOverRef,
-  categoryRef,
+  draggingCategory,
+  dragOverCategory,
 }: KanbanType) => {
   const [isTopEnter, setTopEnter] = useState(false);
   const dispatchStory = useStoryDispatch();
-  const handleDragStart = (
-    e: React.DragEvent<HTMLElement>,
-    order: number,
-    category: StatusType,
-  ) => {
-    draggingRef.current = order;
-    categoryRef.current = category;
-  };
 
-  const handleDragEnter = (
-    e: React.DragEvent<HTMLElement>,
-    order: number,
-    category: StatusType,
-  ) => {
-    dragOverRef.current = order;
-  };
-
-  const handleDragDrop = (
-    e: React.DragEvent<HTMLElement>,
-    order?: number,
-    category?: StatusType,
-  ) => {
+  const handleDragDrop = (category?: StatusType) => {
     // 동일한 칼럼 내의 제일 상단에 Item 을 놓을 때
     if (isTopEnter) {
       const toBeChangeItem = storyList.find((v) => v.order === draggingRef.current);
@@ -57,7 +38,7 @@ const KanbanColumn = ({
       return;
     }
 
-    // 동일한 컬럼 내의 Item 의 사이에 위치
+    // 동일한 컬럼 내의 Item 의 사이 또는 최하단 위치
     if (!isTopEnter) {
       const toBeChangeItem = storyList.find((v) => v.order === draggingRef.current);
       const dragOverOrderList = storyList
@@ -73,23 +54,16 @@ const KanbanColumn = ({
       dragOverRef.current = null;
     }
 
-    // 동일 칼럼의 맨 아래 부분에 위치할 때
     // 다른 칼럼 내에 Item 이 위치
   };
 
   return (
-    <Styled.Column
-    // onDragEnter={() => setTopEnter((isTopEnter) => !isTopEnter)}
-    // onDragLeave={() => setTopEnter(false)}
-    // onDrop={() => handleDragDrop}
-    >
+    <Styled.Column>
       <Styled.KanBanColumnTitle
         onDragOver={(e) => e.preventDefault()}
         onDragEnter={() => setTopEnter((isTopEnter) => !isTopEnter)}
         onDragLeave={() => setTopEnter(false)}
-        onDrop={(e) => {
-          handleDragDrop(e, 1, 'TODO');
-        }}
+        onDrop={() => handleDragDrop('TODO')}
         isTopEnter={isTopEnter}
       >
         {category}
@@ -98,9 +72,11 @@ const KanbanColumn = ({
         <KanbanItem
           key={story.id}
           story={story}
-          handleDragStart={handleDragStart}
-          handleDragEnter={handleDragEnter}
           handleDragDrop={handleDragDrop}
+          draggingRef={draggingRef}
+          draggingCategory={draggingCategory}
+          dragOverRef={dragOverRef}
+          dragOverCategory={dragOverCategory}
         />
       ))}
       {category === 'TODO' && <KanbanAddBtn />}
