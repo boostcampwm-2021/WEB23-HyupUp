@@ -17,32 +17,26 @@ export const getAllStories = async (projectId: number | string) => {
   }
 };
 
-/**
- * @param storyId 스토리 id
- * @param status 스토리의 상태
- * @param projectId 프로젝트 id
- * @param storyName 스토리 이름
- * @param epicId 에픽 id
- * @returns id 를 프로퍼티로 가지는 객체, 스토리 생성 성공시 생성된 스토리의 id, 실패시 -1값 { id: number }
- */
-export const createStory = async ({
-  id,
-  status,
-  name,
-  order,
-  projectId = 1,
-  epicId = 1,
-}: StoryType) => {
+export const getStoryByid = async (storyId: number | string) => {
   try {
-    const result: { data: { id: number } } = await instance.post('', {
-      id,
+    console.log(storyId);
+    const result: { data: StoryType } = await instance.get(`/${storyId}`);
+    return result.data;
+  } catch (e) {
+    toast.error(errorMessage.GET_STORY);
+  }
+};
+
+export const postStory = async ({ status, name, order, projectId = 1, epicId = 1 }: StoryType) => {
+  try {
+    const result = await instance.post('', {
       status,
       name,
       order,
       projectId,
       epicId,
     });
-    return result.data;
+    return result.data.id;
   } catch (e) {
     toast.error(errorMessage.CREATE_STORY);
   }

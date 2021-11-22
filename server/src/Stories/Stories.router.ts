@@ -12,7 +12,7 @@ const router = express.Router();
 
 router
   .get('/', getAllStoriesByProject)
-  .get('/id', getStoryById)
+  .get('/:id', getStoryById)
   .post('/', postStory)
   .patch('/name', updateStoryWithName)
   .patch('/order', updateStoryWithId)

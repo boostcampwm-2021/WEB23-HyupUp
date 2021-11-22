@@ -66,8 +66,7 @@ export const postStory = async (req: Request, res: Response) => {
       })
       .execute();
 
-    const { id, status } = result.generatedMaps[0];
-    res.status(201).json({ id, status });
+    res.status(201).json({ id: result.raw.insertId });
   } catch (e) {
     res.status(400).json({
       message: (e as Error).message,
