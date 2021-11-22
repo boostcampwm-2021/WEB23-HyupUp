@@ -14,7 +14,6 @@ export const getEpicsByProjectId = async (projectId: number | string) => {
     return result.data;
   } catch (e) {
     toast.error(errorMessage.GET_EPIC);
-    throw e;
   }
 };
 
