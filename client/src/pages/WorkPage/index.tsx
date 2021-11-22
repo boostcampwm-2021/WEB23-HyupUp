@@ -53,11 +53,9 @@ const WorkPage = () => {
     (async () => {
       if (!user.currentProjectId) return;
       const epics = await getEpicsByProjectId(user.currentProjectId);
-      // FIXME: getAllStories 의 응답이 제대로 안돌아옴
-      // 여기서 막혀서 epic 로드가 실패해서 Roadmap 컴포넌트에 에픽 항목들까지 렌더링이 안되는 문제
-      // const stories = await getAllStories(user.currentProjectId);
+      const stories = await getAllStories(user.currentProjectId);
       epicDispatcher({ type: 'LOAD_EPIC', epics });
-      // storyDispatcher({ type: 'LOAD_STORY', stories });
+      storyDispatcher({ type: 'LOAD_STORY', stories });
     })();
   }, [epicDispatcher, storyDispatcher, user.currentProjectId]);
 
