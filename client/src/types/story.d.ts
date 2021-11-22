@@ -4,7 +4,7 @@ export type StoryType = {
   id: number;
   name: string;
   status: StoryStatusType;
-  order: number;
+  order?: number;
   projectId?: number;
   epicId?: number;
 };
