@@ -45,7 +45,7 @@ export default class Users {
 
   @OneToMany(() => Tasks, (tasks) => tasks.id)
   tasks!: Tasks[];
-  @ManyToMany(() => Projects)
+  @ManyToMany(() => Projects, (projects) => projects.id)
   @JoinTable({
     name: 'USERS_PROJECTS',
     inverseJoinColumn: { name: 'PROJECT_ID', referencedColumnName: 'id' },
