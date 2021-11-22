@@ -26,11 +26,12 @@ const KanbanColumn = ({
     // 동일한 칼럼 내의 최상단
     if (isTopEnter && isEqualCategory(draggingCategory, category)) {
       const toBeChangeItem = filterList.find((v) => v.order === draggingRef.current);
-      if (!toBeChangeItem) return;
       const firstnSecondItem = filterList
         .sort((a, b) => Number(a.order) - Number(b.order))
         .slice(0, 2);
       const averageOrder = firstnSecondItem.length > 1 ? Number(firstnSecondItem[1].order) / 2 : 1;
+
+      if (!toBeChangeItem) return;
       dispatchStory({
         type: 'UPDATE_STORY',
         story: { ...toBeChangeItem, order: 0 },
@@ -62,7 +63,7 @@ const KanbanColumn = ({
       return;
     }
 
-    // 다른 칼럼 내에 Item 이 위치
+    // 다른 칼럼 내에 Item 이 위치 && Item 사이 또는 최하단
     if (!isTopEnter && !isEqualCategory(draggingCategory, category)) {
       const toBeChangeItem = storyList
         .filter((v) => v.status === draggingCategory.current)
@@ -80,6 +81,35 @@ const KanbanColumn = ({
       });
       draggingRef.current = null;
       dragOverRef.current = null;
+      return;
+    }
+
+    // 다른 칼럼 내애 Item 위치 && 최상단 위치
+    if (isTopEnter && !isEqualCategory(draggingCategory, category)) {
+      const toBeChangeItem = storyList
+        .filter((v) => v.status === draggingCategory.current)
+        .find((v) => v.order === draggingRef.current);
+      const firstnSecondItem = filterList
+        .sort((a, b) => Number(a.order) - Number(b.order))
+        .slice(0, 2);
+      const averageOrder = firstnSecondItem.length > 1 ? Number(firstnSecondItem[1].order) / 2 : 1;
+
+      if (!toBeChangeItem) return;
+      dispatchStory({
+        type: 'UPDATE_STORY',
+        story: { ...toBeChangeItem, status: category, order: 0 },
+      });
+
+      setTopEnter((isTopEnter) => !isTopEnter);
+      draggingRef.current = null;
+      dragOverRef.current = null;
+
+      if (firstnSecondItem.length < 1) return;
+      dispatchStory({
+        type: 'UPDATE_STORY',
+        story: { ...firstnSecondItem[0], order: averageOrder },
+      });
+
       return;
     }
   };
