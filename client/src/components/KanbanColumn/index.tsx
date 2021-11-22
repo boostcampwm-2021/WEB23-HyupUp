@@ -34,10 +34,14 @@ const KanbanColumn = ({
     category: StatusType,
   ) => {
     dragOverRef.current = order;
-    const draggingItem = storyList.filter((v) => v.order === draggingRef.current)[0];
-    const dragOverItem = storyList.filter((v) => v.order === dragOverRef.current)[0];
-    dispatchStory({ type: 'UPDATE_STORY', story: { ...draggingItem, order: dragOverItem.order } });
-    dispatchStory({ type: 'UPDATE_STORY', story: { ...dragOverItem, order: draggingItem.order } });
+    // 바닥에 파란색 선이 나타나도록 작성
+    const dragOverItem = storyList.find((v) => v.id === dragOverRef.current);
+    console.log(dragOverItem);
+    // TODO immerJS 를 통해서 새로운 배열을 만들고, 이에 대해서 update 하는 함수
+    // const draggingItem = storyList.filter((v) => v.order === draggingRef.current)[0];
+    // const dragOverItem = storyList.filter((v) => v.order === dragOverRef.current)[0];
+    // dispatchStory({ type: 'UPDATE_STORY', story: { ...draggingItem, order: dragOverItem.order } });
+    // dispatchStory({ type: 'UPDATE_STORY', story: { ...dragOverItem, order: draggingItem.order } });
     draggingRef.current = dragOverRef.current;
     dragOverRef.current = null;
   };
