@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
+import produce from 'immer';
 import DropDown from '@/lib/design/DropDown';
-import { getAllProjects } from '@/lib/api/project';
-import { useUserDispatch, useUserState } from '@/lib/hooks/useContextHooks';
 import S from '@/components/SideBarDropdown/style';
 import { ProjectType } from '@/types/project';
 import userAtom from '@/recoil/user';
+import { getAllProjects } from '@/lib/api/project';
 
 const SideBarDropDown = () => {
-  //const userState = useUserState();
-  const userState = useRecoilValue(userAtom);
-  const userDispatcher = useUserDispatch();
+  const [userState, setUserState] = useRecoilState(userAtom);
   const [listState, listStateHandler] = useState<Array<ProjectType>>([]);
   const [titleState, titleStateHandler] = useState('프로젝트');
 
@@ -18,13 +16,13 @@ const SideBarDropDown = () => {
     const target = e.target as HTMLLIElement;
     if (target.tagName !== 'LI') return;
     titleStateHandler(target.innerText);
-    userDispatcher({
-      type: 'UPDATE_USER',
-      payload: {
+    setUserState((prev) =>
+      produce(prev, (draft) => ({
+        ...draft,
         currentProjectName: target.innerText,
         currentProjectId: +target.value,
-      },
-    });
+      })),
+    );
   };
   useEffect(() => {
     (async () => {
@@ -40,14 +38,16 @@ const SideBarDropDown = () => {
             currentProjectId: defaultProject.id,
           }
         : { projects: projects };
-      userDispatcher({
-        type: 'UPDATE_USER',
-        payload: payload,
-      });
+      setUserState((prev) =>
+        produce(prev, (draft) => ({
+          ...draft,
+          ...payload,
+        })),
+      );
       listStateHandler(projects);
       titleStateHandler(projects[0].name);
     })();
-  }, [userDispatcher, userState.id, userState.organization]);
+  }, [userState.id, userState.organization, setUserState]);
 
   return (
     <div>
