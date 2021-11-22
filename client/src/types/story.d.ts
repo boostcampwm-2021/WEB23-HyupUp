@@ -1,4 +1,3 @@
-import { dragRefObjectType } from './story.d';
 export type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
 export type StoryType = {
