@@ -7,6 +7,7 @@ export const GET_TASK = '테스크 정보 요청에 실패했습니다.';
 export const CREATE_EPIC = '에픽 생성에 실패했습니다.';
 export const CREATE_TODO = 'Todo 생성에 실패했습니다.';
 export const CREATE_STORY = '스토리 생성에 실패했습니다.';
+export const CREATE_PROJECT = '프로젝트 생성에 실패했습니다.';
 
 export const UPDATE_TODO = 'Todo 항목 수정에 실패했습니다.';
 export const UPDATE_TASK = 'Task 항목 수정에 실패했습니다.';
@@ -27,6 +28,7 @@ export default {
   CREATE_EPIC,
   CREATE_TODO,
   CREATE_STORY,
+  CREATE_PROJECT,
   UPDATE_TODO,
   UPDATE_TASK,
   UPDATE_STORY,
