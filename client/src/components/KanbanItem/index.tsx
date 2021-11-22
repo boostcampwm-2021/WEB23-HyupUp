@@ -3,11 +3,14 @@ import Styled from '@/components/KanbanItem/style';
 import { KanbanItemType } from '@/types/story';
 import { KanbanModalContext } from '@/components/KanbanModal';
 import { KanbanItemInput } from '@/components';
+import { handleDragStart, handleDragEnter } from '@/lib/utils/drag';
 
 const KanbanItem = ({
   story,
-  handleDragStart,
-  handleDragEnter,
+  draggingRef,
+  draggingCategory,
+  dragOverRef,
+  dragOverCategory,
   handleDragDrop,
 }: KanbanItemType) => {
   const modalConsumer = useContext(KanbanModalContext);
@@ -17,15 +20,15 @@ const KanbanItem = ({
     <Styled.KanBanItem
       data-key={story.id}
       onDragStart={(e) => {
-        handleDragStart(e, story.order as number, story.status);
+        handleDragStart(e, story.order as number, story.status, draggingRef, draggingCategory);
         setDragEnter(false);
       }}
       onDragEnter={(e) => {
-        handleDragEnter(e, story.order as number, story.status);
+        handleDragEnter(e, story.order as number, story.status, dragOverRef, dragOverCategory);
         setDragEnter((isDragEnter) => !isDragEnter);
       }}
       onDrop={(e) => {
-        handleDragDrop(e, story.order as number, story.status);
+        handleDragDrop(story.status);
         setDragEnter(false);
       }}
       onDragLeave={() => setDragEnter((isDragEnter) => !isDragEnter)}
