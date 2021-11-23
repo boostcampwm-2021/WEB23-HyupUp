@@ -55,8 +55,8 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       <S.Title>프로젝트 로드맵</S.Title>
       <S.Content>
         <S.EpicEntry>
-          {epicsOnProject?.map(({ name }, i) => (
-            <S.EpicEntryItem key={name + i.toString()}>{name}</S.EpicEntryItem>
+          {epicsOnProject?.map(({ id, name }) => (
+            <S.EpicEntryItem key={id}>{name}</S.EpicEntryItem>
           ))}
           <EpicPlaceholder visible={inputVisible} handleSubmit={handleSubmit} />
           <Button
