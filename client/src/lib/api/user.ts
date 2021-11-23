@@ -57,3 +57,15 @@ export const modifyUserAdminById = async (id: number | undefined, newAdmin: bool
     toast.error(errorMessage.GET_USER);
   }
 };
+
+export const logIn = async (email: string, password: string) => {
+  try {
+    const result: { data: UserState } = await instance.post('/login', {
+      email,
+      password,
+    });
+    return result.data;
+  } catch (e) {
+    toast.error(errorMessage.GET_USER);
+  }
+};
