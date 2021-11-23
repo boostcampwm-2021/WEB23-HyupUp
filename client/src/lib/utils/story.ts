@@ -1,4 +1,4 @@
-import { StoryType, dragRefObjectType } from '@/types/story';
+import { StoryType, dragRefObjectType, dragCategoryType, StatusType } from '@/types/story';
 
 const sortStoryByOrder = (a: StoryType, b: StoryType): number => {
   if (Number(a.order) - Number(b.order) >= 0) return 1;
@@ -38,6 +38,30 @@ export const dragToEqualBetween = (
   const avgOrderSum = dragOverOrderList.length > 1 ? orderSum / 2 : orderSum + 1;
   return {
     ...toBeChangeItem,
+    order: avgOrderSum,
+  };
+};
+
+export const dragToDiffBetween = (
+  storyList: StoryType[],
+  category: StatusType,
+  draggingCategory: dragCategoryType,
+  draggingRef: dragRefObjectType,
+  dragOverRef: dragRefObjectType,
+): StoryType => {
+  const toBeChangeItem = storyList
+    .filter((v) => v.status === draggingCategory.current)
+    .find((v) => v.order === draggingRef.current);
+  const dragOverOrderList = storyList
+    .filter((v) => v.status === category)
+    .map((v) => Number(v.order))
+    .filter((v) => v >= Number(dragOverRef.current))
+    .slice(0, 2);
+  const sumOfOrder = dragOverOrderList.reduce((prev, cur) => prev + cur, 0);
+  const avgOrderSum = dragOverOrderList.length > 1 ? sumOfOrder / 2 : sumOfOrder + 1;
+  return {
+    ...toBeChangeItem,
+    status: category,
     order: avgOrderSum,
   };
 };

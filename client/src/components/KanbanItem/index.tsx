@@ -27,7 +27,7 @@ const KanbanItem = ({
         handleDragEnter(e, story.order as number, story.status, dragOverRef, dragOverCategory);
         setDragEnter((isDragEnter) => !isDragEnter);
       }}
-      onDrop={(e) => {
+      onDrop={() => {
         handleDragDrop(story.status);
         setDragEnter(false);
       }}
