@@ -19,3 +19,4 @@ export { default as KanbanItem } from './KanbanItem/index';
 export { default as KanbanItemInput } from './KanbanItemInput/index';
 export { default as KanbanAddBtn } from './KanbanAddBtn/index';
 export { default as KanbanDeleteModal } from './KanbanDeleteModal/index';
+export { default as KanbanModal } from './KanbanModal/index';
