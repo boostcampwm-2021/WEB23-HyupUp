@@ -23,3 +23,21 @@ export const dragToEqualTop = (
     },
   };
 };
+
+export const dragToEqualBetween = (
+  itemList: StoryType[],
+  draggingRef: dragRefObjectType,
+  dragOverRef: dragRefObjectType,
+): StoryType => {
+  const toBeChangeItem = itemList.find((v) => v.order === draggingRef.current);
+  const dragOverOrderList = itemList
+    .map((v) => Number(v.order))
+    .filter((v) => v >= Number(dragOverRef.current))
+    .slice(0, 2);
+  const orderSum = dragOverOrderList.reduce((prev, cur) => prev + cur, 0);
+  const avgOrderSum = dragOverOrderList.length > 1 ? orderSum / 2 : orderSum + 1;
+  return {
+    ...toBeChangeItem,
+    order: avgOrderSum,
+  };
+};
