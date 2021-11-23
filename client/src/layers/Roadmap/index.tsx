@@ -58,6 +58,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
         <S.EpicEntry>
           {epicsOnProject?.map(({ id, name, order }) => (
             <S.EpicEntryItem
+              activated={id === nowDragging.over}
               key={id}
               draggable="true"
               onDragStart={() => setNowDragging({ id, over: id })}
