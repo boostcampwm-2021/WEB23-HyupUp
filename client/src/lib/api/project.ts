@@ -12,7 +12,7 @@ interface Project {
   id: number;
 }
 
-export const getAllProjects = async (userId: number, organizationId: number) => {
+export const getAllProjectsByUser = async (userId: number, organizationId: number) => {
   try {
     const result = await instance.get(`/?userId=${userId}&organizationId=${organizationId}`);
     if (result.status % 400 < 100) throw new Error();
@@ -35,7 +35,7 @@ export const createProject = async (name: string, userId: number) => {
   }
 };
 
-export const getAllOrgProjects = async (orgId: number) => {
+export const getAllProjectsByOrg = async (orgId: number) => {
   try {
     const projects: { data: Project[]; status: number } = await instance.get(`/${orgId}`);
     if (projects.status % 400 < 100) throw new Error();
