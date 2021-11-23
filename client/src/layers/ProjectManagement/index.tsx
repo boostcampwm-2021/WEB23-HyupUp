@@ -4,7 +4,7 @@ import produce from 'immer';
 
 import Styled from '@/layers/ProjectManagement/style';
 import userAtom from '@/recoil/user';
-import { createProject, getAllProjectsByOrg } from '@/lib/api/project';
+import { createProject, deleteProjectById, getAllProjectsByOrg } from '@/lib/api/project';
 import { useInput } from '@/lib/hooks';
 import ProjectCreateForm from '@/components/ProjectCreateForm';
 import { ProjectType } from '@/types/project';
@@ -16,7 +16,8 @@ export const ProjectManagement = () => {
   const { value, onChange, onReset } = useInput('');
 
   const deleteProject = async (id: number) => {
-    // TODO: 삭제 API 추가
+    const deleteStatus = await deleteProjectById(id);
+    if (!deleteStatus) return;
     setProjectList((prev) =>
       produce(prev, (draft) => draft.filter((project) => project.id !== id)),
     );
