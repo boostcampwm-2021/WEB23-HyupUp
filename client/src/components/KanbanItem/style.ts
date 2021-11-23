@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import cancelicon from '@public/icons/cancel-icon.svg';
-import { KanbanStylePropType } from '@/types/story';
 
 const Styled = {
-  KanBanItem: styled.article<KanbanStylePropType>`
+  KanBanItem: styled.article<{ isDragEnter: boolean }>`
     width: 90%;
     height: 65px;
     border-radius: 8px;
