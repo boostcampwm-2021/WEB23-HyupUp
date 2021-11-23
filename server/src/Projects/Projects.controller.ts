@@ -74,3 +74,16 @@ export const createProject = async (req: Request, res: Response) => {
     res.status(401).json({ message });
   }
 };
+
+export const deleteProjectById = async (req: Request, res: Response) => {
+  try {
+    if (!req.params.id) throw new Error();
+    const projectRepository = getRepository(Projects);
+    await projectRepository.delete({ id: +req.params.id });
+    res.end();
+  } catch (e) {
+    res.status(404).json({
+      message: (e as Error).message,
+    });
+  }
+};
