@@ -32,7 +32,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   const handleSubmit = async (value: string) => {
     try {
       if (!projectId) throw new Error(errorMessage.GET_PROJECT);
-      const result = await createEpic(projectId, value);
+      const result = await createEpic(projectId, value, 2);
       if (!result) return;
 
       epicDispatcher(makeNewAction(result.id, value));
