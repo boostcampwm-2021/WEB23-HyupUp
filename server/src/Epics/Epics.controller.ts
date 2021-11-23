@@ -95,7 +95,7 @@ export const updateEpicById = async (req: Request, res: Response) => {
       })
       .where('id = :id', { id: req.params.id })
       .execute();
-    res.status(200).end();
+    res.end();
   } catch (e) {
     res.status(400).json({
       message: (e as Error).message,
