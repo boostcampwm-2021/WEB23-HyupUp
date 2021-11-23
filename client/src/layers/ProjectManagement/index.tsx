@@ -19,7 +19,7 @@ export const ProjectManagement = () => {
     if (!newProject) return;
     setProjectList((prev) =>
       produce(prev, (draft) => {
-        draft.push(newProject);
+        draft.unshift(newProject);
       }),
     );
   };
