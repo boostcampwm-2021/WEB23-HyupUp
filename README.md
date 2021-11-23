@@ -20,13 +20,13 @@
 
 ## ✍️ Writing
 
-[**바닥 부터 개발환경 구축하기**](https://oasis-pocket-331.notion.site/ba54b9ae8adb40e0806d0b3518a633ba) by **@ingong**
+[**바닥 부터 개발환경 구축하기**](https://oasis-pocket-331.notion.site/ba54b9ae8adb40e0806d0b3518a633ba) by **[@ingong](https://github.com/ingong)**
 
-[**리액트와 불변성**](https://oasis-pocket-331.notion.site/Immer-js-f6c3936bf589468db0aa4fa06fc91c1d) by **@rudy3091**
+[**리액트와 불변성**](https://oasis-pocket-331.notion.site/Immer-js-f6c3936bf589468db0aa4fa06fc91c1d) by **[@rudy3091](https://github.com/rudy3091)**
 
-**[Recoil로의 마이그레이션](https://oasis-pocket-331.notion.site/Recoil-c876906b6cb44e53b776dd7f592777c1)** by **@haesoo9410**
+**[Recoil로의 마이그레이션](https://oasis-pocket-331.notion.site/Recoil-c876906b6cb44e53b776dd7f592777c1)** by **[@haesoo9410](https://github.com/haesoo9410)**
 
-**[Redis 도입 배경](https://oasis-pocket-331.notion.site/Redis-7ae574d796004381914a7334497e1a1b)** by **@ChanHoLee275** 
+**[Redis 도입 배경](https://oasis-pocket-331.notion.site/Redis-7ae574d796004381914a7334497e1a1b)** by **[@ChanHoLee275](https://github.com/ChanHoLee275)** 
 
 
 
