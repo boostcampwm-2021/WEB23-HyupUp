@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal } from '@/lib/design';
 
-const KanbanModal = () => {
-  const handleClick = () => console.log('closed');
-  return <Modal shouldConfirm={false} visible={true} onClose={handleClick} size="LARGE"></Modal>;
+interface KanbnaModalType {
+  isItemClick: boolean;
+}
+
+const KanbanModal = ({ isItemClick }: KanbnaModalType) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleCloseClick = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    setIsOpen(isItemClick);
+  }, [isItemClick]);
+
+  return (
+    <Modal shouldConfirm={false} visible={isOpen} onClose={handleCloseClick} size="LARGE"></Modal>
+  );
 };
 
 export default KanbanModal;
