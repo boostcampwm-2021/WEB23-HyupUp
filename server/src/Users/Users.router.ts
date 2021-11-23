@@ -1,5 +1,10 @@
 import express from 'express';
-import { getUsersByOrganization, handleGet } from './Users.controller';
+import {
+  deleteUserById,
+  getUsersByOrganization,
+  handleGet,
+  updateUserAdminById,
+} from './Users.controller';
 import * as multer from 'multer';
 
 const storage = multer.diskStorage({
@@ -17,5 +22,8 @@ const router = express.Router();
 router.get('/', handleGet);
 router.get('/organization', getUsersByOrganization);
 router.get('/image', upload);
+
+router.put('/admin/:id', updateUserAdminById);
+router.delete('/:id', deleteUserById);
 
 export default router;

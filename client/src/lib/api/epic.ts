@@ -14,7 +14,6 @@ export const getEpicsByProjectId = async (projectId: number | string) => {
     return result.data;
   } catch (e) {
     toast.error(errorMessage.GET_EPIC);
-    throw e;
   }
 };
 
@@ -52,6 +51,24 @@ export const getEpicById = async (epicId: number) => {
     } = await instance.get(`/${epicId}`);
     if (result.code / 100 >= 4) throw new Error(errorMessage.GET_EPIC);
     return result.data;
+  } catch (e) {
+    toast.error((e as Error).message);
+  }
+};
+
+/**
+ *
+ * @param epicId: number 에픽 id, 수정할 에픽의 id
+ * @param payload: EpicType 수정할 에픽 데이터
+ * @returns 에픽 데이터를 가지고 있는 객체
+ */
+export const updateEpicById = async (epicId: number, payload: EpicType) => {
+  try {
+    const result: {
+      code: number;
+    } = await instance.patch(`/${epicId}`, payload);
+    if (result.code / 100 >= 4) throw new Error(errorMessage.UPDATE_EPIC);
+    toast.success(successMessage.UPDATE_EPIC);
   } catch (e) {
     toast.error((e as Error).message);
   }

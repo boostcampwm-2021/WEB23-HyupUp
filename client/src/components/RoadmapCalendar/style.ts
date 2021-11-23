@@ -68,18 +68,6 @@ const S = {
     color: ${({ theme }) => theme.color.red400};
     font: ${({ theme }) => theme.font.bold_small};
   `,
-  DayColumnWrapper: styled.section`
-    display: flex;
-    justify-content: space-between;
-    position: absolute;
-    top: 0;
-
-    width: calc(100% - 32px);
-    height: 100%;
-  `,
-  DayColumn: styled.section`
-    width: 100%;
-  `,
 };
 
 export default S;

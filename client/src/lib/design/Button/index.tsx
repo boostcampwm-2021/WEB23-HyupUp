@@ -7,8 +7,9 @@ interface Props {
   category: Category;
   size: Size;
   children: string;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
+  type?: 'button' | 'submit' | 'reset' | undefined;
 }
 interface LayoutProps {
   category: Category;
@@ -50,9 +51,9 @@ const StyledButton = styled.button<LayoutProps>`
  * disabled 는 <optinal | undefined>
  * @returns Button Component
  */
-const Button = ({ category, size, children, onClick, disabled }: Props) => {
+const Button = ({ category, size, children, onClick, disabled, type = 'submit' }: Props) => {
   return (
-    <StyledButton size={size} category={category} onClick={onClick} disabled={disabled}>
+    <StyledButton size={size} category={category} onClick={onClick} disabled={disabled} type={type}>
       {children}
     </StyledButton>
   );

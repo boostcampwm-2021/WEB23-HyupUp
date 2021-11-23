@@ -38,7 +38,7 @@ export const makeDayRow = (date: Date) => {
     .forEach((day: number) => daysArray.push(day));
   [...Array(REAR_HALF)]
     .map((_, i) => date.getDate() + i + 1)
-    .map((day) => (day >= lastDate ? day - lastDate : day))
+    .map((day) => (day > lastDate ? day - lastDate : day))
     .forEach((day: number) => daysArray.push(day));
   return daysArray;
 };
@@ -51,34 +51,39 @@ export const getRangeFromDate = (date: Date) => {
   };
 };
 
+const dateFormat = { year: 'numeric' as const, month: '2-digit' as const, day: '2-digit' as const };
+
 /**
  *
- * @param target date 보다 앞에있는지 확인할 date 객체
+ * @param target date 보다 앞에있거나 같은지 확인할 date 객체
  * @param date 확인의 기준이 되는 date 객체
  */
 export const isFormer = (target: Date, date: Date): boolean => {
-  const targetYMD = getYMD(target);
-  const dateYMD = getYMD(date);
-  return (
-    targetYMD.year < dateYMD.year ||
-    targetYMD.month < dateYMD.month ||
-    (targetYMD.month === dateYMD.month && targetYMD.day < dateYMD.day)
-  );
+  const targetString = target.toLocaleString('ko-kr', dateFormat);
+  const dateString = date.toLocaleString('ko-kr', dateFormat);
+  return targetString <= dateString;
 };
 
 /**
  *
- * @param target date 보다 뒤에있는지 확인할 date 객체
+ * @param target date 보다 뒤에있거나 같은지 확인할 date 객체
  * @param date 확인의 기준이 되는 date 객체
  */
 export const isLatter = (target: Date, date: Date): boolean => {
-  const targetYMD = getYMD(target);
-  const dateYMD = getYMD(date);
-  return (
-    targetYMD.year > dateYMD.year ||
-    targetYMD.month > dateYMD.month ||
-    (targetYMD.month === dateYMD.month && targetYMD.day > dateYMD.day)
-  );
+  const targetString = target.toLocaleString('ko-kr', dateFormat);
+  const dateString = date.toLocaleString('ko-kr', dateFormat);
+  return targetString >= dateString;
+};
+
+/**
+ *
+ * @param target date 와 같은 날짜인지 확인할 date 객체
+ * @param date 확인의 기준이 되는 date 객체
+ */
+export const isSameDay = (target: Date, date: Date) => {
+  const targetString = target.toLocaleString('ko-kr', dateFormat);
+  const dateString = date.toLocaleString('ko-kr', dateFormat);
+  return targetString === dateString;
 };
 
 /**
@@ -109,4 +114,15 @@ export const getDateDiff = (target: Date, date: Date) => {
   const diffAbs = Math.abs(date.getTime() - target.getTime());
   const oneDay = 1000 * 60 * 60 * 24;
   return Math.floor(diffAbs / oneDay);
+};
+
+/**
+ *
+ * @param date offset만큼 이동시킬 기준 날짜의 date 객체
+ * @param offset 더할 일자 수에 해당하는 숫자
+ * @return offset에 해당하는만큼 일자를 더한 date 객체
+ */
+export const addDate = (date: Date, offset: number) => {
+  const { year, month, day } = getYMD(date);
+  return new Date(year, month, day + offset);
 };

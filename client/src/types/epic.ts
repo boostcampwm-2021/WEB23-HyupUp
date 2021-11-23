@@ -25,3 +25,17 @@ export const isEpicType = (param: {
     param.endAt instanceof Date
   );
 };
+
+export type CalendarRange = {
+  rangeFrom: Date;
+  rangeTo: Date;
+  columns: number;
+};
+
+export type EpicRenderInfo = {
+  id: number;
+  index: number;
+  length: number;
+  exceedsLeft: boolean;
+  exceedsRight: boolean;
+};

@@ -1,8 +1,10 @@
 import express from 'express';
-import { getAllProjects } from './Projects.controller';
+import { createProject, getAllProjectsByUser, getAllProjectsByOrg } from './Projects.controller';
 
 const router = express.Router();
 
-router.get('/', getAllProjects);
+router.get('/', getAllProjectsByUser);
+router.get('/:id', getAllProjectsByOrg);
+router.post('/', createProject);
 
 export default router;

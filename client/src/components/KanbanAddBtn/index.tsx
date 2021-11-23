@@ -1,24 +1,29 @@
 import React from 'react';
-import { createStory } from '@/lib/api/story';
+import { postStory, getStoryByid } from '@/lib/api/story';
 import { Button } from '@/lib/design';
 import { useStoryDispatch, useStoryState, useUserState } from '@/lib/hooks/useContextHooks';
 import { StoryType } from '@/types/story';
 
-const extractLastID = (array: Array<StoryType>): number => {
-  if (!array?.length) return 0;
-  return Math.max(...array.map((v) => v.id));
+//TODO projectID, epicId 주입 예정
+const initialItem = {
+  order: 0,
+  name: '',
+  status: 'TODO',
+  projectId: 1,
+  epicId: 1,
 };
 
 const KanbanAddBtn = () => {
-  const userState = useUserState();
   const storyList = useStoryState();
   const dispatchStory = useStoryDispatch();
-  const lastStoryId = extractLastID(storyList);
-  const initStoryData = { id: lastStoryId + 1, name: '', status: 'TODO' };
+  const orderList = storyList.filter((item) => item.status === 'TODO').map((v) => Number(v.order));
+  const listLargestOrder = orderList.length ? Math.max(...orderList) + 1 : 0;
 
-  const addStory = () => {
-    dispatchStory({ type: 'ADD_STORY', story: initStoryData });
-    createStory({ ...initStoryData, projectId: userState.currentProjectId });
+  const addStory = async () => {
+    const id = await postStory({ ...initialItem, order: listLargestOrder });
+    const storyItem = await getStoryByid(id);
+    //TODO ProjectId, EpicId 를 Dispatch 함수에 작성해야함
+    dispatchStory({ type: 'ADD_STORY', story: storyItem as StoryType });
   };
 
   return (

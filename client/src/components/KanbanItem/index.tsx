@@ -1,49 +1,48 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Styled from '@/components/KanbanItem/style';
-import { StoryType } from '@/types/story';
+import { KanbanItemType } from '@/types/story';
 import { KanbanModalContext } from '@/components/KanbanModal';
-import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
-import { useInput } from '@/lib/hooks';
-import { updateStoryWithName } from '@/lib/api/story';
-import { KanbanDefaultType } from '@/layers/Kanban';
+import { KanbanItemInput } from '@/components';
+import { handleDragStart, handleDragEnter } from '@/lib/utils/drag';
 
-interface KanbanItemType extends KanbanDefaultType {
-  index: number;
-  story: StoryType;
-}
-
-const KanbanItem = ({ index, story, handleDragStart, handleDragEnter }: KanbanItemType) => {
+const KanbanItem = ({
+  story,
+  draggingRef,
+  draggingCategory,
+  dragOverRef,
+  dragOverCategory,
+  handleDragDrop,
+}: KanbanItemType) => {
   const modalConsumer = useContext(KanbanModalContext);
-
-  const { key, value, onChange } = useInput('');
-  const dispatchStory = useStoryDispatch();
-
-  const useUpdateStoryName = () => {
-    dispatchStory({ type: 'UPDATE_STORY', story: { status: 'TODO', id: key, name: value } });
-    updateStoryWithName({ status: 'TODO', id: key, name: value });
-  };
+  const [isDragEnter, setDragEnter] = useState(false);
 
   return (
     <Styled.KanBanItem
       data-key={story.id}
-      onDragStart={(e) => handleDragStart(e, index, story.status)}
-      onDragEnter={(e) => handleDragEnter(e, index, story.status)}
+      onDragStart={(e) => {
+        handleDragStart(e, story.order as number, story.status, draggingRef, draggingCategory);
+        setDragEnter(false);
+      }}
+      onDragEnter={(e) => {
+        handleDragEnter(e, story.order as number, story.status, dragOverRef, dragOverCategory);
+        setDragEnter((isDragEnter) => !isDragEnter);
+      }}
+      onDrop={(e) => {
+        handleDragDrop(story.status);
+        setDragEnter(false);
+      }}
+      onDragLeave={() => setDragEnter((isDragEnter) => !isDragEnter)}
       onDragOver={(e) => e.preventDefault()}
+      isDragEnter={isDragEnter}
       draggable
     >
-      <input
-        type="text"
-        placeholder={story.name ? story.name : 'type a todo...'}
-        data-key={story.id}
-        onChange={onChange}
-        onBlur={useUpdateStoryName}
-      />
+      <KanbanItemInput story={story} />
       <Styled.CancelIcon
         onClick={() => {
           modalConsumer?.setShowModal(true);
-          modalConsumer?.setDeleteItem(story.id);
+          modalConsumer?.setDeleteItem(story.id as number);
         }}
-      ></Styled.CancelIcon>
+      />
     </Styled.KanBanItem>
   );
 };

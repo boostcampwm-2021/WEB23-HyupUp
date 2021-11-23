@@ -30,7 +30,7 @@ export default class Tasks {
   @JoinColumn({ name: 'STORY_ID' })
   stories!: Stories;
 
-  @ManyToOne(() => Users, (users) => users.id)
+  @ManyToOne(() => Users, (users) => users.id, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'USER_ID' })
   users!: Users;
 

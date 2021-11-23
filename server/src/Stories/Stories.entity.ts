@@ -20,6 +20,9 @@ export default class Stories {
   @Column({ name: 'STATUS', type: 'enum', default: StatusEnum.TODO, enum: StatusEnum })
   status!: StatusEnum;
 
+  @Column('decimal', { name: 'ORDER', precision: 20, scale: 12 })
+  order!: number;
+
   @ManyToOne(() => Projects, (projects) => projects.id)
   @JoinColumn({ name: 'PROJECT_ID' })
   projects!: Projects;
