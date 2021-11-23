@@ -4,6 +4,7 @@ import { KanbanItem, KanbanAddBtn } from '@/components';
 import { updateStoryWithId } from '@/lib/api/story';
 import { StatusType, KanbanType, dragCategoryType } from '@/types/story';
 import { useStoryDispatch, useStoryState } from '@/lib/hooks/useContextHooks';
+import { dragToEqualTop } from '@/lib/utils/story';
 
 const isEqualCategory = (draggingCategory: dragCategoryType, dropCategory: StatusType) => {
   return draggingCategory.current === dropCategory;
@@ -23,34 +24,22 @@ const KanbanColumn = ({
     .filter((item) => item.status === category)
     .sort((a, b) => Number(a.order) - Number(b.order));
 
+  const isMoveToTop = () => isTopEnter && isEqualCategory(draggingCategory, category);
   const handleDragDrop = async (category: StatusType) => {
-    // 동일한 칼럼 내의 최상단
-    if (isTopEnter && isEqualCategory(draggingCategory, category)) {
-      const toBeChangeItem = filterList.find((v) => v.order === draggingRef.current);
-      const firstnSecondItem = filterList
-        .sort((a, b) => Number(a.order) - Number(b.order))
-        .slice(0, 2);
-      const averageOrder = firstnSecondItem.length > 1 ? Number(firstnSecondItem[1].order) / 2 : 1;
-
-      if (!toBeChangeItem) return;
-      dispatchStory({
-        type: 'UPDATE_STORY',
-        story: { ...toBeChangeItem, order: 0 },
-      });
-      dispatchStory({
-        type: 'UPDATE_STORY',
-        story: { ...firstnSecondItem[0], order: averageOrder },
-      });
-      await updateStoryWithId({ ...toBeChangeItem, order: 0 });
-      await updateStoryWithId({ ...firstnSecondItem[0], order: averageOrder });
+    if (isMoveToTop()) {
+      const { firstItem, secondItem } = dragToEqualTop(filterList, draggingRef);
+      dispatchStory({ type: 'UPDATE_STORY', story: firstItem });
+      dispatchStory({ type: 'UPDATE_STORY', story: secondItem });
+      await updateStoryWithId(firstItem);
+      await updateStoryWithId(secondItem);
       setTopEnter((isTopEnter) => !isTopEnter);
-      draggingRef.current = null;
-      dragOverRef.current = null;
-      return;
     }
 
     // 동일한 컬럼 내의 Item 사이 또는 최하단
     if (!isTopEnter && isEqualCategory(draggingCategory, category)) {
+      // dragToEqualBetween
+      // input : filterList, draggingRef,
+      // output : itemList 를 반환
       const toBeChangeItem = filterList.find((v) => v.order === draggingRef.current);
       const dragOverOrderList = filterList
         .map((v) => Number(v.order))
@@ -118,6 +107,9 @@ const KanbanColumn = ({
       await updateStoryWithId({ ...firstnSecondItem[0], order: averageOrder });
       return;
     }
+
+    draggingRef.current = null;
+    dragOverRef.current = null;
   };
 
   return (
