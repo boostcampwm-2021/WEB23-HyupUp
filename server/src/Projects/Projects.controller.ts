@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import { Request, Response } from 'express';
-import { bodyValidator } from '../../lib/utils/requestValidator';
+import { bodyValidator, queryValidator } from '../../lib/utils/requestValidator';
 
 import Users from '../Users/Users.entity';
 import Projects from './Projects.entity';
@@ -22,7 +22,27 @@ const getProjects = (users: Users[]) => {
   return result.filter((project) => project.id !== 0);
 };
 
-export const getAllProjects = async (req: Request, res: Response) => {
+export const getAllProjectsByUser = async (req: Request, res: Response) => {
+  try {
+    if (!queryValidator(req.query, ['userId', 'organizationId'])) {
+      throw new Error('query is not vaild');
+    }
+    const { userId, organizationId } = req.query;
+    const userRepository = getRepository(Users);
+    const projects = await userRepository.find({
+      relations: ['projects', 'org'],
+      where: { id: +(userId as string), org: { id: +(organizationId as string) } },
+    });
+    res.status(200).json(projects[0].projects);
+  } catch (e) {
+    const result = (e as Error).message;
+    if (result === 'query is not vaild') {
+      res.status(400).json(result);
+    }
+  }
+};
+
+export const getAllProjectsByOrg = async (req: Request, res: Response) => {
   try {
     if (!req.params.id) {
       throw new Error('params is not valid');
