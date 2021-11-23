@@ -10,6 +10,7 @@ import {
   getUserTodos,
   isValidatedEmail,
 } from './Users.service';
+import Organizations from '../Organizations/Organizations.entity';
 
 // 왜 인식을 못하지...?
 declare module 'express-session' {
@@ -110,5 +111,46 @@ export const logInUser = async (req: Request, res: Response, next: NextFunction)
       res.status(404).end();
     }
     res.status(400).end();
+  }
+};
+
+export const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!bodyValidator(req.body, ['name', 'job', 'email', 'password', 'organization']))
+      throw new Error('body is not valid');
+    const { name, job, email, password } = {
+      ...(req.body as {
+        name: string;
+        job: string;
+        email: string;
+        password: string;
+      }),
+    };
+    const organizationRepository = getRepository(Organizations);
+    const userRepository = getRepository(Users);
+    const organization = await organizationRepository.findOne({
+      where: { room: req.body.organization },
+    });
+    // TODO: entity 수정 후 바꾸기
+    const admin = organization ? false : true;
+    const organizationInstance = organization
+      ? organization
+      : await organizationRepository.save({ room: req.body.organization });
+    const encodedPassword = bcrypt.hashSync(password, 10);
+    const user = await userRepository.save({
+      name,
+      job,
+      email,
+      accessToken: encodedPassword,
+      org: organizationInstance,
+      imageURL: '1',
+      admin,
+      refreshToken: '1',
+    });
+    req.query.email = user.email;
+    next();
+  } catch (e) {
+    // TODO: Error 분류하기
+    res.status(400);
   }
 };

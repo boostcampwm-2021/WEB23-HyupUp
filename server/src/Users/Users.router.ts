@@ -4,6 +4,7 @@ import {
   getUsersByOrganization,
   handleGet,
   logInUser,
+  signUpUser,
   updateUserAdminById,
 } from './Users.controller';
 import * as multer from 'multer';
@@ -29,4 +30,5 @@ router.delete('/:id', deleteUserById);
 
 router.post('/login', [logInUser, handleGet]);
 
+router.post('/signup', [signUpUser, handleGet]);
 export default router;
