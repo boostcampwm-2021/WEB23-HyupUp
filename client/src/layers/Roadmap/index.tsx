@@ -8,7 +8,6 @@ import useSocketSend from '@/lib/hooks/useSocketSend';
 import RoadmapCalendar from '@/components/RoadmapCalendar';
 import Button from '@/lib/design/Button';
 import { errorMessage, successMessage } from '@/lib/common/message';
-import { sortEpicsByOrder } from '@/lib/utils/sort';
 import { getOrderMedian } from '@/lib/utils/epic';
 
 interface RoadmapProps {
@@ -40,10 +39,10 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   const handleSubmit = async (value: string) => {
     try {
       if (!projectId) throw new Error(errorMessage.GET_PROJECT);
-      const result = await createEpic(projectId, value, getMaxOrder() + 1);
+      const result = await createEpic(projectId, value, Math.ceil(getMaxOrder() + 1));
       if (!result) return;
 
-      epicDispatcher(makeNewAction(result.id, value, getMaxOrder() + 1));
+      epicDispatcher(makeNewAction(result.id, value, Math.ceil(getMaxOrder() + 1)));
       setInputVisible(false);
       emitNewEpic(result.id);
 
@@ -94,10 +93,12 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
             </S.EpicEntryItem>
           ))}
           <S.EpicEntryItem
-            activated={nowDragging.over === -1}
+            activated={nowDragging.over === Math.ceil(getMaxOrder() + 1)}
             draggable="false"
             onDragOver={(e) => e.preventDefault()}
-            onDragEnter={() => setNowDragging({ id: nowDragging.id, over: -1 })}
+            onDragEnter={() =>
+              setNowDragging({ id: nowDragging.id, over: Math.ceil(getMaxOrder() + 1) })
+            }
             onDrop={() => handleDrop(getMaxOrder() + 1)}
           />
           <EpicPlaceholder visible={inputVisible} handleSubmit={handleSubmit} />
