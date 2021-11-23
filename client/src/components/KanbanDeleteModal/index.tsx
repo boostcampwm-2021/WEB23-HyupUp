@@ -10,7 +10,7 @@ export type ModalContextType = {
 
 export const KanbanModalContext = createContext<ModalContextType | null>(null);
 
-const KanbanModal = ({ children }: { children: React.ReactNode }) => {
+const KanbanDeleteModal = ({ children }: { children: React.ReactNode }) => {
   const [showModal, setShowModal] = useState(false);
   const [shouldDeleteKey, setDeleteItem] = useState(0);
 
@@ -35,4 +35,4 @@ const KanbanModal = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default KanbanModal;
+export default KanbanDeleteModal;

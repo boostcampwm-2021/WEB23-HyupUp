@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import Styled from '@/layers/Kanban/style';
 import KanbanColumn from '@/components/KanbanColumn';
-import KanbanModal from '@/components/KanbanModal';
+import KanbanModal from '@/components/KanbanDeleteModal';
 import { StatusType } from '@/types/story';
 
 const Kanban = () => {
