@@ -48,7 +48,7 @@ const S = {
     }
   `,
   EpicEntryItem: styled.li<{ activated: boolean }>`
-    margin: 25px 0;
+    padding: 25px 0;
 
     font: ${({ theme }) => theme.font.body_regular};
     color: ${({ theme }) => theme.color.gray400};
@@ -59,7 +59,8 @@ const S = {
     cursor: grab;
 
     &:nth-child(1) {
-      margin-top: 64px;
+      margin-top: 32px;
+      padding-top: 32px;
     }
   `,
 };
