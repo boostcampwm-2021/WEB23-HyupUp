@@ -5,9 +5,9 @@ import KanbanModal from '@/components/KanbanModal';
 import { StatusType } from '@/types/story';
 
 const Kanban = () => {
-  const draggingRef = useRef<number | null>(0);
+  const dragRef = useRef<number | null>(0);
   const dragOverRef = useRef<number | null>(0);
-  const draggingCategory = useRef<StatusType>('TODO');
+  const dragCategory = useRef<StatusType>('TODO');
   const dragOverCateogry = useRef<StatusType>('TODO');
 
   return (
@@ -23,9 +23,9 @@ const Kanban = () => {
             <KanbanColumn
               key={value.id}
               category={value.category as StatusType}
-              draggingRef={draggingRef}
+              dragRef={dragRef}
               dragOverRef={dragOverRef}
-              draggingCategory={draggingCategory}
+              dragCategory={dragCategory}
               dragOverCategory={dragOverCateogry}
             />
           ))}

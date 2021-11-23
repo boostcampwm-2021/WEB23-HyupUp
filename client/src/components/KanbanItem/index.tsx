@@ -7,8 +7,8 @@ import { handleDragStart, handleDragEnter } from '@/lib/utils/drag';
 
 const KanbanItem = ({
   story,
-  draggingRef,
-  draggingCategory,
+  dragRef,
+  dragCategory,
   dragOverRef,
   dragOverCategory,
   handleDragDrop,
@@ -20,7 +20,7 @@ const KanbanItem = ({
     <Styled.KanBanItem
       data-key={story.id}
       onDragStart={(e) => {
-        handleDragStart(e, story.order as number, story.status, draggingRef, draggingCategory);
+        handleDragStart(e, story.order as number, story.status, dragRef, dragCategory);
         setDragEnter(false);
       }}
       onDragEnter={(e) => {
