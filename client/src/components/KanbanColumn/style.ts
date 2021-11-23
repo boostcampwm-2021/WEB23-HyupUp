@@ -1,8 +1,5 @@
 import styled from 'styled-components';
-
-interface KanbanColumnPropType {
-  isTopEnter: boolean;
-}
+import { KanbanStylePropType } from '@/types/story';
 
 const Styled = {
   Column: styled.div`
@@ -34,7 +31,7 @@ const Styled = {
       margin-top: 0px;
     }
   `,
-  KanBanColumnTitle: styled.h4<KanbanColumnPropType>`
+  KanBanColumnTitle: styled.h4<KanbanStylePropType>`
     width: 90%;
     text-align: center;
     padding-top: 12px;
