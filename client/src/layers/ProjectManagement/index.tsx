@@ -13,7 +13,7 @@ import ProjectCard from '@/components/ProjectCard';
 export const ProjectManagement = () => {
   const userState = useRecoilValue(userAtom);
   const [projectList, setProjectList] = useState<ProjectType[]>([]);
-  const { value, onChange } = useInput('');
+  const { value, onChange, onReset } = useInput('');
 
   const onSubmitNewProject = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +25,7 @@ export const ProjectManagement = () => {
         draft.unshift(newProject);
       }),
     );
+    onReset();
   };
 
   useEffect(() => {
@@ -38,7 +39,11 @@ export const ProjectManagement = () => {
 
   return (
     <Styled.ProjectManagementWrapper>
-      <ProjectCreateForm onSubmitNewProject={onSubmitNewProject} onChange={onChange} />
+      <ProjectCreateForm
+        value={value}
+        onSubmitNewProject={onSubmitNewProject}
+        onChange={onChange}
+      />
       <Styled.ProjectList>
         {projectList.map((project) => (
           <ProjectCard key={project.id} project={project} />
