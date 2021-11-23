@@ -15,6 +15,13 @@ export const ProjectManagement = () => {
   const [projectList, setProjectList] = useState<ProjectType[]>([]);
   const { value, onChange, onReset } = useInput('');
 
+  const deleteProject = async (id: number) => {
+    // TODO: 삭제 API 추가
+    setProjectList((prev) =>
+      produce(prev, (draft) => draft.filter((project) => project.id !== id)),
+    );
+  };
+
   const onSubmitNewProject = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!value.length) return;
@@ -46,7 +53,7 @@ export const ProjectManagement = () => {
       />
       <Styled.ProjectList>
         {projectList.map((project) => (
-          <ProjectCard key={project.id} project={project} />
+          <ProjectCard key={project.id} project={project} deleteProject={deleteProject} />
         ))}
       </Styled.ProjectList>
     </Styled.ProjectManagementWrapper>
