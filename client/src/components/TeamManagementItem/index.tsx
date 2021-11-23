@@ -6,10 +6,10 @@ interface TeamManagementItemProps {
   name: string;
   job: string;
   admin: boolean;
-  dropDown: ReactNode;
+  children: ReactNode;
 }
 
-const TeamManagementItem = ({ imageURL, name, job, admin, dropDown }: TeamManagementItemProps) => {
+const TeamManagementItem = ({ imageURL, name, job, admin, children }: TeamManagementItemProps) => {
   return (
     <S.ItemContainer>
       <S.Avatar src={imageURL} />
@@ -18,7 +18,7 @@ const TeamManagementItem = ({ imageURL, name, job, admin, dropDown }: TeamManage
         <S.Text>{job}</S.Text>
         {admin ? <S.Text>관리자</S.Text> : <S.Text>팀원</S.Text>}
       </S.TextContainer>
-      {dropDown}
+      {children}
     </S.ItemContainer>
   );
 };
