@@ -34,7 +34,7 @@ export const createEpic = async (projectId: number | string, epicName: string) =
     });
     return result.data;
   } catch (e) {
-    toast.error(successMessage.CREATE_EPIC);
+    toast.error(errorMessage.CREATE_EPIC);
   }
 };
 
