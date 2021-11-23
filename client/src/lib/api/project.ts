@@ -44,3 +44,13 @@ export const getAllProjectsByOrg = async (orgId: number) => {
     toast.error(errorMessage.GET_PROJECT);
   }
 };
+
+export const deleteProjectById = async (projectId: number): Promise<string | void> => {
+  try {
+    const result = await instance.delete(`/${projectId}`);
+    if (result.status % 400 < 100) throw new Error();
+    return result.statusText;
+  } catch (error) {
+    toast.error(errorMessage.DELETE_PROJECT);
+  }
+};
