@@ -6,15 +6,15 @@ import { StatusType, KanbanType, dragCategoryType } from '@/types/story';
 import { useStoryDispatch, useStoryState } from '@/lib/hooks/useContextHooks';
 import { dragToDiffBetween, dragToEqualBetween, dragToEqualTop } from '@/lib/utils/story';
 
-const isEqualCategory = (draggingCategory: dragCategoryType, dropCategory: StatusType) => {
-  return draggingCategory.current === dropCategory;
+const isEqualCategory = (dragCategory: dragCategoryType, dropCategory: StatusType) => {
+  return dragCategory.current === dropCategory;
 };
 
 const KanbanColumn = ({
   category,
-  draggingRef,
+  dragRef,
   dragOverRef,
-  draggingCategory,
+  dragCategory,
   dragOverCategory,
 }: KanbanType) => {
   const [isTopEnter, setTopEnter] = useState(false);
@@ -24,38 +24,32 @@ const KanbanColumn = ({
     .filter((item) => item.status === category)
     .sort((a, b) => Number(a.order) - Number(b.order));
 
-  const isMoveToSameTop = () => isTopEnter && isEqualCategory(draggingCategory, category);
-  const isMoveToSameBetween = () => !isTopEnter && isEqualCategory(draggingCategory, category);
-  const isMoveToDiffBetween = () => !isTopEnter && !isEqualCategory(draggingCategory, category);
+  const isMoveToSameTop = () => isTopEnter && isEqualCategory(dragCategory, category);
+  const isMoveToSameBetween = () => !isTopEnter && isEqualCategory(dragCategory, category);
+  const isMoveToDiffBetween = () => !isTopEnter && !isEqualCategory(dragCategory, category);
   const handleDragDrop = async (category: StatusType) => {
     if (isMoveToSameTop()) {
-      const { firstItem, secondItem } = dragToEqualTop(filterList, draggingRef);
+      const { firstItem, secondItem } = dragToEqualTop(filterList, dragRef);
       dispatchStory({ type: 'UPDATE_STORY', story: firstItem });
       dispatchStory({ type: 'UPDATE_STORY', story: secondItem });
       await updateStoryWithId(firstItem);
       await updateStoryWithId(secondItem);
       setTopEnter((isTopEnter) => !isTopEnter);
     } else if (isMoveToSameBetween()) {
-      const item = dragToEqualBetween(filterList, draggingRef, dragOverRef);
+      const item = dragToEqualBetween(filterList, dragRef, dragOverRef);
       dispatchStory({ type: 'UPDATE_STORY', story: item });
       await updateStoryWithId(item);
     } else if (isMoveToDiffBetween()) {
-      const item = dragToDiffBetween(
-        storyList,
-        category,
-        draggingCategory,
-        draggingRef,
-        dragOverRef,
-      );
+      const item = dragToDiffBetween(storyList, category, dragCategory, dragRef, dragOverRef);
       dispatchStory({ type: 'UPDATE_STORY', story: item });
       await updateStoryWithId(item);
     }
 
     // 다른 칼럼 내애 Item 위치 && 최상단 위치
-    if (isTopEnter && !isEqualCategory(draggingCategory, category)) {
+    if (isTopEnter && !isEqualCategory(dragCategory, category)) {
       const toBeChangeItem = storyList
-        .filter((v) => v.status === draggingCategory.current)
-        .find((v) => v.order === draggingRef.current);
+        .filter((v) => v.status === dragCategory.current)
+        .find((v) => v.order === dragRef.current);
       const firstnSecondItem = filterList
         .sort((a, b) => Number(a.order) - Number(b.order))
         .slice(0, 2);
@@ -69,7 +63,7 @@ const KanbanColumn = ({
       await updateStoryWithId({ ...toBeChangeItem, status: category, order: 0 });
 
       setTopEnter((isTopEnter) => !isTopEnter);
-      draggingRef.current = null;
+      dragRef.current = null;
       dragOverRef.current = null;
 
       if (firstnSecondItem.length < 1) return;
@@ -81,7 +75,7 @@ const KanbanColumn = ({
       return;
     }
 
-    draggingRef.current = null;
+    dragRef.current = null;
     dragOverRef.current = null;
   };
 
@@ -101,8 +95,8 @@ const KanbanColumn = ({
           key={story.id}
           story={story}
           handleDragDrop={handleDragDrop}
-          draggingRef={draggingRef}
-          draggingCategory={draggingCategory}
+          dragRef={dragRef}
+          dragCategory={dragCategory}
           dragOverRef={dragOverRef}
           dragOverCategory={dragOverCategory}
         />

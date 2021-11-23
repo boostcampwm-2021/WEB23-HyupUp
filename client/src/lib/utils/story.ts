@@ -7,9 +7,9 @@ const sortStoryByOrder = (a: StoryType, b: StoryType): number => {
 
 export const dragToEqualTop = (
   itemList: StoryType[],
-  draggingRef: dragRefObjectType,
+  dragRef: dragRefObjectType,
 ): { firstItem: StoryType; secondItem: StoryType } => {
-  const toBeChangeItem = itemList.find((v) => v.order === draggingRef.current);
+  const toBeChangeItem = itemList.find((v) => v.order === dragRef.current);
   const sortedListItems = itemList.sort((a, b) => sortStoryByOrder(a, b)).slice(0, 2);
   const averageOrder = sortedListItems.length > 1 ? Number(sortedListItems[1].order) / 2 : 1;
   return {
@@ -26,10 +26,10 @@ export const dragToEqualTop = (
 
 export const dragToEqualBetween = (
   itemList: StoryType[],
-  draggingRef: dragRefObjectType,
+  dragRef: dragRefObjectType,
   dragOverRef: dragRefObjectType,
 ): StoryType => {
-  const toBeChangeItem = itemList.find((v) => v.order === draggingRef.current);
+  const toBeChangeItem = itemList.find((v) => v.order === dragRef.current);
   const dragOverOrderList = itemList
     .map((v) => Number(v.order))
     .filter((v) => v >= Number(dragOverRef.current))
@@ -45,13 +45,13 @@ export const dragToEqualBetween = (
 export const dragToDiffBetween = (
   storyList: StoryType[],
   category: StatusType,
-  draggingCategory: dragCategoryType,
-  draggingRef: dragRefObjectType,
+  dragCategory: dragCategoryType,
+  dragRef: dragRefObjectType,
   dragOverRef: dragRefObjectType,
 ): StoryType => {
   const toBeChangeItem = storyList
-    .filter((v) => v.status === draggingCategory.current)
-    .find((v) => v.order === draggingRef.current);
+    .filter((v) => v.status === dragCategory.current)
+    .find((v) => v.order === dragRef.current);
   const dragOverOrderList = storyList
     .filter((v) => v.status === category)
     .map((v) => Number(v.order))

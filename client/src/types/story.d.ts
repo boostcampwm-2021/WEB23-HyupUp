@@ -14,18 +14,18 @@ export type dragCategoryType = React.MutableRefObject<StatusType>;
 
 export interface KanbanType {
   category: StatusType;
-  draggingRef: dragRefObjectType;
+  dragRef: dragRefObjectType;
   dragOverRef: dragRefObjectType;
-  draggingCategory: dragCategoryType;
+  dragCategory: dragCategoryType;
   dragOverCategory: dragCategoryType;
 }
 
 //TODO Extends 를 통한 상속
 export interface KanbanItemType {
   story: StoryType;
-  draggingRef: dragRefObjectType;
+  dragRef: dragRefObjectType;
   dragOverRef: dragRefObjectType;
-  draggingCategory: dragCategoryType;
+  dragCategory: dragCategoryType;
   dragOverCategory: dragCategoryType;
   handleDragDrop(category: StatusType): void;
 }
