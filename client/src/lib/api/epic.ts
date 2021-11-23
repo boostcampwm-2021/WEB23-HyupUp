@@ -24,13 +24,14 @@ export const getEpicsByProjectId = async (projectId: number | string) => {
  * @returns id 를 프로퍼티로 가지는 객체, 에픽 생성 성공시 생성된 에픽의 id, 실패시 undefined 반환
  * 에픽 생성 실패시 toast 알림
  */
-export const createEpic = async (projectId: number | string, epicName: string) => {
+export const createEpic = async (projectId: number | string, epicName: string, order: number) => {
   try {
     const result: { data: { id: number } } = await instance.post('', {
       name: epicName,
       projectId,
       startAt: new Date(),
       endAt: new Date(),
+      order,
     });
     return result.data;
   } catch (e) {

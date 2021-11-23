@@ -64,6 +64,7 @@ export const createEpic = async (req: Request, res: Response) => {
         projects: req.body.projectId,
         startAt: req.body.startAt,
         endAt: req.body.endAt,
+        order: req.body.order,
       })
       .execute();
     res.status(201).json({ id: result.raw.insertId });
