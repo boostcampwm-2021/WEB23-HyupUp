@@ -5,7 +5,7 @@ import { LogInForm } from '@/components/LogInForm';
 
 const LogInPage = () => {
   const onClickSignIn = () => {
-    window.location.href = `/signin`;
+    window.location.href = `/signup`;
   };
   return (
     <Styled.Container>
