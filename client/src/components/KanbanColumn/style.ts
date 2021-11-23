@@ -40,8 +40,8 @@ const Styled = {
     padding-top: 12px;
     padding-bottom: 8px;
     font: ${({ theme }) => theme.font.bold_regular};
-    border-bottom: 4px solid transparent;
-    border-bottom: ${({ isTopEnter, theme }) => isTopEnter && `4px solid${theme.color.blue200}`};
+    border-bottom: ${({ isTopEnter, theme }) =>
+      isTopEnter ? `4px solid ${theme.color.blue200}` : `4px solid transparent`};
     z-index: 2;
   `,
 };
