@@ -54,6 +54,8 @@ const S = {
     color: ${({ theme }) => theme.color.gray400};
     white-space: nowrap;
 
+    cursor: grab;
+
     &:nth-child(1) {
       margin-top: 64px;
     }
