@@ -51,6 +51,11 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     }
   };
 
+  const handleDrop = (id: number, order: number) => {
+    toast.info(`moved ${nowDragging.id} over ${id}, order: ${order}`);
+    setNowDragging({ id: 0, over: 0 });
+  };
+
   return (
     <S.Container>
       <S.Title>프로젝트 로드맵</S.Title>
@@ -64,11 +69,18 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
               onDragStart={() => setNowDragging({ id, over: id })}
               onDragOver={(e) => e.preventDefault()}
               onDragEnter={() => setNowDragging({ id: nowDragging.id, over: id })}
-              onDrop={() => toast.info(`moved ${nowDragging.id} over ${id}`)}
+              onDrop={() => handleDrop(id, order)}
             >
               {name}
             </S.EpicEntryItem>
           ))}
+          <S.EpicEntryItem
+            activated={nowDragging.over === -1}
+            draggable="true"
+            onDragOver={(e) => e.preventDefault()}
+            onDragEnter={() => setNowDragging({ id: nowDragging.id, over: -1 })}
+            onDrop={() => handleDrop(-1, getMaxOrder() + 1)}
+          />
           <EpicPlaceholder visible={inputVisible} handleSubmit={handleSubmit} />
           <Button
             size={'small'}
