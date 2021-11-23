@@ -4,7 +4,7 @@ import { KanbanItem, KanbanAddBtn } from '@/components';
 import { updateStoryWithId } from '@/lib/api/story';
 import { StatusType, KanbanType, dragCategoryType } from '@/types/story';
 import { useStoryDispatch, useStoryState } from '@/lib/hooks/useContextHooks';
-import { dragToEqualBetween, dragToEqualTop } from '@/lib/utils/story';
+import { dragToDiffBetween, dragToEqualBetween, dragToEqualTop } from '@/lib/utils/story';
 
 const isEqualCategory = (draggingCategory: dragCategoryType, dropCategory: StatusType) => {
   return draggingCategory.current === dropCategory;
@@ -26,7 +26,7 @@ const KanbanColumn = ({
 
   const isMoveToSameTop = () => isTopEnter && isEqualCategory(draggingCategory, category);
   const isMoveToSameBetween = () => !isTopEnter && isEqualCategory(draggingCategory, category);
-
+  const isMoveToDiffBetween = () => !isTopEnter && !isEqualCategory(draggingCategory, category);
   const handleDragDrop = async (category: StatusType) => {
     if (isMoveToSameTop()) {
       const { firstItem, secondItem } = dragToEqualTop(filterList, draggingRef);
@@ -39,28 +39,16 @@ const KanbanColumn = ({
       const item = dragToEqualBetween(filterList, draggingRef, dragOverRef);
       dispatchStory({ type: 'UPDATE_STORY', story: item });
       await updateStoryWithId(item);
-    }
-
-    // 다른 칼럼 내에 Item 이 위치 && Item 사이 또는 최하단
-    if (!isTopEnter && !isEqualCategory(draggingCategory, category)) {
-      const toBeChangeItem = storyList
-        .filter((v) => v.status === draggingCategory.current)
-        .find((v) => v.order === draggingRef.current);
-      const dragOverOrderList = filterList
-        .map((v) => Number(v.order))
-        .filter((v) => v >= Number(dragOverRef.current))
-        .slice(0, 2);
-      const orderSum = dragOverOrderList.reduce((prev, cur) => prev + cur, 0);
-      const avgOrderSum = dragOverOrderList.length > 1 ? orderSum / 2 : orderSum + 1;
-      if (!toBeChangeItem) return;
-      dispatchStory({
-        type: 'UPDATE_STORY',
-        story: { ...toBeChangeItem, status: category, order: avgOrderSum },
-      });
-      await updateStoryWithId({ ...toBeChangeItem, status: category, order: avgOrderSum });
-      draggingRef.current = null;
-      dragOverRef.current = null;
-      return;
+    } else if (isMoveToDiffBetween()) {
+      const item = dragToDiffBetween(
+        storyList,
+        category,
+        draggingCategory,
+        draggingRef,
+        dragOverRef,
+      );
+      dispatchStory({ type: 'UPDATE_STORY', story: item });
+      await updateStoryWithId(item);
     }
 
     // 다른 칼럼 내애 Item 위치 && 최상단 위치
