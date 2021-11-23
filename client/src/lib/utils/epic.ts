@@ -7,6 +7,7 @@ export const makeEpicWithDate = (epicWithString: EpicWithString): EpicType => {
     name: epicWithString.name,
     startAt: new Date(epicWithString.startAt),
     endAt: new Date(epicWithString.endAt),
+    order: epicWithString.order,
   };
 };
 

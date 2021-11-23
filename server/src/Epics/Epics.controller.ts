@@ -20,6 +20,7 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
       name: el.name,
       startAt: el.startAt,
       endAt: el.endAt,
+      order: el.order,
     }));
     res.status(200).json(result);
   } catch (e) {
