@@ -19,23 +19,28 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   const epicDispatcher = useEpicDispatch();
   const emitNewEpic = useSocketSend('NEW_EPIC');
 
-  const makeNewAction = (id: number, name: string) => ({
+  const makeNewAction = (id: number, name: string, order: number) => ({
     type: 'ADD_EPIC' as const,
     epic: {
       id,
       name,
       startAt: new Date(),
       endAt: new Date(),
+      order,
     },
   });
+
+  const getMaxOrder = () => {
+    return Math.max(...epicsOnProject.map((epic) => epic.order));
+  };
 
   const handleSubmit = async (value: string) => {
     try {
       if (!projectId) throw new Error(errorMessage.GET_PROJECT);
-      const result = await createEpic(projectId, value, 2);
+      const result = await createEpic(projectId, value, getMaxOrder() + 1);
       if (!result) return;
 
-      epicDispatcher(makeNewAction(result.id, value));
+      epicDispatcher(makeNewAction(result.id, value, getMaxOrder() + 1));
       setInputVisible(false);
       emitNewEpic(result.id);
 

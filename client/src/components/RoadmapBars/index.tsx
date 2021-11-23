@@ -56,6 +56,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
         endAt: currentDrag.isDraggingLeft
           ? nowDraggingEpic.endAt
           : addDate(nowDraggingEpic.endAt, offset),
+        order: nowDraggingEpic.order,
       },
     });
   };
