@@ -11,15 +11,9 @@ const getProjects = (users: Users[]) => {
   for (const user of users) {
     result.push(...user.projects);
   }
-  result.sort((a, b) => a.id - b.id);
-  // 중복 제거
-  if (result.length === 1) return result;
-  for (let i = 1; i < result.length; i++) {
-    if (result[i].id === result[i - 1].id) {
-      result[i - 1].id = 0;
-    }
-  }
-  return result.filter((project) => project.id !== 0);
+  return [...new Set(result.map((project) => JSON.stringify(project)))].map((project) =>
+    JSON.parse(project),
+  );
 };
 
 export const getAllProjectsByUser = async (req: Request, res: Response) => {
@@ -50,7 +44,7 @@ export const getAllProjectsByOrg = async (req: Request, res: Response) => {
     const users = await getUsers(+req.params.id);
 
     const projects = getProjects(users);
-    res.json(projects);
+    res.json(projects.sort((a, b) => b.id - a.id));
   } catch (error) {
     const message = (error as Error).message;
     res.status(401).json({ message });
