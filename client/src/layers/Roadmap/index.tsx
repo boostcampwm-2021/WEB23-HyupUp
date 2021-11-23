@@ -3,12 +3,13 @@ import { toast } from 'react-toastify';
 import S from './style';
 import EpicPlaceholder from '@/components/EpicPlaceholder';
 import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
-import { createEpic } from '@/lib/api/epic';
+import { createEpic, updateEpicById } from '@/lib/api/epic';
 import useSocketSend from '@/lib/hooks/useSocketSend';
 import RoadmapCalendar from '@/components/RoadmapCalendar';
 import Button from '@/lib/design/Button';
 import { errorMessage, successMessage } from '@/lib/common/message';
 import { sortEpicsByOrder } from '@/lib/utils/sort';
+import { getOrderMedian } from '@/lib/utils/epic';
 
 interface RoadmapProps {
   projectId?: number;
@@ -52,8 +53,24 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     }
   };
 
-  const handleDrop = (id: number, order: number) => {
-    toast.info(`moved ${nowDragging.id} over ${id}, order: ${order}`);
+  const handleDrop = (order: number) => {
+    const median = getOrderMedian(epicsOnProject, order);
+    toast.info(`moved ${nowDragging.id} order: ${order}`);
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    const nowDraggingEpic = epicsOnProject.find((epic) => epic.id === nowDragging.id)!;
+
+    updateEpicById(nowDragging.id, {
+      ...nowDraggingEpic,
+      order: median,
+    });
+    epicDispatcher({
+      type: 'UPDATE_EPIC',
+      epic: {
+        ...nowDraggingEpic,
+        order: median,
+      },
+    });
+
     setNowDragging({ id: 0, over: 0 });
   };
 
@@ -62,7 +79,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       <S.Title>프로젝트 로드맵</S.Title>
       <S.Content>
         <S.EpicEntry>
-          {epicsOnProject.sort(sortEpicsByOrder).map(({ id, name, order }) => (
+          {epicsOnProject.map(({ id, name, order }) => (
             <S.EpicEntryItem
               activated={id === nowDragging.over}
               key={id}
@@ -71,17 +88,17 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
               onDragOver={(e) => e.preventDefault()}
               onDragEnter={() => setNowDragging({ id: nowDragging.id, over: id })}
               onDragLeave={() => setNowDragging({ id: nowDragging.id, over: 0 })}
-              onDrop={() => handleDrop(id, order)}
+              onDrop={() => handleDrop(order)}
             >
               {name}
             </S.EpicEntryItem>
           ))}
           <S.EpicEntryItem
             activated={nowDragging.over === -1}
-            draggable="true"
+            draggable="false"
             onDragOver={(e) => e.preventDefault()}
             onDragEnter={() => setNowDragging({ id: nowDragging.id, over: -1 })}
-            onDrop={() => handleDrop(-1, getMaxOrder() + 1)}
+            onDrop={() => handleDrop(getMaxOrder() + 1)}
           />
           <EpicPlaceholder visible={inputVisible} handleSubmit={handleSubmit} />
           <Button
