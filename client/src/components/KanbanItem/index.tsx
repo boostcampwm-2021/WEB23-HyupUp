@@ -49,7 +49,7 @@ const KanbanItem = ({
           modalConsumer?.setDeleteItem(story.id as number);
         }}
       />
-      <KanbanModal isItemClick={isItemClick} setItemClick={setItemClick} />
+      <KanbanModal isItemClick={isItemClick} story={story} />
     </Styled.KanBanItem>
   );
 };
