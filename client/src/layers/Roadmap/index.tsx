@@ -8,6 +8,7 @@ import useSocketSend from '@/lib/hooks/useSocketSend';
 import RoadmapCalendar from '@/components/RoadmapCalendar';
 import Button from '@/lib/design/Button';
 import { errorMessage, successMessage } from '@/lib/common/message';
+import { sortEpicsByOrder } from '@/lib/utils/sort';
 
 interface RoadmapProps {
   projectId?: number;
@@ -61,7 +62,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       <S.Title>프로젝트 로드맵</S.Title>
       <S.Content>
         <S.EpicEntry>
-          {epicsOnProject?.map(({ id, name, order }) => (
+          {epicsOnProject.sort(sortEpicsByOrder).map(({ id, name, order }) => (
             <S.EpicEntryItem
               activated={id === nowDragging.over}
               key={id}
