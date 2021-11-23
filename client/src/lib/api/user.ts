@@ -69,3 +69,24 @@ export const logIn = async (email: string, password: string) => {
     toast.error(errorMessage.GET_USER);
   }
 };
+
+export const signUp = async (
+  name: string,
+  job: string,
+  email: string,
+  password: string,
+  organization: string,
+) => {
+  try {
+    const result: { data: UserState } = await instance.post('/signup', {
+      name,
+      job,
+      email,
+      password,
+      organization,
+    });
+    return result.data;
+  } catch (e) {
+    toast.error(errorMessage.GET_USER);
+  }
+};
