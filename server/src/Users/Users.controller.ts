@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
-import { queryValidator } from '../../lib/utils/requestValidator';
+import { bodyValidator, queryValidator } from '../../lib/utils/requestValidator';
 import Users from './Users.entity';
 import {
   getUserInfo,
@@ -72,5 +72,28 @@ export const updateUserAdminById = async (req: Request, res: Response) => {
   } catch (e) {
     const err = e as Error;
     res.status(400).json({ message: err.message });
+  }
+};
+
+export const logInUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!bodyValidator(req.body, ['email', 'password'])) {
+      throw new Error('invalid input');
+    }
+    const userRepository = getRepository(Users);
+    const user = await userRepository.findOne({
+      where: { email: req.body.email, accessToken: req.body.password },
+    });
+    if (typeof user === 'undefined') throw new Error('User is not valid');
+    req.query.email = req.body.email;
+    next();
+  } catch (e) {
+    const err = e as Error;
+    if (err.message === 'invalid input') {
+      res.status(400).end();
+    } else if (err.message === 'User is not valid') {
+      res.status(404).end();
+    }
+    res.status(400).end();
   }
 };

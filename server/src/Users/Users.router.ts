@@ -3,6 +3,7 @@ import {
   deleteUserById,
   getUsersByOrganization,
   handleGet,
+  logInUser,
   updateUserAdminById,
 } from './Users.controller';
 import * as multer from 'multer';
@@ -25,5 +26,7 @@ router.get('/image', upload);
 
 router.put('/admin/:id', updateUserAdminById);
 router.delete('/:id', deleteUserById);
+
+router.post('/login', [logInUser, handleGet]);
 
 export default router;
