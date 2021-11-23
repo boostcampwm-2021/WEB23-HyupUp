@@ -11,6 +11,7 @@ const Styled = {
     width: 950px;
     height: 500px;
     margin-top: 20px;
+    padding: 10px 0;
 
     background-color: ${({ theme }) => theme.color.gray100};
     border-radius: 8px;
