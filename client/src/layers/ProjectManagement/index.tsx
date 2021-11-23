@@ -8,6 +8,7 @@ import { createProject, getAllProjectsByOrg } from '@/lib/api/project';
 import { useInput } from '@/lib/hooks';
 import ProjectCreateForm from '@/components/ProjectCreateForm';
 import { ProjectType } from '@/types/project';
+import ProjectCard from '@/components/ProjectCard';
 
 export const ProjectManagement = () => {
   const userState = useRecoilValue(userAtom);
@@ -38,7 +39,11 @@ export const ProjectManagement = () => {
   return (
     <Styled.ProjectManagementWrapper>
       <ProjectCreateForm onSubmitNewProject={onSubmitNewProject} onChange={onChange} />
-      <Styled.ProjectList></Styled.ProjectList>
+      <Styled.ProjectList>
+        {projectList.map((project) => (
+          <ProjectCard key={project.id} project={project} />
+        ))}
+      </Styled.ProjectList>
     </Styled.ProjectManagementWrapper>
   );
 };
