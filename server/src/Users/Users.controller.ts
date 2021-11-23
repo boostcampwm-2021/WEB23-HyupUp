@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
+import bcrypt from 'bcrypt';
 import { bodyValidator, queryValidator } from '../../lib/utils/requestValidator';
 import Users from './Users.entity';
 import {
@@ -9,6 +10,13 @@ import {
   getUserTodos,
   isValidatedEmail,
 } from './Users.service';
+
+// 왜 인식을 못하지...?
+declare module 'express-session' {
+  interface SessionData {
+    isLogIn: boolean;
+  }
+}
 
 export const handleGet = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -80,11 +88,18 @@ export const logInUser = async (req: Request, res: Response, next: NextFunction)
     if (!bodyValidator(req.body, ['email', 'password'])) {
       throw new Error('invalid input');
     }
+    req.session.regenerate((err) => {
+      if (err) throw new Error('session is not created');
+      req.session.isLogIn = true;
+    });
     const userRepository = getRepository(Users);
     const user = await userRepository.findOne({
-      where: { email: req.body.email, accessToken: req.body.password },
+      where: { email: req.body.email },
     });
     if (typeof user === 'undefined') throw new Error('User is not valid');
+    // TODO: accessToken을 password로 이름 변경
+    if (!bcrypt.compareSync(req.body.password, user.accessToken))
+      throw new Error('password is not valid');
     req.query.email = req.body.email;
     next();
   } catch (e) {
