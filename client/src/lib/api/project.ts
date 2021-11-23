@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { errorMessage } from '../common/message';
 
 const instance = axios.create({
-  baseURL: process.env.SERVER_URL,
+  baseURL: process.env.SERVER_URL + '/api/projects',
   withCredentials: true,
 });
 
@@ -11,15 +11,36 @@ interface Project {
   name: string;
   id: number;
 }
-// TODO: 현재 쓰이지 않는 함수
+
 export const getAllProjects = async (userId: number, organizationId: number) => {
   try {
-    const result: { data: Array<Project> } = await instance.get(
-      `/api/projects/?userId=${userId}&organizationId=${organizationId}`,
-    );
+    const result = await instance.get(`/?userId=${userId}&organizationId=${organizationId}`);
+    if (result.status >= 400) throw new Error();
     return result.data;
   } catch (e) {
     toast.error(errorMessage.GET_PROJECT);
-    throw e;
+  }
+};
+
+export const createProject = async (name: string, userId: number) => {
+  try {
+    const newProject: { data: Project; status: number } = await instance.post('/', {
+      name,
+      userId,
+    });
+    if (newProject.status >= 400) throw new Error();
+    return newProject.data;
+  } catch (error) {
+    toast.error(errorMessage.CREATE_PROJECT);
+  }
+};
+
+export const getAllOrgProjects = async (orgId: number) => {
+  try {
+    const projects: { data: Project[]; status: number } = await instance.get(`/${orgId}`);
+    if (projects.status >= 400) throw new Error();
+    return projects.data;
+  } catch (error) {
+    toast.error(errorMessage.GET_PROJECT);
   }
 };

@@ -43,9 +43,9 @@ export default class Users {
   @JoinColumn({ name: 'ORGANIZATION_ID' })
   org!: Organizations;
 
-  @OneToMany(() => Tasks, (tasks) => tasks.id)
+  @OneToMany(() => Tasks, (tasks) => tasks.id, { cascade: true })
   tasks!: Tasks[];
-  @ManyToMany(() => Projects)
+  @ManyToMany(() => Projects, (projects) => projects.id)
   @JoinTable({
     name: 'USERS_PROJECTS',
     inverseJoinColumn: { name: 'PROJECT_ID', referencedColumnName: 'id' },
@@ -53,6 +53,6 @@ export default class Users {
   })
   projects!: Projects[];
 
-  @OneToMany(() => Todo, (todo) => todo.id)
+  @OneToMany(() => Todo, (todo) => todo.id, { cascade: true })
   todo!: Todo[];
 }

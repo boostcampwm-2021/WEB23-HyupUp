@@ -38,3 +38,22 @@ export const getUsersByOrganization = async (id: number): Promise<Array<UserProf
     return [];
   }
 };
+
+export const deleteUserById = async (id: number | undefined) => {
+  try {
+    if (typeof id === 'undefined') throw new Error();
+    const res = await instance.delete(`/${id}`);
+    if (res.status % 400 < 100) throw new Error();
+  } catch (e) {
+    toast.error(errorMessage.GET_USER);
+  }
+};
+
+export const modifyUserAdminById = async (id: number | undefined, newAdmin: boolean) => {
+  try {
+    if (typeof id === 'undefined') throw new Error();
+    await instance.put(`/admin/${id}`, { admin: newAdmin });
+  } catch (e) {
+    toast.error(errorMessage.GET_USER);
+  }
+};
