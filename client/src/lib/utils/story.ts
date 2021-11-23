@@ -65,3 +65,30 @@ export const dragToDiffBetween = (
     order: avgOrderSum,
   };
 };
+
+export const dragToDiffTop = (
+  storyList: StoryType[],
+  category: StatusType,
+  dragCategory: dragCategoryType,
+  dragRef: dragRefObjectType,
+): { firstItem: StoryType; secondItem: StoryType } => {
+  const toBeChangeItem = storyList
+    .filter((v) => v.status === dragCategory.current)
+    .find((v) => v.order === dragRef.current);
+  const sortedListItems = storyList
+    .filter((v) => v.status === category)
+    .sort((a, b) => sortStoryByOrder(a, b))
+    .slice(0, 2);
+  const averageOrder = sortedListItems.length > 1 ? Number(sortedListItems[1].order) / 2 : 1;
+  return {
+    firstItem: {
+      ...toBeChangeItem,
+      status: category,
+      order: 0,
+    },
+    secondItem: {
+      ...sortedListItems[0],
+      order: averageOrder,
+    },
+  };
+};
