@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const getIdColor = (id: number): string => {
-  return ('#' + Math.round(((id % 100) / 100) * 0xffffff).toString(16)).padEnd(7, '0');
+  return ('#' + Math.round(((id % 50) / 50) * 0xffffff).toString(16)).padEnd(7, '0');
 };
 const Styled = {
   CardWrapper: styled.li`
