@@ -2,6 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { errorMessage, successMessage } from '../common/message';
 import { EpicType } from '@/types/epic';
+import { sortEpicsByOrder } from '../utils/sort';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/epics',

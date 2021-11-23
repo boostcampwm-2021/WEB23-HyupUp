@@ -2,6 +2,7 @@ import React, { createContext, Dispatch, useReducer } from 'react';
 import producer from 'immer';
 import { EpicType, EpicWithString, isEpicType } from '@/types/epic';
 import { makeEpicWithDate } from '@/lib/utils/epic';
+import { sortEpicsByOrder } from '@/lib/utils/sort';
 
 type EpicState = Array<EpicType>;
 
@@ -31,17 +32,21 @@ function reducer(state: EpicState, action: EpicAction): EpicState {
       });
     case 'UPDATE_EPIC':
       return producer(state, (draft) => {
-        return draft.map((el) => {
-          const newEpic = isEpicType(action.epic) ? action.epic : makeEpicWithDate(action.epic);
-          if (el.id !== newEpic.id) return el;
-          return {
-            ...el,
-            ...newEpic,
-          };
-        });
+        return draft
+          .map((el) => {
+            const newEpic = isEpicType(action.epic) ? action.epic : makeEpicWithDate(action.epic);
+            if (el.id !== newEpic.id) return el;
+            return {
+              ...el,
+              ...newEpic,
+            };
+          })
+          .sort((a, b) => sortEpicsByOrder(a, b));
       });
     case 'LOAD_EPIC':
-      return [...action.epics.map((epic) => makeEpicWithDate(epic))];
+      return [...action.epics.map((epic) => makeEpicWithDate(epic))].sort((a, b) =>
+        sortEpicsByOrder(a, b),
+      );
     case 'DROP_EPIC':
       return [];
     default:
