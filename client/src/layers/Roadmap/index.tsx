@@ -56,7 +56,9 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       <S.Content>
         <S.EpicEntry>
           {epicsOnProject?.map(({ id, name }) => (
-            <S.EpicEntryItem key={id}>{name}</S.EpicEntryItem>
+            <S.EpicEntryItem key={id} draggable="true" onDragStart={() => toast.info('drag start')}>
+              {name}
+            </S.EpicEntryItem>
           ))}
           <EpicPlaceholder visible={inputVisible} handleSubmit={handleSubmit} />
           <Button
