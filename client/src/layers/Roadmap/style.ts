@@ -48,7 +48,8 @@ const S = {
     }
   `,
   EpicEntryItem: styled.li<{ activated: boolean }>`
-    padding: 25px 0;
+    margin: 5px 0;
+    padding: 20px 0;
 
     font: ${({ theme }) => theme.font.body_regular};
     color: ${({ theme }) => theme.color.gray400};

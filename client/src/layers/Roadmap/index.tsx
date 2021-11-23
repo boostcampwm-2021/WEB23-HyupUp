@@ -69,6 +69,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
               onDragStart={() => setNowDragging({ id, over: id })}
               onDragOver={(e) => e.preventDefault()}
               onDragEnter={() => setNowDragging({ id: nowDragging.id, over: id })}
+              onDragLeave={() => setNowDragging({ id: nowDragging.id, over: 0 })}
               onDrop={() => handleDrop(id, order)}
             >
               {name}
