@@ -60,7 +60,6 @@ export const getEpicById = async (epicId: number) => {
  *
  * @param epicId: number 에픽 id, 수정할 에픽의 id
  * @param payload: EpicType 수정할 에픽 데이터
- * @returns 에픽 데이터를 가지고 있는 객체
  */
 export const updateEpicById = async (epicId: number, payload: EpicType) => {
   try {
