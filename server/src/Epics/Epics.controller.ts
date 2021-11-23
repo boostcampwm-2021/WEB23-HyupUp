@@ -82,19 +82,16 @@ export const createEpic = async (req: Request, res: Response) => {
  * @body name: string 수정하려는 에픽의 이름
  * @body startAt: 수정하려는 에픽의 시작일
  * @body endAt: 수정하려는 에픽의 종료일
+ * @body order: 수정하려는 에픽의 order 값
  * @response message: string 응답결과 메시지
  */
 export const updateEpicById = async (req: Request, res: Response) => {
   try {
-    const { name, startAt, endAt } = req.body;
+    const { name, startAt, endAt, order } = req.body;
     await getRepository(Epics)
       .createQueryBuilder()
       .update()
-      .set({
-        name: name,
-        startAt: startAt,
-        endAt: endAt,
-      })
+      .set({ name, startAt, endAt, order })
       .where('id = :id', { id: req.params.id })
       .execute();
     res.end();
