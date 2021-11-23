@@ -15,6 +15,7 @@ interface RoadmapProps {
 
 const Roadmap = ({ projectId }: RoadmapProps) => {
   const [inputVisible, setInputVisible] = React.useState(false);
+  const [nowDragging, setNowDragging] = React.useState({ id: 0, over: 0 });
   const epicsOnProject = useEpicState();
   const epicDispatcher = useEpicDispatch();
   const emitNewEpic = useSocketSend('NEW_EPIC');
@@ -55,8 +56,15 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       <S.Title>프로젝트 로드맵</S.Title>
       <S.Content>
         <S.EpicEntry>
-          {epicsOnProject?.map(({ id, name }) => (
-            <S.EpicEntryItem key={id} draggable="true" onDragStart={() => toast.info('drag start')}>
+          {epicsOnProject?.map(({ id, name, order }) => (
+            <S.EpicEntryItem
+              key={id}
+              draggable="true"
+              onDragStart={() => setNowDragging({ id, over: id })}
+              onDragOver={(e) => e.preventDefault()}
+              onDragEnter={() => setNowDragging({ id: nowDragging.id, over: id })}
+              onDrop={() => toast.info(`moved ${nowDragging.id} over ${id}`)}
+            >
               {name}
             </S.EpicEntryItem>
           ))}
