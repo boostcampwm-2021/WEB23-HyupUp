@@ -115,3 +115,14 @@ export const getDateDiff = (target: Date, date: Date) => {
   const oneDay = 1000 * 60 * 60 * 24;
   return Math.floor(diffAbs / oneDay);
 };
+
+/**
+ *
+ * @param date offset만큼 이동시킬 기준 날짜의 date 객체
+ * @param offset 더할 일자 수에 해당하는 숫자
+ * @return offset에 해당하는만큼 일자를 더한 date 객체
+ */
+export const addDate = (date: Date, offset: number) => {
+  const { year, month, day } = getYMD(date);
+  return new Date(year, month, day + offset);
+};

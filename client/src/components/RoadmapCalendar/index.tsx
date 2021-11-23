@@ -7,8 +7,7 @@ const WEEK_OFFSET = 14;
 
 const RoadmapCalendar = () => {
   const [date, setDate] = useState(new Date());
-  const today = new Date();
-  const isToday = isSameDay(today, date);
+  const isToday = isSameDay(new Date(), date);
   const dayRow = makeDayRow(date);
   const dateRange = getRangeFromDate(date);
 
