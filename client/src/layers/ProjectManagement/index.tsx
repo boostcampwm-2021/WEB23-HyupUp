@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import produce from 'immer';
 import userAtom from '@/recoil/user';
-import { createProject, getAllOrgProjects } from '@/lib/api/project';
+import { createProject, getAllProjectsByOrg } from '@/lib/api/project';
 import { useInput } from '@/lib/hooks';
 import ProjectCreateForm from '@/components/ProjectCreateForm';
 import { ProjectType } from '@/types/project';
@@ -26,7 +26,7 @@ export const ProjectManagement = () => {
 
   useEffect(() => {
     const updateProjectList = async () => {
-      const projects = await getAllOrgProjects(userState.organization!);
+      const projects = await getAllProjectsByOrg(userState.organization!);
       if (!projects) return;
       setProjectList([...projects]);
     };

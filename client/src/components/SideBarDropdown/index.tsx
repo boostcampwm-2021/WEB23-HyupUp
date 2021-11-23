@@ -5,7 +5,7 @@ import DropDown from '@/lib/design/DropDown';
 import S from '@/components/SideBarDropdown/style';
 import { ProjectType } from '@/types/project';
 import userAtom from '@/recoil/user';
-import { getAllProjects } from '@/lib/api/project';
+import { getAllProjectsByUser } from '@/lib/api/project';
 
 const SideBarDropDown = () => {
   const [userState, setUserState] = useRecoilState(userAtom);
@@ -25,7 +25,7 @@ const SideBarDropDown = () => {
   };
   useEffect(() => {
     (async () => {
-      const projects = await getAllProjects(
+      const projects = await getAllProjectsByUser(
         userState.id as number,
         userState.organization as number,
       );
