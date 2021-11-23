@@ -26,7 +26,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
     const nowDraggingEpic = epics.find((epic) => epic.id === currentDrag.targetId)!; // 현재 드래그 중인 에픽 객체
     const currentItem = epicRenderInfo.find((epic) => epic.id === currentDrag.targetId)!; // 현재 드래그 중인 에픽의 렌더링 정보 객체
     const currentIndex = currentItem.index + currentItem.length; // 현재 드래그 중인 에픽의 오른쪽 핸들이 몇번째 column에 위치하는지
-    const intersectingIndex = (e.target as HTMLElement).dataset.index!; // 드래그 중일 때 마우스 커서가 몇번째 column에 위치하는지
+    const intersectingIndex = +(e.target as HTMLElement).dataset.index!; // 드래그 중일 때 마우스 커서가 몇번째 column에 위치하는지
 
     return {
       nowDraggingEpic,
@@ -39,7 +39,12 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
   const handleDragEnter = (e: React.DragEvent) => {
     const { nowDraggingEpic, currentItem, currentIndex, intersectingIndex } = getCurrentDragInfo(e);
     const offset =
-      parseInt(intersectingIndex) - (currentDrag.isDraggingLeft ? currentItem.index : currentIndex);
+      intersectingIndex - (currentDrag.isDraggingLeft ? currentItem.index : currentIndex);
+    const shouldUpdate =
+      (currentDrag.isDraggingLeft && intersectingIndex <= currentIndex) ||
+      (!currentDrag.isDraggingLeft && currentItem.index <= intersectingIndex);
+    if (!shouldUpdate) return;
+
     dispatchEpic({
       type: 'UPDATE_EPIC',
       epic: {
@@ -56,19 +61,8 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
   };
 
   const handleDrop = (e: React.DragEvent) => {
-    const { nowDraggingEpic, currentItem, currentIndex, intersectingIndex } = getCurrentDragInfo(e);
-    const offset =
-      parseInt(intersectingIndex) - (currentDrag.isDraggingLeft ? currentItem.index : currentIndex);
-    updateEpicById(currentDrag.targetId, {
-      id: currentDrag.targetId,
-      name: nowDraggingEpic.name,
-      startAt: currentDrag.isDraggingLeft
-        ? addDate(nowDraggingEpic.startAt, offset)
-        : nowDraggingEpic.startAt,
-      endAt: currentDrag.isDraggingLeft
-        ? nowDraggingEpic.endAt
-        : addDate(nowDraggingEpic.endAt, offset),
-    });
+    const { nowDraggingEpic } = getCurrentDragInfo(e);
+    updateEpicById(currentDrag.targetId, nowDraggingEpic);
   };
 
   return (
