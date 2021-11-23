@@ -29,7 +29,3 @@ export interface KanbanItemType {
   dragOverCategory: dragCategoryType;
   handleDragDrop(category: StatusType): void;
 }
-
-export interface KanbanStylePropType {
-  isDragEnter: boolean;
-}
