@@ -49,6 +49,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
       type: 'UPDATE_EPIC',
       epic: {
         id: currentDrag.targetId,
+        projectId: nowDraggingEpic.projectId,
         name: nowDraggingEpic.name,
         startAt: currentDrag.isDraggingLeft
           ? addDate(nowDraggingEpic.startAt, offset)
