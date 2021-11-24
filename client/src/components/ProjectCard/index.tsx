@@ -43,7 +43,11 @@ const ProjectCard = ({ project, deleteProject }: ProjectCardProps) => {
       >
         해당 프로젝트를 삭제하시겠습니까?
       </Modal>
-      <ProjectModal showProjectModal={showProjectModal} setShowProjectModal={setShowProjectModal} />
+      <ProjectModal
+        showProjectModal={showProjectModal}
+        setShowProjectModal={setShowProjectModal}
+        project={project}
+      />
     </Styled.CardWrapper>
   );
 };
