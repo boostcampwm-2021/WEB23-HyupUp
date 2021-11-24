@@ -6,9 +6,8 @@ import Styled from '@/layers/ProjectManagement/style';
 import userAtom from '@/recoil/user';
 import { createProject, deleteProjectById, getAllProjectsByOrg } from '@/lib/api/project';
 import { useInput } from '@/lib/hooks';
-import ProjectCreateForm from '@/components/ProjectCreateForm';
 import { ProjectType } from '@/types/project';
-import ProjectCard from '@/components/ProjectCard';
+import { ProjectCreateForm, ProjectCard } from '@/components';
 
 export const ProjectManagement = () => {
   const userState = useRecoilValue(userAtom);
