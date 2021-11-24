@@ -11,6 +11,16 @@ export interface UserProfile {
   admin: boolean;
 }
 
+export interface NewUser {
+  name: string;
+  job: string;
+  email: string;
+  password: string;
+  checkPassword: string;
+  organization: string;
+  imageURL: string;
+}
+
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/users',
   withCredentials: true,
@@ -19,11 +29,9 @@ const instance = axios.create({
 export const getUser = async (email: string) => {
   try {
     const result: { data: UserState } = await instance.get(`?email=${email}`);
-    // 추후 로그인된이메일 확인은 세션에서 (get요청이므로 데이터 없애야함)
     return result.data;
   } catch (e) {
     toast.error(errorMessage.GET_USER);
-    throw e;
   }
 };
 
@@ -45,7 +53,7 @@ export const deleteUserById = async (id: number | undefined) => {
     const res = await instance.delete(`/${id}`);
     if (res.status % 400 < 100) throw new Error();
   } catch (e) {
-    toast.error(errorMessage.GET_USER);
+    toast.error(errorMessage.DELETE_USER);
   }
 };
 
@@ -54,7 +62,7 @@ export const modifyUserAdminById = async (id: number | undefined, newAdmin: bool
     if (typeof id === 'undefined') throw new Error();
     await instance.put(`/admin/${id}`, { admin: newAdmin });
   } catch (e) {
-    toast.error(errorMessage.GET_USER);
+    toast.error(errorMessage.UPDATE_USER);
   }
 };
 
@@ -70,13 +78,7 @@ export const logIn = async (email: string, password: string) => {
   }
 };
 
-export const signUp = async (
-  name: string,
-  job: string,
-  email: string,
-  password: string,
-  organization: string,
-) => {
+export const signUp = async ({ name, job, email, password, organization, imageURL }: NewUser) => {
   try {
     const result: { data: UserState } = await instance.post('/signup', {
       name,
@@ -84,9 +86,24 @@ export const signUp = async (
       email,
       password,
       organization,
+      imageURL,
     });
+
     return result.data;
   } catch (e) {
-    toast.error(errorMessage.GET_USER);
+    if ((e as Error).message === 'Request failed with status code 406') {
+      toast.error(errorMessage.CREATE_USER_EMAIL);
+    } else {
+      toast.error(errorMessage.CREATE_USER);
+    }
+  }
+};
+
+export const logOut = async () => {
+  try {
+    const result = await instance.delete('/logout');
+    toast.info(result);
+  } catch (e) {
+    toast.error(errorMessage.CREATE_USER);
   }
 };

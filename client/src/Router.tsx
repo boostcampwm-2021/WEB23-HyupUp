@@ -1,16 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import MainPage from './pages/MainPage';
 import WorkPage from './pages/WorkPage';
-import { useRecoilValue } from 'recoil';
-import user from '@/recoil/user';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import userAtom from '@/recoil/user';
 import AdminPage from './pages/AdminPage';
 import LogInPage from './pages/LogInPage';
-import { SignUpPage } from './pages/SignUpPage';
+import SignUpPage from './pages/SignUpPage';
+import { getUser } from './lib/api/user';
+import { taskSortByUpdate } from './lib/utils/sort';
+import { UserState } from './contexts/userContext';
 
 const Router = () => {
-  const userState = useRecoilValue(user);
+  const userState = useRecoilValue(userAtom);
+  const setUserState = useSetRecoilState(userAtom);
+  useEffect(() => {
+    if (!document.cookie.match('connect.sid')) return;
+    (async () => {
+      const userData = (await getUser('')) as UserState;
+      if (userData.id) {
+        userData.privateTasks!.sort((a, b) => taskSortByUpdate(a, b));
+        userData.projectTasks!.sort((a, b) => taskSortByUpdate(a, b));
+      }
+      setUserState(userData);
+    })();
+  }, [setUserState]);
+
   return (
     <>
       <Switch>
