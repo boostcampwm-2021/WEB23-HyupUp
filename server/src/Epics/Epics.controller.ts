@@ -22,7 +22,7 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
       endAt: el.endAt,
       order: +el.order,
     }));
-    res.status(200).json(result);
+    res.json(result);
   } catch (e) {
     const result = (e as Error).message;
     if (result === 'query is not vaild') {
@@ -38,7 +38,7 @@ export const findEpicById = async (req: Request, res: Response) => {
       .leftJoinAndSelect('epics.projects', 'projects')
       .where('epics.id = :id', { id: req.params.id })
       .getOne()) as Epics;
-    res.status(200).json({
+    res.json({
       id,
       name,
       startAt,
@@ -118,7 +118,7 @@ export const deleteEpicById = async (req: Request, res: Response) => {
       .delete()
       .where('id = :id', { id: req.params.id })
       .execute();
-    res.status(200).end();
+    res.end();
   } catch (e) {
     res.status(404).json({
       message: (e as Error).message,
