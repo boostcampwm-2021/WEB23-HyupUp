@@ -10,6 +10,8 @@ import Button from '@/lib/design/Button';
 import { errorMessage, successMessage } from '@/lib/common/message';
 import { getOrderMedian } from '@/lib/utils/epic';
 
+const ORDER_DIGITS = 12;
+
 interface RoadmapProps {
   projectId?: number;
 }
@@ -52,15 +54,24 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     }
   };
 
+  const refreshEpicOrder = () => {
+    // refresh orders
+    toast.error('needs refresh');
+  };
+
   const handleDrop = (order: number) => {
     const median = getOrderMedian(epicsOnProject, order);
     /* eslint-disable @typescript-eslint/no-non-null-assertion */
     const nowDraggingEpic = epicsOnProject.find((epic) => epic.id === nowDragging.id)!;
 
-    updateEpicById(nowDragging.id, {
-      ...nowDraggingEpic,
-      order: median,
-    });
+    if (median.toString().length >= ORDER_DIGITS - 1) {
+      refreshEpicOrder();
+    } else {
+      updateEpicById(nowDragging.id, {
+        ...nowDraggingEpic,
+        order: median,
+      });
+    }
     epicDispatcher({
       type: 'UPDATE_EPIC',
       epic: {
