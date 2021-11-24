@@ -2,6 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { errorMessage, successMessage } from '../common/message';
 import { EpicType } from '@/types/epic';
+import { sortEpicsByOrder } from '../utils/sort';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/epics',
@@ -24,17 +25,18 @@ export const getEpicsByProjectId = async (projectId: number | string) => {
  * @returns id 를 프로퍼티로 가지는 객체, 에픽 생성 성공시 생성된 에픽의 id, 실패시 undefined 반환
  * 에픽 생성 실패시 toast 알림
  */
-export const createEpic = async (projectId: number | string, epicName: string) => {
+export const createEpic = async (projectId: number | string, epicName: string, order: number) => {
   try {
     const result: { data: { id: number } } = await instance.post('', {
       name: epicName,
       projectId,
       startAt: new Date(),
       endAt: new Date(),
+      order,
     });
     return result.data;
   } catch (e) {
-    toast.error(successMessage.CREATE_EPIC);
+    toast.error(errorMessage.CREATE_EPIC);
   }
 };
 
@@ -60,7 +62,6 @@ export const getEpicById = async (epicId: number) => {
  *
  * @param epicId: number 에픽 id, 수정할 에픽의 id
  * @param payload: EpicType 수정할 에픽 데이터
- * @returns 에픽 데이터를 가지고 있는 객체
  */
 export const updateEpicById = async (epicId: number, payload: EpicType) => {
   try {
@@ -68,7 +69,6 @@ export const updateEpicById = async (epicId: number, payload: EpicType) => {
       code: number;
     } = await instance.patch(`/${epicId}`, payload);
     if (result.code / 100 >= 4) throw new Error(errorMessage.UPDATE_EPIC);
-    toast.success(successMessage.UPDATE_EPIC);
   } catch (e) {
     toast.error((e as Error).message);
   }

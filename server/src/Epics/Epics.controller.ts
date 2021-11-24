@@ -20,6 +20,7 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
       name: el.name,
       startAt: el.startAt,
       endAt: el.endAt,
+      order: +el.order,
     }));
     res.status(200).json(result);
   } catch (e) {
@@ -64,6 +65,7 @@ export const createEpic = async (req: Request, res: Response) => {
         projects: req.body.projectId,
         startAt: req.body.startAt,
         endAt: req.body.endAt,
+        order: req.body.order,
       })
       .execute();
     res.status(201).json({ id: result.raw.insertId });
@@ -80,22 +82,19 @@ export const createEpic = async (req: Request, res: Response) => {
  * @body name: string 수정하려는 에픽의 이름
  * @body startAt: 수정하려는 에픽의 시작일
  * @body endAt: 수정하려는 에픽의 종료일
+ * @body order: 수정하려는 에픽의 order 값
  * @response message: string 응답결과 메시지
  */
 export const updateEpicById = async (req: Request, res: Response) => {
   try {
-    const { name, startAt, endAt } = req.body;
+    const { name, startAt, endAt, order } = req.body;
     await getRepository(Epics)
       .createQueryBuilder()
       .update()
-      .set({
-        name: name,
-        startAt: startAt,
-        endAt: endAt,
-      })
+      .set({ name, startAt, endAt, order })
       .where('id = :id', { id: req.params.id })
       .execute();
-    res.status(200).end();
+    res.end();
   } catch (e) {
     res.status(400).json({
       message: (e as Error).message,
