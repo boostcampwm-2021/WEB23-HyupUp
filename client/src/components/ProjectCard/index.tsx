@@ -3,10 +3,12 @@ import { ProjectType } from '@/types/project';
 import { DropDown, Modal } from '@/lib/design';
 import Styled from '@/components/ProjectCard/style';
 import { ProjectModal } from '@/components';
+import { UserInfoWithProject } from '@/types/users';
 
 type ProjectCardProps = {
   project: ProjectType;
   deleteProject: (id: number) => Promise<void>;
+  userList: UserInfoWithProject[];
 };
 
 const dropdownList = [
@@ -14,7 +16,7 @@ const dropdownList = [
   { id: 2, name: '삭제' },
 ];
 
-const ProjectCard = ({ project, deleteProject }: ProjectCardProps) => {
+const ProjectCard = ({ project, deleteProject, userList }: ProjectCardProps) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const openModalHandler = (e: React.MouseEvent) => {
@@ -47,6 +49,7 @@ const ProjectCard = ({ project, deleteProject }: ProjectCardProps) => {
         showProjectModal={showProjectModal}
         setShowProjectModal={setShowProjectModal}
         project={project}
+        userList={userList}
       />
     </Styled.CardWrapper>
   );

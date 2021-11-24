@@ -8,10 +8,13 @@ import { createProject, deleteProjectById, getAllProjectsByOrg } from '@/lib/api
 import { useInput } from '@/lib/hooks';
 import { ProjectType } from '@/types/project';
 import { ProjectCreateForm, ProjectCard } from '@/components';
+import { getUsersInfoWithProject } from '@/lib/api/user';
+import { UserInfoWithProject } from '@/types/users';
 
 export const ProjectManagement = () => {
   const userState = useRecoilValue(userAtom);
   const [projectList, setProjectList] = useState<ProjectType[]>([]);
+  const [userList, setUserList] = useState<UserInfoWithProject[]>([]);
   const { value, onChange, onReset } = useInput('');
 
   const deleteProject = async (id: number) => {
@@ -36,6 +39,14 @@ export const ProjectManagement = () => {
   };
 
   useEffect(() => {
+    (async () => {
+      const result = await getUsersInfoWithProject(userState.organization as number);
+      if (!result) return;
+      setUserList([...result]);
+    })();
+  }, [userState]);
+
+  useEffect(() => {
     const updateProjectList = async () => {
       const projects = await getAllProjectsByOrg(userState.organization!);
       if (!projects) return;
@@ -53,7 +64,12 @@ export const ProjectManagement = () => {
       />
       <Styled.ProjectList>
         {projectList.map((project) => (
-          <ProjectCard key={project.id} project={project} deleteProject={deleteProject} />
+          <ProjectCard
+            key={project.id}
+            project={project}
+            deleteProject={deleteProject}
+            userList={userList}
+          />
         ))}
       </Styled.ProjectList>
     </Styled.ProjectManagementWrapper>
