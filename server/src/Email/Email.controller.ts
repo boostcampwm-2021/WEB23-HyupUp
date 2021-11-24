@@ -4,6 +4,8 @@ import { bodyValidator } from '../../lib/utils/requestValidator';
 import { sendMail } from './Email.service';
 import { createClient } from 'redis';
 import { v4 } from 'uuid';
+import { getRepository } from 'typeorm';
+import Organizations from '..//Organizations/Organizations.entity';
 
 const client = createClient({ host: 'localhost' });
 
@@ -29,14 +31,17 @@ export const inviteByEmail = (req: Request, res: Response) => {
 export const isValidEmail = (req: Request, res: Response) => {
   try {
     if (!req.params.token) throw new Error('token is undefined');
-    // TODO organization 정보를 포함하여 redirect
     const decodedToken = jwt.verify(
       req.params.token,
       process.env.SECRET as string,
     ) as jwt.JwtPayload;
-    client.get(decodedToken.id, (err, reply) => {
+    client.get(decodedToken.id, async (err, reply) => {
       if (err) throw new Error(err.message);
-      res.send(JSON.parse(reply as string)).end();
+      const organizationRepository = getRepository(Organizations);
+      const organization = (await organizationRepository.findOne({
+        id: JSON.parse(reply as string).organizationId,
+      })) as Organizations;
+      res.redirect(`${process.env.CLIENT_URL}/signup?name=${organization.room}`);
     });
   } catch (e) {
     const err = e as Error;
