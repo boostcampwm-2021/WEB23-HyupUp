@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ProjectType } from '@/types/project';
 import { DropDown, Modal } from '@/lib/design';
 import Styled from '@/components/ProjectCard/style';
+import { ProjectModal } from '@/components';
 
 type ProjectCardProps = {
   project: ProjectType;
@@ -9,17 +10,20 @@ type ProjectCardProps = {
 };
 
 const dropdownList = [
-  { id: 1, name: '팀원추가' },
+  { id: 1, name: '팀원관리' },
   { id: 2, name: '삭제' },
 ];
 
 const ProjectCard = ({ project, deleteProject }: ProjectCardProps) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
+  const [showProjectModal, setShowProjectModal] = useState(false);
   const openModalHandler = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
     if (target.tagName !== 'LI') return;
-    if (target.innerHTML === '삭제') {
+    if (target.innerHTML === dropdownList[0].name) {
+      setShowProjectModal(true);
+    }
+    if (target.innerHTML === dropdownList[1].name) {
       setShowDeleteModal(true);
     }
   };
@@ -32,12 +36,14 @@ const ProjectCard = ({ project, deleteProject }: ProjectCardProps) => {
       <Styled.CardImage projectId={project.id} />
       <Modal
         shouldConfirm
-        title={'해당 프로젝트를 삭제하시겠습니까?'}
         visible={showDeleteModal}
         onClickCancel={() => console.log('cancel')}
         onClickOk={() => deleteProject(project.id)}
         onClose={() => setShowDeleteModal(false)}
-      ></Modal>
+      >
+        해당 프로젝트를 삭제하시겠습니까?
+      </Modal>
+      <ProjectModal showProjectModal={showProjectModal} setShowProjectModal={setShowProjectModal} />
     </Styled.CardWrapper>
   );
 };

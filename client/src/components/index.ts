@@ -24,3 +24,4 @@ export { default as KanbanModal } from './KanbanModal/index';
 // Project
 export { default as ProjectCreateForm } from './ProjectCreateForm';
 export { default as ProjectCard } from './ProjectCard';
+export { default as ProjectModal } from './ProjectModal';
