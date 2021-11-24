@@ -44,6 +44,10 @@ io.on('connection', (socket) => {
     // 2차 필터: 클라이언트측에서 다른프로젝트에 속해있다면 이벤트 핸들러를 실행하지 않도록 구현
     socket.broadcast.to(socket.data).emit('GET_EPIC', epicId);
   });
+
+  socket.on('UPDATE_EPIC_BAR', (epicId: number) => {
+    socket.broadcast.to(socket.data).emit('UPDATE_EPIC_BAR', epicId);
+  });
 });
 
 export default io;
