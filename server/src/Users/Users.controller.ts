@@ -98,8 +98,7 @@ export const logInUser = async (req: Request, res: Response, next: NextFunction)
       where: { email: req.body.email },
     });
     if (typeof user === 'undefined') throw new Error('User is not valid');
-    // TODO: accessToken을 password로 이름 변경
-    if (!bcrypt.compareSync(req.body.password, user.accessToken))
+    if (!bcrypt.compareSync(req.body.password, user.password))
       throw new Error('password is not valid');
     req.query.email = req.body.email;
     next();
@@ -131,7 +130,6 @@ export const signUpUser = async (req: Request, res: Response, next: NextFunction
     const organization = await organizationRepository.findOne({
       where: { room: req.body.organization },
     });
-    // TODO: entity 수정 후 바꾸기
     const admin = organization ? false : true;
     const organizationInstance = organization
       ? organization
@@ -141,11 +139,10 @@ export const signUpUser = async (req: Request, res: Response, next: NextFunction
       name,
       job,
       email,
-      accessToken: encodedPassword,
+      password: encodedPassword,
       org: organizationInstance,
       imageURL: '1',
       admin,
-      refreshToken: '1',
     });
     req.query.email = user.email;
     next();
