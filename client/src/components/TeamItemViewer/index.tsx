@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { getUsersByOrganization, UserProfile } from '@/lib/api/user';
+import { getUsersByOrganization } from '@/lib/api/user';
+import { UserProfile } from '@/types/users';
 import { Button, DropDown } from '@/lib/design';
 
 import TeamManagementItem from '../TeamManagementItem';

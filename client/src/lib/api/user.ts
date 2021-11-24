@@ -2,14 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { UserState } from '@/contexts/userContext';
 import { errorMessage } from '../common/message';
-
-export interface UserProfile {
-  index: number;
-  name: string;
-  imageURL: string;
-  job: string;
-  admin: boolean;
-}
+import { UserProfile, UserInfoWithProject } from '@/types/users';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/users',

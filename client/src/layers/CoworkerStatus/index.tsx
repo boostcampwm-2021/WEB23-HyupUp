@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { getUsersByOrganization, UserProfile } from '@/lib/api/user';
+import { getUsersByOrganization } from '@/lib/api/user';
 import useSocketSend from '@/lib/hooks/useSocketSend';
+import { UserProfile } from '@/types/users';
 import useSocketReceive from '@/lib/hooks/useSocketReceive';
 import Avatar from '@/components/CoworkerStatusItem/Avatar';
 import * as S from './style';
