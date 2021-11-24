@@ -3,7 +3,6 @@ import { KanbanTaskWrapper } from './style';
 import { BackLogTaskProps } from '@/types/task';
 
 const KanbanTask = ({ task }: { task: BackLogTaskProps }) => {
-  console.log(task);
   return (
     <KanbanTaskWrapper>
       <h4>{task.name}</h4>
