@@ -58,7 +58,7 @@ export const getUsersByOrganization = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserInfoWithProject = async (req: Request, res: Response) => {
+export const getUsersInfoWithProject = async (req: Request, res: Response) => {
   try {
     if (!req.params.orgId) throw new Error('params are not valid');
     const users = await getUsers(+req.params.orgId);

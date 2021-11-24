@@ -20,6 +20,18 @@ export const getUser = async (email: string) => {
   }
 };
 
+export const getUsersInfoWithProject = async (
+  orgId: number,
+): Promise<UserInfoWithProject[] | void> => {
+  try {
+    const result = await instance.get(`/${orgId}`);
+    if (result.status % 400 < 100) throw new Error();
+    return result.data;
+  } catch (error) {
+    toast.error(errorMessage.GET_USER);
+  }
+};
+
 export const getUsersByOrganization = async (id: number): Promise<Array<UserProfile>> => {
   try {
     const result: { data: Array<UserProfile> } = await instance.get(
