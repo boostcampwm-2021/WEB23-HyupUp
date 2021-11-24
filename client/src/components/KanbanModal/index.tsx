@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from '@/lib/design';
+import { BackLogTaskProps } from '@/types/task';
 import { StoryType } from '@/types/story';
 import { getTasksByStoryId } from '@/lib/api/task';
-import { BackLogTaskProps } from '@/types/task';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
 interface KanbnaModalType {
   isItemClick: boolean;
   story: StoryType;
@@ -11,6 +13,7 @@ interface KanbnaModalType {
 type ResultType = undefined | Array<BackLogTaskProps>;
 
 const KanbanModal = ({ isItemClick, story }: KanbnaModalType) => {
+  const user = useRecoilValue(userAtom);
   const [isOpen, setIsOpen] = useState(false);
   const [tasks, setTasks] = useState<ResultType>([]);
 
