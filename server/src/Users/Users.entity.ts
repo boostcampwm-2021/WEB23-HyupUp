@@ -42,7 +42,7 @@ export default class Users {
 
   @OneToMany(() => Tasks, (tasks) => tasks.id, { cascade: true })
   tasks!: Tasks[];
-  @ManyToMany(() => Projects, (projects) => projects.id)
+  @ManyToMany(() => Projects)
   @JoinTable({
     name: 'USERS_PROJECTS',
     inverseJoinColumn: { name: 'PROJECT_ID', referencedColumnName: 'id' },

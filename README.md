@@ -2,19 +2,33 @@
     <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fboostcampwm-2021%2FWEB23-HyupUp&count_bg=%2316228C&title_bg=%233D3D3D&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
 </div>
 
-# HyupUp
-일 잘하는 사람들의 협업 툴, HyupUp 
 
-[바로가기](http://www.hyupup.ml/)
-<br/>
-## Demo
-- [와이어프레임](https://www.figma.com/file/bnu2fR4XSstILgXYPRkvIP/HyupUp?node-id=0%3A1)
-- [프로토타입]()
-- [기획서]()
-- [영상]()
+<center>
+    <img alt="HyupUp" src="https://i.imgur.com/YBqiYK5.png" />
+    <div>
+        <strong>
+        일 잘하는 사람들의 협업 툴, HyupUp
+        </strong>    
+    </div>
+</center>
 
 
-<br/>
+
+
+**[HyupUp 바로가기](http://www.hyupup.ml/)**  
+**[팀 노션 바로가기](https://oasis-pocket-331.notion.site/Team-42-a9c016b18bf340fc8666a97c0089fcd7)**
+
+## ✍️ Writing
+
+[**바닥 부터 개발환경 구축하기**](https://oasis-pocket-331.notion.site/ba54b9ae8adb40e0806d0b3518a633ba) by **[@ingong](https://github.com/ingong)**
+
+[**리액트와 불변성**](https://oasis-pocket-331.notion.site/Immer-js-f6c3936bf589468db0aa4fa06fc91c1d) by **[@rudy3091](https://github.com/rudy3091)**
+
+**[Recoil로의 마이그레이션](https://oasis-pocket-331.notion.site/Recoil-c876906b6cb44e53b776dd7f592777c1)** by **[@haesoo9410](https://github.com/haesoo9410)**
+
+**[Redis 도입 배경](https://oasis-pocket-331.notion.site/Redis-7ae574d796004381914a7334497e1a1b)** by **[@ChanHoLee275](https://github.com/ChanHoLee275)** 
+
+
 
 ## 프로젝트 소개
 
@@ -24,6 +38,52 @@
 
 HyupUp과 함께라면 신속하고 효율적인 협업으로 **칼퇴**를 하실 수 있습니다.
 <br/>
+
+
+## 프로젝트 기능
+
+### ✔️ 할 일 관리
+
+- 개인적인 할 일 뿐만 아니라 팀에서 해야할 일 까지 손쉽게 확인
+- 사용자의 todo리스트를 추가 및 삭제
+- 프로젝트 내에서 해야할 일을 관리
+
+### 🗓️ 프로젝트 로드맵 관리
+
+- 에픽 항목을 추가하고, 달력에서 진행 기간을 확인
+- 프로젝트 팀원과 나의 진행 기간 동기화
+- 드래그 앤 드랍으로 진행기간을 조정
+- 하위 스토리 항목과 연동되어 진행상태를 시각적으로 확인가능
+
+### 📬 메일링 서비스
+
+- 조직의 구성원을 쉽게 초대하기 위한 서비스
+- 이메일에 포함된 링크를 클릭하면, 해당 조직으로 회원가입 진행
+
+### 🗂️ 프로젝트 스토리 관리
+
+- Drag and Drop API 를 활용한 스토리 진행 상황 관리
+- 소켓을 활용한 프로젝트 팀원간 진행 상황 공유
+- 스토리의 진행 상황을 반영한 에픽 상태 변경
+
+
+
+## 기술 스택
+<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/5651fe79-310e-4847-b7da-25ee7e4583d4/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20211123%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211123T101053Z&X-Amz-Expires=86400&X-Amz-Signature=21123c83ee6d3c6bb73fc8f5ad7b628e8ea83400f5b9ef89db9633840c1b7599&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject" />
+
+## Documents
+- [API](https://oasis-pocket-331.notion.site/API-4cdb0639248d4a13baa68d198248c99c)
+- [Socket](https://oasis-pocket-331.notion.site/Socket-b983b1ae803144ab92b4c966213e6c68)
+- [Design](https://oasis-pocket-331.notion.site/Design-b3a0e906bc894d22a91676f2f649da2c)
+- [Hooks](https://oasis-pocket-331.notion.site/Hooks-587a51c584d74055a1e560f59a8d1345)
+- [ERD](https://github.com/boostcampwm-2021/WEB23-HyupUp/wiki/ERD)
+
+## Demo
+- [와이어프레임](https://www.figma.com/file/bnu2fR4XSstILgXYPRkvIP/HyupUp?node-id=0%3A1)
+- [프로토타입](https://www.figma.com/file/bnu2fR4XSstILgXYPRkvIP/HyupUp?node-id=180%3A56)
+- [기획서]()
+- [영상]()
+
 ## Team
 <table>
     <tr>
@@ -40,60 +100,3 @@ HyupUp과 함께라면 신속하고 효율적인 협업으로 **칼퇴**를 하�
         <td align="center"><a href="https://github.com/chanholee275">J164 이찬호</a></td>
     </tr>
 </table>
-
-[팀 노션](https://oasis-pocket-331.notion.site/Team-42-a9c016b18bf340fc8666a97c0089fcd7)
-<br/>
-
-## 기술 스택
-<br/>
-<div align="center">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2560px-React-icon.svg.png" width="90">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/220px-Typescript_logo_2020.svg.png" width="70">
-<img src="https://cdn.hashnode.com/res/hashnode/image/upload/jbhiqodxlyhaqogfuqwy/1486104606.png?w=400&h=400&fit=crop&crop=entropy&auto=compress" width="70">
-<img src="https://camo.githubusercontent.com/b0573f87b0786eda63c76f2a9a1358e7a653783c25c03c6c908a00b70c713d78/68747470733a2f2f7765627061636b2e6a732e6f72672f6173736574732f69636f6e2d7371756172652d6269672e737667" width="70">
-<img width="70" src="https://raw.githubusercontent.com/babel/logo/master/babel.png">
-<img src="https://seeklogo.com/images/J/jest-logo-F9901EBBF7-seeklogo.com.png" width="70">
-</div>
-<div align="center">
-<h3>Front-end</h3>
-</div>
-<br/>
-
-
-<div align="center" vertical-align="middle">
-<img style="margin: 0 0 30px 0;" src="https://hackr.io/tutorials/learn-express-js/logo/logo-express-js?ver=1557508379" width="70">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/220px-Typescript_logo_2020.svg.png" width="70" height="70">
-<img src="https://avatars.githubusercontent.com/u/20165699?s=200&v=4" width="70">
-<img src="http://pngimg.com/uploads/mysql/mysql_PNG35.png" width="70" height="70">
-<img src="https://nodemailer.com/nm_logo_200x136.png" width="70" height="70">
-<img src="https://seeklogo.com/images/J/jest-logo-F9901EBBF7-seeklogo.com.png" width="70" height="70">
-</div>
-<div align="center">
-<h3>Back-end</h3>
-</div>
-
-<br/>
-
-<div align="center" vertical-align="middle">
-<img src="https://user-images.githubusercontent.com/61422890/138859978-c3a03cca-0af5-47b0-8c2c-7e7ae12f706a.png" width="70" height="70">
-<img src="https://t1.daumcdn.net/cfile/tistory/99BF783B5F02CCEE1B" width="70" height="70">
-<img src="https://github.githubassets.com/images/modules/site/features/actions-icon-actions.svg" width="70" height="70">
-<h3>Devops</h3>
-</div>
-
-<br/>
-
-<div align="center" vertical-align="middle">
-<img src="https://d33wubrfki0l68.cloudfront.net/204482ca413433c80cd14fe369e2181dd97a2a40/092e2/assets/img/logo.svg" height="70" width="70">
-<img src="https://brandslogos.com/wp-content/uploads/thumbs/prettier-logo-vector.svg"  width="70">
-<img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="70">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Notion_app_logo.png/100px-Notion_app_logo.png" width="70">
-<h3>Co-work</h3>
-</div>
-<br/>
-
-## Architecture
-
-<br/>
-
-## Documents
