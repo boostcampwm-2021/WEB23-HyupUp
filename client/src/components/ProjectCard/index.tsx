@@ -3,7 +3,7 @@ import { ProjectType } from '@/types/project';
 import { DropDown, Modal } from '@/lib/design';
 import Styled from '@/components/ProjectCard/style';
 
-type Props = {
+type ProjectCardProps = {
   project: ProjectType;
   deleteProject: (id: number) => Promise<void>;
 };
@@ -13,7 +13,7 @@ const dropdownList = [
   { id: 2, name: '삭제' },
 ];
 
-const ProjectCard = ({ project, deleteProject }: Props) => {
+const ProjectCard = ({ project, deleteProject }: ProjectCardProps) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const openModalHandler = (e: React.MouseEvent) => {
