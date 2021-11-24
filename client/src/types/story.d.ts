@@ -20,6 +20,13 @@ export interface KanbanType {
   dragOverCategory: dragCategoryType;
 }
 
+export interface KanbanTestType {
+  category: StatusType;
+  dragRef: SpyInstance<MutableRefObject<unknown>, []>;
+  dragOverRef: SpyInstance<MutableRefObject<unknown>, []>;
+  dragCategory: SpyInstance<MutableRefObject<unknown>, []>;
+  dragOverCategory: SpyInstance<MutableRefObject<unknown>, []>;
+}
 //TODO Extends 를 통한 상속
 export interface KanbanItemType {
   story: StoryType;
