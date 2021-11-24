@@ -10,17 +10,18 @@ import { NewUser, signUp } from '@/lib/api/user';
 import { UserState } from '@/contexts/userContext';
 import { taskSortByUpdate } from '@/lib/utils/sort';
 import { searchOrganizationByName } from '@/lib/api/organization';
+import avatar, { ImageType } from '@/lib/common/avatar';
 
 const MAXINDEX = 16;
 
-const SignUpPage = () => {
+const SignUpPage = ({ roomName }: { roomName: string }) => {
   const [newUser, setNewUser] = useState<NewUser>({
     name: '',
     job: '',
     email: '',
     password: '',
     checkPassword: '',
-    organization: '',
+    organization: roomName,
     imageURL: '',
   });
   const setUserState = useSetRecoilState(userAtom);
@@ -85,7 +86,7 @@ const SignUpPage = () => {
           <S.LeftArrow src={rightArrow} color="red" />
         </button>
         <S.AvatarContainer>
-          <S.Avatar src={`${process.env.SERVER_URL}/${gender}-${avatarIndex}.svg`}></S.Avatar>
+          <S.Avatar src={avatar[`${gender}${avatarIndex}` as unknown as ImageType]}></S.Avatar>
           <Button type="button" category="default" size="small" onClick={changeGender}>
             {gender}
           </Button>

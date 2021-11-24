@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import MainPage from './pages/MainPage';
 import WorkPage from './pages/WorkPage';
@@ -11,6 +11,7 @@ import SignUpPage from './pages/SignUpPage';
 import { getUser } from './lib/api/user';
 import { taskSortByUpdate } from './lib/utils/sort';
 import { UserState } from './contexts/userContext';
+import { useMemo } from 'react';
 
 const Router = () => {
   const userState = useRecoilValue(userAtom);
@@ -27,6 +28,9 @@ const Router = () => {
     })();
   }, [setUserState]);
 
+  const { search } = useLocation();
+  const query = useMemo(() => new URLSearchParams(search), [search]);
+
   return (
     <>
       <Switch>
@@ -41,7 +45,13 @@ const Router = () => {
         <Route
           exact
           path="/signup"
-          render={() => (userState?.email ? <Redirect to="/" /> : <SignUpPage />)}
+          render={() =>
+            userState?.email ? (
+              <Redirect to="/" />
+            ) : (
+              <SignUpPage roomName={query.get('name') ?? ''} />
+            )
+          }
         />
         <Redirect from="*" to="/" />
       </Switch>
