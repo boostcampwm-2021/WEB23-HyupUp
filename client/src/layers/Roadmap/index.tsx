@@ -54,7 +54,6 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
 
   const handleDrop = (order: number) => {
     const median = getOrderMedian(epicsOnProject, order);
-    toast.info(`moved ${nowDragging.id} order: ${order}`);
     /* eslint-disable @typescript-eslint/no-non-null-assertion */
     const nowDraggingEpic = epicsOnProject.find((epic) => epic.id === nowDragging.id)!;
 
