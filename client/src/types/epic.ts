@@ -1,5 +1,6 @@
 export type EpicType = {
   id: number;
+  projectId: number;
   name: string;
   startAt: Date;
   endAt: Date;
@@ -8,6 +9,7 @@ export type EpicType = {
 
 export type EpicWithString = {
   id: number;
+  projectId: number;
   name: string;
   startAt: string;
   endAt: string;
@@ -16,6 +18,7 @@ export type EpicWithString = {
 
 export const isEpicType = (param: {
   id: unknown;
+  projectId: number;
   name: unknown;
   startAt: unknown;
   endAt: unknown;
@@ -23,6 +26,7 @@ export const isEpicType = (param: {
 }): param is EpicType => {
   return (
     typeof param.id === 'number' &&
+    typeof param.projectId === 'number' &&
     typeof param.name === 'string' &&
     param.startAt instanceof Date &&
     param.endAt instanceof Date &&
