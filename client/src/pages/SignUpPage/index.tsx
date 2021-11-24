@@ -1,81 +1,132 @@
 import React, { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { toast } from 'react-toastify';
-import whiteAdd from '@public/icons/white-add.svg';
-import { Button } from '@/lib/design';
+import { Button, Modal } from '@/lib/design';
+import rightArrow from '@public/icons/arrow-right.svg';
 import * as S from './style';
-import user from '@/recoil/user';
+import userAtom from '@/recoil/user';
 import { errorMessage } from '@/lib/common/message';
-import { signUp } from '@/lib/api/user';
+import { NewUser, signUp } from '@/lib/api/user';
 import { UserState } from '@/contexts/userContext';
 import { taskSortByUpdate } from '@/lib/utils/sort';
+import { searchOrganizationByName } from '@/lib/api/organization';
 
-export const SignUpPage = () => {
-  const [name, setName] = useState('');
-  const [job, setJob] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [checkPassword, setCheckPassword] = useState('');
-  const [organization, setOrganization] = useState('');
-  const setUserState = useSetRecoilState(user);
+const MAXINDEX = 16;
 
-  const createUserByInput = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (password !== checkPassword) {
-      setPassword('');
-      setCheckPassword('');
+const SignUpPage = () => {
+  const [newUser, setNewUser] = useState<NewUser>({
+    name: '',
+    job: '',
+    email: '',
+    password: '',
+    checkPassword: '',
+    organization: '',
+    imageURL: '',
+  });
+  const setUserState = useSetRecoilState(userAtom);
+
+  const [gender, setGender] = useState('Boy');
+  const [avatarIndex, setAvatarIndex] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [context, setContext] = useState('');
+  const changeGender = () => (gender === 'Boy' ? setGender('Girl') : setGender('Boy'));
+
+  const clickLeft = () =>
+    !avatarIndex ? setAvatarIndex(MAXINDEX) : setAvatarIndex(() => avatarIndex - 1);
+
+  const clickRight = () =>
+    avatarIndex === MAXINDEX ? setAvatarIndex(0) : setAvatarIndex(() => avatarIndex + 1);
+
+  const createUserByInput = async () => {
+    if (newUser.password !== newUser.checkPassword) {
+      setNewUser(() => ({ ...newUser, checkPassword: '', password: '' }));
       toast.error(errorMessage.CREATE_USER_PW);
       return;
     }
-    const userData = (await signUp(name, job, email, password, organization)) as UserState;
+
+    const nowShowModal = showModal;
+    setShowModal(!nowShowModal);
+
+    if (!nowShowModal) return;
+    const userData = (await signUp({
+      ...newUser,
+      imageURL: `${gender}${avatarIndex}`,
+    })) as UserState;
     if (userData.id) {
       userData.privateTasks!.sort((a, b) => taskSortByUpdate(a, b));
       userData.projectTasks!.sort((a, b) => taskSortByUpdate(a, b));
     }
     setUserState(userData);
   };
+
+  const checkOrganizationByName = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const status = await searchOrganizationByName(newUser.organization);
+    status === 200
+      ? setContext(`${newUser.organization}에 참여하시겠습니까?`)
+      : setContext(`${newUser.organization}을 만드시겠습니까?`);
+    setShowModal(true);
+  };
+
   return (
     <S.Container>
+      <Modal
+        shouldConfirm={true}
+        visible={showModal}
+        onClose={() => setShowModal(false)}
+        onClickCancel={() => setShowModal(false)}
+        onClickOk={() => createUserByInput()}
+      >
+        <S.Text> {context}</S.Text>
+      </Modal>
       <S.Title to="/">HyupUp</S.Title>
-      <S.AvatarContainer>
-        <S.Avatar></S.Avatar>
-        <S.AddBtn>
-          <img src={whiteAdd} />
-        </S.AddBtn>
-      </S.AvatarContainer>
-      <S.FormBox onSubmit={createUserByInput}>
+      <S.AvatarSelectContainer>
+        <button onClick={clickLeft}>
+          <S.LeftArrow src={rightArrow} color="red" />
+        </button>
+        <S.AvatarContainer>
+          <S.Avatar src={`${process.env.SERVER_URL}/${gender}-${avatarIndex}.svg`}></S.Avatar>
+          <Button type="button" category="default" size="small" onClick={changeGender}>
+            {gender}
+          </Button>
+        </S.AvatarContainer>
+        <button onClick={clickRight}>
+          <S.RightArrow src={rightArrow} alt="" />
+        </button>
+      </S.AvatarSelectContainer>
+      <S.FormBox onSubmit={checkOrganizationByName}>
         <S.InputBox
           placeholder="이름"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={newUser.name}
+          onChange={(e) => setNewUser(() => ({ ...newUser, name: e.target.value }))}
         ></S.InputBox>
         <S.InputBox
           placeholder="직무"
-          value={job}
-          onChange={(e) => setJob(e.target.value)}
+          value={newUser.job}
+          onChange={(e) => setNewUser(() => ({ ...newUser, job: e.target.value }))}
         ></S.InputBox>
         <S.InputBox
           placeholder="이메일"
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={newUser.email}
+          onChange={(e) => setNewUser(() => ({ ...newUser, email: e.target.value }))}
         ></S.InputBox>
         <S.InputBox
           placeholder="비밀번호"
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={newUser.password}
+          onChange={(e) => setNewUser(() => ({ ...newUser, password: e.target.value }))}
         ></S.InputBox>
         <S.InputBox
           placeholder="비밀번호를 다시 입력해주세요"
           type="password"
-          value={checkPassword}
-          onChange={(e) => setCheckPassword(e.target.value)}
+          value={newUser.checkPassword}
+          onChange={(e) => setNewUser(() => ({ ...newUser, checkPassword: e.target.value }))}
         ></S.InputBox>
         <S.InputBox
           placeholder="조직 이름"
-          value={organization}
-          onChange={(e) => setOrganization(e.target.value)}
+          value={newUser.organization}
+          onChange={(e) => setNewUser(() => ({ ...newUser, organization: e.target.value }))}
         ></S.InputBox>
         <Button category="default" size="large">
           HyupUp 시작하기
@@ -84,3 +135,5 @@ export const SignUpPage = () => {
     </S.Container>
   );
 };
+
+export default SignUpPage;
