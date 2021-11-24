@@ -5,6 +5,8 @@ import { StoryType } from '@/types/story';
 import { getTasksByStoryId } from '@/lib/api/task';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
+import KanbanTask from './KanbanTask/index';
+
 interface KanbnaModalType {
   isItemClick: boolean;
   story: StoryType;
@@ -36,9 +38,9 @@ const KanbanModal = ({ isItemClick, story }: KanbnaModalType) => {
 
   return (
     <Modal shouldConfirm={false} visible={isOpen} onClose={handleCloseClick} size="LARGE">
-      {story.name}
-      {tasks?.map((v) => (
-        <p key={v.id}>{v.name}</p>
+      <h4>{story.name}</h4>
+      {tasks?.map((task) => (
+        <KanbanTask key={task.id} task={task} />
       ))}
     </Modal>
   );
