@@ -8,4 +8,5 @@ module.exports = {
     '^.+\\.svg$': '<rootDir>/__test__/svgTransform.js',
   },
   testEnvironment: 'jsdom',
+  verbose: true,
 };
