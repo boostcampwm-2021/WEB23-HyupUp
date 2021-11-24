@@ -9,6 +9,8 @@ import RoadmapCalendar from '@/components/RoadmapCalendar';
 import Button from '@/lib/design/Button';
 import { errorMessage, successMessage } from '@/lib/common/message';
 import { getOrderMedian } from '@/lib/utils/epic';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
 
 interface RoadmapProps {
   projectId?: number;
@@ -18,6 +20,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   const [inputVisible, setInputVisible] = React.useState(false);
   const [nowDragging, setNowDragging] = React.useState({ id: 0, over: 0 });
   const epicsOnProject = useEpicState();
+  const user = useRecoilValue(userAtom);
   const epicDispatcher = useEpicDispatch();
   const emitNewEpic = useSocketSend('NEW_EPIC');
 
@@ -25,6 +28,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     type: 'ADD_EPIC' as const,
     epic: {
       id,
+      projectId: user.currentProjectId as number,
       name,
       startAt: new Date(),
       endAt: new Date(),
