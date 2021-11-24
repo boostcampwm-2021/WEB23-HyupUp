@@ -33,11 +33,8 @@ export default class Users {
   @Column({ name: 'ADMIN', type: 'boolean' })
   admin!: boolean;
 
-  @Column({ name: 'ACCESS_TOKEN' })
-  accessToken!: string;
-
-  @Column({ name: 'REFRESH_TOKEN' })
-  refreshToken!: string;
+  @Column({ name: 'PASSWORD' })
+  password!: string;
 
   @ManyToOne(() => Organizations, (org) => org.id)
   @JoinColumn({ name: 'ORGANIZATION_ID' })
