@@ -21,7 +21,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   const epicDispatcher = useEpicDispatch();
   const emitNewEpic = useSocketSend('NEW_EPIC');
 
-  const makeNewAction = (id: number, name: string, order: number) => ({
+  const makeNewEpicAction = (id: number, name: string, order: number) => ({
     type: 'ADD_EPIC' as const,
     epic: {
       id,
@@ -42,7 +42,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       const result = await createEpic(projectId, value, Math.ceil(getMaxOrder() + 1));
       if (!result) return;
 
-      epicDispatcher(makeNewAction(result.id, value, Math.ceil(getMaxOrder() + 1)));
+      epicDispatcher(makeNewEpicAction(result.id, value, Math.ceil(getMaxOrder() + 1)));
       setInputVisible(false);
       emitNewEpic(result.id);
 
