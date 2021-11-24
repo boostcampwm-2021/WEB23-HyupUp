@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   deleteUserById,
+  getUserInfoWithProject,
   getUsersByOrganization,
   handleGet,
   logInUser,
@@ -23,6 +24,8 @@ const upload = multer.default({ storage: storage }).single('file');
 const router = express.Router();
 router.get('/', handleGet);
 router.get('/organization', getUsersByOrganization);
+router.get('/:orgId', getUserInfoWithProject);
+
 router.get('/image', upload);
 
 router.put('/admin/:id', updateUserAdminById);
