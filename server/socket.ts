@@ -48,6 +48,10 @@ io.on('connection', (socket) => {
   socket.on('UPDATE_EPIC_BAR', (epicId: number) => {
     socket.broadcast.to(socket.data).emit('UPDATE_EPIC_BAR', epicId);
   });
+
+  socket.on('UPDATE_EPIC_ORDER', (epicId: number) => {
+    socket.broadcast.to(socket.data).emit('UPDATE_EPIC_ORDER', epicId);
+  });
 });
 
 export default io;

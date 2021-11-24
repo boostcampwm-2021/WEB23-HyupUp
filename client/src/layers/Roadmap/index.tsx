@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import S from './style';
 import EpicPlaceholder from '@/components/EpicPlaceholder';
 import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
-import { createEpic, updateEpicById } from '@/lib/api/epic';
+import { createEpic, getEpicById, updateEpicById } from '@/lib/api/epic';
 import useSocketSend from '@/lib/hooks/useSocketSend';
 import RoadmapCalendar from '@/components/RoadmapCalendar';
 import Button from '@/lib/design/Button';
@@ -11,6 +11,7 @@ import { errorMessage, successMessage } from '@/lib/common/message';
 import { getOrderMedian } from '@/lib/utils/epic';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
+import { useSocketReceive } from '@/lib/hooks';
 
 interface RoadmapProps {
   projectId?: number;
@@ -23,6 +24,14 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   const user = useRecoilValue(userAtom);
   const epicDispatcher = useEpicDispatch();
   const emitNewEpic = useSocketSend('NEW_EPIC');
+  const emitUpdateEpicOrder = useSocketSend('UPDATE_EPIC_ORDER');
+  useSocketReceive('UPDATE_EPIC_ORDER', async (updatedEpicId: number) => {
+    const updatedEpic = await getEpicById(updatedEpicId);
+    epicDispatcher({
+      type: 'UPDATE_EPIC',
+      epic: updatedEpic!,
+    });
+  });
 
   const makeNewEpicAction = (id: number, name: string, order: number) => ({
     type: 'ADD_EPIC' as const,
@@ -56,15 +65,16 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     }
   };
 
-  const handleDrop = (order: number) => {
+  const handleDrop = async (order: number) => {
     const median = getOrderMedian(epicsOnProject, order);
     /* eslint-disable @typescript-eslint/no-non-null-assertion */
     const nowDraggingEpic = epicsOnProject.find((epic) => epic.id === nowDragging.id)!;
 
-    updateEpicById(nowDragging.id, {
+    await updateEpicById(nowDragging.id, {
       ...nowDraggingEpic,
       order: median,
     });
+    emitUpdateEpicOrder(nowDragging.id);
     epicDispatcher({
       type: 'UPDATE_EPIC',
       epic: {
