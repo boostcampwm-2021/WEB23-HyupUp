@@ -36,7 +36,11 @@ const Router = () => {
       <Switch>
         <Route exact path="/" render={() => (userState?.email ? <MainPage /> : <LandingPage />)} />
         <Route exact path="/work" render={() => <WorkPage />} />
-        <Route exact path="/setting" render={() => <AdminPage />} />
+        <Route
+          exact
+          path="/setting"
+          render={() => (userState.admin ? <AdminPage /> : <Redirect to="/" />)}
+        />
         <Route
           exact
           path="/login"
