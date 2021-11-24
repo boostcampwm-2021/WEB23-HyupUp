@@ -11,7 +11,7 @@ const Styled = {
     border-radius: 8px;
     background-color: ${({ theme }) => theme.color.white};
 
-    box-shadow: ${({ theme }) => theme.shadow};
+    box-shadow: ${({ theme }) => theme.shadow.default};
   `,
   CardHeader: styled.div`
     display: flex;
