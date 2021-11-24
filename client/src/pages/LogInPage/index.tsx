@@ -2,10 +2,12 @@ import React from 'react';
 import Button from '@/lib/design/Button';
 import { Styled } from './style';
 import { LogInForm } from '@/components/LogInForm';
+import { useHistory } from 'react-router-dom';
 
 const LogInPage = () => {
+  const history = useHistory();
   const onClickSignIn = () => {
-    window.location.href = `/signup`;
+    history.push('/signup');
   };
   return (
     <Styled.Container>
