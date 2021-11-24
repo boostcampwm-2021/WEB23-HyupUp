@@ -14,11 +14,13 @@ export const UPDATE_TODO = 'Todo 항목 수정에 실패했습니다.';
 export const UPDATE_TASK = 'Task 항목 수정에 실패했습니다.';
 export const UPDATE_STORY = '스토리 수정에 실패했습니다.';
 
+export const DELETE_PROJECT = '프로젝트 삭제에 실패했습니다.';
 export const DELETE_TODO = 'Todo 항목 삭제에 실패했습니다.';
 export const DELETE_TASK = 'Task 항목 삭제에 실패했습니다.';
 export const DELETE_STORY = '스토리 삭제에 실패했습니다.';
 
 export const SEND_EMAIL = '이메일 발송에 실패했습니다.';
+export const CREATE_USER_PW = '비밀번호가 일치하지 않습니다.';
 
 export default {
   GET_USER,
@@ -30,10 +32,12 @@ export default {
   CREATE_TODO,
   CREATE_STORY,
   CREATE_PROJECT,
+  CREATE_USER_PW,
   UPDATE_EPIC,
   UPDATE_TODO,
   UPDATE_TASK,
   UPDATE_STORY,
+  DELETE_PROJECT,
   DELETE_TODO,
   DELETE_TASK,
   DELETE_STORY,

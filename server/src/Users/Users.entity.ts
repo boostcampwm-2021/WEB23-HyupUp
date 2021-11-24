@@ -33,11 +33,8 @@ export default class Users {
   @Column({ name: 'ADMIN', type: 'boolean' })
   admin!: boolean;
 
-  @Column({ name: 'ACCESS_TOKEN' })
-  accessToken!: string;
-
-  @Column({ name: 'REFRESH_TOKEN' })
-  refreshToken!: string;
+  @Column({ name: 'PASSWORD' })
+  password!: string;
 
   @ManyToOne(() => Organizations, (org) => org.id)
   @JoinColumn({ name: 'ORGANIZATION_ID' })
@@ -45,7 +42,7 @@ export default class Users {
 
   @OneToMany(() => Tasks, (tasks) => tasks.id, { cascade: true })
   tasks!: Tasks[];
-  @ManyToMany(() => Projects, (projects) => projects.id)
+  @ManyToMany(() => Projects)
   @JoinTable({
     name: 'USERS_PROJECTS',
     inverseJoinColumn: { name: 'PROJECT_ID', referencedColumnName: 'id' },
