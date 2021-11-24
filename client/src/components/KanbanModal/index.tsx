@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from '@/lib/design';
-import Styled from '@/components/KanbanModal/style';
+import ContentWrapper from '@/components/KanbanModal/style';
 import { BackLogTaskProps } from '@/types/task';
 import { StoryType } from '@/types/story';
 import { getTasksByStoryId } from '@/lib/api/task';
@@ -38,14 +38,14 @@ const KanbanModal = ({ isItemClick, story }: KanbnaModalType) => {
   }, [story.id, isItemClick]);
 
   return (
-    <Styled.Wrapper>
-      <Modal shouldConfirm={false} visible={isOpen} onClose={handleCloseClick} size="LARGE">
-        <h4>{story.name}</h4>
+    <Modal shouldConfirm={false} visible={isOpen} onClose={handleCloseClick} size="LARGE">
+      <ContentWrapper>
+        <h3>{story.name}</h3>
         {tasks?.map((task) => (
           <KanbanTask key={task.id} task={task} />
         ))}
-      </Modal>
-    </Styled.Wrapper>
+      </ContentWrapper>
+    </Modal>
   );
 };
 

@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 
-const Styled = {
-  Wrapper: styled.section`
-    div {
-      height: 800px;
-      width: 800px;
-      overflow-y: scroll;
-    }
-  `,
-};
+const ContentWrapper = styled.section`
+  width: 700px;
+  height: 500px;
+  overflow: scroll;
+  z-index: 999;
 
-export default Styled;
+  h3 {
+    margin-bottom: 30px;
+    font: ${({ theme }) => theme.font.display_medium};
+  }
+`;
+
+export default ContentWrapper;
