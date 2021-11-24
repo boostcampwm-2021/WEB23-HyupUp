@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import * as S from './style';
+import avatar, { ImageType } from '@/lib/common/avatar';
 
 interface TeamManagementItemProps {
   imageURL: string;
@@ -12,7 +13,7 @@ interface TeamManagementItemProps {
 const TeamManagementItem = ({ imageURL, name, job, admin, children }: TeamManagementItemProps) => {
   return (
     <S.ItemContainer>
-      <S.Avatar src={imageURL} />
+      <S.Avatar src={avatar[imageURL as ImageType]} />
       <S.TextContainer>
         <S.Text>{name}</S.Text>
         <S.Text>{job}</S.Text>
