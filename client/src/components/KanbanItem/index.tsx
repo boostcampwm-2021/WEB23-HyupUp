@@ -19,6 +19,7 @@ const KanbanItem = ({
   const [isItemModalOpen, setModalOpen] = useState<boolean>(false);
   const handleItemClick = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).dataset.type === 'cancel') return;
+    if (!story.name) return;
     if (isItemModalOpen) return;
     setModalOpen((prev) => !prev);
   };
