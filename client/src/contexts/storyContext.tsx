@@ -8,7 +8,7 @@ type StoryAction =
   | { type: 'ADD_STORY'; story: StoryType }
   | { type: 'REMOVE_STORY'; id: number }
   | { type: 'UPDATE_STORY'; story: StoryType }
-  | { type: 'LOAD_STORY'; stories: StoryType[] }
+  | { type: 'LOAD_STORY'; stories: StoryType[] | undefined }
   | { type: 'DROP_STORY' };
 
 type StoryDispatch = Dispatch<StoryAction>;
