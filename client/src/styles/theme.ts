@@ -23,11 +23,13 @@ const color = {
 };
 
 const font = {
-  body_small: "normal 300 12px 'Pretendard'",
+  body_extra_small: "normal 300 12px 'Pretendard'",
+  body_small: "normal 300 14px 'Pretendard'",
   body_regular: "normal 300 16px 'Pretendard'",
   body_medium: "normal 300 18px 'Pretendard'",
   body_large: "normal 300 22px 'Pretendard'",
-  bold_small: "normal 600 12px 'Pretendard'",
+  bold_extra_small: "normal 600 12px 'Pretendard'",
+  bold_small: "normal 600 14px 'Pretendard'",
   bold_regular: "normal 600 16px 'Pretendard'",
   bold_medium: "normal 600 18px 'Pretendard'",
   bold_large: "normal 600 22px 'Pretendard'",

@@ -51,7 +51,7 @@ const S = {
 
     width: 100%;
 
-    font: ${({ theme }) => theme.font.body_small};
+    font: ${({ theme }) => theme.font.body_extra_small};
   `,
   DayLabelToday: styled.div`
     position: absolute;
@@ -66,7 +66,7 @@ const S = {
     border-radius: 30px;
 
     color: ${({ theme }) => theme.color.red400};
-    font: ${({ theme }) => theme.font.bold_small};
+    font: ${({ theme }) => theme.font.bold_extra_small};
   `,
 };
 
