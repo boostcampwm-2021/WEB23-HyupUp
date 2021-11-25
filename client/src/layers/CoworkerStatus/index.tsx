@@ -8,7 +8,8 @@ import * as S from './style';
 import StatusTitle from '@/components/CoworkerStatusItem/StatusTitle';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
-import avatar, { ImageType } from '@/lib/common/avatar';
+import * as avatar from '@/lib/common/avatar';
+import { ImageType } from '@/types/image';
 
 interface UserStatus extends UserProfile {
   status: boolean;

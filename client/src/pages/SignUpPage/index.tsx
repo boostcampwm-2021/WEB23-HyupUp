@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import jwt_decode from 'jwt-decode';
 import { useSetRecoilState } from 'recoil';
 import { toast } from 'react-toastify';
 import { Button, Modal } from '@/lib/design';
@@ -10,18 +11,21 @@ import { NewUser, signUp } from '@/lib/api/user';
 import { UserState } from '@/contexts/userContext';
 import { taskSortByUpdate } from '@/lib/utils/sort';
 import { searchOrganizationByName } from '@/lib/api/organization';
-import avatar, { ImageType } from '@/lib/common/avatar';
+import * as avatar from '@/lib/common/avatar';
+import { ImageType } from '@/types/image';
 
 const MAXINDEX = 16;
 
-const SignUpPage = ({ roomName }: { roomName: string }) => {
+const SignUpPage = ({ token }: { token: string }) => {
+  const { room, email }: { room: string; email: string } =
+    token !== '' ? jwt_decode(token) : { room: '', email: '' };
   const [newUser, setNewUser] = useState<NewUser>({
     name: '',
     job: '',
-    email: '',
+    email: email,
     password: '',
     checkPassword: '',
-    organization: roomName,
+    organization: room,
     imageURL: '',
   });
   const setUserState = useSetRecoilState(userAtom);
@@ -33,10 +37,10 @@ const SignUpPage = ({ roomName }: { roomName: string }) => {
   const changeGender = () => (gender === 'Boy' ? setGender('Girl') : setGender('Boy'));
 
   const clickLeft = () =>
-    !avatarIndex ? setAvatarIndex(MAXINDEX) : setAvatarIndex(() => avatarIndex - 1);
+    !avatarIndex ? setAvatarIndex(MAXINDEX) : setAvatarIndex((prev) => prev - 1);
 
   const clickRight = () =>
-    avatarIndex === MAXINDEX ? setAvatarIndex(0) : setAvatarIndex(() => avatarIndex + 1);
+    avatarIndex === MAXINDEX ? setAvatarIndex(0) : setAvatarIndex((prev) => prev + 1);
 
   const createUserByInput = async () => {
     if (newUser.password !== newUser.checkPassword) {

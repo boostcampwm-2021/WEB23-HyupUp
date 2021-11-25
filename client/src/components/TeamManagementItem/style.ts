@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 
 const ItemContainer = styled.div`
-  height: 70px;
-
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
+  z-index: 200;
+  height: 70px;
   margin: 15px 0px;
-  padding-right: 25px;
+  padding: 0 60px;
 
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.white};
@@ -17,8 +18,6 @@ const ItemContainer = styled.div`
 const Avatar = styled.img`
   width: 64px;
   height: 64px;
-
-  margin-left: 57px;
 
   border-radius: 32px;
 `;

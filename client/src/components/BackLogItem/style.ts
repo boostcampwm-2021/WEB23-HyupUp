@@ -55,4 +55,28 @@ const TaskContainer = styled.ul<IsClick>`
   }
 `;
 
-export default { ItemContainer, StoryText, ToggleImg, ToggleButton, TaskContainer };
+const UndefinedItemContainer = styled.ul`
+  width: 705px;
+  height: 70px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  background-color: ${({ theme }) => theme.color.gray200};
+`;
+
+const UndefinedText = styled.span`
+  font: ${({ theme }) => theme.font.body_regular};
+`;
+
+export default {
+  ItemContainer,
+  StoryText,
+  ToggleImg,
+  ToggleButton,
+  TaskContainer,
+  UndefinedItemContainer,
+  UndefinedText,
+};

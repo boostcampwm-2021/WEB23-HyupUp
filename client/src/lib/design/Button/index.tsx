@@ -22,7 +22,7 @@ const StyledButton = styled.button<LayoutProps>`
 
   padding: ${(props) => (props.size === 'large' ? '13px 50px' : '10px 15px')};
   font: ${(props) =>
-    props.size === 'large' ? props.theme.font.bold_regular : props.theme.font.bold_small};
+    props.size === 'large' ? props.theme.font.bold_regular : props.theme.font.bold_extra_small};
 
   background-color: ${(props) =>
     props.category === 'default'
