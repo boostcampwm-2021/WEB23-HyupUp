@@ -34,18 +34,6 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     });
   });
 
-  const makeNewEpicAction = (id: number, name: string, order: number) => ({
-    type: 'ADD_EPIC' as const,
-    epic: {
-      id,
-      projectId: userState.currentProjectId as number,
-      name,
-      startAt: new Date(),
-      endAt: new Date(),
-      order,
-    },
-  });
-
   const getMaxOrder = () => {
     return Math.max(...epicsOnProject.map((epic) => epic.order));
   };
@@ -56,7 +44,17 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       const result = await createEpic(projectId, value, Math.ceil(getMaxOrder() + 1));
       if (!result) return;
 
-      epicDispatcher(makeNewEpicAction(result.id, value, Math.ceil(getMaxOrder() + 1)));
+      epicDispatcher({
+        type: 'ADD_EPIC',
+        epic: {
+          id: result.id,
+          projectId: userState.currentProjectId as number,
+          name: value,
+          startAt: new Date(),
+          endAt: new Date(),
+          order: Math.ceil(getMaxOrder() + 1),
+        },
+      });
       setInputVisible(false);
       emitNewEpic(result.id);
 
