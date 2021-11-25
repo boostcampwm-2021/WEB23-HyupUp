@@ -47,7 +47,7 @@ const S = {
 
     background-color: ${({ theme }) => theme.color.white};
     cursor: col-resize;
-    z-index: 9;
+    z-index: 1;
 
     &::after {
       content: '';
@@ -68,7 +68,7 @@ const S = {
 
     background-color: ${({ theme }) => theme.color.white};
     cursor: col-resize;
-    z-index: 9;
+    z-index: 1;
 
     &::after {
       content: '';
