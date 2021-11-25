@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button } from '@/lib/design';
+import { Modal, Button, DropDown } from '@/lib/design';
 import Styled from '@/components/KanbanModal/style';
-import { BackLogTaskProps } from '@/types/task';
 import { getTasksByStoryId } from '@/lib/api/task';
+import { updateStoryWithId } from '@/lib/api/story';
 import KanbanTask from './KanbanTask/index';
 import { EpicType } from '@/types/epic';
 import { StoryType } from '@/types/story';
-import { useEpicState } from '@/lib/hooks/useContextHooks';
+import { useEpicState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
 
 interface TaskProps {
   name: string;
@@ -27,6 +27,7 @@ interface KanbanModalType {
 
 const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) => {
   const epicListState = useEpicState();
+  const dispatchStory = useStoryDispatch();
   const [epic, setEpic] = useState<EpicStateType>();
   const [tasks, setTasks] = useState<TaskListType>();
 
@@ -52,12 +53,25 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
     })();
   }, [story, isItemModalOpen, epicListState]);
 
+  const handleEpicSelect = async (e: React.MouseEvent) => {
+    const target = e.target as HTMLLIElement;
+    if (target.tagName !== 'LI') return;
+
+    const epicId = epicListState.find((v) => v.id === target.value)?.id;
+    dispatchStory({ type: 'UPDATE_STORY', story: { ...story, epicId: epicId } });
+    await updateStoryWithId({ ...story, epicId: epicId });
+  };
+
   return (
     <Modal shouldConfirm={false} visible={isItemModalOpen} onClose={handleCloseClick} size="LARGE">
       <Styled.ContentWrapper>
         <h3>{story.name}</h3>
         <Styled.ControlWrapper>
-          <p>{epic?.name}</p>
+          <DropDown
+            Title={<p>{epic?.name}</p>}
+            list={epicListState}
+            handleClick={handleEpicSelect}
+          />
           <Button category={'default'} size={'small'} onClick={handleAddBtn}>
             ADD TASK
           </Button>
