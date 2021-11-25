@@ -42,7 +42,7 @@ export const ProjectManagement = () => {
     (async () => {
       const result = await getUsersInfoWithProject(userState.organization as number);
       if (!result) return;
-      setUserList([...result]);
+      setUserList(result);
     })();
   }, [userState]);
 
