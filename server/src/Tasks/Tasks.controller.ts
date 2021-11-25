@@ -84,9 +84,6 @@ export const deleteTask = async (req: Request, res: Response) => {
 
 export const postTask = async (req: Request, res: Response) => {
   try {
-    if (!req.query.id) {
-      throw Error('body is not valid');
-    }
     const result = await getRepository(Tasks)
       .createQueryBuilder()
       .insert()
@@ -101,6 +98,7 @@ export const postTask = async (req: Request, res: Response) => {
       .execute();
     res.json({ id: result.raw.insertId });
   } catch (error) {
+    console.log(error);
     const message = (error as Error).message;
     res.status(401).json({ message });
   }

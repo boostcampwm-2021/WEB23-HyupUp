@@ -62,7 +62,7 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
           </Button>
         </Styled.ControlWrapper>
         {tasks?.map((task) => (
-          <KanbanTask key={task.id} task={task} />
+          <KanbanTask key={task.id} task={task} storyId={story.id as number} />
         ))}
       </Styled.ContentWrapper>
     </Modal>
