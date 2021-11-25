@@ -27,6 +27,27 @@ const ProjectModal = ({ showProjectModal, setShowProjectModal, project }: Projec
     }
     setRenderUsers(userListState.filter((item) => new RegExp(value, 'i').test(item.name)));
   }, [userListState, value]);
+
+  const inviteUserIntooProject = (userId: number, projectObj: ProjectType) => {
+    setUserListState((prev) =>
+      produce(prev, (draft) => {
+        const selectedUser = draft.find((user) => user.index === userId);
+        selectedUser?.projects.push(projectObj);
+      }),
+    );
+  };
+
+  const removeUserFromProject = (userId: number, projectObj: ProjectType) => {
+    setUserListState((prev) =>
+      produce(prev, (draft) => {
+        const selectedUser = draft.find((user) => user.index === userId);
+        selectedUser!.projects = selectedUser!.projects.filter(
+          (project) => project.id !== projectObj.id,
+        ) as ProjectType[];
+      }),
+    );
+  };
+
   return (
     <Modal
       title={project.name}
@@ -54,9 +75,17 @@ const ProjectModal = ({ showProjectModal, setShowProjectModal, project }: Projec
               job={user.job}
               admin={user.admin}
             >
-              <Styled.Button
-                isMinus={user.projects.findIndex((elem) => elem.id === project.id) >= 0}
-              />
+              {user.projects.findIndex((elem) => elem.id === project.id) >= 0 ? (
+                <Styled.Button
+                  isMinus={true}
+                  onClick={() => removeUserFromProject(user.index, project)}
+                />
+              ) : (
+                <Styled.Button
+                  isMinus={false}
+                  onClick={() => inviteUserIntooProject(user.index, project)}
+                />
+              )}
             </TeamManagementItem>
           ))}
         </Styled.UserList>
