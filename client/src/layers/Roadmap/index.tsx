@@ -23,12 +23,12 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   const epicsOnProject = useEpicState();
   const userState = useRecoilValue(userAtom);
 
-  const epicDispatcher = useEpicDispatch();
+  const dispatchEpic = useEpicDispatch();
   const emitNewEpic = useSocketSend('NEW_EPIC');
   const emitUpdateEpicOrder = useSocketSend('UPDATE_EPIC_ORDER');
   useSocketReceive('UPDATE_EPIC_ORDER', async (updatedEpicId: number) => {
     const updatedEpic = await getEpicById(updatedEpicId);
-    epicDispatcher({
+    dispatchEpic({
       type: 'UPDATE_EPIC',
       epic: updatedEpic!,
     });
@@ -44,7 +44,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       const result = await createEpic(projectId, value, Math.ceil(getMaxOrder() + 1));
       if (!result) return;
 
-      epicDispatcher({
+      dispatchEpic({
         type: 'ADD_EPIC',
         epic: {
           id: result.id,
@@ -74,7 +74,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       order: median,
     });
     emitUpdateEpicOrder(nowDragging.id);
-    epicDispatcher({
+    dispatchEpic({
       type: 'UPDATE_EPIC',
       epic: {
         ...nowDraggingEpic,
