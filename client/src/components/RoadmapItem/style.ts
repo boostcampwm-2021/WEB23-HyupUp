@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { RoadmapBarsStatus } from '../RoadmapBars';
+import { RoadmapBarsStatus } from '@/types/epic';
 
 const HANDLE_WIDTH = '12px';
 
