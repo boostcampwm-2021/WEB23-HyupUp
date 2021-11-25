@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { InputContainer, Input } from './style';
 import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
 import { useInput } from '@/lib/hooks';
@@ -16,18 +16,24 @@ const KanbanInput = ({ story, epic }: { story: StoryType; epic: EpicType | undef
     });
     updateStoryWithName({ status: 'TODO', id: key, order: story.order, name: value });
   };
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    if (inputRef.current === null) return;
+    inputRef.current.focus();
+  }, []);
 
   return (
     <InputContainer>
       <Input
         type="text"
-        placeholder={'type a Story...'}
-        value={story.name}
+        placeholder={story.name ? story.name : 'Type a Todo ...'}
         data-key={story.id}
         onChange={onChange}
         onBlur={useUpdateStoryName}
+        ref={inputRef}
       />
-      <p>{epic ? epic.name : 'Epic 을 등록해주세요'}</p>
+      <p>{epic ? epic.name : '클릭 후 Epic을 등록하세요'}</p>
     </InputContainer>
   );
 };
