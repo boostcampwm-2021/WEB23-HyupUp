@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import produce from 'immer';
 import { Modal } from '@/lib/design';
 import Styled from '@/components/ProjectModal/style';
 import { useInput } from '@/lib/hooks';
@@ -7,7 +6,7 @@ import { ProjectType } from '@/types/project';
 import { UserInfoWithProject } from '@/types/users';
 import SearchBar from '@/lib/design/SearchBar';
 
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { userListAtom } from '@/recoil/user';
 import ProjectModalItem from '@/components/ProjectModalItem';
 
@@ -18,7 +17,7 @@ type ProjectModalProps = {
 };
 
 const ProjectModal = ({ showProjectModal, setShowProjectModal, project }: ProjectModalProps) => {
-  const [userListState, setUserListState] = useRecoilState(userListAtom);
+  const userListState = useRecoilValue(userListAtom);
   const [renderUsers, setRenderUsers] = useState<UserInfoWithProject[]>([]);
   const { value, onChange } = useInput('');
   useEffect(() => {
@@ -28,26 +27,6 @@ const ProjectModal = ({ showProjectModal, setShowProjectModal, project }: Projec
     }
     setRenderUsers(userListState.filter((item) => new RegExp(value, 'i').test(item.name)));
   }, [userListState, value]);
-
-  const inviteUserIntoProject = (userId: number, projectObj: ProjectType) => {
-    setUserListState((prev) =>
-      produce(prev, (draft) => {
-        const selectedUser = draft.find((user) => user.index === userId);
-        selectedUser?.projects.push(projectObj);
-      }),
-    );
-  };
-
-  const removeUserFromProject = (userId: number, projectObj: ProjectType) => {
-    setUserListState((prev) =>
-      produce(prev, (draft) => {
-        const selectedUser = draft.find((user) => user.index === userId);
-        selectedUser!.projects = selectedUser!.projects.filter(
-          (project) => project.id !== projectObj.id,
-        ) as ProjectType[];
-      }),
-    );
-  };
 
   return (
     <Modal
@@ -69,16 +48,7 @@ const ProjectModal = ({ showProjectModal, setShowProjectModal, project }: Projec
         />
         <Styled.UserList>
           {renderUsers.map((user) => (
-            <Styled.UserItem key={user.index}>
-              <ProjectModalItem
-                inviteUserIntoProject={inviteUserIntoProject}
-                project={project}
-                user={user}
-              />
-              <Styled.DeleteBox>
-                <Styled.DeleteButton onClick={() => removeUserFromProject(user.index, project)} />
-              </Styled.DeleteBox>
-            </Styled.UserItem>
+            <ProjectModalItem key={user.index} project={project} user={user} />
           ))}
         </Styled.UserList>
       </Styled.ContentWrapper>
