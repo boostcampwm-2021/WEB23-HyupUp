@@ -12,7 +12,6 @@ import {
 } from './Users.service';
 import Organizations from '../Organizations/Organizations.entity';
 
-// 왜 인식을 못하지...?
 declare module 'express-session' {
   interface SessionData {
     isLogIn: boolean;
@@ -20,9 +19,9 @@ declare module 'express-session' {
   }
 }
 
-export const handleGet = async (req: Request, res: Response, next: NextFunction) => {
+export const handleGet = async (req: Request, res: Response) => {
   try {
-    // test login button 때문에 query 유지
+    if (typeof req.session.isLogIn === 'undefined') throw new Error('session is not valid');
     const email = req.session.isLogIn ? (req.session.email as string) : (req.query.email as string);
     if (!isValidatedEmail(email)) throw Error();
     const user = await getUserInfo(email);
@@ -35,8 +34,11 @@ export const handleGet = async (req: Request, res: Response, next: NextFunction)
     });
   } catch (err) {
     const message = (err as Error).message;
-    res.status(400).json({ message });
-    next(err);
+    if (message === 'session is not valid') {
+      res.status(401).end();
+    } else {
+      res.status(400).json({ message });
+    }
   }
 };
 
@@ -96,8 +98,7 @@ export const updateUserAdminById = async (req: Request, res: Response) => {
     if (!req.params.id) throw new Error('param is not valid');
     if (typeof req.body.admin === 'undefined') throw new Error('body is invalid');
     const users = getRepository(Users);
-    const newAdmin = req.body.admin === 'true' ? true : false;
-    await users.update({ id: +req.params.id }, { admin: newAdmin });
+    await users.update({ id: +req.params.id }, { admin: req.body.admin });
     res.end();
   } catch (e) {
     const err = e as Error;
@@ -112,8 +113,6 @@ export const logInUser = async (req: Request, res: Response, next: NextFunction)
     }
     req.session.regenerate((err) => {
       if (err) throw new Error('session is not created');
-      req.session.isLogIn = true;
-      req.session.email = req.body.email;
     });
     const userRepository = getRepository(Users);
     const user = await userRepository.findOne({
@@ -123,6 +122,8 @@ export const logInUser = async (req: Request, res: Response, next: NextFunction)
     if (!bcrypt.compareSync(req.body.password, user.password))
       throw new Error('password is not valid');
     req.query.email = req.body.email;
+    req.session.isLogIn = true;
+    req.session.email = req.body.email;
     next();
   } catch (e) {
     const err = e as Error;
@@ -142,8 +143,6 @@ export const signUpUser = async (req: Request, res: Response, next: NextFunction
 
     req.session.regenerate((err) => {
       if (err) throw new Error('session is not created');
-      req.session.isLogIn = true;
-      req.session.email = req.body.email;
     });
 
     const { name, job, email, password, imageURL } = {
@@ -185,6 +184,8 @@ export const signUpUser = async (req: Request, res: Response, next: NextFunction
     });
 
     req.query.email = newUser.email;
+    req.session.isLogIn = true;
+    req.session.email = req.body.email;
 
     next();
   } catch (e) {
