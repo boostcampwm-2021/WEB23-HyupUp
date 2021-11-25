@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import * as S from './style';
+import { UserProfile } from '@/types/users';
 import { Modal } from '@/lib/design';
 
-import {
-  deleteUserById,
-  getUsersByOrganization,
-  modifyUserAdminById,
-  UserProfile,
-} from '@/lib/api/user';
+import { deleteUserById, getUsersByOrganization, modifyUserAdminById } from '@/lib/api/user';
 import TeamInviteBar from '@/components/TeamInviteBar';
 import { TeamItemViewer } from '@/components/TeamItemViewer';
 import userAtom from '@/recoil/user';

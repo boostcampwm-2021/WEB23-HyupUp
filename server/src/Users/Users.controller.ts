@@ -60,6 +60,25 @@ export const getUsersByOrganization = async (req: Request, res: Response) => {
   }
 };
 
+export const getUsersInfoWithProject = async (req: Request, res: Response) => {
+  try {
+    if (!req.params.orgId) throw new Error('params are not valid');
+    const users = await getUsers(+req.params.orgId);
+    res.json(
+      users.map((elem) => ({
+        name: elem.name,
+        imageURL: elem.imageURL,
+        index: elem.id,
+        job: elem.job,
+        admin: elem.admin,
+        projects: elem.projects,
+      })),
+    );
+  } catch (e) {
+    res.status(400).json({ message: (e as Error).message });
+  }
+};
+
 export const deleteUserById = async (req: Request, res: Response) => {
   try {
     if (!req.params.id) throw new Error('param is not valid');

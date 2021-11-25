@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   deleteUserById,
+  getUsersInfoWithProject,
   getUsersByOrganization,
   handleGet,
   logInUser,
@@ -12,6 +13,7 @@ import {
 const router = express.Router();
 router.get('/', handleGet);
 router.get('/organization', getUsersByOrganization);
+router.get('/:orgId', getUsersInfoWithProject);
 
 router.put('/admin/:id', updateUserAdminById);
 

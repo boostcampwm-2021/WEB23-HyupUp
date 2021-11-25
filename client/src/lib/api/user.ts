@@ -2,14 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { UserState } from '@/contexts/userContext';
 import { errorMessage } from '../common/message';
-
-export interface UserProfile {
-  index: number;
-  name: string;
-  imageURL: string;
-  job: string;
-  admin: boolean;
-}
+import { UserProfile, UserInfoWithProject } from '@/types/users';
 
 export interface NewUser {
   name: string;
@@ -31,6 +24,18 @@ export const getUser = async (email: string) => {
     const result: { data: UserState } = await instance.get(`?email=${email}`);
     return result.data;
   } catch (e) {
+    toast.error(errorMessage.GET_USER);
+  }
+};
+
+export const getUsersInfoWithProject = async (
+  orgId: number,
+): Promise<UserInfoWithProject[] | void> => {
+  try {
+    const result = await instance.get(`/${orgId}`);
+    if (result.status % 400 < 100) throw new Error();
+    return result.data;
+  } catch (error) {
     toast.error(errorMessage.GET_USER);
   }
 };
