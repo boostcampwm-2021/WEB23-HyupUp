@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router';
 import { useRecoilState } from 'recoil';
 import produce from 'immer';
 import DropDown from '@/lib/design/DropDown';
@@ -7,10 +8,17 @@ import { ProjectType } from '@/types/project';
 import userAtom from '@/recoil/user';
 import { getAllProjectsByUser } from '@/lib/api/project';
 
+type ProjectData = {
+  projects: ProjectType[];
+  currentProjectName: string;
+  currentProjectId: number;
+};
+
 const SideBarDropDown = () => {
   const [userState, setUserState] = useRecoilState(userAtom);
   const [listState, setListState] = useState<Array<ProjectType>>([]);
   const [titleState, setTitleState] = useState('프로젝트');
+  const location = useLocation<ProjectType>();
 
   const itemClickHandler = (e: React.MouseEvent) => {
     const target = e.target as HTMLLIElement;
@@ -25,40 +33,41 @@ const SideBarDropDown = () => {
   };
   useEffect(() => {
     (async () => {
-      const projects = await getAllProjectsByUser(
-        userState.id as number,
-        userState.organization as number,
-      );
-      if (!projects) return;
-      const data = {
-        projects,
-        currentProjectName: '',
+      const data: ProjectData = {
+        projects: [],
         currentProjectId: 0,
+        currentProjectName: '',
       };
-      if (projects.find((el) => el.id === userState.currentProjectId)) {
-        data.currentProjectId = userState.currentProjectId!;
-        data.currentProjectName = userState.currentProjectName!;
-      } else if (projects.length) {
-        data.currentProjectId = projects[0].id;
-        data.currentProjectName = projects[0].name;
+      // 관리자 페이지에서 넘어온 경우
+      if (location.state) {
+        data.projects.push(...userState.projects!);
+        data.currentProjectId = location.state.id;
+        data.currentProjectName = location.state.name;
+      } else {
+        const projects = await getAllProjectsByUser(
+          userState.id as number,
+          userState.organization as number,
+        );
+        if (!projects) return;
+        data.projects = projects;
+        if (projects.find((el) => el.id === userState.currentProjectId)) {
+          data.currentProjectId = userState.currentProjectId!;
+          data.currentProjectName = userState.currentProjectName!;
+        } else if (projects.length) {
+          data.currentProjectId = projects[0].id;
+          data.currentProjectName = projects[0].name;
+        }
       }
-
       setUserState((prev) =>
         produce(prev, (draft) => ({
           ...draft,
           ...data,
         })),
       );
-      setListState(projects);
-      setTitleState(userState.currentProjectName || '');
+      setListState(data.projects);
+      setTitleState(data.currentProjectName || '');
     })();
-  }, [
-    setUserState,
-    userState.currentProjectId,
-    userState.currentProjectName,
-    userState.id,
-    userState.organization,
-  ]);
+  }, []);
 
   return (
     <div>
