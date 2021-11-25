@@ -27,16 +27,6 @@ const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
   const storyDispatcher = useStoryDispatch();
   const user = useRecoilValue(userAtom);
-  useSocketReceive('GET_EPIC', async (epicId: number) => {
-    try {
-      const data = await getEpicById(epicId);
-      if (!data) throw new Error(errorMessage.GET_EPIC);
-      if (data.projectId !== user.currentProjectId) return;
-      epicDispatcher({ type: `ADD_EPIC`, epic: data });
-    } catch (e) {
-      toast.error((e as Error).message);
-    }
-  });
 
   const tabs = [
     <Roadmap key={0} projectId={user?.currentProjectId} />,

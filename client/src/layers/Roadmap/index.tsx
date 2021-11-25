@@ -34,6 +34,11 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       epic: updatedEpic!,
     });
   });
+  useSocketReceive('GET_EPIC', async (epicId: number) => {
+    const data = await getEpicById(epicId);
+    if (!data || data.projectId !== userState.currentProjectId) return;
+    dispatchEpic({ type: `ADD_EPIC`, epic: data });
+  });
 
   const getMaxOrder = () => {
     return epicsOnProject.length ? Math.max(...epicsOnProject.map((epic) => epic.order)) : 0;
