@@ -15,18 +15,19 @@ import backlog from '@public/icons/time-icon.svg';
 
 import { getEpicById, getEpicsByProjectId } from '@/lib/api/epic';
 import { getAllStories } from '@/lib/api/story';
+import { getUsersInfoWithProject } from '@/lib/api/user';
 import { useEpicDispatch, useStoryDispatch } from '@/lib/hooks/useContextHooks';
 import useSocketReceive from '@/lib/hooks/useSocketReceive';
 import { toast } from 'react-toastify';
 import { errorMessage } from '@/lib/common/message';
-import { useRecoilValue } from 'recoil';
-import userAtom from '@/recoil/user';
-import { EpicType, EpicWithString } from '@/types/epic';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import userAtom, { userListAtom } from '@/recoil/user';
 
 const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
   const storyDispatcher = useStoryDispatch();
   const user = useRecoilValue(userAtom);
+  const setUserListState = useSetRecoilState(userListAtom);
   useSocketReceive('GET_EPIC', async (epicId: number) => {
     try {
       const data = await getEpicById(epicId);
@@ -56,8 +57,11 @@ const WorkPage = () => {
       if (!user.currentProjectId) return;
       const epics = await getEpicsByProjectId(user.currentProjectId);
       const stories = await getAllStories(user.currentProjectId);
+      const result = await getUsersInfoWithProject(user.organization as number);
+      if (!result) return;
       epicDispatcher({ type: 'LOAD_EPIC', epics });
       storyDispatcher({ type: 'LOAD_STORY', stories });
+      setUserListState(result);
     })();
   }, [epicDispatcher, storyDispatcher, user.currentProjectId]);
 

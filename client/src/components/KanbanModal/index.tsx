@@ -3,14 +3,11 @@ import { Modal, Button } from '@/lib/design';
 import Styled from '@/components/KanbanModal/style';
 import { BackLogTaskProps } from '@/types/task';
 import { getTasksByStoryId } from '@/lib/api/task';
-import { useRecoilValue } from 'recoil';
-import userAtom from '@/recoil/user';
 import KanbanTask from './KanbanTask/index';
 import { EpicType } from '@/types/epic';
 import { StoryType } from '@/types/story';
 import { useEpicState } from '@/lib/hooks/useContextHooks';
 
-//TODO 분리예정..
 type ResultType = undefined | Array<BackLogTaskProps>;
 type EpicStateType = undefined | EpicType;
 
@@ -21,7 +18,6 @@ interface KanbanModalType {
 }
 
 const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) => {
-  const user = useRecoilValue(userAtom);
   const epicListState = useEpicState();
   const [epic, setEpic] = useState<EpicStateType>();
   const [tasks, setTasks] = useState<ResultType>();
@@ -40,15 +36,13 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
   };
 
   useEffect(() => {
-    setEpic(epicListState.find((v) => v.id === story.epicId));
-    const fetchTasks = async () => {
+    (async () => {
       if (!isItemModalOpen) return;
-      const { id } = story;
-      const result: ResultType = await getTasksByStoryId(id as number);
-      setTasks(result);
-    };
-
-    fetchTasks();
+      const { epicId, id } = story;
+      setEpic(epicListState.find((v) => v.id === epicId));
+      const taskResult: ResultType = await getTasksByStoryId(id as number);
+      setTasks(taskResult);
+    })();
   }, [story, isItemModalOpen, epicListState]);
 
   return (
