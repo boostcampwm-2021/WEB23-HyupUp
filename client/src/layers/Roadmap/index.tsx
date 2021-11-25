@@ -96,7 +96,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       <S.Title>프로젝트 로드맵</S.Title>
       <S.Content>
         <S.EpicEntry>
-          {epicsOnProject.map(({ id, name, order }) => (
+          {epicsOnProject.map(({ id, projectId, name, order, startAt, endAt }) => (
             <EpicEntryItem
               activated={id === nowDragging.over}
               key={id}
@@ -105,7 +105,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
               onDragEnter={() => setNowDragging({ id: nowDragging.id, over: id })}
               onDragLeave={() => setNowDragging({ id: nowDragging.id, over: 0 })}
               onDrop={() => handleDrop(order)}
-              name={name}
+              epicData={{ id, projectId, name, order, startAt, endAt }}
             />
           ))}
           <S.EpicEntrySpacer
