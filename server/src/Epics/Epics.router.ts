@@ -1,4 +1,5 @@
 import express from 'express';
+import { authValidator } from '../../lib/utils/authValidator';
 import {
   createEpic,
   deleteEpicById,
@@ -9,10 +10,10 @@ import {
 
 const router = express.Router();
 
-router.get('/', getAllEpicsByProject);
-router.get('/:id', findEpicById);
-router.patch('/:id', updateEpicById);
-router.delete('/:id', deleteEpicById);
-router.post('/', createEpic);
+router.get('/', [authValidator, getAllEpicsByProject]);
+router.get('/:id', [authValidator, findEpicById]);
+router.patch('/:id', [authValidator, updateEpicById]);
+router.delete('/:id', [authValidator, deleteEpicById]);
+router.post('/', [authValidator, createEpic]);
 
 export default router;
