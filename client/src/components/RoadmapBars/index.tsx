@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import S from './style';
 import RoadmapItem from '@/components/RoadmapItem';
-import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
+import { useEpicDispatch, useEpicState, useStoryState } from '@/lib/hooks/useContextHooks';
 import { addDate } from '@/lib/utils/date';
 import { getEpicById, updateEpicById } from '@/lib/api/epic';
 import { makeEpicRenderInfo } from '@/lib/utils/epic';
@@ -21,6 +21,7 @@ interface RoadmapBarsProps {
 
 const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) => {
   const epics = useEpicState();
+  const stories = useStoryState();
   const [currentDrag, setCurrentDrag] = useState({ targetId: -1, isDraggingLeft: false });
   const epicRenderInfo = makeEpicRenderInfo(epics, { rangeFrom, rangeTo, columns: COLUMNS });
 
@@ -83,29 +84,31 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
   return (
     <>
       <S.Container>
-        {epicRenderInfo.map(({ id, length, exceedsLeft, exceedsRight, index }) => (
-          <RoadmapItem
-            key={id}
-            status="STARTED"
-            columns={COLUMNS}
-            index={index}
-            length={length}
-            exceedsLeft={exceedsLeft}
-            exceedsRight={exceedsRight}
-            handleDragStart={() => {
-              setCurrentDrag({
-                targetId: id,
-                isDraggingLeft: false,
-              });
-            }}
-            handleDragStartLeft={() => {
-              setCurrentDrag({
-                targetId: id,
-                isDraggingLeft: true,
-              });
-            }}
-          />
-        ))}
+        {epicRenderInfo.map(({ id, length, exceedsLeft, exceedsRight, index }) => {
+          return (
+            <RoadmapItem
+              key={id}
+              status="STARTED"
+              columns={COLUMNS}
+              index={index}
+              length={length}
+              exceedsLeft={exceedsLeft}
+              exceedsRight={exceedsRight}
+              handleDragStart={() => {
+                setCurrentDrag({
+                  targetId: id,
+                  isDraggingLeft: false,
+                });
+              }}
+              handleDragStartLeft={() => {
+                setCurrentDrag({
+                  targetId: id,
+                  isDraggingLeft: true,
+                });
+              }}
+            />
+          );
+        })}
       </S.Container>
 
       <S.DayColumnWrapper>
