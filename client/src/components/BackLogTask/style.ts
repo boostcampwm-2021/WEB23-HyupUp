@@ -24,6 +24,7 @@ const UserProfile = styled.div`
   align-items: center;
   justify-content: space-between;
 
+  min-width: 150px;
   margin-right: 30px;
 `;
 
