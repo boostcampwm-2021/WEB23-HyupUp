@@ -3,14 +3,14 @@ import styled from 'styled-components';
 const Styled = {
   KanbanTaskWrapper: styled.article`
     width: 700px;
-    height: 70px;
+    height: 100px;
     font: ${({ theme }) => theme.font.bold_regular};
     background-color: ${({ theme }) => theme.color.gray100};
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
-    padding: 10px;
+    padding: 10px 30px;
 
     h4 {
       padding-left: 30px;
@@ -29,7 +29,7 @@ const Styled = {
 
     input {
       background-color: ${({ theme }) => theme.color.gray100};
-      font: ${({ theme }) => theme.font.bold_regular};
+      font: ${({ theme }) => theme.font.bold_medium};
       width: 500px;
       height: 30px;
     }

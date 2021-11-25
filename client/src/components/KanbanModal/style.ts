@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 const Styled = {
   ContentWrapper: styled.section`
-    width: 800px;
-    height: 500px;
+    height: 550px;
+    width: 750px;
     overflow-y: scroll;
     overflow-x: hidden;
     z-index: 999;
