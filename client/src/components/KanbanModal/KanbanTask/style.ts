@@ -47,6 +47,7 @@ const Styled = {
       align-items: center;
     }
   `,
+  DropdownWrapper: styled.div``,
 };
 
 export default Styled;

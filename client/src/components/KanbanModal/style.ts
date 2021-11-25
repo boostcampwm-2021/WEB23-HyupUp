@@ -24,13 +24,19 @@ const Styled = {
     width: 700px;
     margin-bottom: 20px;
 
+    p {
+      font: ${({ theme }) => theme.font.bold_regular};
+    }
+
     button {
       margin: 0;
+      margin-left: 50px;
     }
   `,
   MemberContaienr: styled.div`
     p {
       margin-right: 40px;
+
       font: ${({ theme }) => theme.font.bold_regular};
     }
   `,
