@@ -7,29 +7,26 @@ import { ProjectType } from '@/types/project';
 import { UserInfoWithProject } from '@/types/users';
 import SearchBar from '@/lib/design/SearchBar';
 import TeamManagementItem from '@/components/TeamManagementItem';
+import { useRecoilState } from 'recoil';
+import { userListAtom } from '@/recoil/user';
 
 type ProjectModalProps = {
   showProjectModal: boolean;
   setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
   project: ProjectType;
-  userList: UserInfoWithProject[];
 };
 
-const ProjectModal = ({
-  showProjectModal,
-  setShowProjectModal,
-  project,
-  userList,
-}: ProjectModalProps) => {
+const ProjectModal = ({ showProjectModal, setShowProjectModal, project }: ProjectModalProps) => {
+  const [userListState, setUserListState] = useRecoilState(userListAtom);
   const [renderUsers, setRenderUsers] = useState<UserInfoWithProject[]>([]);
   const { value, onChange } = useInput('');
   useEffect(() => {
     if (value.length === 0) {
-      setRenderUsers(userList);
+      setRenderUsers(userListState);
       return;
     }
-    setRenderUsers(userList.filter((item) => new RegExp(value, 'i').test(item.name)));
-  }, [userList, value]);
+    setRenderUsers(userListState.filter((item) => new RegExp(value, 'i').test(item.name)));
+  }, [userListState, value]);
   return (
     <Modal
       title={project.name}
@@ -57,7 +54,9 @@ const ProjectModal = ({
               job={user.job}
               admin={user.admin}
             >
-              버튼자리
+              <Styled.Button
+                isMinus={user.projects.findIndex((elem) => elem.id === project.id) >= 0}
+              />
             </TeamManagementItem>
           ))}
         </Styled.UserList>
