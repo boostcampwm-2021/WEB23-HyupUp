@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import produce from 'immer';
 import { Modal } from '@/lib/design';
 import Styled from '@/components/ProjectModal/style';
@@ -21,24 +21,15 @@ const ProjectModal = ({
   project,
   userList,
 }: ProjectModalProps) => {
-  // 현재 모달로 열린 프로젝트를 가진 유저 리스트
-  const thisProjectUsersRef = useRef(
-    userList.filter((user) => {
-      if (user.projects.find((item) => item.id === project.id)) return true;
-      return false;
-    }),
-  );
   const [renderUsers, setRenderUsers] = useState<UserInfoWithProject[]>([]);
-  const { value, onChange, onReset } = useInput('');
+  const { value, onChange } = useInput('');
   useEffect(() => {
     if (value.length === 0) {
-      setRenderUsers(thisProjectUsersRef.current);
+      setRenderUsers(userList);
       return;
     }
-    setRenderUsers(
-      thisProjectUsersRef.current.filter((item) => new RegExp(value, 'i').test(item.name)),
-    );
-  }, [value]);
+    setRenderUsers(userList.filter((item) => new RegExp(value, 'i').test(item.name)));
+  }, [userList, value]);
   return (
     <Modal
       title={project.name}
