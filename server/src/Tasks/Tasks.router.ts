@@ -1,4 +1,5 @@
 import express from 'express';
+import { authValidator } from '../../lib/utils/authValidator';
 import {
   deleteTask,
   getAllTasksByProject,
@@ -8,12 +9,12 @@ import {
 
 const router = express.Router();
 
-router.get('/', getAllTasksByProject);
+router.get('/', [authValidator, getAllTasksByProject]);
 
-router.get('/:id', getTasksByStoryId);
+router.get('/:id', [authValidator, getTasksByStoryId]);
 
-router.patch('/', updateTask);
+router.patch('/', [authValidator, updateTask]);
 
-router.delete('/', deleteTask);
+router.delete('/', [authValidator, deleteTask]);
 
 export default router;

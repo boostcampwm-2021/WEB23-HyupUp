@@ -6,7 +6,8 @@ import { useSocketSend } from '@/lib/hooks';
 import { logOut } from '@/lib/api/user';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
-import avatar, { ImageType } from '@/lib/common/avatar';
+import * as avatar from '@/lib/common/avatar';
+import { ImageType } from '@/types/image';
 
 const Profile = () => {
   const [openState, setOpenState] = useState(false);

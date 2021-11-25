@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import * as S from './style';
-import avatar, { ImageType } from '@/lib/common/avatar';
+import * as avatar from '@/lib/common/avatar';
+import { ImageType } from '@/types/image';
 
 interface TeamManagementItemProps {
   imageURL: string;

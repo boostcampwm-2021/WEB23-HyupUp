@@ -4,7 +4,8 @@ import arrow from '@public/icons/chevron-down.svg';
 import BackLogTask from '../BackLogTask';
 import { getTasksByStoryId } from '@/lib/api/task';
 import { BackLogTaskProps } from '@/types/task';
-import avatar, { ImageType } from '@/lib/common/avatar';
+import * as avatar from '@/lib/common/avatar';
+import { ImageType } from '@/types/image';
 
 const BackLogItem = ({ name, id }: { name: string; id: number }) => {
   const [clicked, setClicked] = useState(false);
@@ -25,14 +26,20 @@ const BackLogItem = ({ name, id }: { name: string; id: number }) => {
         </S.ToggleButton>
       </S.ItemContainer>
       <S.TaskContainer click={clicked}>
-        {tasks.map((el) => (
-          <BackLogTask
-            key={el.id}
-            name={el.user}
-            imageURL={avatar[el.userImage as ImageType]}
-            task={el.name}
-          />
-        ))}
+        {tasks.length ? (
+          tasks.map((el) => (
+            <BackLogTask
+              key={el.id}
+              name={el.user}
+              imageURL={avatar[el.userImage as ImageType]}
+              task={el.name}
+            />
+          ))
+        ) : (
+          <S.UndefinedItemContainer>
+            <S.UndefinedText>칸반보드의 스토리를 클릭하여 Task를 추가해보세요</S.UndefinedText>
+          </S.UndefinedItemContainer>
+        )}
       </S.TaskContainer>
     </div>
   );
