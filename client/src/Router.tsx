@@ -3,7 +3,7 @@ import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import MainPage from './pages/MainPage';
 import WorkPage from './pages/WorkPage';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import userAtom from '@/recoil/user';
 import AdminPage from './pages/AdminPage';
 import LogInPage from './pages/LogInPage';
@@ -14,10 +14,8 @@ import { UserState } from './contexts/userContext';
 import { useMemo } from 'react';
 
 const Router = () => {
-  const userState = useRecoilValue(userAtom);
-  const setUserState = useSetRecoilState(userAtom);
+  const [userState, setUserState] = useRecoilState(userAtom);
   useEffect(() => {
-    if (!document.cookie.match('connect.sid')) return;
     (async () => {
       const userData = (await getUser('')) as UserState;
       if (userData.id) {
@@ -50,11 +48,7 @@ const Router = () => {
           exact
           path="/signup"
           render={() =>
-            userState?.email ? (
-              <Redirect to="/" />
-            ) : (
-              <SignUpPage roomName={query.get('name') ?? ''} />
-            )
+            userState?.email ? <Redirect to="/" /> : <SignUpPage token={query.get('token') ?? ''} />
           }
         />
         <Redirect from="*" to="/" />
