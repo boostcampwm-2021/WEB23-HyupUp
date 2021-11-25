@@ -1,4 +1,5 @@
 import React from 'react';
+import { RoadmapBarsStatus } from '@/types/epic';
 import S from './style';
 
 interface RoadmapItemProps {
@@ -7,6 +8,7 @@ interface RoadmapItemProps {
   length: number;
   exceedsLeft: boolean;
   exceedsRight: boolean;
+  status: RoadmapBarsStatus;
   handleDragStart: () => void;
   handleDragStartLeft: () => void;
 }
@@ -17,6 +19,7 @@ const RoadmapItem = ({
   length,
   exceedsLeft,
   exceedsRight,
+  status,
   handleDragStart,
   handleDragStartLeft,
 }: RoadmapItemProps) => {
@@ -25,20 +28,24 @@ const RoadmapItem = ({
       {[...Array(columns)].map((_, i) => {
         if (i === index)
           return (
-            <S.Bar key={i}>
-              {!exceedsLeft && <S.FrontHandle draggable="true" onDragStart={handleDragStartLeft} />}
+            <S.Bar key={i} status={status}>
+              {!exceedsLeft && (
+                <S.FrontHandle draggable="true" onDragStart={handleDragStartLeft} status={status} />
+              )}
               {length === 0 && !exceedsRight && (
-                <S.RearHandle draggable="true" onDragStart={handleDragStart} />
+                <S.RearHandle draggable="true" onDragStart={handleDragStart} status={status} />
               )}
             </S.Bar>
           );
         else if (i === index + length)
           return (
-            <S.Bar key={i}>
-              {!exceedsRight && <S.RearHandle draggable="true" onDragStart={handleDragStart} />}
+            <S.Bar key={i} status={status}>
+              {!exceedsRight && (
+                <S.RearHandle draggable="true" onDragStart={handleDragStart} status={status} />
+              )}
             </S.Bar>
           );
-        else if (i < index + length && i > index) return <S.Bar key={i} />;
+        else if (i < index + length && i > index) return <S.Bar key={i} status={status} />;
         else return <S.Spacer key={i} />;
       })}
     </S.Container>

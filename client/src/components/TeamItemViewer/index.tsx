@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { getUsersByOrganization } from '@/lib/api/user';
 import { UserProfile } from '@/types/users';
 import { Button, DropDown } from '@/lib/design';
 
 import TeamManagementItem from '../TeamManagementItem';
-import dots from '@public/icons/more_horiz.svg';
 
 import * as S from './style';
 import SearchBar from '@/lib/design/SearchBar';
@@ -29,7 +27,7 @@ const generateUserProfileItem = (
     <TeamManagementItem key={el.index} {...el}>
       {
         <DropDown
-          Title={<S.ThreeDot src={dots} />}
+          isMeatBall
           list={dropDownListForUser(el.admin)}
           handleClick={(e) => {
             showEditModal(e, el.index);
@@ -65,6 +63,7 @@ export const TeamItemViewer = ({
         <SearchBar
           value={userName}
           onChange={searchUserByName}
+          placeholder="찾으시는 팀원의 이름을 입력하세요."
           onSubmit={(e) => {
             e.preventDefault();
           }}

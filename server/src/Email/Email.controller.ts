@@ -18,9 +18,12 @@ export const inviteByEmail = (req: Request, res: Response) => {
     const key = v4();
     const token = jwt.sign({ id: key }, secret, {
       algorithm: 'HS256',
-      expiresIn: '1h',
+      expiresIn: '1d',
     });
-    client.set(key, JSON.stringify({ organizationId: req.body.organizationId }));
+    client.set(
+      key,
+      JSON.stringify({ organizationId: req.body.organizationId, email: req.body.email }),
+    );
     sendMail(req.body.email, token);
     res.status(201).end();
   } catch (e) {
@@ -31,6 +34,7 @@ export const inviteByEmail = (req: Request, res: Response) => {
 export const isValidEmail = (req: Request, res: Response) => {
   try {
     if (!req.params.token) throw new Error('token is undefined');
+    const secret = process.env.SECRET as string;
     const decodedToken = jwt.verify(
       req.params.token,
       process.env.SECRET as string,
@@ -41,7 +45,15 @@ export const isValidEmail = (req: Request, res: Response) => {
       const organization = (await organizationRepository.findOne({
         id: JSON.parse(reply as string).organizationId,
       })) as Organizations;
-      res.redirect(`${process.env.CLIENT_URL}/signup?name=${organization.room}`);
+      const token = jwt.sign(
+        { room: organization.room, email: JSON.parse(reply as string).email },
+        secret,
+        {
+          algorithm: 'HS256',
+          expiresIn: '1h',
+        },
+      );
+      res.redirect(`${process.env.CLIENT_URL}/signup?token=${token}`);
     });
   } catch (e) {
     const err = e as Error;

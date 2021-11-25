@@ -7,6 +7,7 @@ import { handleDragStart, handleDragEnter } from '@/lib/utils/drag';
 
 const KanbanItem = ({
   story,
+  epic,
   dragRef,
   dragCategory,
   dragOverRef,
@@ -18,6 +19,7 @@ const KanbanItem = ({
   const [isItemModalOpen, setModalOpen] = useState<boolean>(false);
   const handleItemClick = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).dataset.type === 'cancel') return;
+    if (!story.name) return;
     if (isItemModalOpen) return;
     setModalOpen((prev) => !prev);
   };
@@ -43,7 +45,7 @@ const KanbanItem = ({
       isDragEnter={isDragEnter}
       draggable={true}
     >
-      <KanbanItemInput story={story} />
+      <KanbanItemInput story={story} epic={epic} />
       <Styled.CancelIcon
         data-type="cancel"
         onClick={() => {

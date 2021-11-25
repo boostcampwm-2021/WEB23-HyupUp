@@ -39,7 +39,7 @@ export const Styled = {
       justify-content: space-around;
 
       list-style: none;
-      font: ${({ theme }) => theme.font.bold_small};
+      font: ${({ theme }) => theme.font.bold_extra_small};
     }
 
     li {

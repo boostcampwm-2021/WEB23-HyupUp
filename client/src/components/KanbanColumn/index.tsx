@@ -3,7 +3,8 @@ import Styled from '@/components/KanbanColumn/style';
 import { KanbanItem, KanbanAddBtn } from '@/components';
 import { updateStoryWithId } from '@/lib/api/story';
 import { StatusType, KanbanType, dragCategoryType } from '@/types/story';
-import { useStoryDispatch, useStoryState } from '@/lib/hooks/useContextHooks';
+import { useStoryDispatch, useStoryState, useEpicState } from '@/lib/hooks/useContextHooks';
+
 import {
   dragToDiffBetween,
   dragToEqualBetween,
@@ -24,6 +25,7 @@ const KanbanColumn = ({
 }: KanbanType) => {
   const [isTopEnter, setTopEnter] = useState(false);
   const dispatchStory = useStoryDispatch();
+  const epicState = useEpicState();
   const storyList = useStoryState();
   const filterList = storyList
     .filter((item) => item.status === category)
@@ -86,6 +88,7 @@ const KanbanColumn = ({
         <KanbanItem
           key={story.id}
           story={story}
+          epic={epicState.find((v) => v.id === story.epicId)}
           handleDragDrop={handleDragDrop}
           dragRef={dragRef}
           dragCategory={dragCategory}

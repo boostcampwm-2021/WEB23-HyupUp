@@ -75,7 +75,7 @@ const Styled = {
       width: 90%;
       height: 30px;
 
-      font: ${({ theme }) => theme.font.bold_small};
+      font: ${({ theme }) => theme.font.bold_extra_small};
       font-size: 14px;
     }
   `,

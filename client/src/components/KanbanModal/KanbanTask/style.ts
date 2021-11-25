@@ -30,7 +30,14 @@ export const KanbanTaskWrapper = styled.article`
   }
 
   span {
-    font: ${({ theme }) => theme.font.bold_small};
+    font: ${({ theme }) => theme.font.bold_extra_small};
     font-size: 14px;
+  }
+
+  input {
+    background-color: ${({ theme }) => theme.color.gray100};
+    font: ${({ theme }) => theme.font.bold_regular};
+    width: 500px;
+    height: 30px;
   }
 `;

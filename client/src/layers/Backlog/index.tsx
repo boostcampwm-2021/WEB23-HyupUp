@@ -5,11 +5,12 @@ import * as S from './style';
 
 const Backlog = () => {
   const stories = useStoryState();
+  const filteredStories = stories.filter((el) => el.name !== '');
   return (
     <S.Container>
       <S.Title>프로젝트 백로그</S.Title>
       <S.ItemContainer>
-        {stories.map((el) => (
+        {filteredStories.map((el) => (
           <BackLogItem key={el.id} name={el.name as string} id={el.id as number} />
         ))}
       </S.ItemContainer>
