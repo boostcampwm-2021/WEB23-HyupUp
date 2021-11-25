@@ -21,10 +21,14 @@ io.on('connection', (socket) => {
   });
 
   socket.on('LOGOUT', (userId: number) => {
-    client.lrem(socket.data, 1, JSON.stringify({ userId: userId, sid: socket.id }), (err) => {
-      if (err) client.lrem(socket.data, 1, JSON.stringify({ userId: userId, sid: socket.id }));
+    client.lrange(socket.data, 0, -1, (err, items) => {
+      if (err) return;
+      items.forEach((el) => {
+        if (JSON.parse(el).userId !== userId) return;
+        socket.to(socket.data).emit('OFF', userId);
+        client.lrem(socket.data, 1, el);
+      });
     });
-    socket.to(socket.data).emit('OFF', userId);
   });
 
   socket.on('disconnecting', () => {
