@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import S from '@/components/RoadmapCalendar/style';
 import { getRangeFromDate, getYMD, isSameDay, makeDayRow } from '@/lib/utils/date';
 import RoadmapBars from '@/components/RoadmapBars';
+import arrowIcon from '@public/icons/arrow-right.svg';
+import calendar from '@public/icons/calendar-icon.svg';
 
 const WEEK_OFFSET = 14;
 
@@ -22,8 +24,15 @@ const RoadmapCalendar = () => {
       <S.CalendarHead>
         <S.MonthLabel>{date.getMonth() + 1}월</S.MonthLabel>
         <S.ButtonWrapper>
-          <S.CalendarButton onClick={() => moveCalendar(false)}>&lt;</S.CalendarButton>
-          <S.CalendarButton onClick={() => moveCalendar(true)}>&gt;</S.CalendarButton>
+          <S.CalendarButton onClick={() => setDate(new Date())}>
+            <S.Today src={calendar} alt="today" />
+          </S.CalendarButton>
+          <S.CalendarButton onClick={() => moveCalendar(false)}>
+            <S.Left src={arrowIcon} alt="left arrow" />
+          </S.CalendarButton>
+          <S.CalendarButton onClick={() => moveCalendar(true)}>
+            <img src={arrowIcon} alt="left arrow" />
+          </S.CalendarButton>
         </S.ButtonWrapper>
       </S.CalendarHead>
       <S.DaysWrapper>

@@ -36,6 +36,13 @@ const S = {
       margin-left: 4px;
     }
   `,
+  Today: styled.img`
+    width: 20px;
+    height: 20px;
+  `,
+  Left: styled.img`
+    transform: rotateY(180deg);
+  `,
   DaysWrapper: styled.div`
     display: flex;
     justify-content: space-between;
