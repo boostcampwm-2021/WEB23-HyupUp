@@ -1,3 +1,5 @@
+import { EpicType } from './epic';
+
 export type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
 export type StoryType = {
@@ -30,6 +32,7 @@ export interface KanbanTestType {
 //TODO Extends 를 통한 상속
 export interface KanbanItemType {
   story: StoryType;
+  epic: EpicType | undefined;
   dragRef: dragRefObjectType;
   dragOverRef: dragRefObjectType;
   dragCategory: dragCategoryType;
