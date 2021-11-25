@@ -9,6 +9,7 @@ import dotenv from 'dotenv';
 import session from 'express-session';
 import connectredis from 'connect-redis';
 import history from 'connect-history-api-fallback';
+import { createClient } from 'redis';
 import { entities } from './src';
 
 // to-do router import
@@ -19,7 +20,7 @@ import storyRouter from './src/Stories/Stories.router';
 import taskRouter from './src/Tasks/Tasks.router';
 import todoRouter from './src/Todo/Todo.router';
 import emailRouter from './src/Email/Email.router';
-import { createClient } from 'redis';
+import organizationRouter from './src/Organizations/Organizations.router';
 
 const RedisStore = connectredis(session);
 
@@ -43,6 +44,7 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
+      httpOnly: false,
       maxAge: 1000 * 60 * 60,
     },
     store: new RedisStore({
@@ -65,6 +67,7 @@ app.use('/api/stories', storyRouter);
 app.use('/api/tasks', taskRouter);
 app.use('/api/todo', todoRouter);
 app.use('/api/email', emailRouter);
+app.use('/api/organizations', organizationRouter);
 
 app.use(history());
 

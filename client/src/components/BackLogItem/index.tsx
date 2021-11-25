@@ -4,6 +4,7 @@ import arrow from '@public/icons/chevron-down.svg';
 import BackLogTask from '../BackLogTask';
 import { getTasksByStoryId } from '@/lib/api/task';
 import { BackLogTaskProps } from '@/types/task';
+import avatar, { ImageType } from '@/lib/common/avatar';
 
 const BackLogItem = ({ name, id }: { name: string; id: number }) => {
   const [clicked, setClicked] = useState(false);
@@ -25,7 +26,12 @@ const BackLogItem = ({ name, id }: { name: string; id: number }) => {
       </S.ItemContainer>
       <S.TaskContainer click={clicked}>
         {tasks.map((el) => (
-          <BackLogTask key={el.id} name={el.user} imageURL={el.userImage} task={el.name} />
+          <BackLogTask
+            key={el.id}
+            name={el.user}
+            imageURL={avatar[el.userImage as ImageType]}
+            task={el.name}
+          />
         ))}
       </S.TaskContainer>
     </div>

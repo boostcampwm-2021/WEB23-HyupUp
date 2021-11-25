@@ -21,7 +21,9 @@ io.on('connection', (socket) => {
   });
 
   socket.on('LOGOUT', (userId: number) => {
-    client.lrem(socket.data, 1, JSON.stringify({ userId: userId, sid: socket.id }));
+    client.lrem(socket.data, 1, JSON.stringify({ userId: userId, sid: socket.id }), (err) => {
+      if (err) client.lrem(socket.data, 1, JSON.stringify({ userId: userId, sid: socket.id }));
+    });
     socket.to(socket.data).emit('OFF', userId);
   });
 
