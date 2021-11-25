@@ -35,7 +35,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   });
 
   const getMaxOrder = () => {
-    return Math.max(...epicsOnProject.map((epic) => epic.order));
+    return epicsOnProject.length ? Math.max(...epicsOnProject.map((epic) => epic.order)) : 0;
   };
 
   const handleSubmit = async (value: string) => {
