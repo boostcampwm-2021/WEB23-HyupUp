@@ -24,7 +24,9 @@ export const getUser = async (email: string) => {
     const result: { data: UserState } = await instance.get(`?email=${email}`);
     return result.data;
   } catch (e) {
-    toast.error(errorMessage.GET_USER);
+    if ((e as Error).message !== 'Request failed with status code 401') {
+      toast.error(errorMessage.GET_USER);
+    }
   }
 };
 
