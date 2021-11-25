@@ -1,6 +1,6 @@
 import { logIn } from '@/lib/api/user';
 import { Button } from '@/lib/design';
-import React, { useState } from 'react';
+import React from 'react';
 import user from '@/recoil/user';
 import { useSetRecoilState } from 'recoil';
 import * as S from './style';

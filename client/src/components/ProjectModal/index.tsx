@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import produce from 'immer';
 import { Modal } from '@/lib/design';
 import Styled from '@/components/ProjectModal/style';
@@ -6,39 +6,49 @@ import { useInput } from '@/lib/hooks';
 import { ProjectType } from '@/types/project';
 import { UserInfoWithProject } from '@/types/users';
 import SearchBar from '@/lib/design/SearchBar';
-import TeamManagementItem from '@/components/TeamManagementItem';
+
+import { useRecoilState } from 'recoil';
+import { userListAtom } from '@/recoil/user';
+import ProjectModalItem from '@/components/ProjectModalItem';
 
 type ProjectModalProps = {
   showProjectModal: boolean;
   setShowProjectModal: React.Dispatch<React.SetStateAction<boolean>>;
   project: ProjectType;
-  userList: UserInfoWithProject[];
 };
 
-const ProjectModal = ({
-  showProjectModal,
-  setShowProjectModal,
-  project,
-  userList,
-}: ProjectModalProps) => {
-  // 현재 모달로 열린 프로젝트를 가진 유저 리스트
-  const thisProjectUsersRef = useRef(
-    userList.filter((user) => {
-      if (user.projects.find((item) => item.id === project.id)) return true;
-      return false;
-    }),
-  );
+const ProjectModal = ({ showProjectModal, setShowProjectModal, project }: ProjectModalProps) => {
+  const [userListState, setUserListState] = useRecoilState(userListAtom);
   const [renderUsers, setRenderUsers] = useState<UserInfoWithProject[]>([]);
-  const { value, onChange, onReset } = useInput('');
+  const { value, onChange } = useInput('');
   useEffect(() => {
     if (value.length === 0) {
-      setRenderUsers(thisProjectUsersRef.current);
+      setRenderUsers(userListState);
       return;
     }
-    setRenderUsers((prev) =>
-      produce(prev, (draft) => draft.filter((item) => new RegExp(value, 'i').test(item.name))),
+    setRenderUsers(userListState.filter((item) => new RegExp(value, 'i').test(item.name)));
+  }, [userListState, value]);
+
+  const inviteUserIntoProject = (userId: number, projectObj: ProjectType) => {
+    setUserListState((prev) =>
+      produce(prev, (draft) => {
+        const selectedUser = draft.find((user) => user.index === userId);
+        selectedUser?.projects.push(projectObj);
+      }),
     );
-  }, [value]);
+  };
+
+  const removeUserFromProject = (userId: number, projectObj: ProjectType) => {
+    setUserListState((prev) =>
+      produce(prev, (draft) => {
+        const selectedUser = draft.find((user) => user.index === userId);
+        selectedUser!.projects = selectedUser!.projects.filter(
+          (project) => project.id !== projectObj.id,
+        ) as ProjectType[];
+      }),
+    );
+  };
+
   return (
     <Modal
       title={project.name}
@@ -51,6 +61,7 @@ const ProjectModal = ({
         <SearchBar
           color="gray"
           value={value}
+          placeholder="찾으시는 팀원의 이름을 입력하세요."
           onChange={onChange}
           onSubmit={(e) => {
             e.preventDefault();
@@ -58,15 +69,16 @@ const ProjectModal = ({
         />
         <Styled.UserList>
           {renderUsers.map((user) => (
-            <TeamManagementItem
-              key={user.index}
-              imageURL={user.imageURL}
-              name={user.name}
-              job={user.job}
-              admin={user.admin}
-            >
-              버튼자리
-            </TeamManagementItem>
+            <div key={user.index}>
+              <ProjectModalItem
+                inviteUserIntoProject={inviteUserIntoProject}
+                project={project}
+                user={user}
+              />
+              <Styled.DeleteBox>
+                <Styled.DeleteButton onClick={() => removeUserFromProject(user.index, project)} />
+              </Styled.DeleteBox>
+            </div>
           ))}
         </Styled.UserList>
       </Styled.ContentWrapper>

@@ -1,6 +1,6 @@
 import { DefaultValue, selector, selectorFamily } from 'recoil';
 import produce from 'immer';
-import userAtom from '@/recoil/user/atom';
+import userAtom from '@/recoil/user';
 import { PrivateTask, ProjectTask } from '@/types/task';
 import { taskSortByUpdate } from '@/lib/utils/sort';
 

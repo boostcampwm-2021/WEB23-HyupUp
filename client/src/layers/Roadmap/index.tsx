@@ -12,6 +12,7 @@ import { getOrderMedian } from '@/lib/utils/epic';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
 import { useSocketReceive } from '@/lib/hooks';
+import EpicEntryItem from '@/components/EpicEntryItem';
 
 interface RoadmapProps {
   projectId?: number;
@@ -21,32 +22,21 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   const [inputVisible, setInputVisible] = React.useState(false);
   const [nowDragging, setNowDragging] = React.useState({ id: 0, over: 0 });
   const epicsOnProject = useEpicState();
-  const user = useRecoilValue(userAtom);
-  const epicDispatcher = useEpicDispatch();
+  const userState = useRecoilValue(userAtom);
+
+  const dispatchEpic = useEpicDispatch();
   const emitNewEpic = useSocketSend('NEW_EPIC');
   const emitUpdateEpicOrder = useSocketSend('UPDATE_EPIC_ORDER');
   useSocketReceive('UPDATE_EPIC_ORDER', async (updatedEpicId: number) => {
     const updatedEpic = await getEpicById(updatedEpicId);
-    epicDispatcher({
+    dispatchEpic({
       type: 'UPDATE_EPIC',
       epic: updatedEpic!,
     });
   });
 
-  const makeNewEpicAction = (id: number, name: string, order: number) => ({
-    type: 'ADD_EPIC' as const,
-    epic: {
-      id,
-      projectId: user.currentProjectId as number,
-      name,
-      startAt: new Date(),
-      endAt: new Date(),
-      order,
-    },
-  });
-
   const getMaxOrder = () => {
-    return Math.max(...epicsOnProject.map((epic) => epic.order));
+    return epicsOnProject.length ? Math.max(...epicsOnProject.map((epic) => epic.order)) : 0;
   };
 
   const handleSubmit = async (value: string) => {
@@ -55,7 +45,17 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       const result = await createEpic(projectId, value, Math.ceil(getMaxOrder() + 1));
       if (!result) return;
 
-      epicDispatcher(makeNewEpicAction(result.id, value, Math.ceil(getMaxOrder() + 1)));
+      dispatchEpic({
+        type: 'ADD_EPIC',
+        epic: {
+          id: result.id,
+          projectId: userState.currentProjectId as number,
+          name: value,
+          startAt: new Date(),
+          endAt: new Date(),
+          order: Math.ceil(getMaxOrder() + 1),
+        },
+      });
       setInputVisible(false);
       emitNewEpic(result.id);
 
@@ -75,7 +75,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       order: median,
     });
     emitUpdateEpicOrder(nowDragging.id);
-    epicDispatcher({
+    dispatchEpic({
       type: 'UPDATE_EPIC',
       epic: {
         ...nowDraggingEpic,
@@ -92,29 +92,25 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       <S.Content>
         <S.EpicEntry>
           {epicsOnProject.map(({ id, name, order }) => (
-            <S.EpicEntryItem
+            <EpicEntryItem
               activated={id === nowDragging.over}
               key={id}
-              draggable="true"
               onDragStart={() => setNowDragging({ id, over: id })}
               onDragOver={(e) => e.preventDefault()}
               onDragEnter={() => setNowDragging({ id: nowDragging.id, over: id })}
               onDragLeave={() => setNowDragging({ id: nowDragging.id, over: 0 })}
               onDrop={() => handleDrop(order)}
-            >
-              {name}
-            </S.EpicEntryItem>
+              name={name}
+            />
           ))}
-          <S.EpicEntryItem
+          <S.EpicEntrySpacer
             activated={nowDragging.over === Math.ceil(getMaxOrder() + 1)}
-            draggable="false"
             onDragOver={(e) => e.preventDefault()}
             onDragEnter={() =>
               setNowDragging({ id: nowDragging.id, over: Math.ceil(getMaxOrder() + 1) })
             }
             onDrop={() => handleDrop(getMaxOrder() + 1)}
           />
-          <EpicPlaceholder visible={inputVisible} handleSubmit={handleSubmit} />
           <Button
             size={'small'}
             category={'cancel'}

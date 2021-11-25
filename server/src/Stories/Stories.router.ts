@@ -1,4 +1,5 @@
 import express from 'express';
+import { authValidator } from '../../lib/utils/authValidator';
 import {
   getAllStoriesByProject,
   getStoryById,
@@ -11,11 +12,11 @@ import {
 const router = express.Router();
 
 router
-  .get('/', getAllStoriesByProject)
-  .get('/:id', getStoryById)
-  .post('/', postStory)
-  .patch('/name/:id', updateStoryWithName)
-  .patch('/order/:id', updateStoryWithId)
-  .delete('/', deleteStoryWithId);
+  .get('/', [authValidator, getAllStoriesByProject])
+  .get('/:id', [authValidator, getStoryById])
+  .post('/', [authValidator, postStory])
+  .patch('/name/:id', [authValidator, updateStoryWithName])
+  .patch('/order/:id', [authValidator, updateStoryWithId])
+  .delete('/', [authValidator, deleteStoryWithId]);
 
 export default router;

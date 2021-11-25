@@ -15,7 +15,6 @@ export const Input = styled.input`
     font: ${({ theme }) => theme.font.bold_small};
     color: ${({ theme }) => theme.color.gray400};
   }
-
   cursor: grab;
 `;
 

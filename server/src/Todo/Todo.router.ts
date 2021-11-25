@@ -1,10 +1,11 @@
 import express from 'express';
+import { authValidator } from '../../lib/utils/authValidator';
 import { createTodo, deleteTodo, updateTodo } from './Todo.controller';
 
 const router = express.Router();
 
-router.post('/', createTodo);
-router.patch('/', updateTodo);
-router.delete('/', deleteTodo);
+router.post('/', [authValidator, createTodo]);
+router.patch('/', [authValidator, updateTodo]);
+router.delete('/', [authValidator, deleteTodo]);
 
 export default router;

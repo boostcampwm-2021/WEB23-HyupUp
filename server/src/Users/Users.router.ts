@@ -1,4 +1,5 @@
 import express from 'express';
+import { authValidator } from '../../lib/utils/authValidator';
 import {
   deleteUserById,
   getUsersInfoWithProject,
@@ -12,13 +13,13 @@ import {
 
 const router = express.Router();
 router.get('/', handleGet);
-router.get('/organization', getUsersByOrganization);
-router.get('/:orgId', getUsersInfoWithProject);
+router.get('/organization', [authValidator, getUsersByOrganization]);
+router.get('/:orgId', [authValidator, getUsersInfoWithProject]);
 
-router.put('/admin/:id', updateUserAdminById);
+router.put('/admin/:id', [authValidator, updateUserAdminById]);
 
-router.delete('/logout', logOut);
-router.delete('/:id', deleteUserById);
+router.delete('/logout', [authValidator, logOut]);
+router.delete('/:id', [authValidator, deleteUserById]);
 
 router.post('/login', [logInUser, handleGet]);
 router.post('/signup', [signUpUser, handleGet]);

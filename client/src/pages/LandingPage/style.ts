@@ -25,7 +25,7 @@ export const Styled = {
 
     color: ${({ theme }) => theme.color300};
 
-    font: ${({ theme }) => theme.font.body_small};
+    font: ${({ theme }) => theme.font.body_extra_small};
   `,
 
   TextContainer: styled.div`
