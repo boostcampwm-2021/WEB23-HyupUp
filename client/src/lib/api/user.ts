@@ -114,3 +114,15 @@ export const logOut = async () => {
     toast.error(errorMessage.CREATE_USER);
   }
 };
+
+export const sudoLogIn = async () => {
+  try {
+    const result: { data: UserState } = await instance.post('/login', {
+      email: 'test1@gmail.com',
+      password: 'token',
+    });
+    return result.data;
+  } catch (e) {
+    toast.error(errorMessage.GET_USER);
+  }
+};
