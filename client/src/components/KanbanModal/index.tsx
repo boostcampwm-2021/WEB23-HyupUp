@@ -1,26 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button } from '@/lib/design';
 import Styled from '@/components/KanbanModal/style';
 import { BackLogTaskProps } from '@/types/task';
-import { StatusType } from '@/types/story';
 import { getTasksByStoryId } from '@/lib/api/task';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
 import KanbanTask from './KanbanTask/index';
-import { getEpicById } from '@/lib/api/epic';
 import { EpicType } from '@/types/epic';
+import { StoryType } from '@/types/story';
+import { useEpicState } from '@/lib/hooks/useContextHooks';
 
 //TODO 분리예정..
 type ResultType = undefined | Array<BackLogTaskProps>;
 type EpicStateType = undefined | EpicType;
-type StoryType = {
-  name?: string;
-  status?: StatusType;
-  id?: number;
-  order?: number;
-  project?: number;
-  epic?: number;
-};
 
 interface KanbanModalType {
   story: StoryType;
@@ -30,15 +22,25 @@ interface KanbanModalType {
 
 const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) => {
   const user = useRecoilValue(userAtom);
-  const [tasks, setTasks] = useState<ResultType>();
+  const epicListState = useEpicState();
   const [epic, setEpic] = useState<EpicStateType>();
-  const storyStateRef = useRef<StoryType>(story);
+  const [tasks, setTasks] = useState<ResultType>();
 
   const handleCloseClick = () => {
     setModalOpen(!isItemModalOpen);
   };
 
+  const handleAddBtn = () => {
+    const temporaryId = tasks ? Math.max(...tasks.map((v) => v.id)) + 1 : 0;
+    if (tasks !== undefined) {
+      setTasks([...tasks, { id: temporaryId, name: '', user: '', userImage: '' }]);
+    } else {
+      setTasks([{ id: temporaryId, name: '', user: '', userImage: '' }]);
+    }
+  };
+
   useEffect(() => {
+    setEpic(epicListState.find((v) => v.id === story.epicId));
     const fetchTasks = async () => {
       if (!isItemModalOpen) return;
       const { id } = story;
@@ -46,15 +48,8 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
       setTasks(result);
     };
 
-    const fetchEpic = async () => {
-      if (!isItemModalOpen) return;
-      const { epic } = storyStateRef.current;
-      const result = await getEpicById(epic as number);
-      setEpic(result);
-    };
     fetchTasks();
-    fetchEpic();
-  }, [story, isItemModalOpen]);
+  }, [story, isItemModalOpen, epicListState]);
 
   return (
     <Modal shouldConfirm={false} visible={isItemModalOpen} onClose={handleCloseClick} size="LARGE">
@@ -62,7 +57,7 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
         <h3>{story.name}</h3>
         <Styled.ControlWrapper>
           <p>{epic?.name}</p>
-          <Button category={'default'} size={'small'}>
+          <Button category={'default'} size={'small'} onClick={handleAddBtn}>
             ADD TASK
           </Button>
         </Styled.ControlWrapper>
