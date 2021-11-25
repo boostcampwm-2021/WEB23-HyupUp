@@ -6,6 +6,7 @@ import { ProjectType } from '@/types/project';
 import { useSetRecoilState } from 'recoil';
 import { userListAtom } from '@/recoil/user';
 import produce from 'immer';
+import { inviteUserWithProject } from '@/lib/api/user';
 
 interface ProjectModalItemProps {
   user: UserInfoWithProject;
@@ -16,7 +17,8 @@ const ProjectModalItem = ({ user, project }: ProjectModalItemProps) => {
   const [isClickedMinus, setIsClickedMinus] = useState<boolean>(false);
   const setUserListState = useSetRecoilState(userListAtom);
 
-  const inviteUserIntoProject = (userId: number, projectObj: ProjectType) => {
+  const inviteUserIntoProject = async (userId: number, projectObj: ProjectType) => {
+    await inviteUserWithProject(userId, projectObj.id, true);
     setUserListState((prev) =>
       produce(prev, (draft) => {
         const selectedUser = draft.find((user) => user.index === userId);
@@ -25,7 +27,8 @@ const ProjectModalItem = ({ user, project }: ProjectModalItemProps) => {
     );
   };
 
-  const removeUserFromProject = (userId: number, projectObj: ProjectType) => {
+  const removeUserFromProject = async (userId: number, projectObj: ProjectType) => {
+    await inviteUserWithProject(userId, projectObj.id, false);
     setUserListState((prev) =>
       produce(prev, (draft) => {
         const selectedUser = draft.find((user) => user.index === userId);
