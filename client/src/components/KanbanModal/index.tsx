@@ -45,6 +45,7 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
     })();
   }, [story, isItemModalOpen, epicListState]);
 
+  console.log(tasks);
   return (
     <Modal shouldConfirm={false} visible={isItemModalOpen} onClose={handleCloseClick} size="LARGE">
       <Styled.ContentWrapper>

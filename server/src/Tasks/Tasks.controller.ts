@@ -60,6 +60,7 @@ export const updateTask = async (req: Request, res: Response) => {
     await taskRepository.update(req.body.id, {
       name: req.body.name,
       status: req.body.status,
+      users: req.body.userId,
     });
     res.end();
   } catch (error) {

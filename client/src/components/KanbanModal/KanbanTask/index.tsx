@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Styled from './style';
-import { BackLogTaskProps } from '@/types/task';
 import { ImageType } from '@/types/image';
 import * as avatar from '@/lib/common/avatar';
 import { useInput } from '@/lib/hooks';
-import { postTask } from '@/lib/api/task';
+import { postTask, updateTask } from '@/lib/api/task';
 import { useRecoilValue } from 'recoil';
 import { userListAtom } from '@/recoil/user';
 import userAtom from '@/recoil/user';
@@ -15,12 +14,13 @@ interface TaskProps {
   name: string;
   user?: string;
   userImage?: string;
+  userId?: number;
 }
 
 const KanbanTask = ({ task, storyId }: { task: TaskProps; storyId: number }) => {
   const { key, value, onChange } = useInput(task.name);
   const userState = useRecoilValue(userAtom);
-  const [isFirstCreate, setFirst] = useState(false);
+  const [isFirstRequest, setIsFirst] = useState(false);
   const [taskState, setTaskState] = useState<TaskProps>(task);
   const userListState = useRecoilValue(userListAtom);
   const userListwithId = userListState.map((value) => {
@@ -36,18 +36,14 @@ const KanbanTask = ({ task, storyId }: { task: TaskProps; storyId: number }) => 
     requestTaskName();
   };
 
-  // name: string,
-  // status: number,
-  // storyId: number,
-  // userId: null | number,
-  // projectId: undefined | nu
-
   const requestTaskName = async () => {
-    if (!isFirstCreate) {
+    if (isFirstRequest) {
       await postTask(value, 1, storyId, null, userState.currentProjectId);
-      setFirst(true);
+      setIsFirst(true);
     } else {
-      console.log('patch 하자');
+      console.log('patch');
+      const userId = taskState.userId ? taskState.userId : undefined;
+      await updateTask(taskState.id, value, false, userId);
     }
   };
 
@@ -60,16 +56,18 @@ const KanbanTask = ({ task, storyId }: { task: TaskProps; storyId: number }) => 
       ...prev,
       user: selectedUser.name,
       userImage: selectedUser.imageURL,
+      userId: selectedUser.id,
     }));
     requestSelectedUser(selectedUser.id);
   };
 
   const requestSelectedUser = async (userId: number) => {
-    if (!isFirstCreate) {
+    if (isFirstRequest) {
       await postTask('', 1, storyId, userId, userState.currentProjectId);
-      setFirst(true);
+      setIsFirst(true);
     } else {
-      console.log('patch 하자');
+      console.log('patch');
+      await updateTask(taskState.id, value, false, userId);
     }
   };
 

@@ -23,12 +23,13 @@ export const getTasksByStoryId = async (storyId: number) => {
   }
 };
 
-export const updateTask = async (id: number, name: string, status: boolean) => {
+export const updateTask = async (id: number, name: string, status: boolean, userId?: number) => {
   try {
     const result = await instance.patch('', {
       id,
       name,
       status,
+      userId,
     });
     if (result.status >= 400) throw Error();
   } catch (e) {

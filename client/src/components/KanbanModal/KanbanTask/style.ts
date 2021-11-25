@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const Styled = {
   KanbanTaskWrapper: styled.article`
     width: 700px;
-    height: 120px;
+    height: 70px;
     border-radius: 10px;
     font: ${({ theme }) => theme.font.bold_regular};
     background-color: ${({ theme }) => theme.color.gray100};
