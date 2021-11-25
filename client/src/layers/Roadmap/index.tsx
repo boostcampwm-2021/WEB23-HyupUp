@@ -21,7 +21,8 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   const [inputVisible, setInputVisible] = React.useState(false);
   const [nowDragging, setNowDragging] = React.useState({ id: 0, over: 0 });
   const epicsOnProject = useEpicState();
-  const user = useRecoilValue(userAtom);
+  const userState = useRecoilValue(userAtom);
+
   const epicDispatcher = useEpicDispatch();
   const emitNewEpic = useSocketSend('NEW_EPIC');
   const emitUpdateEpicOrder = useSocketSend('UPDATE_EPIC_ORDER');
@@ -37,7 +38,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     type: 'ADD_EPIC' as const,
     epic: {
       id,
-      projectId: user.currentProjectId as number,
+      projectId: userState.currentProjectId as number,
       name,
       startAt: new Date(),
       endAt: new Date(),
