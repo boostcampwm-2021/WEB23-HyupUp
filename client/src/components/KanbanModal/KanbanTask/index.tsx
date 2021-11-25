@@ -4,7 +4,8 @@ import { BackLogTaskProps } from '@/types/task';
 import { useInput } from '@/lib/hooks';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
-import avatar, { ImageType } from '@/lib/common/avatar';
+import * as avatar from '@/lib/common/avatar';
+import { ImageType } from '@/types/image';
 
 const KanbanTask = ({ task }: { task: BackLogTaskProps }) => {
   const { key, value, onChange } = useInput(task.name);
