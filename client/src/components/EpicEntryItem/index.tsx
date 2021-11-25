@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import S from './style';
+import draggableIcon from '@public/icons/draggable.svg';
 
 interface EpicEntryItemProps {
   activated: boolean;
@@ -12,9 +13,17 @@ interface EpicEntryItemProps {
 }
 
 const EpicEntryItem = (props: EpicEntryItemProps) => {
+  const [showDraggable, setShowDraggable] = useState(false);
+
   return (
-    <S.Container draggable="true" {...props}>
-      {props.name}
+    <S.Container
+      draggable="true"
+      {...props}
+      onMouseOver={() => setShowDraggable(true)}
+      onMouseOut={() => setShowDraggable(false)}
+    >
+      <S.DragIndicator src={draggableIcon} alt="draggableicon" showDraggable={showDraggable} />
+      <div>{props.name}</div>
     </S.Container>
   );
 };
