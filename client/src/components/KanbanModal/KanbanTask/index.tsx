@@ -64,16 +64,28 @@ const KanbanTask = ({ task, storyId }: { task: TaskProps; storyId: number }) => 
   return (
     <Styled.KanbanTaskWrapper>
       <input value={value} onBlur={handleInput} placeholder={'Type A Task'} onChange={onChange} />
-      <Styled.MemberContainer>
-        {taskState.user ? (
-          <p>
-            <img src={avatar[taskState.userImage as ImageType]} alt="userimage" />
-            <span>{taskState.user}</span>
-          </p>
-        ) : (
+      {taskState.user ? (
+        <Styled.MemberContainer>
+          <DropDown
+            Title={
+              <p>
+                <img
+                  className="userImage"
+                  src={avatar[taskState.userImage as ImageType]}
+                  alt="userimage"
+                />
+                <span>{taskState.user}</span>
+              </p>
+            }
+            list={userListwithId}
+            handleClick={handleUserSelect}
+          />
+        </Styled.MemberContainer>
+      ) : (
+        <Styled.DropdownWrapper>
           <DropDown list={userListwithId} handleClick={handleUserSelect} isMeatBall={true} />
-        )}
-      </Styled.MemberContainer>
+        </Styled.DropdownWrapper>
+      )}
     </Styled.KanbanTaskWrapper>
   );
 };

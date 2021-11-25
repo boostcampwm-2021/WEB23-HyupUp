@@ -11,7 +11,7 @@ const Styled = {
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
-    padding: 10px 30px;
+    padding: 10px 40px;
 
     h4 {
       padding-left: 30px;
@@ -30,15 +30,15 @@ const Styled = {
 
     input {
       background-color: ${({ theme }) => theme.color.gray100};
-      font: ${({ theme }) => theme.font.bold_medium};
+      font: ${({ theme }) => theme.font.bold_regular};
       width: 500px;
       height: 30px;
     }
   `,
   MemberContainer: styled.div`
-    width: 130px;
+    width: 100px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     p {
       width: 80%;
@@ -46,8 +46,25 @@ const Styled = {
       justify-content: space-around;
       align-items: center;
     }
+    img {
+      width: 15px;
+    }
+    .userImage {
+      width: 50px;
+    }
   `,
-  DropdownWrapper: styled.div``,
+  DropdownWrapper: styled.div`
+    position: relative;
+    img {
+      width: 25px;
+    }
+    margin-right: 30px;
+    ul {
+      position: absolute;
+      top: 30px;
+      left: -45px;
+    }
+  `,
 };
 
 export default Styled;
