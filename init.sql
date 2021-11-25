@@ -1,7 +1,7 @@
 INSERT INTO `HYUPUP`.`ORGANIZATIONS` (`ID`, `ROOM`) VALUES ('1', 'room1');
 
-INSERT INTO `HYUPUP`.`USERS` (`ID`, `ADMIN`, `ORGANIZATION_ID`, `JOB`, `NAME`, `EMAIL`, `IMAGE_URL`, `PASSWORD`) VALUES ('1', '1', '1', 'FE', 'harry', 'test1@gmail.com', 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80', 'token');
-INSERT INTO `HYUPUP`.`USERS` (`ID`, `ADMIN`, `ORGANIZATION_ID`, `JOB`, `NAME`, `EMAIL`, `IMAGE_URL`, `PASSWORD`) VALUES ('2', '0', '1', 'BE', 'jarry', 'test2@gmail.com', 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1470&q=80', 'token');
+INSERT INTO `HYUPUP`.`USERS` (`ID`, `ADMIN`, `ORGANIZATION_ID`, `JOB`, `NAME`, `EMAIL`, `IMAGE_URL`, `PASSWORD`) VALUES ('1', '1', '1', 'FE', 'harry', 'test1@gmail.com', 'Boy0', '$2b$10$e3kxJ2jBwf/o5rpNgG.rqe/fvHyPxl2UH6r16ySb18IsLEeeGMwye');
+INSERT INTO `HYUPUP`.`USERS` (`ID`, `ADMIN`, `ORGANIZATION_ID`, `JOB`, `NAME`, `EMAIL`, `IMAGE_URL`, `PASSWORD`) VALUES ('2', '0', '1', 'BE', 'jarry', 'test2@gmail.com', 'Girl0', '$2b$10$e3kxJ2jBwf/o5rpNgG.rqe/fvHyPxl2UH6r16ySb18IsLEeeGMwye');
 
 INSERT INTO `HYUPUP`.`TODO` (`STATUS`, `USER_ID`, `NAME`) VALUES ( '0', '1', '강아지 산책 시키기');
 INSERT INTO `HYUPUP`.`TODO` (`STATUS`, `USER_ID`, `NAME`) VALUES ( '0', '1', '고양이 산책 시키기');

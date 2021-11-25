@@ -1,31 +1,36 @@
 import { Styled } from '@/components/Profile/style';
 import React, { useState, useRef } from 'react';
 import useOutSideClick from '@/lib/hooks/useOutSideClick';
-import { useUserDispatch, useUserState } from '@/lib/hooks/useContextHooks';
+import { useUserDispatch } from '@/lib/hooks/useContextHooks';
 import { useSocketSend } from '@/lib/hooks';
+import { logOut } from '@/lib/api/user';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
+import avatar, { ImageType } from '@/lib/common/avatar';
 
 const Profile = () => {
   const [openState, setOpenState] = useState(false);
-  const userState = useUserState();
+  const userState = useRecoilValue(userAtom);
   const userDispatch = useUserDispatch();
   const toggleDropDown = () => setOpenState((openState) => !openState);
   const handleOutClick = () => setOpenState((openState) => !openState);
   const emitLogout = useSocketSend('LOGOUT');
-  const handleLogout = () => {
+  const handleLogout = async () => {
     emitLogout(userState.id);
     userDispatch({ type: 'LOGOUT' });
-    location.pathname = '/'; // TODO: 세션 제거 로직 필요
+    location.pathname = '/';
+    await logOut();
   };
   const ref = useRef(null);
 
   useOutSideClick(ref, handleOutClick);
   return (
     <Styled.Profile>
-      <section onClick={toggleDropDown}></section>
+      <img onClick={toggleDropDown} src={avatar[userState.imageURL as ImageType]}></img>
       {openState && (
         <div className="list-container" ref={ref}>
           <ul className="dropdown-list">
-            <li>이름</li>
+            <li>{userState.name}</li>
             <li className="logout" onClick={handleLogout}>
               로그아웃
             </li>

@@ -9,7 +9,7 @@ export const Styled = {
     width: 10%;
     position: relative;
 
-    section {
+    img {
       width: 50px;
       height: 50px;
       border-radius: 50%;
