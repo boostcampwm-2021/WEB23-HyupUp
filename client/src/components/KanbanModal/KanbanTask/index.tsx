@@ -11,12 +11,13 @@ const KanbanTask = ({ task }: { task: BackLogTaskProps }) => {
   const { key, value, onChange } = useInput(task.name);
   const userState = useRecoilValue(userAtom);
 
+  console.log(task);
   return (
     <KanbanTaskWrapper>
       <input value={value} placeholder={'Type A Task'} onChange={onChange} />
       <p>
-        <img src={avatar[userState.imageURL as ImageType]} alt="userimage" />
-        <span>{userState.name}</span>
+        <img src={avatar[task.userImage as ImageType]} alt="userimage" />
+        <span>{task.user}</span>
       </p>
     </KanbanTaskWrapper>
   );
