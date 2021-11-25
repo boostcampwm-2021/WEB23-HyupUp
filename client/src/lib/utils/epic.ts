@@ -26,13 +26,11 @@ export const makeEpicWithDate = (epicWithString: EpicWithString): EpicType => {
  * @returns 전달한 에픽 id와 연동된 스토리 객체를 상태별로 필터링하여 반환
  */
 export const filterStoriesAboutEpic = (epicId: number, stories: StoryType[]) => {
-  // FIXME: story 객체의 epic id 프로퍼티가 `epic`으로 들어가있음
-  // 클라이언트단의 StoryType 은 epicId, 서버단의 Stories.controller.ts 에서는 epic 으로 내려줘서 생긴 문제
-  const todos = stories.filter((story) => story.epic === epicId && story.status === 'TODO');
+  const todos = stories.filter((story) => story.epicId === epicId && story.status === 'TODO');
   const inProgresses = stories.filter(
-    (story) => story.epic === epicId && story.status === 'IN_PROGRESS',
+    (story) => story.epicId === epicId && story.status === 'IN_PROGRESS',
   );
-  const dones = stories.filter((story) => story.epic === epicId && story.status === 'DONE');
+  const dones = stories.filter((story) => story.epicId === epicId && story.status === 'DONE');
   return { todos, inProgresses, dones };
 };
 
