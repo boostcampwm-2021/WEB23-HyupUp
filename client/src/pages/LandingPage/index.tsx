@@ -45,6 +45,9 @@ const LandingPage = () => {
       >
         Login as Test2
       </Button>
+      <Button size="large" category="default" onClick={() => (window.location.href = '/login')}>
+        HyupUp 시작하기
+      </Button>
       <Styled.TextContainer>
         <Styled.Body>
           로그인은 개인 정보 보호 정책 및 서비스 약관에 동의하는 것을 의미하며,

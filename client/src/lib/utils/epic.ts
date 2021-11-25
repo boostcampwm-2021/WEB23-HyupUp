@@ -7,6 +7,7 @@ export const makeEpicWithDate = (epicWithString: EpicWithString): EpicType => {
     name: epicWithString.name,
     startAt: new Date(epicWithString.startAt),
     endAt: new Date(epicWithString.endAt),
+    order: epicWithString.order,
   };
 };
 
@@ -69,3 +70,10 @@ export const makeEpicRenderInfo = (
       exceedsRight,
     };
   });
+
+export const getOrderMedian = (epics: EpicType[], targetOrder: number) => {
+  const index = epics.findIndex((epic) => epic.order === targetOrder);
+  if (index === 0) return targetOrder / 2;
+  const result = epics[index === -1 ? epics.length - 1 : index - 1];
+  return (targetOrder + result.order) / 2;
+};

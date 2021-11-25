@@ -22,6 +22,11 @@
     "build": "webpack --mode=production",
     "storybook": "start-storybook -s ./public -p 9001"
   },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/src/**/**/index.test.tsx"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/plugin-proposal-class-properties": "^7.16.0",
@@ -35,6 +40,7 @@
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "@types/react-router-dom": "^5.3.2",
@@ -47,6 +53,7 @@
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.1-alpha-cb11155c8-20211112",
     "html-webpack-plugin": "^5.5.0",
+    "jest-environment-jsdom": "27.0.0",
     "nth-check": "^2.0.1",
     "path": "^0.12.7",
     "style-loader": "^3.3.1",

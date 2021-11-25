@@ -2,13 +2,16 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { UserState } from '@/contexts/userContext';
 import { errorMessage } from '../common/message';
+import { UserProfile, UserInfoWithProject } from '@/types/users';
 
-export interface UserProfile {
-  index: number;
+export interface NewUser {
   name: string;
-  imageURL: string;
   job: string;
-  admin: boolean;
+  email: string;
+  password: string;
+  checkPassword: string;
+  organization: string;
+  imageURL: string;
 }
 
 const instance = axios.create({
@@ -19,11 +22,21 @@ const instance = axios.create({
 export const getUser = async (email: string) => {
   try {
     const result: { data: UserState } = await instance.get(`?email=${email}`);
-    // 추후 로그인된이메일 확인은 세션에서 (get요청이므로 데이터 없애야함)
     return result.data;
   } catch (e) {
     toast.error(errorMessage.GET_USER);
-    throw e;
+  }
+};
+
+export const getUsersInfoWithProject = async (
+  orgId: number,
+): Promise<UserInfoWithProject[] | void> => {
+  try {
+    const result = await instance.get(`/${orgId}`);
+    if (result.status % 400 < 100) throw new Error();
+    return result.data;
+  } catch (error) {
+    toast.error(errorMessage.GET_USER);
   }
 };
 
@@ -45,7 +58,7 @@ export const deleteUserById = async (id: number | undefined) => {
     const res = await instance.delete(`/${id}`);
     if (res.status % 400 < 100) throw new Error();
   } catch (e) {
-    toast.error(errorMessage.GET_USER);
+    toast.error(errorMessage.DELETE_USER);
   }
 };
 
@@ -54,6 +67,48 @@ export const modifyUserAdminById = async (id: number | undefined, newAdmin: bool
     if (typeof id === 'undefined') throw new Error();
     await instance.put(`/admin/${id}`, { admin: newAdmin });
   } catch (e) {
+    toast.error(errorMessage.UPDATE_USER);
+  }
+};
+
+export const logIn = async (email: string, password: string) => {
+  try {
+    const result: { data: UserState } = await instance.post('/login', {
+      email,
+      password,
+    });
+    return result.data;
+  } catch (e) {
     toast.error(errorMessage.GET_USER);
+  }
+};
+
+export const signUp = async ({ name, job, email, password, organization, imageURL }: NewUser) => {
+  try {
+    const result: { data: UserState } = await instance.post('/signup', {
+      name,
+      job,
+      email,
+      password,
+      organization,
+      imageURL,
+    });
+
+    return result.data;
+  } catch (e) {
+    if ((e as Error).message === 'Request failed with status code 406') {
+      toast.error(errorMessage.CREATE_USER_EMAIL);
+    } else {
+      toast.error(errorMessage.CREATE_USER);
+    }
+  }
+};
+
+export const logOut = async () => {
+  try {
+    const result = await instance.delete('/logout');
+    toast.info(result);
+  } catch (e) {
+    toast.error(errorMessage.CREATE_USER);
   }
 };

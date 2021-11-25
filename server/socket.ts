@@ -21,7 +21,9 @@ io.on('connection', (socket) => {
   });
 
   socket.on('LOGOUT', (userId: number) => {
-    client.lrem(socket.data, 1, JSON.stringify({ userId: userId, sid: socket.id }));
+    client.lrem(socket.data, 1, JSON.stringify({ userId: userId, sid: socket.id }), (err) => {
+      if (err) client.lrem(socket.data, 1, JSON.stringify({ userId: userId, sid: socket.id }));
+    });
     socket.to(socket.data).emit('OFF', userId);
   });
 
@@ -42,7 +44,15 @@ io.on('connection', (socket) => {
     // 클라이언트에서 projectId 도 같이 보내도록 수정
     // 1차 필터: 서버측(이 파일)에서 조직이 다르면 broadcast 하지 않도록 구현
     // 2차 필터: 클라이언트측에서 다른프로젝트에 속해있다면 이벤트 핸들러를 실행하지 않도록 구현
-    socket.broadcast.emit('GET_EPIC', epicId);
+    socket.broadcast.to(socket.data).emit('GET_EPIC', epicId);
+  });
+
+  socket.on('UPDATE_EPIC_BAR', (epicId: number) => {
+    socket.broadcast.to(socket.data).emit('UPDATE_EPIC_BAR', epicId);
+  });
+
+  socket.on('UPDATE_EPIC_ORDER', (epicId: number) => {
+    socket.broadcast.to(socket.data).emit('UPDATE_EPIC_ORDER', epicId);
   });
 });
 

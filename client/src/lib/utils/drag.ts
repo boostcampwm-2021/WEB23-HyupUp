@@ -4,11 +4,11 @@ export const handleDragStart = (
   e: React.DragEvent<HTMLElement>,
   order: number,
   category: StatusType,
-  draggingRef: dragRefObjectType,
-  draggingCategory: dragCategoryType,
+  dragRef: dragRefObjectType,
+  dragCategory: dragCategoryType,
 ) => {
-  draggingRef.current = order;
-  draggingCategory.current = category;
+  dragRef.current = order;
+  dragCategory.current = category;
 };
 
 export const handleDragEnter = (

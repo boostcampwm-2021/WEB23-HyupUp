@@ -8,7 +8,6 @@ const Styled = {
     width: 950px;
     height: 75px;
     padding: 12px;
-    margin-left: 20px;
 
     background-color: ${({ theme }) => theme.color.gray100};
     border-radius: 8px;

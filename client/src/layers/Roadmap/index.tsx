@@ -1,13 +1,17 @@
 import * as React from 'react';
 import { toast } from 'react-toastify';
 import S from './style';
-import EpicPlaceholder from '../../components/EpicPlaceholder';
+import EpicPlaceholder from '@/components/EpicPlaceholder';
 import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
-import { createEpic } from '@/lib/api/epic';
+import { createEpic, getEpicById, updateEpicById } from '@/lib/api/epic';
 import useSocketSend from '@/lib/hooks/useSocketSend';
 import RoadmapCalendar from '@/components/RoadmapCalendar';
 import Button from '@/lib/design/Button';
 import { errorMessage, successMessage } from '@/lib/common/message';
+import { getOrderMedian } from '@/lib/utils/epic';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
+import { useSocketReceive } from '@/lib/hooks';
 
 interface RoadmapProps {
   projectId?: number;
@@ -15,32 +19,43 @@ interface RoadmapProps {
 
 const Roadmap = ({ projectId }: RoadmapProps) => {
   const [inputVisible, setInputVisible] = React.useState(false);
+  const [nowDragging, setNowDragging] = React.useState({ id: 0, over: 0 });
   const epicsOnProject = useEpicState();
+  const user = useRecoilValue(userAtom);
   const epicDispatcher = useEpicDispatch();
   const emitNewEpic = useSocketSend('NEW_EPIC');
+  const emitUpdateEpicOrder = useSocketSend('UPDATE_EPIC_ORDER');
+  useSocketReceive('UPDATE_EPIC_ORDER', async (updatedEpicId: number) => {
+    const updatedEpic = await getEpicById(updatedEpicId);
+    epicDispatcher({
+      type: 'UPDATE_EPIC',
+      epic: updatedEpic!,
+    });
+  });
 
-  const makeNewAction = (id: number, name: string) => ({
+  const makeNewEpicAction = (id: number, name: string, order: number) => ({
     type: 'ADD_EPIC' as const,
     epic: {
       id,
+      projectId: user.currentProjectId as number,
       name,
       startAt: new Date(),
       endAt: new Date(),
+      order,
     },
   });
+
+  const getMaxOrder = () => {
+    return Math.max(...epicsOnProject.map((epic) => epic.order));
+  };
 
   const handleSubmit = async (value: string) => {
     try {
       if (!projectId) throw new Error(errorMessage.GET_PROJECT);
-      const result = await createEpic(projectId, value);
-      // FIXME: 에러 핸들링을 어디서 처리해야하나?
-      // createEpic의 결과를 확인하고 여기서 에러처리
-      // 또는 createEpic 내부에서 에러처리
-      // 현재는 후자의 방법을 사용중
-      // 전자의 방법을 사용한다면 createEpic 함수 내부의 toast 알림 제거 후 return 문을 throw문으로 교체
+      const result = await createEpic(projectId, value, Math.ceil(getMaxOrder() + 1));
       if (!result) return;
 
-      epicDispatcher(makeNewAction(result.id, value));
+      epicDispatcher(makeNewEpicAction(result.id, value, Math.ceil(getMaxOrder() + 1)));
       setInputVisible(false);
       emitNewEpic(result.id);
 
@@ -50,14 +65,55 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     }
   };
 
+  const handleDrop = async (order: number) => {
+    const median = getOrderMedian(epicsOnProject, order);
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    const nowDraggingEpic = epicsOnProject.find((epic) => epic.id === nowDragging.id)!;
+
+    await updateEpicById(nowDragging.id, {
+      ...nowDraggingEpic,
+      order: median,
+    });
+    emitUpdateEpicOrder(nowDragging.id);
+    epicDispatcher({
+      type: 'UPDATE_EPIC',
+      epic: {
+        ...nowDraggingEpic,
+        order: median,
+      },
+    });
+
+    setNowDragging({ id: 0, over: 0 });
+  };
+
   return (
     <S.Container>
       <S.Title>프로젝트 로드맵</S.Title>
       <S.Content>
         <S.EpicEntry>
-          {epicsOnProject?.map(({ name }, i) => (
-            <S.EpicEntryItem key={name + i.toString()}>{name}</S.EpicEntryItem>
+          {epicsOnProject.map(({ id, name, order }) => (
+            <S.EpicEntryItem
+              activated={id === nowDragging.over}
+              key={id}
+              draggable="true"
+              onDragStart={() => setNowDragging({ id, over: id })}
+              onDragOver={(e) => e.preventDefault()}
+              onDragEnter={() => setNowDragging({ id: nowDragging.id, over: id })}
+              onDragLeave={() => setNowDragging({ id: nowDragging.id, over: 0 })}
+              onDrop={() => handleDrop(order)}
+            >
+              {name}
+            </S.EpicEntryItem>
           ))}
+          <S.EpicEntryItem
+            activated={nowDragging.over === Math.ceil(getMaxOrder() + 1)}
+            draggable="false"
+            onDragOver={(e) => e.preventDefault()}
+            onDragEnter={() =>
+              setNowDragging({ id: nowDragging.id, over: Math.ceil(getMaxOrder() + 1) })
+            }
+            onDrop={() => handleDrop(getMaxOrder() + 1)}
+          />
           <EpicPlaceholder visible={inputVisible} handleSubmit={handleSubmit} />
           <Button
             size={'small'}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import arrow from '@public/icons/chevron-down.svg';
+import meatball from '@public/icons/meatball-icon.svg';
 import theme from '@/styles/theme';
 
 interface IsVisibleProps {
@@ -40,6 +41,8 @@ const Item = styled.li<FontProps>`
   margin: 16px;
 
   font: ${(props) => props.fontTheme.font};
+
+  cursor: pointer;
 `;
 
 const ArrowImage = styled.img<IsVisibleProps>`
@@ -63,7 +66,7 @@ const ContextContainer = styled.div`
 
   border-radius: 8px;
 
-  background-color: ${({ theme }) => theme.color.gray100};
+  cursor: pointer;
 `;
 
 const Line = styled.hr`
@@ -79,9 +82,10 @@ interface IncludeId {
 }
 
 interface DropDownProps {
-  Title: React.ReactNode;
+  Title?: React.ReactNode;
   list: Array<IncludeId>;
   font?: string;
+  isMeatBall?: boolean;
   handleClick: (e: React.MouseEvent) => void;
 }
 
@@ -92,7 +96,7 @@ interface DropDownProps {
  * @returns DropDown Component
  */
 const DropDown = (props: DropDownProps) => {
-  const { Title, list, font, handleClick } = props;
+  const { Title, list, font, handleClick, isMeatBall = false } = props;
   const fontTheme = {
     font: font ? font : theme.font.body_regular,
   };
@@ -113,7 +117,7 @@ const DropDown = (props: DropDownProps) => {
     <Parent>
       <ContextContainer onClick={changeState}>
         {Title}
-        <ArrowImage src={arrow} state={clickState} />
+        {isMeatBall ? <img src={meatball} /> : <ArrowImage src={arrow} state={clickState} />}
       </ContextContainer>
       <Box onClick={selectItem} state={clickState}>
         {list.map((el, i) =>

@@ -1,37 +1,76 @@
-import React, { useState, createContext } from 'react';
-import { Modal } from '@/lib/design';
-import { deleteStoryWitId } from '@/lib/api/story';
-import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
+import React, { useState, useEffect, useRef } from 'react';
+import { Modal, Button } from '@/lib/design';
+import Styled from '@/components/KanbanModal/style';
+import { BackLogTaskProps } from '@/types/task';
+import { StatusType } from '@/types/story';
+import { getTasksByStoryId } from '@/lib/api/task';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
+import KanbanTask from './KanbanTask/index';
+import { getEpicById } from '@/lib/api/epic';
+import { EpicType } from '@/types/epic';
 
-export type ModalContextType = {
-  setShowModal: (args: boolean) => void;
-  setDeleteItem: (arg: number) => void;
+//TODO 분리예정..
+type ResultType = undefined | Array<BackLogTaskProps>;
+type EpicStateType = undefined | EpicType;
+type StoryType = {
+  name?: string;
+  status?: StatusType;
+  id?: number;
+  order?: number;
+  project?: number;
+  epic?: number;
 };
 
-export const KanbanModalContext = createContext<ModalContextType | null>(null);
+interface KanbanModalType {
+  story: StoryType;
+  isItemModalOpen: boolean;
+  setModalOpen: (arg: boolean) => void;
+}
 
-const KanbanModal = ({ children }: { children: React.ReactNode }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [shouldDeleteKey, setDeleteItem] = useState(0);
+const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) => {
+  const user = useRecoilValue(userAtom);
+  const [tasks, setTasks] = useState<ResultType>();
+  const [epic, setEpic] = useState<EpicStateType>();
+  const storyStateRef = useRef<StoryType>(story);
 
-  const dispatchStory = useStoryDispatch();
-  const deleteStory = async () => {
-    dispatchStory({ type: 'REMOVE_STORY', id: shouldDeleteKey });
-    await deleteStoryWitId(shouldDeleteKey);
+  const handleCloseClick = () => {
+    setModalOpen(!isItemModalOpen);
   };
 
+  useEffect(() => {
+    const fetchTasks = async () => {
+      if (!isItemModalOpen) return;
+      const { id } = story;
+      const result: ResultType = await getTasksByStoryId(id as number);
+      setTasks(result);
+    };
+
+    const fetchEpic = async () => {
+      if (!isItemModalOpen) return;
+      const { epic } = storyStateRef.current;
+      const result = await getEpicById(epic as number);
+      setEpic(result);
+    };
+    fetchTasks();
+    fetchEpic();
+  }, [story, isItemModalOpen]);
+
   return (
-    <KanbanModalContext.Provider value={{ setShowModal, setDeleteItem }}>
-      <Modal
-        shouldConfirm
-        title={'스토리를 삭제하시겠습니까?'}
-        visible={showModal}
-        onClose={() => setShowModal(false)}
-        onClickCancel={() => setShowModal(false)}
-        onClickOk={deleteStory}
-      />
-      {children}
-    </KanbanModalContext.Provider>
+    <Modal shouldConfirm={false} visible={isItemModalOpen} onClose={handleCloseClick} size="LARGE">
+      <Styled.ContentWrapper>
+        <h3>{story.name}</h3>
+        <Styled.ControlWrapper>
+          <p>{epic?.name}</p>
+          <Button category={'default'} size={'small'}>
+            ADD TASK
+          </Button>
+        </Styled.ControlWrapper>
+        {tasks?.map((task) => (
+          <KanbanTask key={task.id} task={task} />
+        ))}
+      </Styled.ContentWrapper>
+    </Modal>
   );
 };
 

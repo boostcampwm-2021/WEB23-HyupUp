@@ -21,10 +21,10 @@ export const getAllStoriesByProject = async (req: Request, res: Response) => {
       name: el.name,
       order: el.order,
       status: el.status,
-      epic: el.epics.name,
+      epic: el.epics.id,
     }));
 
-    res.status(200).json(storiesWithEpicName);
+    res.json(storiesWithEpicName);
   } catch (e) {
     const result = (e as Error).message;
     if (result === 'query is not vaild') {
@@ -43,7 +43,7 @@ export const getStoryById = async (req: Request, res: Response) => {
     if (!result) {
       throw new Error(`해당 ${id} 를 조회할 수 없습니다`);
     }
-    res.status(200).json(result);
+    res.json(result);
   } catch (e) {
     res.status(404).json({
       message: (e as Error).message,
@@ -67,7 +67,7 @@ export const postStory = async (req: Request, res: Response) => {
       })
       .execute();
 
-    res.status(201).json({ id: result.raw.insertId });
+    res.json({ id: result.raw.insertId });
   } catch (e) {
     res.status(400).json({
       message: (e as Error).message,

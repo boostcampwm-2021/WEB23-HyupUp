@@ -2,7 +2,7 @@ import { getRepository } from 'typeorm';
 import Users from './Users.entity';
 import Todo from '../Todo/Todo.entity';
 import Tasks from '../Tasks/Tasks.entity';
-import { PrivateTask, ProjectTask, User } from '../../types/user';
+import { PrivateTask, ProjectTask, User } from '../../lib/types/user';
 import Organizations from '../Organizations/Organizations.entity';
 
 export const getUserTodos = async (email: string): Promise<PrivateTask[]> => {

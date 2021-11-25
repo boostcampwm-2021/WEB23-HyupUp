@@ -16,6 +16,9 @@ export default class Epics {
   @Column({ name: 'END_AT' })
   endAt!: Date;
 
+  @Column('decimal', { name: 'ORDER', precision: 20, scale: 12 })
+  order!: number;
+
   @ManyToOne(() => Projects, (projects) => projects.id)
   @JoinColumn({ name: 'PROJECT_ID' })
   projects!: Projects;

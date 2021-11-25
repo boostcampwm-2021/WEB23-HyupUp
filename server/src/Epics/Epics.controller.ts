@@ -20,8 +20,9 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
       name: el.name,
       startAt: el.startAt,
       endAt: el.endAt,
+      order: +el.order,
     }));
-    res.status(200).json(result);
+    res.json(result);
   } catch (e) {
     const result = (e as Error).message;
     if (result === 'query is not vaild') {
@@ -32,18 +33,22 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
 
 export const findEpicById = async (req: Request, res: Response) => {
   try {
-    if (!req.params.id) {
-      throw new Error('id should be in request url');
-    }
-    const { id } = req.params;
-    const result = await getRepository(Epics).findOne(id);
-    if (!result) {
-      throw new Error(`cannot find Epic with id ${id}`);
-    }
-    res.status(200).json(result);
+    const { id, name, startAt, endAt, order, projects } = (await getRepository(Epics)
+      .createQueryBuilder('epics')
+      .leftJoinAndSelect('epics.projects', 'projects')
+      .where('epics.id = :id', { id: req.params.id })
+      .getOne()) as Epics;
+    res.json({
+      id,
+      name,
+      startAt,
+      endAt,
+      order,
+      projectId: projects.id,
+    });
   } catch (e) {
     res.status(404).json({
-      message: (e as Error).message,
+      message: `cannot find epic data with id ${req.params.id}`,
     });
   }
 };
@@ -64,6 +69,7 @@ export const createEpic = async (req: Request, res: Response) => {
         projects: req.body.projectId,
         startAt: req.body.startAt,
         endAt: req.body.endAt,
+        order: req.body.order,
       })
       .execute();
     res.status(201).json({ id: result.raw.insertId });
@@ -80,22 +86,19 @@ export const createEpic = async (req: Request, res: Response) => {
  * @body name: string 수정하려는 에픽의 이름
  * @body startAt: 수정하려는 에픽의 시작일
  * @body endAt: 수정하려는 에픽의 종료일
+ * @body order: 수정하려는 에픽의 order 값
  * @response message: string 응답결과 메시지
  */
 export const updateEpicById = async (req: Request, res: Response) => {
   try {
-    const { name, startAt, endAt } = req.body;
+    const { name, startAt, endAt, order } = req.body;
     await getRepository(Epics)
       .createQueryBuilder()
       .update()
-      .set({
-        name: name,
-        startAt: startAt,
-        endAt: endAt,
-      })
+      .set({ name, startAt, endAt, order })
       .where('id = :id', { id: req.params.id })
       .execute();
-    res.status(200).end();
+    res.end();
   } catch (e) {
     res.status(400).json({
       message: (e as Error).message,
@@ -115,7 +118,7 @@ export const deleteEpicById = async (req: Request, res: Response) => {
       .delete()
       .where('id = :id', { id: req.params.id })
       .execute();
-    res.status(200).end();
+    res.end();
   } catch (e) {
     res.status(404).json({
       message: (e as Error).message,
