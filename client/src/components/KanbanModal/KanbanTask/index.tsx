@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { KanbanTaskWrapper } from './style';
 import { BackLogTaskProps } from '@/types/task';
 import { useInput } from '@/lib/hooks';
@@ -11,16 +11,19 @@ import { ImageType } from '@/types/image';
 const KanbanTask = ({ task, storyId }: { task: BackLogTaskProps; storyId: number }) => {
   const { key, value, onChange } = useInput(task.name);
   const userState = useRecoilValue(userAtom);
+  const [isFirstCreate, setFirst] = useState(false);
 
   const handleInput = async () => {
-    const id = await postTask(value, 1, storyId, null, userState.currentProjectId);
-    console.log(id);
+    if (!value) return;
+    if (!isFirstCreate) {
+      await postTask(value, 1, storyId, null, userState.currentProjectId);
+      setFirst(true);
+    }
   };
-
   return (
     <KanbanTaskWrapper>
       <input value={value} onBlur={handleInput} placeholder={'Type A Task'} onChange={onChange} />
-      <p>
+      <p onClick={() => console.log(task)}>
         <img src={avatar[task.userImage as ImageType]} alt="userimage" />
         <span>{task.user}</span>
       </p>
