@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import produce from 'immer';
 
 import Styled from '@/layers/ProjectManagement/style';
-import userAtom from '@/recoil/user';
+import userAtom, { userListAtom } from '@/recoil/user';
 import { createProject, deleteProjectById, getAllProjectsByOrg } from '@/lib/api/project';
 import { useInput } from '@/lib/hooks';
 import { ProjectType } from '@/types/project';
@@ -11,6 +11,7 @@ import { ProjectCreateForm, ProjectCard } from '@/components';
 
 export const ProjectManagement = () => {
   const userState = useRecoilValue(userAtom);
+  const setUserListState = useSetRecoilState(userListAtom);
   const [projectList, setProjectList] = useState<ProjectType[]>([]);
   const { value, onChange, onReset } = useInput('');
 
@@ -30,6 +31,12 @@ export const ProjectManagement = () => {
     setProjectList((prev) =>
       produce(prev, (draft) => {
         draft.unshift(newProject);
+      }),
+    );
+    setUserListState((prev) =>
+      produce(prev, (draft) => {
+        const thisUser = draft.find((user) => user.index === userState.id);
+        thisUser?.projects.push(newProject);
       }),
     );
     onReset();
