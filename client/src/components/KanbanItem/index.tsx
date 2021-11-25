@@ -22,7 +22,6 @@ const KanbanItem = ({
     if (isItemModalOpen) return;
     setModalOpen((prev) => !prev);
   };
-  console.log(epic);
 
   return (
     <Styled.KanBanItem
@@ -45,7 +44,7 @@ const KanbanItem = ({
       isDragEnter={isDragEnter}
       draggable={true}
     >
-      <KanbanItemInput story={story} />
+      <KanbanItemInput story={story} epic={epic} />
       <Styled.CancelIcon
         data-type="cancel"
         onClick={() => {
