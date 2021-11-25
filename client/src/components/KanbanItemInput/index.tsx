@@ -1,11 +1,12 @@
 import React from 'react';
-import Input from './style';
+import { InputContainer, Input } from './style';
 import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
 import { useInput } from '@/lib/hooks';
 import { updateStoryWithName } from '@/lib/api/story';
 import { StoryType } from '@/types/story';
+import { EpicType } from '@/types/epic';
 
-const KanbanInput = ({ story }: { story: StoryType }) => {
+const KanbanInput = ({ story, epic }: { story: StoryType; epic: EpicType | undefined }) => {
   const dispatchStory = useStoryDispatch();
   const { key, value, onChange } = useInput('');
   const useUpdateStoryName = () => {
@@ -17,13 +18,17 @@ const KanbanInput = ({ story }: { story: StoryType }) => {
   };
 
   return (
-    <Input
-      type="text"
-      placeholder={story.name ? story.name : 'type a todo...'}
-      data-key={story.id}
-      onChange={onChange}
-      onBlur={useUpdateStoryName}
-    />
+    <InputContainer>
+      <Input
+        type="text"
+        placeholder={'type a Story...'}
+        value={story.name}
+        data-key={story.id}
+        onChange={onChange}
+        onBlur={useUpdateStoryName}
+      />
+      <p>{epic ? epic.name : 'Epic 을 등록해주세요'}</p>
+    </InputContainer>
   );
 };
 
