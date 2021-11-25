@@ -22,7 +22,10 @@ const RoadmapCalendar = () => {
   return (
     <S.RoadmapCalendar>
       <S.CalendarHead>
-        <S.MonthLabel>{date.getMonth() + 1}월</S.MonthLabel>
+        <S.MonthYearWrapper>
+          <S.YearLabel>{date.getFullYear()}년</S.YearLabel>
+          <S.MonthLabel>{date.getMonth() + 1}월</S.MonthLabel>
+        </S.MonthYearWrapper>
         <S.ButtonWrapper>
           <S.CalendarButton onClick={() => setDate(new Date())}>
             <S.Today src={calendar} alt="today" />
