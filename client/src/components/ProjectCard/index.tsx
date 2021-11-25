@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
+
 import { ProjectType } from '@/types/project';
 import { DropDown, Modal } from '@/lib/design';
 import Styled from '@/components/ProjectCard/style';
 import { ProjectModal } from '@/components';
+import userAtom from '@/recoil/user';
+import { warningMessage } from '@/lib/common/message';
 
 type ProjectCardProps = {
   project: ProjectType;
@@ -15,10 +20,15 @@ const teamMemberManagement = [
 ];
 
 const ProjectCard = ({ project, deleteProject }: ProjectCardProps) => {
+  const userState = useRecoilValue(userAtom);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showProjectModal, setShowProjectModal] = useState(false);
   const openModalHandler = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
+    if (!userState.admin) {
+      toast.warn(warningMessage.ADMIN_ACCESS);
+      return;
+    }
     if (target.tagName !== 'LI') return;
     if (target.innerHTML === teamMemberManagement[0].name) {
       setShowProjectModal(true);

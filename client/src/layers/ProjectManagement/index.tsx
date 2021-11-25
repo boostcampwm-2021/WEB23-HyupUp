@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import produce from 'immer';
+import { toast } from 'react-toastify';
 
 import Styled from '@/layers/ProjectManagement/style';
+import { warningMessage } from '@/lib/common/message';
 import userAtom, { userListAtom } from '@/recoil/user';
 import { createProject, deleteProjectById, getAllProjectsByOrg } from '@/lib/api/project';
 import { useInput } from '@/lib/hooks';
@@ -25,6 +27,10 @@ export const ProjectManagement = () => {
 
   const onSubmitNewProject = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!userState.admin) {
+      toast.warn(warningMessage.ADMIN_ACCESS);
+      return;
+    }
     if (!value.length) return;
     const newProject = await createProject(value, userState.id as number);
     if (!newProject) return;
