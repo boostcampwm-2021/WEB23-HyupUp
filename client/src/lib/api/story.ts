@@ -87,7 +87,7 @@ export const updateStoryWithId = async ({
   }
 };
 
-export const deleteStoryWitId = async (id: number) => {
+export const deleteStoryWithId = async (id: number) => {
   try {
     await instance.delete(`?storyId=${id}`);
   } catch (e) {
