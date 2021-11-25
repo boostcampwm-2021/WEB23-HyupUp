@@ -103,7 +103,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
               name={name}
             />
           ))}
-          <EpicEntryItem
+          <S.EpicEntrySpacer
             activated={nowDragging.over === Math.ceil(getMaxOrder() + 1)}
             onDragOver={(e) => e.preventDefault()}
             onDragEnter={() =>

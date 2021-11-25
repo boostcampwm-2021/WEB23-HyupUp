@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 const S = {
   Container: styled.li<{ activated: boolean }>`
+    display: flex;
+    align-items: center;
+
     margin: 5px 0;
     padding: 20px 0;
 
@@ -17,6 +20,12 @@ const S = {
       margin-top: 32px;
       padding-top: 32px;
     }
+  `,
+  DragIndicator: styled.img<{ showDraggable: boolean }>`
+    margin-right: 8px;
+
+    transition: opacity 0.1s ease;
+    opacity: ${({ showDraggable }) => (showDraggable ? 1 : 0)};
   `,
 };
 
