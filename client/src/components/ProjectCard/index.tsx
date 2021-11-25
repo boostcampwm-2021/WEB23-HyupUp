@@ -11,7 +11,7 @@ type ProjectCardProps = {
   userList: UserInfoWithProject[];
 };
 
-const dropdownList = [
+const teamMemberManagement = [
   { id: 1, name: '팀원관리' },
   { id: 2, name: '삭제' },
 ];
@@ -22,10 +22,10 @@ const ProjectCard = ({ project, deleteProject, userList }: ProjectCardProps) => 
   const openModalHandler = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
     if (target.tagName !== 'LI') return;
-    if (target.innerHTML === dropdownList[0].name) {
+    if (target.innerHTML === teamMemberManagement[0].name) {
       setShowProjectModal(true);
     }
-    if (target.innerHTML === dropdownList[1].name) {
+    if (target.innerHTML === teamMemberManagement[1].name) {
       setShowDeleteModal(true);
     }
   };
@@ -33,7 +33,7 @@ const ProjectCard = ({ project, deleteProject, userList }: ProjectCardProps) => 
     <Styled.CardWrapper>
       <Styled.CardHeader>
         <h3>{project.name}</h3>
-        <DropDown list={dropdownList} handleClick={openModalHandler} isMeatBall={true} />
+        <DropDown list={teamMemberManagement} handleClick={openModalHandler} isMeatBall={true} />
       </Styled.CardHeader>
       <Styled.CardImage projectId={project.id} />
       <Modal
