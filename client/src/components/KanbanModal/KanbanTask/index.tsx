@@ -27,11 +27,27 @@ const KanbanTask = ({ task, storyId }: { task: TaskProps; storyId: number }) => 
     return { ...value, id: value.index };
   });
 
-  const handleInput = async () => {
+  const handleInput = () => {
     if (!value) return;
+    setTaskState((prev) => ({
+      ...prev,
+      name: value,
+    }));
+    requestTaskName();
+  };
+
+  // name: string,
+  // status: number,
+  // storyId: number,
+  // userId: null | number,
+  // projectId: undefined | nu
+
+  const requestTaskName = async () => {
     if (!isFirstCreate) {
       await postTask(value, 1, storyId, null, userState.currentProjectId);
       setFirst(true);
+    } else {
+      console.log('patch 하자');
     }
   };
 
@@ -43,8 +59,18 @@ const KanbanTask = ({ task, storyId }: { task: TaskProps; storyId: number }) => 
     setTaskState((prev) => ({
       ...prev,
       user: selectedUser.name,
-      userImage: selectedUser?.imageURL,
+      userImage: selectedUser.imageURL,
     }));
+    requestSelectedUser(selectedUser.id);
+  };
+
+  const requestSelectedUser = async (userId: number) => {
+    if (!isFirstCreate) {
+      await postTask('', 1, storyId, userId, userState.currentProjectId);
+      setFirst(true);
+    } else {
+      console.log('patch 하자');
+    }
   };
 
   return (
