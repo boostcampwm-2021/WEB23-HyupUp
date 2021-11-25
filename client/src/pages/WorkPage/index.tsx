@@ -13,15 +13,11 @@ import roadmap from '@public/icons/calendar-icon.svg';
 import board from '@public/icons/board-icon.svg';
 import backlog from '@public/icons/time-icon.svg';
 
-import { getEpicById, getEpicsByProjectId } from '@/lib/api/epic';
+import { getEpicsByProjectId } from '@/lib/api/epic';
 import { getAllStories } from '@/lib/api/story';
 import { useEpicDispatch, useStoryDispatch } from '@/lib/hooks/useContextHooks';
-import useSocketReceive from '@/lib/hooks/useSocketReceive';
-import { toast } from 'react-toastify';
-import { errorMessage } from '@/lib/common/message';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
-import { EpicType, EpicWithString } from '@/types/epic';
 
 const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
