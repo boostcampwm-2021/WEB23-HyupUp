@@ -4,6 +4,7 @@ import { getDateDiff, isFormer, isLatter, isSameDay, shouldRender } from './date
 export const makeEpicWithDate = (epicWithString: EpicWithString): EpicType => {
   return {
     id: epicWithString.id,
+    projectId: epicWithString.projectId,
     name: epicWithString.name,
     startAt: new Date(epicWithString.startAt),
     endAt: new Date(epicWithString.endAt),
