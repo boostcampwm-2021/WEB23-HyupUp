@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Styled from './style';
 import { ImageType } from '@/types/image';
 import * as avatar from '@/lib/common/avatar';
@@ -10,8 +10,9 @@ import userAtom from '@/recoil/user';
 import { DropDown } from '@/lib/design';
 
 interface TaskProps {
-  id: number;
   name: string;
+  id: number;
+  preExist?: boolean;
   user?: string;
   userImage?: string;
   userId?: number;
@@ -20,55 +21,44 @@ interface TaskProps {
 const KanbanTask = ({ task, storyId }: { task: TaskProps; storyId: number }) => {
   const { key, value, onChange } = useInput(task.name);
   const userState = useRecoilValue(userAtom);
-  const [isFirstRequest, setIsFirst] = useState(false);
   const [taskState, setTaskState] = useState<TaskProps>(task);
   const userListState = useRecoilValue(userListAtom);
   const userListwithId = userListState.map((value) => {
     return { ...value, id: value.index };
   });
 
-  const handleInput = () => {
+  const handleInput = async () => {
     if (!value) return;
+    if (!taskState.preExist) {
+      await postTask(value, 1, storyId, null, userState.currentProjectId);
+    } else {
+      const userId = taskState.userId;
+      await updateTask(taskState.id, value, false, userId);
+    }
     setTaskState((prev) => ({
       ...prev,
       name: value,
+      preExist: true,
     }));
-    requestTaskName();
   };
 
-  const requestTaskName = async () => {
-    if (isFirstRequest) {
-      await postTask(value, 1, storyId, null, userState.currentProjectId);
-      setIsFirst(true);
-    } else {
-      console.log('patch');
-      const userId = taskState.userId ? taskState.userId : undefined;
-      await updateTask(taskState.id, value, false, userId);
-    }
-  };
-
-  const handleUserSelect = (e: React.MouseEvent) => {
+  const handleUserSelect = async (e: React.MouseEvent) => {
     const target = e.target as HTMLLIElement;
     if (target.tagName !== 'LI') return;
     const selectedUser = userListwithId.find((v) => v.index === target.value);
     if (!selectedUser || !selectedUser?.name) return;
+    if (!taskState.preExist) {
+      await postTask('', 1, storyId, selectedUser.id, userState.currentProjectId);
+    } else {
+      await updateTask(taskState.id, value, false, selectedUser.id);
+    }
     setTaskState((prev) => ({
       ...prev,
       user: selectedUser.name,
       userImage: selectedUser.imageURL,
-      userId: selectedUser.id,
+      userId: target.value,
+      preExist: true,
     }));
-    requestSelectedUser(selectedUser.id);
-  };
-
-  const requestSelectedUser = async (userId: number) => {
-    if (isFirstRequest) {
-      await postTask('', 1, storyId, userId, userState.currentProjectId);
-      setIsFirst(true);
-    } else {
-      console.log('patch');
-      await updateTask(taskState.id, value, false, userId);
-    }
   };
 
   return (

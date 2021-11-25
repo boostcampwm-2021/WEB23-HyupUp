@@ -8,7 +8,15 @@ import { EpicType } from '@/types/epic';
 import { StoryType } from '@/types/story';
 import { useEpicState } from '@/lib/hooks/useContextHooks';
 
-type ResultType = undefined | Array<BackLogTaskProps>;
+interface TaskProps {
+  name: string;
+  id: number;
+  preExist?: boolean;
+  user?: string;
+  userImage?: string;
+  userId?: number;
+}
+type TaskListType = undefined | Array<TaskProps>;
 type EpicStateType = undefined | EpicType;
 
 interface KanbanModalType {
@@ -20,7 +28,7 @@ interface KanbanModalType {
 const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) => {
   const epicListState = useEpicState();
   const [epic, setEpic] = useState<EpicStateType>();
-  const [tasks, setTasks] = useState<ResultType>();
+  const [tasks, setTasks] = useState<TaskListType>();
 
   const handleCloseClick = () => {
     setModalOpen(!isItemModalOpen);
@@ -29,23 +37,21 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
   const handleAddBtn = () => {
     const temporaryId = tasks ? Math.max(...tasks.map((v) => v.id)) + 1 : 0;
     if (tasks !== undefined) {
-      setTasks([...tasks, { id: temporaryId, name: '', user: '', userImage: '' }]);
+      setTasks([...tasks, { id: temporaryId, name: '', user: '', userImage: '', preExist: false }]);
     } else {
-      setTasks([{ id: temporaryId, name: '', user: '', userImage: '' }]);
+      setTasks([{ id: temporaryId, name: '', user: '', userImage: '', preExist: false }]);
     }
   };
 
   useEffect(() => {
     (async () => {
-      if (!isItemModalOpen) return;
       const { epicId, id } = story;
       setEpic(epicListState.find((v) => v.id === epicId));
-      const taskResult: ResultType = await getTasksByStoryId(id as number);
-      setTasks(taskResult);
+      const taskResult: TaskListType = await getTasksByStoryId(id as number);
+      setTasks(taskResult?.map((v) => ({ ...v, preExist: true })));
     })();
   }, [story, isItemModalOpen, epicListState]);
 
-  console.log(tasks);
   return (
     <Modal shouldConfirm={false} visible={isItemModalOpen} onClose={handleCloseClick} size="LARGE">
       <Styled.ContentWrapper>
