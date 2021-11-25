@@ -2,10 +2,14 @@ import styled from 'styled-components';
 
 const Styled = {
   ContentWrapper: styled.section`
-    width: 700px;
+    width: 800px;
     height: 500px;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
     z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     h3 {
       text-align: center;
@@ -20,13 +24,14 @@ const Styled = {
     width: 700px;
     margin-bottom: 20px;
 
+    button {
+      margin: 0;
+    }
+  `,
+  MemberContaienr: styled.div`
     p {
       margin-right: 40px;
       font: ${({ theme }) => theme.font.bold_regular};
-    }
-
-    button {
-      margin: 0;
     }
   `,
 };

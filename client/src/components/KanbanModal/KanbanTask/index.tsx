@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { KanbanTaskWrapper } from './style';
+import Styled from './style';
 import { BackLogTaskProps } from '@/types/task';
 import { useInput } from '@/lib/hooks';
 import { useRecoilValue } from 'recoil';
@@ -7,6 +7,12 @@ import { postTask } from '@/lib/api/task';
 import userAtom from '@/recoil/user';
 import * as avatar from '@/lib/common/avatar';
 import { ImageType } from '@/types/image';
+import { DropDown, Modal } from '@/lib/design';
+
+const teamMemberManagement = [
+  { id: 1, name: '팀원관리' },
+  { id: 2, name: '삭제' },
+];
 
 const KanbanTask = ({ task, storyId }: { task: BackLogTaskProps; storyId: number }) => {
   const { key, value, onChange } = useInput(task.name);
@@ -20,14 +26,25 @@ const KanbanTask = ({ task, storyId }: { task: BackLogTaskProps; storyId: number
       setFirst(true);
     }
   };
+
   return (
-    <KanbanTaskWrapper>
+    <Styled.KanbanTaskWrapper>
       <input value={value} onBlur={handleInput} placeholder={'Type A Task'} onChange={onChange} />
-      <p onClick={() => console.log(task)}>
-        <img src={avatar[task.userImage as ImageType]} alt="userimage" />
-        <span>{task.user}</span>
-      </p>
-    </KanbanTaskWrapper>
+      <Styled.MemberContainer>
+        {task.user ? (
+          <p>
+            <img src={avatar[task.userImage as ImageType]} alt="userimage" />
+            <span>{task.user}</span>
+          </p>
+        ) : (
+          <DropDown
+            list={teamMemberManagement}
+            handleClick={() => console.log('clicked')}
+            isMeatBall={true}
+          />
+        )}
+      </Styled.MemberContainer>
+    </Styled.KanbanTaskWrapper>
   );
 };
 
