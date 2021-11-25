@@ -1,13 +1,13 @@
 import React, { useState, useRef } from 'react';
 import Styled from './style';
-import { ImageType } from '@/types/image';
-import * as avatar from '@/lib/common/avatar';
 import { useInput } from '@/lib/hooks';
 import { postTask, updateTask } from '@/lib/api/task';
 import { useRecoilValue } from 'recoil';
 import { userListAtom } from '@/recoil/user';
 import userAtom from '@/recoil/user';
 import { DropDown } from '@/lib/design';
+import * as avatar from '@/lib/common/avatar';
+import { ImageType } from '@/types/image';
 
 interface TaskProps {
   name: string;

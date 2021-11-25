@@ -22,15 +22,25 @@ export const Styled = {
 
   ContentContainer: styled.div`
     width: 80%;
+    height: 480px;
     margin-top: 200px;
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 
     background-color: ${({ theme }) => theme.color.gray100};
     border-radius: 8px;
     padding: 60px;
+  `,
+
+  SudoLogin: styled.button`
+    margin: 15px auto;
+    border-radius: 8px;
+    padding: 13px 50px;
+    font: ${({ theme }) => theme.font.bold_small};
+    background-color: ${({ theme }) => theme.color.blue400};
+    color: ${({ theme }) => theme.color.white};
   `,
 };
