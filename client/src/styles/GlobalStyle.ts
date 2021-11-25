@@ -30,6 +30,7 @@ const GlobalStyle = createGlobalStyle`
     url(${PretendardRegular}) format('woff2');
     font-weight: 300; 		
     font-style: normal;
+    font-display: swap;
   }
 
   @font-face {
@@ -38,6 +39,7 @@ const GlobalStyle = createGlobalStyle`
     url(${PretendardBold}) format('woff2');
     font-weight: 600; 		
     font-style: normal;
+    font-display: swap;
   }
 
   body {

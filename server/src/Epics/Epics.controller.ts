@@ -22,7 +22,7 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
       endAt: el.endAt,
       order: +el.order,
     }));
-    res.status(200).json(result);
+    res.json(result);
   } catch (e) {
     const result = (e as Error).message;
     if (result === 'query is not vaild') {
@@ -33,18 +33,22 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
 
 export const findEpicById = async (req: Request, res: Response) => {
   try {
-    if (!req.params.id) {
-      throw new Error('id should be in request url');
-    }
-    const { id } = req.params;
-    const result = await getRepository(Epics).findOne(id);
-    if (!result) {
-      throw new Error(`cannot find Epic with id ${id}`);
-    }
-    res.status(200).json(result);
+    const { id, name, startAt, endAt, order, projects } = (await getRepository(Epics)
+      .createQueryBuilder('epics')
+      .leftJoinAndSelect('epics.projects', 'projects')
+      .where('epics.id = :id', { id: req.params.id })
+      .getOne()) as Epics;
+    res.json({
+      id,
+      name,
+      startAt,
+      endAt,
+      order,
+      projectId: projects.id,
+    });
   } catch (e) {
     res.status(404).json({
-      message: (e as Error).message,
+      message: `cannot find epic data with id ${req.params.id}`,
     });
   }
 };
@@ -114,7 +118,7 @@ export const deleteEpicById = async (req: Request, res: Response) => {
       .delete()
       .where('id = :id', { id: req.params.id })
       .execute();
-    res.status(200).end();
+    res.end();
   } catch (e) {
     res.status(404).json({
       message: (e as Error).message,

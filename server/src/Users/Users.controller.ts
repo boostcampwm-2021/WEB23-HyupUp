@@ -16,12 +16,14 @@ import Organizations from '../Organizations/Organizations.entity';
 declare module 'express-session' {
   interface SessionData {
     isLogIn: boolean;
+    email: string;
   }
 }
 
 export const handleGet = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const email = req.query.email as string; // 추후에는 세션에서 email찾아야함
+    // test login button 때문에 query 유지
+    const email = req.session.isLogIn ? (req.session.email as string) : (req.query.email as string);
     if (!isValidatedEmail(email)) throw Error();
     const user = await getUserInfo(email);
     const todos = await getUserTodos(email);
@@ -111,6 +113,7 @@ export const logInUser = async (req: Request, res: Response, next: NextFunction)
     req.session.regenerate((err) => {
       if (err) throw new Error('session is not created');
       req.session.isLogIn = true;
+      req.session.email = req.body.email;
     });
     const userRepository = getRepository(Users);
     const user = await userRepository.findOne({
@@ -136,37 +139,71 @@ export const signUpUser = async (req: Request, res: Response, next: NextFunction
   try {
     if (!bodyValidator(req.body, ['name', 'job', 'email', 'password', 'organization']))
       throw new Error('body is not valid');
-    const { name, job, email, password } = {
+
+    req.session.regenerate((err) => {
+      if (err) throw new Error('session is not created');
+      req.session.isLogIn = true;
+      req.session.email = req.body.email;
+    });
+
+    const { name, job, email, password, imageURL } = {
       ...(req.body as {
         name: string;
         job: string;
         email: string;
         password: string;
+        imageURL: string;
       }),
     };
+
     const organizationRepository = getRepository(Organizations);
     const userRepository = getRepository(Users);
+
+    const user = await userRepository.findOne({ where: { email: email } });
+
+    if (user) throw new Error('Email has been used.');
+
     const organization = await organizationRepository.findOne({
       where: { room: req.body.organization },
     });
+
     const admin = organization ? false : true;
+
     const organizationInstance = organization
       ? organization
       : await organizationRepository.save({ room: req.body.organization });
+
     const encodedPassword = bcrypt.hashSync(password, 10);
-    const user = await userRepository.save({
+    const newUser = await userRepository.save({
       name,
       job,
       email,
       password: encodedPassword,
       org: organizationInstance,
-      imageURL: '1',
+      imageURL,
       admin,
     });
-    req.query.email = user.email;
+
+    req.query.email = newUser.email;
+
     next();
   } catch (e) {
-    // TODO: Error 분류하기
+    const err = e as Error;
+    if (err.message === 'Email has been used.') {
+      res.status(406).json({ message: 'Email has been used.' });
+    }
     res.status(400);
+  }
+};
+
+export const logOut = (req: Request, res: Response) => {
+  try {
+    req.session.destroy((err) => {
+      if (err) throw new Error(err);
+    });
+    res.clearCookie('connect.sid');
+    res.end();
+  } catch {
+    res.status(400).end();
   }
 };

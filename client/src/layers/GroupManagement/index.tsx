@@ -41,8 +41,7 @@ export const GroupManagement = () => {
   }, [userState.id, userState.organization]);
 
   const onModalButtonClick = () => {
-    const newShowModal = !showModal;
-    setShowModal(newShowModal);
+    setShowModal(() => !showModal);
   };
 
   const showEditModal = (e: React.MouseEvent, id: number) => {
@@ -64,7 +63,7 @@ export const GroupManagement = () => {
     if (!adminState.id) return;
     switch (adminState.message) {
       case '팀원에서 제외':
-        setUserList(userList.filter((el) => el.index === adminState.id));
+        setUserList(userList.filter((el) => el.index !== adminState.id));
         await deleteUserById(adminState.id);
         setAdminState({ message: '', id: 0 });
         break;

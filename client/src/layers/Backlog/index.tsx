@@ -10,7 +10,7 @@ const Backlog = () => {
       <S.Title>프로젝트 백로그</S.Title>
       <S.ItemContainer>
         {stories.map((el) => (
-          <BackLogItem name={el.name} key={el.id} id={el.id} />
+          <BackLogItem key={el.id} name={el.name as string} id={el.id as number} />
         ))}
       </S.ItemContainer>
     </S.Container>

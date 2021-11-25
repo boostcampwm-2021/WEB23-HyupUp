@@ -6,19 +6,14 @@ import { useSetRecoilState } from 'recoil';
 import * as S from './style';
 import { taskSortByUpdate } from '@/lib/utils/sort';
 import { UserState } from '@/contexts/userContext';
+import { useInput } from '@/lib/hooks';
 
 export const LogInForm = () => {
   const setUserState = useSetRecoilState(user);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setEmail(e.target.value);
-  };
-  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    setPassword(e.target.value);
-  };
+
+  const { value: email, onChange: onChangeEmail, onReset: onResetEmail } = useInput('');
+  const { value: password, onChange: onChangePassword, onReset: onResetPassword } = useInput('');
+
   const onLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const userData = (await logIn(email, password)) as UserState;
@@ -27,6 +22,8 @@ export const LogInForm = () => {
       userData.projectTasks!.sort((a, b) => taskSortByUpdate(a, b));
     }
     setUserState(userData);
+    onResetEmail();
+    onResetPassword();
   };
   return (
     <S.LogInFormContainer onSubmit={onLoginSubmit}>

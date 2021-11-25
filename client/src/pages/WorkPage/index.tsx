@@ -21,6 +21,7 @@ import { toast } from 'react-toastify';
 import { errorMessage } from '@/lib/common/message';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
+import { EpicType, EpicWithString } from '@/types/epic';
 
 const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
@@ -30,6 +31,7 @@ const WorkPage = () => {
     try {
       const data = await getEpicById(epicId);
       if (!data) throw new Error(errorMessage.GET_EPIC);
+      if (data.projectId !== user.currentProjectId) return;
       epicDispatcher({ type: `ADD_EPIC`, epic: data });
     } catch (e) {
       toast.error((e as Error).message);

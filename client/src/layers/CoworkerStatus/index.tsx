@@ -8,6 +8,7 @@ import * as S from './style';
 import StatusTitle from '@/components/CoworkerStatusItem/StatusTitle';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
+import avatar, { ImageType } from '@/lib/common/avatar';
 
 interface UserStatus extends UserProfile {
   status: boolean;
@@ -72,7 +73,7 @@ const CoworkerStatus = () => {
       <S.UsersContainer>
         {usersList.map((el) => (
           <S.StatusContainer key={el.index}>
-            <Avatar src={el.imageURL} status={el.status} />
+            <Avatar src={avatar[el.imageURL as ImageType]} status={el.status} />
             <S.Name>{el.name}</S.Name>
           </S.StatusContainer>
         ))}

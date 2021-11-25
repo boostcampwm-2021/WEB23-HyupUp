@@ -4,8 +4,9 @@ import S from './style';
 import RoadmapItem from '@/components/RoadmapItem';
 import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
 import { addDate } from '@/lib/utils/date';
-import { updateEpicById } from '@/lib/api/epic';
+import { getEpicById, updateEpicById } from '@/lib/api/epic';
 import { makeEpicRenderInfo } from '@/lib/utils/epic';
+import { useSocketReceive, useSocketSend } from '@/lib/hooks';
 
 const COLUMNS = 15;
 
@@ -21,6 +22,14 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
   const dispatchEpic = useEpicDispatch();
   const [currentDrag, setCurrentDrag] = useState({ targetId: -1, isDraggingLeft: false });
   const epicRenderInfo = makeEpicRenderInfo(epics, { rangeFrom, rangeTo, columns: COLUMNS });
+  const emitUpdateEpicBar = useSocketSend('UPDATE_EPIC_BAR');
+  useSocketReceive('UPDATE_EPIC_BAR', async (updatedEpicId: number) => {
+    const updatedEpic = await getEpicById(updatedEpicId);
+    dispatchEpic({
+      type: 'UPDATE_EPIC',
+      epic: updatedEpic!,
+    });
+  });
 
   const getCurrentDragInfo = (e: React.DragEvent) => {
     const nowDraggingEpic = epics.find((epic) => epic.id === currentDrag.targetId)!; // 현재 드래그 중인 에픽 객체
@@ -49,6 +58,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
       type: 'UPDATE_EPIC',
       epic: {
         id: currentDrag.targetId,
+        projectId: nowDraggingEpic.projectId,
         name: nowDraggingEpic.name,
         startAt: currentDrag.isDraggingLeft
           ? addDate(nowDraggingEpic.startAt, offset)
@@ -61,9 +71,10 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
     });
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = async (e: React.DragEvent) => {
     const { nowDraggingEpic } = getCurrentDragInfo(e);
-    updateEpicById(currentDrag.targetId, nowDraggingEpic);
+    await updateEpicById(currentDrag.targetId, nowDraggingEpic);
+    emitUpdateEpicBar(currentDrag.targetId);
   };
 
   return (

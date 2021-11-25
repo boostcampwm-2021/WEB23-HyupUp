@@ -38,7 +38,6 @@ const Styled = {
     font: ${({ theme }) => theme.font.bold_regular};
     border-bottom: ${({ isTopEnter, theme }) =>
       isTopEnter ? `4px solid ${theme.color.blue200}` : `4px solid transparent`};
-    z-index: 2;
   `,
 };
 
