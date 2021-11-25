@@ -1,5 +1,5 @@
 import React from 'react';
-import { RoadmapBarsStatus } from '../RoadmapBars';
+import { RoadmapBarsStatus } from '@/types/epic';
 import S from './style';
 
 interface RoadmapItemProps {

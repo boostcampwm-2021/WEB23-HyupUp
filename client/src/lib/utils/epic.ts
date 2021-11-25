@@ -1,4 +1,10 @@
-import { CalendarRange, EpicRenderInfo, EpicType, EpicWithString } from '@/types/epic';
+import {
+  CalendarRange,
+  EpicRenderInfo,
+  EpicType,
+  EpicWithString,
+  RoadmapBarsStatus,
+} from '@/types/epic';
 import { StoryType } from '@/types/story';
 import { getDateDiff, isFormer, isLatter, isSameDay, shouldRender } from './date';
 
@@ -11,6 +17,33 @@ export const makeEpicWithDate = (epicWithString: EpicWithString): EpicType => {
     endAt: new Date(epicWithString.endAt),
     order: epicWithString.order,
   };
+};
+
+/**
+ *
+ * @param epicId 연동된 스토리를 확인할 에픽의 id
+ * @param stories 필터링 대상이 될 스토리 객체의 배열
+ * @returns 전달한 에픽 id와 연동된 스토리 객체를 상태별로 필터링하여 반환
+ */
+export const filterStoriesAboutEpic = (epicId: number, stories: StoryType[]) => {
+  // FIXME: story 객체의 epic id 프로퍼티가 `epic`으로 들어가있음
+  // 클라이언트단의 StoryType 은 epicId, 서버단의 Stories.controller.ts 에서는 epic 으로 내려줘서 생긴 문제
+  const todos = stories.filter((story) => story.epic === epicId && story.status === 'TODO');
+  const inProgresses = stories.filter(
+    (story) => story.epic === epicId && story.status === 'IN_PROGRESS',
+  );
+  const dones = stories.filter((story) => story.epic === epicId && story.status === 'DONE');
+  return { todos, inProgresses, dones };
+};
+
+const getStatusFromStories = ({
+  todos,
+  inProgresses,
+  dones,
+}: ReturnType<typeof filterStoriesAboutEpic>): RoadmapBarsStatus => {
+  if (todos.length === 0 && inProgresses.length === 0) return 'ALL_DONE';
+  else if (inProgresses.length === 0 && dones.length === 0) return 'NOT_STARTED';
+  else return 'STARTED';
 };
 
 // rangeFrom은 현재 캘린더뷰의 시작일자, rangeTo는 끝 일자
@@ -36,6 +69,7 @@ export const makeEpicWithDate = (epicWithString: EpicWithString): EpicType => {
 // 그 외의 경우는 캘린더 뷰에 렌더링하지 않아야함
 export const makeEpicRenderInfo = (
   epics: EpicType[],
+  stories: StoryType[],
   { rangeFrom, rangeTo, columns }: CalendarRange,
 ): EpicRenderInfo[] =>
   epics.map(({ id, startAt, endAt }) => {
@@ -64,12 +98,15 @@ export const makeEpicRenderInfo = (
 
     const exceedsLeft = !isSameDay(startAt, rangeFrom) && isFormer(startAt, rangeFrom);
     const exceedsRight = !isSameDay(endAt, rangeTo) && isLatter(endAt, rangeTo);
+
+    const filteredStories = filterStoriesAboutEpic(id, stories);
     return {
       index: startIndex,
       id,
       length,
       exceedsLeft,
       exceedsRight,
+      status: getStatusFromStories(filteredStories),
     };
   });
 
@@ -78,19 +115,4 @@ export const getOrderMedian = (epics: EpicType[], targetOrder: number) => {
   if (index === 0) return targetOrder / 2;
   const result = epics[index === -1 ? epics.length - 1 : index - 1];
   return (targetOrder + result.order) / 2;
-};
-
-/**
- *
- * @param epicId 연동된 스토리를 확인할 에픽의 id
- * @param stories 필터링 대상이 될 스토리 객체의 배열
- * @returns 전달한 에픽 id와 연동된 스토리 객체를 상태별로 필터링하여 반환
- */
-export const filterStoriesAboutEpic = (epicId: number, stories: StoryType[]) => {
-  const todos = stories.filter((story) => story.epicId === epicId && story.status === 'TODO');
-  const inProgresses = stories.filter(
-    (story) => story.epicId === epicId && story.status === 'IN_PROGRESS',
-  );
-  const dones = stories.filter((story) => story.epicId === epicId && story.status === 'DONE');
-  return { todos, inProgresses, dones };
 };
