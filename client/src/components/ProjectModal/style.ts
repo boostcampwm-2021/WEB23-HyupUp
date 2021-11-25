@@ -17,14 +17,17 @@ const Styled = {
       display: none;
     }
   `,
+  UserItem: styled.li`
+    position: relative;
+  `,
   DeleteBox: styled.div`
     position: absolute;
     display: flex;
     align-items: center;
     z-index: 200;
 
-    top: -100%;
-    right: 100px;
+    top: 0;
+    right: 0;
     width: 100px;
     height: 70px;
 

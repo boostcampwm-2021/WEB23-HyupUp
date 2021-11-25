@@ -69,7 +69,7 @@ const ProjectModal = ({ showProjectModal, setShowProjectModal, project }: Projec
         />
         <Styled.UserList>
           {renderUsers.map((user) => (
-            <div key={user.index}>
+            <Styled.UserItem key={user.index}>
               <ProjectModalItem
                 inviteUserIntoProject={inviteUserIntoProject}
                 project={project}
@@ -78,7 +78,7 @@ const ProjectModal = ({ showProjectModal, setShowProjectModal, project }: Projec
               <Styled.DeleteBox>
                 <Styled.DeleteButton onClick={() => removeUserFromProject(user.index, project)} />
               </Styled.DeleteBox>
-            </div>
+            </Styled.UserItem>
           ))}
         </Styled.UserList>
       </Styled.ContentWrapper>

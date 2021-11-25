@@ -4,8 +4,10 @@ import minusIcon from '@public/icons/minus-icon.svg';
 
 const Styled = {
   ItemWrapper: styled.div<{ isClickedMinus?: boolean }>`
-    transform: ${({ isClickedMinus }) => (isClickedMinus ? 'translateX(-50px)' : 'translateX(0)')};
-    transition: transfrom 1000ms ease-in-out;
+    position: relative;
+    z-index: 300;
+    transform: ${({ isClickedMinus }) => (isClickedMinus ? 'translateX(-70px)' : 'translateX(0)')};
+    transition: 500ms ease-in-out;
   `,
   Button: styled.button<{ isMinus: boolean }>`
     width: 20px;
