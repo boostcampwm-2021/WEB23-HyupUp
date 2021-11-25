@@ -14,6 +14,7 @@ export const UPDATE_TODO = 'Todo 항목 수정에 실패했습니다.';
 export const UPDATE_TASK = 'Task 항목 수정에 실패했습니다.';
 export const UPDATE_STORY = '스토리 수정에 실패했습니다.';
 export const UPDATE_USER = '사용자 정보 수정에 실패했습니다.';
+export const UPDATE_USER_PROJECT = '팀원의 프로젝트 정보 수정에 실패했습니다.';
 
 export const DELETE_PROJECT = '프로젝트 삭제에 실패했습니다.';
 export const DELETE_TODO = 'Todo 항목 삭제에 실패했습니다.';
@@ -44,6 +45,7 @@ export default {
   UPDATE_TASK,
   UPDATE_STORY,
   UPDATE_USER,
+  UPDATE_USER_PROJECT,
   DELETE_PROJECT,
   DELETE_TODO,
   DELETE_TASK,
