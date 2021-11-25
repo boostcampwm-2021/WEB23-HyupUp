@@ -26,7 +26,7 @@ export const getStoryByid = async (storyId: number | string) => {
   }
 };
 
-export const postStory = async ({ status, name, order, projectId = 1, epicId = 1 }: StoryType) => {
+export const postStory = async ({ status, name, order, projectId, epicId }: StoryType) => {
   try {
     const result = await instance.post('', {
       status,

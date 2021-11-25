@@ -7,8 +7,8 @@ export type StoryType = {
   status?: StoryStatusType;
   id?: number;
   order?: number;
-  projectId?: number;
-  epicId?: number;
+  projectId?: number | null;
+  epicId?: number | null;
 };
 
 export type dragRefObjectType = React.MutableRefObject<number | null>;
