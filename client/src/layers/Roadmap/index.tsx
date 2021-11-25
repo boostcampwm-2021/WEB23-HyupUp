@@ -111,6 +111,11 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
             }
             onDrop={() => handleDrop(getMaxOrder() + 1)}
           />
+          <EpicPlaceholder
+            visible={inputVisible}
+            setVisible={setInputVisible}
+            handleSubmit={handleSubmit}
+          />
           <Button
             size={'small'}
             category={'cancel'}
