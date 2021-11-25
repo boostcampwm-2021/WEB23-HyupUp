@@ -4,7 +4,7 @@ import cancelicon from '@public/icons/cancel-icon.svg';
 const Styled = {
   KanBanItem: styled.article<{ isDragEnter: boolean }>`
     width: 90%;
-    height: 65px;
+    height: 77px;
     border-radius: 8px;
     position: relative;
     display: flex;
