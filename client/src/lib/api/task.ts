@@ -5,7 +5,7 @@ import { errorMessage } from '@/lib/common/message';
 import { BackLogTaskProps } from '@/types/task';
 
 const cache = setupCache({
-  maxAge: 10 * 1000,
+  maxAge: 5 * 1000,
 });
 
 const instance = axios.create({
@@ -42,5 +42,26 @@ export const deleteTask = async (id: number) => {
     if (result.status >= 400) throw Error();
   } catch (e) {
     toast.error(errorMessage.DELETE_TASK);
+  }
+};
+
+export const postTask = async (
+  name: string,
+  status: number,
+  userId: null | number,
+  projectId: number,
+  storyId: number,
+) => {
+  try {
+    const result = await instance.post('', {
+      name,
+      status,
+      userId,
+      projectId,
+      storyId,
+    });
+    return result.data.id;
+  } catch (e) {
+    toast.error(errorMessage.CREATE_TASK);
   }
 };
