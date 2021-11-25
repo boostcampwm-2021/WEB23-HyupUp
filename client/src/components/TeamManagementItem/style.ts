@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
 const ItemContainer = styled.div`
-  height: 70px;
-
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
+  z-index: 200;
+  height: 70px;
   margin: 15px 0px;
   padding: 0 60px;
 
