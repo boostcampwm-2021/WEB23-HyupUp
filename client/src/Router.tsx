@@ -22,6 +22,10 @@ const Router = () => {
         userData.privateTasks!.sort((a, b) => taskSortByUpdate(a, b));
         userData.projectTasks!.sort((a, b) => taskSortByUpdate(a, b));
       }
+      if (userData.projects && userData.projects?.length > 0) {
+        userData.currentProjectId = userData.projects[0].id;
+        userData.currentProjectName = userData.projects[0].name;
+      }
       setUserState(userData);
     })();
   }, [setUserState]);

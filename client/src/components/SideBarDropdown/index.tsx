@@ -9,13 +9,13 @@ import { getAllProjectsByUser } from '@/lib/api/project';
 
 const SideBarDropDown = () => {
   const [userState, setUserState] = useRecoilState(userAtom);
-  const [listState, listStateHandler] = useState<Array<ProjectType>>([]);
-  const [titleState, titleStateHandler] = useState('프로젝트');
+  const [listState, setListState] = useState<Array<ProjectType>>([]);
+  const [titleState, setTitleState] = useState('프로젝트');
 
   const itemClickHandler = (e: React.MouseEvent) => {
     const target = e.target as HTMLLIElement;
     if (target.tagName !== 'LI') return;
-    titleStateHandler(target.innerText);
+    setTitleState(target.innerText);
     setUserState((prev) =>
       produce(prev, (draft) => {
         draft.currentProjectName = target.innerText;
@@ -29,24 +29,36 @@ const SideBarDropDown = () => {
         userState.id as number,
         userState.organization as number,
       );
-      const defaultProject = projects.length !== 0 ? projects[0] : undefined;
-      const payload = defaultProject
-        ? {
-            projects: projects,
-            currentProjectName: defaultProject.name,
-            currentProjectId: defaultProject.id,
-          }
-        : { projects: projects };
+      if (!projects) return;
+      const data = {
+        projects,
+        currentProjectName: '',
+        currentProjectId: 0,
+      };
+      if (projects.find((el) => el.id === userState.currentProjectId)) {
+        data.currentProjectId = userState.currentProjectId!;
+        data.currentProjectName = userState.currentProjectName!;
+      } else if (projects.length) {
+        data.currentProjectId = projects[0].id;
+        data.currentProjectName = projects[0].name;
+      }
+
       setUserState((prev) =>
         produce(prev, (draft) => ({
           ...draft,
-          ...payload,
+          ...data,
         })),
       );
-      listStateHandler(projects);
-      titleStateHandler(projects[0].name);
+      setListState(projects);
+      setTitleState(userState.currentProjectName || '');
     })();
-  }, [userState.id, userState.organization, setUserState]);
+  }, [
+    setUserState,
+    userState.currentProjectId,
+    userState.currentProjectName,
+    userState.id,
+    userState.organization,
+  ]);
 
   return (
     <div>
