@@ -3,12 +3,15 @@ import { toast } from 'react-toastify';
 import S from './style';
 import EpicPlaceholder from '@/components/EpicPlaceholder';
 import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
-import { createEpic, updateEpicById } from '@/lib/api/epic';
+import { createEpic, getEpicById, updateEpicById } from '@/lib/api/epic';
 import useSocketSend from '@/lib/hooks/useSocketSend';
 import RoadmapCalendar from '@/components/RoadmapCalendar';
 import Button from '@/lib/design/Button';
 import { errorMessage, successMessage } from '@/lib/common/message';
 import { getOrderMedian } from '@/lib/utils/epic';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
+import { useSocketReceive } from '@/lib/hooks';
 
 interface RoadmapProps {
   projectId?: number;
@@ -18,13 +21,23 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   const [inputVisible, setInputVisible] = React.useState(false);
   const [nowDragging, setNowDragging] = React.useState({ id: 0, over: 0 });
   const epicsOnProject = useEpicState();
+  const user = useRecoilValue(userAtom);
   const epicDispatcher = useEpicDispatch();
   const emitNewEpic = useSocketSend('NEW_EPIC');
+  const emitUpdateEpicOrder = useSocketSend('UPDATE_EPIC_ORDER');
+  useSocketReceive('UPDATE_EPIC_ORDER', async (updatedEpicId: number) => {
+    const updatedEpic = await getEpicById(updatedEpicId);
+    epicDispatcher({
+      type: 'UPDATE_EPIC',
+      epic: updatedEpic!,
+    });
+  });
 
-  const makeNewAction = (id: number, name: string, order: number) => ({
+  const makeNewEpicAction = (id: number, name: string, order: number) => ({
     type: 'ADD_EPIC' as const,
     epic: {
       id,
+      projectId: user.currentProjectId as number,
       name,
       startAt: new Date(),
       endAt: new Date(),
@@ -42,7 +55,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       const result = await createEpic(projectId, value, Math.ceil(getMaxOrder() + 1));
       if (!result) return;
 
-      epicDispatcher(makeNewAction(result.id, value, Math.ceil(getMaxOrder() + 1)));
+      epicDispatcher(makeNewEpicAction(result.id, value, Math.ceil(getMaxOrder() + 1)));
       setInputVisible(false);
       emitNewEpic(result.id);
 
@@ -52,16 +65,16 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     }
   };
 
-  const handleDrop = (order: number) => {
+  const handleDrop = async (order: number) => {
     const median = getOrderMedian(epicsOnProject, order);
-    toast.info(`moved ${nowDragging.id} order: ${order}`);
     /* eslint-disable @typescript-eslint/no-non-null-assertion */
     const nowDraggingEpic = epicsOnProject.find((epic) => epic.id === nowDragging.id)!;
 
-    updateEpicById(nowDragging.id, {
+    await updateEpicById(nowDragging.id, {
       ...nowDraggingEpic,
       order: median,
     });
+    emitUpdateEpicOrder(nowDragging.id);
     epicDispatcher({
       type: 'UPDATE_EPIC',
       epic: {
