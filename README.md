@@ -18,6 +18,15 @@
 **[HyupUp 바로가기](http://www.hyupup.ml/)**  
 **[팀 노션 바로가기](https://oasis-pocket-331.notion.site/Team-42-a9c016b18bf340fc8666a97c0089fcd7)**
 
+테스트 계정
+
+|ID|PW|
+|--|--|
+|test1@gmail.com|token|
+|test2@gmail.com|token|
+
+
+
 ## ✍️ Writing
 
 [**바닥 부터 개발환경 구축하기**](https://oasis-pocket-331.notion.site/ba54b9ae8adb40e0806d0b3518a633ba) by **[@ingong](https://github.com/ingong)**
