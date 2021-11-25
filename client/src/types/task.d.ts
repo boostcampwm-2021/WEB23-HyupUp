@@ -15,4 +15,5 @@ export interface BackLogTaskProps {
   name: string;
   user: string;
   userImage: string;
+  userId?: number;
 }

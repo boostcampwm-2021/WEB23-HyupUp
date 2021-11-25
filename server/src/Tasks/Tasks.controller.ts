@@ -43,6 +43,7 @@ export const getTasksByStoryId = async (req: Request, res: Response) => {
         name: el.name,
         user: el.users ? el.users.name : null,
         userImage: el.users ? el.users.imageURL : null,
+        userId: el.users ? el.users.id : null,
       })),
     );
   } catch (e) {
