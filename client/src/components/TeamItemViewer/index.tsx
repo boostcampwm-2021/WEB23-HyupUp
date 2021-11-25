@@ -65,6 +65,7 @@ export const TeamItemViewer = ({
         <SearchBar
           value={userName}
           onChange={searchUserByName}
+          placeholder="찾으시는 팀원의 이름을 입력하세요."
           onSubmit={(e) => {
             e.preventDefault();
           }}

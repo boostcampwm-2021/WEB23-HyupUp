@@ -51,6 +51,7 @@ const ProjectModal = ({
         <SearchBar
           color="gray"
           value={value}
+          placeholder="찾으시는 팀원의 이름을 입력하세요."
           onChange={onChange}
           onSubmit={(e) => {
             e.preventDefault();

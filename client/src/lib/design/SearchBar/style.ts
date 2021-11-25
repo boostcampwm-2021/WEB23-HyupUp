@@ -19,7 +19,7 @@ const Styled = {
     width: 100%;
     background: none;
 
-    font: ${({ theme }) => theme.font.body_regular};
+    font: ${({ theme }) => theme.font.body_small};
   `,
   Button: styled.button`
     width: 25px;
