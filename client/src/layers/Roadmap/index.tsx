@@ -12,6 +12,7 @@ import { getOrderMedian } from '@/lib/utils/epic';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
 import { useSocketReceive } from '@/lib/hooks';
+import EpicEntryItem from '@/components/EpicEntryItem';
 
 interface RoadmapProps {
   projectId?: number;
@@ -91,32 +92,24 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       <S.Content>
         <S.EpicEntry>
           {epicsOnProject.map(({ id, name, order }) => (
-            <S.EpicEntryItem
+            <EpicEntryItem
               activated={id === nowDragging.over}
               key={id}
-              draggable="true"
               onDragStart={() => setNowDragging({ id, over: id })}
               onDragOver={(e) => e.preventDefault()}
               onDragEnter={() => setNowDragging({ id: nowDragging.id, over: id })}
               onDragLeave={() => setNowDragging({ id: nowDragging.id, over: 0 })}
               onDrop={() => handleDrop(order)}
-            >
-              {name}
-            </S.EpicEntryItem>
+              name={name}
+            />
           ))}
-          <S.EpicEntryItem
+          <EpicEntryItem
             activated={nowDragging.over === Math.ceil(getMaxOrder() + 1)}
-            draggable="false"
             onDragOver={(e) => e.preventDefault()}
             onDragEnter={() =>
               setNowDragging({ id: nowDragging.id, over: Math.ceil(getMaxOrder() + 1) })
             }
             onDrop={() => handleDrop(getMaxOrder() + 1)}
-          />
-          <EpicPlaceholder
-            visible={inputVisible}
-            setVisible={setInputVisible}
-            handleSubmit={handleSubmit}
           />
           <Button
             size={'small'}
