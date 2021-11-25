@@ -7,6 +7,7 @@ import { handleDragStart, handleDragEnter } from '@/lib/utils/drag';
 
 const KanbanItem = ({
   story,
+  epic,
   dragRef,
   dragCategory,
   dragOverRef,
@@ -21,6 +22,7 @@ const KanbanItem = ({
     if (isItemModalOpen) return;
     setModalOpen((prev) => !prev);
   };
+  console.log(epic);
 
   return (
     <Styled.KanBanItem
