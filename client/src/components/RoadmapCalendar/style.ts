@@ -18,7 +18,15 @@ const S = {
 
     margin-bottom: 24px;
   `,
+  MonthYearWrapper: styled.div`
+    display: flex;
+    align-items: flex-end;
+  `,
+  YearLabel: styled.h5`
+    font: ${({ theme }) => theme.font.body_medium};
+  `,
   MonthLabel: styled.h3`
+    margin-left: 8px;
     font: ${({ theme }) => theme.font.bold_medium};
   `,
   ButtonWrapper: styled.div`
