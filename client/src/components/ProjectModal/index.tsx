@@ -6,9 +6,10 @@ import { useInput } from '@/lib/hooks';
 import { ProjectType } from '@/types/project';
 import { UserInfoWithProject } from '@/types/users';
 import SearchBar from '@/lib/design/SearchBar';
-import TeamManagementItem from '@/components/TeamManagementItem';
+
 import { useRecoilState } from 'recoil';
 import { userListAtom } from '@/recoil/user';
+import ProjectModalItem from '@/components/ProjectModalItem';
 
 type ProjectModalProps = {
   showProjectModal: boolean;
@@ -28,7 +29,7 @@ const ProjectModal = ({ showProjectModal, setShowProjectModal, project }: Projec
     setRenderUsers(userListState.filter((item) => new RegExp(value, 'i').test(item.name)));
   }, [userListState, value]);
 
-  const inviteUserIntooProject = (userId: number, projectObj: ProjectType) => {
+  const inviteUserIntoProject = (userId: number, projectObj: ProjectType) => {
     setUserListState((prev) =>
       produce(prev, (draft) => {
         const selectedUser = draft.find((user) => user.index === userId);
@@ -68,25 +69,16 @@ const ProjectModal = ({ showProjectModal, setShowProjectModal, project }: Projec
         />
         <Styled.UserList>
           {renderUsers.map((user) => (
-            <TeamManagementItem
-              key={user.index}
-              imageURL={user.imageURL}
-              name={user.name}
-              job={user.job}
-              admin={user.admin}
-            >
-              {user.projects.findIndex((elem) => elem.id === project.id) >= 0 ? (
-                <Styled.Button
-                  isMinus={true}
-                  onClick={() => removeUserFromProject(user.index, project)}
-                />
-              ) : (
-                <Styled.Button
-                  isMinus={false}
-                  onClick={() => inviteUserIntooProject(user.index, project)}
-                />
-              )}
-            </TeamManagementItem>
+            <div key={user.index}>
+              <ProjectModalItem
+                inviteUserIntoProject={inviteUserIntoProject}
+                project={project}
+                user={user}
+              />
+              <Styled.DeleteBox>
+                <Styled.DeleteButton onClick={() => removeUserFromProject(user.index, project)} />
+              </Styled.DeleteBox>
+            </div>
           ))}
         </Styled.UserList>
       </Styled.ContentWrapper>

@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import plusIcon from '@public/icons/plus-icon.svg';
-import minusIcon from '@public/icons/minus-icon.svg';
+import deleteIcon from '@public/icons/delete-icon.svg';
 
 const Styled = {
   ContentWrapper: styled.div`
@@ -18,13 +17,25 @@ const Styled = {
       display: none;
     }
   `,
-  Button: styled.button<{ isMinus: boolean }>`
-    width: 20px;
-    height: 20px;
+  DeleteBox: styled.div`
+    position: absolute;
+    display: flex;
+    align-items: center;
+    z-index: 200;
 
-    background-size: contain;
-    background-position: center center;
-    background-image: ${({ isMinus }) => (isMinus ? `url(${minusIcon})` : `url(${plusIcon})`)};
+    top: -100%;
+    right: 100px;
+    width: 100px;
+    height: 70px;
+
+    border-radius: 8px;
+    background-color: ${({ theme }) => theme.color.red400};
+  `,
+  DeleteButton: styled.button`
+    margin: 0 20px 0 auto;
+    width: 25px;
+    height: 25px;
+    background-image: url(${deleteIcon});
   `,
 };
 
