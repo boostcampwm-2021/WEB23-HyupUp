@@ -1,6 +1,6 @@
 import React from 'react';
 import S from './style';
-import Modal from '@/lib/design/Modal';
+import { Button, Modal } from '@/lib/design';
 
 interface EpicPlaceholderProps {
   visible: boolean;
@@ -22,19 +22,25 @@ const EpicPlaceholder = ({ visible, setVisible, handleSubmit }: EpicPlaceholderP
   };
 
   return (
-    <S.Container>
-      <Modal
-        shouldConfirm={false}
-        visible={visible}
-        title="새로운 에픽 생성"
-        size="LARGE"
-        onClose={() => setVisible(false)}
-      >
-        <form onSubmit={handleFormSubmit}>
-          <input type="text" value={value} onChange={handleChange} />
-        </form>
-      </Modal>
-    </S.Container>
+    <Modal
+      shouldConfirm={false}
+      visible={visible}
+      title="새로운 에픽 생성"
+      size="SMALL"
+      onClose={() => setVisible(false)}
+    >
+      <S.Container onSubmit={handleFormSubmit}>
+        <S.Input
+          type="text"
+          placeholder="에픽 제목을 입력하세요"
+          value={value}
+          onChange={handleChange}
+        />
+        <Button category="default" size="small" onClick={handleFormSubmit}>
+          OK
+        </Button>
+      </S.Container>
+    </Modal>
   );
 };
 
