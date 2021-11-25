@@ -10,6 +10,8 @@ import { useSocketReceive, useSocketSend } from '@/lib/hooks';
 
 const COLUMNS = 15;
 
+export type RoadmapBarsStatus = 'NOT_STARTED' | 'STARTED' | 'ALL_DONE';
+
 interface RoadmapBarsProps {
   rangeFrom: Date;
   rangeTo: Date;
@@ -19,9 +21,10 @@ interface RoadmapBarsProps {
 
 const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) => {
   const epics = useEpicState();
-  const dispatchEpic = useEpicDispatch();
   const [currentDrag, setCurrentDrag] = useState({ targetId: -1, isDraggingLeft: false });
   const epicRenderInfo = makeEpicRenderInfo(epics, { rangeFrom, rangeTo, columns: COLUMNS });
+
+  const dispatchEpic = useEpicDispatch();
   const emitUpdateEpicBar = useSocketSend('UPDATE_EPIC_BAR');
   useSocketReceive('UPDATE_EPIC_BAR', async (updatedEpicId: number) => {
     const updatedEpic = await getEpicById(updatedEpicId);
@@ -83,6 +86,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
         {epicRenderInfo.map(({ id, length, exceedsLeft, exceedsRight, index }) => (
           <RoadmapItem
             key={id}
+            status="STARTED"
             columns={COLUMNS}
             index={index}
             length={length}
