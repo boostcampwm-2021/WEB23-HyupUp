@@ -4,6 +4,7 @@ import Todo from '../Todo/Todo.entity';
 import Tasks from '../Tasks/Tasks.entity';
 import { PrivateTask, ProjectTask, User } from '../../lib/types/user';
 import Organizations from '../Organizations/Organizations.entity';
+import Projects from '../Projects/Projects.entity';
 
 export const getUserTodos = async (email: string): Promise<PrivateTask[]> => {
   const todoRepository = getRepository(Todo);
@@ -65,4 +66,28 @@ export const getUsers = async (id: number): Promise<Users[]> => {
   });
   if (!users) throw Error('유저 없음');
   return users;
+};
+
+export const inviteUser = async (userId: number, projectId: number, isInvite: boolean) => {
+  const userRepository = getRepository(Users);
+  const projectRepository = getRepository(Projects);
+  const user = await userRepository.findOne({
+    where: { id: userId },
+    relations: ['projects'],
+  });
+  const project = await projectRepository.findOne({
+    where: { id: projectId },
+  });
+  if (!user) throw Error('유저 없음');
+  if (!project) throw Error('프로젝트 없음');
+  if (isInvite) {
+    // 프로젝트에 초대
+    user.projects.push(project);
+  } else {
+    // 프로젝트에서 제거
+    user.projects = user.projects.filter((el) => {
+      el.id !== projectId;
+    });
+  }
+  await userRepository.save(user);
 };

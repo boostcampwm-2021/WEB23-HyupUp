@@ -9,6 +9,7 @@ import {
   logOut,
   signUpUser,
   updateUserAdminById,
+  updateUserWithProject,
 } from './Users.controller';
 
 const router = express.Router();
@@ -23,5 +24,7 @@ router.delete('/:id', [authValidator, deleteUserById]);
 
 router.post('/login', [logInUser, handleGet]);
 router.post('/signup', [signUpUser, handleGet]);
+
+router.patch('/project', updateUserWithProject);
 
 export default router;

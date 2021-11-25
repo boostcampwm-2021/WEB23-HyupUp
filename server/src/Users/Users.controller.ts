@@ -8,6 +8,7 @@ import {
   getUsers,
   getUserTasks,
   getUserTodos,
+  inviteUser,
   isValidatedEmail,
 } from './Users.service';
 import Organizations from '../Organizations/Organizations.entity';
@@ -59,6 +60,18 @@ export const getUsersByOrganization = async (req: Request, res: Response) => {
   } catch (e) {
     const err = e as Error;
     res.status(400).json(err.message);
+  }
+};
+
+export const updateUserWithProject = async (req: Request, res: Response) => {
+  try {
+    if (!bodyValidator(req.body, ['userId', 'projectId', 'isInvite']))
+      throw new Error('body is not valid');
+
+    await inviteUser(req.body.userId, req.body.projectId, req.body.isInvite);
+    res.end();
+  } catch (e) {
+    res.status(400).json({ message: (e as Error).message });
   }
 };
 
