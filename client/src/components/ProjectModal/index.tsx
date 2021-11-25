@@ -35,8 +35,8 @@ const ProjectModal = ({
       setRenderUsers(thisProjectUsersRef.current);
       return;
     }
-    setRenderUsers((prev) =>
-      produce(prev, (draft) => draft.filter((item) => new RegExp(value, 'i').test(item.name))),
+    setRenderUsers(
+      thisProjectUsersRef.current.filter((item) => new RegExp(value, 'i').test(item.name)),
     );
   }, [value]);
   return (
