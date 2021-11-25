@@ -4,9 +4,9 @@ import cancelicon from '@public/icons/cancel-icon.svg';
 const Styled = {
   KanBanItem: styled.article<{ isDragEnter: boolean }>`
     width: 90%;
-    height: 65px;
+    height: 77px;
     border-radius: 8px;
-
+    position: relative;
     display: flex;
     cursor: grab;
     background-color: ${({ theme }) => theme.color.gray100};
@@ -16,8 +16,8 @@ const Styled = {
   `,
 
   CancelIcon: styled.p`
-    display: inline-block;
-
+    position: absolute;
+    right: 8px;
     width: 15px;
     height: 15px;
     margin-top: 5px;

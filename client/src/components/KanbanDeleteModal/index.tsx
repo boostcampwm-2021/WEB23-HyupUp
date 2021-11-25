@@ -1,6 +1,6 @@
 import React, { useState, createContext } from 'react';
 import { Modal } from '@/lib/design';
-import { deleteStoryWitId } from '@/lib/api/story';
+import { deleteStoryWithId } from '@/lib/api/story';
 import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
 
 export type ModalContextType = {
@@ -17,7 +17,7 @@ const KanbanDeleteModal = ({ children }: { children: React.ReactNode }) => {
   const dispatchStory = useStoryDispatch();
   const deleteStory = async () => {
     dispatchStory({ type: 'REMOVE_STORY', id: shouldDeleteKey });
-    await deleteStoryWitId(shouldDeleteKey);
+    await deleteStoryWithId(shouldDeleteKey);
   };
 
   return (
