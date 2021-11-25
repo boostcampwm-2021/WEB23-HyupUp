@@ -21,8 +21,8 @@ export const getAllStoriesByProject = async (req: Request, res: Response) => {
       name: el.name,
       order: el.order,
       status: el.status,
-      epicId: el.epics.id,
-      projectId: el.projects.id,
+      epicId: el.epics ? el.epics.id : null,
+      projectId: el.projects.id ? el.projects.id : null,
     }));
 
     res.json(storiesWithEpicName);
