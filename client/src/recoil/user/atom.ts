@@ -1,5 +1,6 @@
 import { atom } from 'recoil';
 import { ProjectType } from '@/types/project';
+import { UserInfoWithProject } from '@/types/users';
 import { PrivateTask, ProjectTask } from '@/types/task';
 
 export type UserState = {
@@ -22,4 +23,9 @@ const userAtom = atom<UserState>({
   default: {},
 });
 
-export default userAtom;
+const userListAtom = atom<UserInfoWithProject[]>({
+  key: 'userListAtome',
+  default: [],
+});
+
+export { userAtom, userListAtom };
