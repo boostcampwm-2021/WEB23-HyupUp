@@ -5,7 +5,7 @@ import RoadmapItem from '@/components/RoadmapItem';
 import { useEpicDispatch, useEpicState, useStoryState } from '@/lib/hooks/useContextHooks';
 import { addDate } from '@/lib/utils/date';
 import { getEpicById, updateEpicById } from '@/lib/api/epic';
-import { makeEpicRenderInfo } from '@/lib/utils/epic';
+import { filterStoriesAboutEpic, makeEpicRenderInfo } from '@/lib/utils/epic';
 import { useSocketReceive, useSocketSend } from '@/lib/hooks';
 
 const COLUMNS = 15;
@@ -81,14 +81,25 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
     emitUpdateEpicBar(currentDrag.targetId);
   };
 
+  const getStatusFromStories = ({
+    todos,
+    inProgresses,
+    dones,
+  }: ReturnType<typeof filterStoriesAboutEpic>): RoadmapBarsStatus => {
+    if (todos.length === 0 && inProgresses.length === 0) return 'ALL_DONE';
+    else if (inProgresses.length === 0 && dones.length === 0) return 'NOT_STARTED';
+    else return 'STARTED';
+  };
+
   return (
     <>
       <S.Container>
         {epicRenderInfo.map(({ id, length, exceedsLeft, exceedsRight, index }) => {
+          const filteredStories = filterStoriesAboutEpic(id, stories);
           return (
             <RoadmapItem
               key={id}
-              status="STARTED"
+              status={getStatusFromStories(filteredStories)}
               columns={COLUMNS}
               index={index}
               length={length}

@@ -1,4 +1,5 @@
 import { CalendarRange, EpicRenderInfo, EpicType, EpicWithString } from '@/types/epic';
+import { StoryType } from '@/types/story';
 import { getDateDiff, isFormer, isLatter, isSameDay, shouldRender } from './date';
 
 export const makeEpicWithDate = (epicWithString: EpicWithString): EpicType => {
@@ -77,4 +78,19 @@ export const getOrderMedian = (epics: EpicType[], targetOrder: number) => {
   if (index === 0) return targetOrder / 2;
   const result = epics[index === -1 ? epics.length - 1 : index - 1];
   return (targetOrder + result.order) / 2;
+};
+
+/**
+ *
+ * @param epicId 연동된 스토리를 확인할 에픽의 id
+ * @param stories 필터링 대상이 될 스토리 객체의 배열
+ * @returns 전달한 에픽 id와 연동된 스토리 객체를 상태별로 필터링하여 반환
+ */
+export const filterStoriesAboutEpic = (epicId: number, stories: StoryType[]) => {
+  const todos = stories.filter((story) => story.epicId === epicId && story.status === 'TODO');
+  const inProgresses = stories.filter(
+    (story) => story.epicId === epicId && story.status === 'IN_PROGRESS',
+  );
+  const dones = stories.filter((story) => story.epicId === epicId && story.status === 'DONE');
+  return { todos, inProgresses, dones };
 };
