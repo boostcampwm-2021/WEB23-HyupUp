@@ -25,15 +25,15 @@ const S = {
     width: 100%;
     height: 100%;
   `,
-  BarsWrapper: styled.div`
-    width: 70px;
-    height: 70px;
+  BarsWrapper: styled.div<{ width: number; height: number }>`
+    width: ${({ width }) => width}px;
+    height: ${({ height }) => height}px;
 
     display: flex;
     align-items: center;
   `,
-  Line: styled.line<{ count: number; duration: number }>`
-    width: 5px;
+  Line: styled.div<{ width: number; count: number; duration: number }>`
+    width: ${({ width, count }) => width / (count * 2)}px;
 
     background-color: ${({ theme }) => theme.color.blue200};
     animation: ${anim} ${(props) => props.duration}s linear infinite;
