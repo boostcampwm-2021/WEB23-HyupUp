@@ -1,8 +1,9 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Button from '@/lib/design/Button';
 import { Styled } from './style';
 import { LogInForm } from '@/components/LogInForm';
-import { useHistory } from 'react-router-dom';
+import Logo from '@/lib/design/Logo';
 
 const LogInPage = () => {
   const history = useHistory();
@@ -12,7 +13,7 @@ const LogInPage = () => {
   return (
     <Styled.Container>
       <Styled.LogoContainer>
-        <Styled.Logo to="/">HyupUp</Styled.Logo>
+        <Logo to="/" />
       </Styled.LogoContainer>
       <Styled.ContentContainer>
         <LogInForm />

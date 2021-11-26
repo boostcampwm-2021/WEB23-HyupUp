@@ -5,6 +5,7 @@ import { Styled } from './style';
 import { useSetRecoilState } from 'recoil';
 import user from '@/recoil/user';
 import { taskSortByUpdate } from '@/lib/utils/sort';
+import Logo from '@/lib/design/Logo';
 
 const LandingPage = () => {
   const setUserState = useSetRecoilState(user);
@@ -21,7 +22,7 @@ const LandingPage = () => {
 
   return (
     <Styled.Container>
-      <Styled.Logo>HyupUp</Styled.Logo>
+      <Logo to="/" />
       <img src="https://img.freepik.com/free-vector/business-team-brainstorm-idea-lightbulb-from-jigsaw-working-team-collaboration-enterprise-cooperation-colleagues-mutual-assistance-concept-pinkish-coral-bluevector-isolated-illustration_335657-1651.jpg?size=626&ext=jpg" />
       <Styled.TextContainer>
         <Styled.Title>일 잘하는 사람들을 위한</Styled.Title>
