@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import bcrypt from 'bcrypt';
-import { bodyValidator, queryValidator } from '../../lib/utils/requestValidator';
+import { bodyValidator, queryValidator } from '../utils/requestValidator';
 import Users from './Users.entity';
 import {
   getUserInfo,
@@ -124,6 +124,7 @@ export const logInUser = async (req: Request, res: Response, next: NextFunction)
     req.query.email = req.body.email;
     req.session.isLogIn = true;
     req.session.email = req.body.email;
+    res.cookie('status', '');
     next();
   } catch (e) {
     const err = e as Error;
@@ -203,6 +204,7 @@ export const logOut = (req: Request, res: Response) => {
       if (err) throw new Error(err);
     });
     res.clearCookie('connect.sid');
+    res.clearCookie('status');
     res.end();
   } catch {
     res.status(400).end();

@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
 import { Request, Response } from 'express';
-import { bodyValidator, queryValidator } from '../../lib/utils/requestValidator';
+import { bodyValidator, queryValidator } from '../utils/requestValidator';
 
 import Users from '../Users/Users.entity';
 import Projects from './Projects.entity';
