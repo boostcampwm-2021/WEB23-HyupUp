@@ -10,7 +10,7 @@ type EpicAction =
   | { type: 'ADD_EPIC'; epic: EpicType | EpicWithString }
   | { type: 'REMOVE_EPIC'; id: number }
   | { type: 'UPDATE_EPIC'; epic: EpicType | EpicWithString }
-  | { type: 'LOAD_EPIC'; epics: EpicWithString[] | undefined }
+  | { type: 'LOAD_EPIC'; epics: EpicWithString[] }
   | { type: 'DROP_EPIC' };
 
 type EpicDispatch = Dispatch<EpicAction>;
