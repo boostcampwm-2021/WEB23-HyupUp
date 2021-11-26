@@ -2,10 +2,14 @@ import styled from 'styled-components';
 
 const Styled = {
   ContentWrapper: styled.section`
-    width: 700px;
-    height: 500px;
-    overflow: scroll;
+    height: 550px;
+    width: 750px;
+    overflow-y: scroll;
+    overflow-x: hidden;
     z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     h3 {
       text-align: center;
@@ -21,12 +25,19 @@ const Styled = {
     margin-bottom: 20px;
 
     p {
-      margin-right: 40px;
       font: ${({ theme }) => theme.font.bold_regular};
     }
 
     button {
       margin: 0;
+      margin-left: 50px;
+    }
+  `,
+  MemberContaienr: styled.div`
+    p {
+      margin-right: 40px;
+
+      font: ${({ theme }) => theme.font.bold_regular};
     }
   `,
 };

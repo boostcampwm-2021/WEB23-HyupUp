@@ -15,14 +15,16 @@ import backlog from '@public/icons/time-icon.svg';
 
 import { getEpicsByProjectId } from '@/lib/api/epic';
 import { getAllStories } from '@/lib/api/story';
+import { getUsersInfoWithProject } from '@/lib/api/user';
 import { useEpicDispatch, useStoryDispatch } from '@/lib/hooks/useContextHooks';
-import { useRecoilValue } from 'recoil';
-import userAtom from '@/recoil/user';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import userAtom, { userListAtom } from '@/recoil/user';
 
 const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
   const storyDispatcher = useStoryDispatch();
   const user = useRecoilValue(userAtom);
+  const setUserListState = useSetRecoilState(userListAtom);
 
   const tabs = [
     <Roadmap key={0} projectId={user?.currentProjectId} />,
@@ -42,8 +44,11 @@ const WorkPage = () => {
       if (!user.currentProjectId) return;
       const epics = await getEpicsByProjectId(user.currentProjectId);
       const stories = await getAllStories(user.currentProjectId);
+      const result = await getUsersInfoWithProject(user.organization as number);
+      if (!result) return;
       epicDispatcher({ type: 'LOAD_EPIC', epics });
       storyDispatcher({ type: 'LOAD_STORY', stories });
+      setUserListState(result);
     })();
   }, [epicDispatcher, storyDispatcher, user.currentProjectId]);
 

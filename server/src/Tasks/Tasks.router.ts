@@ -5,16 +5,16 @@ import {
   getAllTasksByProject,
   getTasksByStoryId,
   updateTask,
+  postTask,
 } from './Tasks.controller';
 
 const router = express.Router();
 
-router.get('/', [authValidator, getAllTasksByProject]);
-
-router.get('/:id', [authValidator, getTasksByStoryId]);
-
-router.patch('/', [authValidator, updateTask]);
-
-router.delete('/', [authValidator, deleteTask]);
+router
+  .get('/', [authValidator, getAllTasksByProject])
+  .get('/:id', [authValidator, getTasksByStoryId])
+  .post('/', [authValidator, postTask])
+  .patch('/', [authValidator, updateTask])
+  .delete('/', [authValidator, deleteTask]);
 
 export default router;

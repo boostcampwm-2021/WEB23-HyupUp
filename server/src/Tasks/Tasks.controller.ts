@@ -41,8 +41,9 @@ export const getTasksByStoryId = async (req: Request, res: Response) => {
       tasks.map((el) => ({
         id: el.id,
         name: el.name,
-        user: el.users.name,
-        userImage: el.users.imageURL,
+        user: el.users ? el.users.name : null,
+        userImage: el.users ? el.users.imageURL : null,
+        userId: el.users ? el.users.id : null,
       })),
     );
   } catch (e) {
@@ -60,6 +61,7 @@ export const updateTask = async (req: Request, res: Response) => {
     await taskRepository.update(req.body.id, {
       name: req.body.name,
       status: req.body.status,
+      users: req.body.userId,
     });
     res.end();
   } catch (error) {
@@ -77,6 +79,28 @@ export const deleteTask = async (req: Request, res: Response) => {
     await taskRepository.delete({ id: +req.query.id });
     res.end();
   } catch (error) {
+    const message = (error as Error).message;
+    res.status(401).json({ message });
+  }
+};
+
+export const postTask = async (req: Request, res: Response) => {
+  try {
+    const result = await getRepository(Tasks)
+      .createQueryBuilder()
+      .insert()
+      .into(Tasks)
+      .values({
+        name: req.body.name,
+        status: req.body.status,
+        users: req.body.userId,
+        projects: () => req.body.projectId,
+        stories: () => req.body.storyId,
+      })
+      .execute();
+    res.json({ id: result.raw.insertId });
+  } catch (error) {
+    console.log(error);
     const message = (error as Error).message;
     res.status(401).json({ message });
   }
