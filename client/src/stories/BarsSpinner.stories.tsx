@@ -6,6 +6,18 @@ export default {
   title: 'src/lib/design/Spinner/Bars',
   component: BarsSpinner,
   argTypes: {
+    width: {
+      control: {
+        type: 'number',
+      },
+      defaultValue: 70,
+    },
+    height: {
+      control: {
+        type: 'number',
+      },
+      defaultValue: 70,
+    },
     duration: {
       control: {
         type: 'number',
