@@ -1,25 +1,9 @@
 import React from 'react';
 import Button from '@/lib/design/Button';
-import { getUser } from '@/lib/api/user';
 import { Styled } from './style';
-import { useSetRecoilState } from 'recoil';
-import user from '@/recoil/user';
-import { taskSortByUpdate } from '@/lib/utils/sort';
 import Logo from '@/lib/design/Logo';
 
 const LandingPage = () => {
-  const setUserState = useSetRecoilState(user);
-
-  const onClickLogin = async (email: string) => {
-    // App 의 useEffect로 들어가야할 로직
-    const newUser = await getUser(email);
-    if (newUser.id) {
-      newUser.privateTasks!.sort((a, b) => taskSortByUpdate(a, b));
-      newUser.projectTasks!.sort((a, b) => taskSortByUpdate(a, b));
-    }
-    setUserState(newUser);
-  };
-
   return (
     <Styled.Container>
       <Logo to="/" />
@@ -28,24 +12,6 @@ const LandingPage = () => {
         <Styled.Title>일 잘하는 사람들을 위한</Styled.Title>
         <Styled.Title>가장 간편한 협업 툴</Styled.Title>
       </Styled.TextContainer>
-      <Button
-        size="large"
-        category="default"
-        onClick={() => {
-          onClickLogin('test1@gmail.com');
-        }}
-      >
-        Login as Test1
-      </Button>
-      <Button
-        size="large"
-        category="default"
-        onClick={() => {
-          onClickLogin('test2@gmail.com');
-        }}
-      >
-        Login as Test2
-      </Button>
       <Button size="large" category="default" onClick={() => (window.location.href = '/login')}>
         HyupUp 시작하기
       </Button>

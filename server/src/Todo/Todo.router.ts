@@ -1,5 +1,5 @@
 import express from 'express';
-import { authValidator } from '../../lib/utils/authValidator';
+import { authValidator } from '../utils/authValidator';
 import { createTodo, deleteTodo, updateTodo } from './Todo.controller';
 
 const router = express.Router();

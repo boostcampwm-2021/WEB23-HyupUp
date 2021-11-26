@@ -23,11 +23,11 @@ const S = {
     display: grid;
     grid-template-columns: repeat(${({ columns }) => columns}, 1fr);
 
-    margin: 25px 0;
+    margin: 27px 0;
   `,
   Spacer: styled.div`
     width: 100%;
-    height: 23px;
+    height: 25px;
   `,
   Bar: styled.div<{ status: RoadmapBarsStatus }>`
     position: relative;
@@ -35,7 +35,7 @@ const S = {
     justify-content: space-between;
 
     width: 100%;
-    height: 23px;
+    height: 25px;
 
     background-color: ${({ status, theme }) => statusToColor(status, theme.color)};
   `,

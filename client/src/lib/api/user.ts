@@ -24,7 +24,7 @@ export const getUser = async (email: string) => {
     const result: { data: UserState } = await instance.get(`?email=${email}`);
     return result.data;
   } catch (e) {
-    if ((e as Error).message !== 'Request failed with status code 401') {
+    if ((e as Error).message === 'Request failed with status code 401') {
       toast.error(errorMessage.GET_USER);
     }
   }
@@ -129,5 +129,17 @@ export const logOut = async () => {
     toast.info(result);
   } catch (e) {
     toast.error(errorMessage.CREATE_USER);
+  }
+};
+
+export const sudoLogIn = async () => {
+  try {
+    const result: { data: UserState } = await instance.post('/login', {
+      email: 'test1@gmail.com',
+      password: 'token',
+    });
+    return result.data;
+  } catch (e) {
+    toast.error(errorMessage.GET_USER);
   }
 };
