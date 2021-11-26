@@ -30,6 +30,13 @@ const Styled = {
     border-bottom-left-radius: 8px;
     background: ${({ projectId }) =>
       `linear-gradient(45deg, ${getIdColor(projectId)}, ${getIdColor(projectId + 77)})`};
+    cursor: pointer;
+    transition: ease-in-out 500ms;
+    &:hover {
+      opacity: 0.75;
+      background: ${({ projectId }) =>
+        `linear-gradient(60deg, ${getIdColor(projectId)}, ${getIdColor(projectId + 77)})`};
+    }
   `,
 };
 

@@ -10,10 +10,6 @@ export const Styled = {
     height: 100vh;
   `,
 
-  Logo: styled.p`
-    font: ${({ theme }) => theme.font.display_medium};
-  `,
-
   Title: styled.p`
     margin: 5px;
 

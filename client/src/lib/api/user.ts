@@ -42,6 +42,23 @@ export const getUsersInfoWithProject = async (
   }
 };
 
+export const inviteUserWithProject = async (
+  userId: number,
+  projectId: number,
+  isInvite: boolean,
+) => {
+  try {
+    const result = await instance.patch('/project', {
+      userId,
+      projectId,
+      isInvite,
+    });
+    if (result.status % 400 < 100) throw new Error();
+  } catch (error) {
+    toast.error(errorMessage.UPDATE_USER_PROJECT);
+  }
+};
+
 export const getUsersByOrganization = async (id: number): Promise<Array<UserProfile>> => {
   try {
     const result: { data: Array<UserProfile> } = await instance.get(

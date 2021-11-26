@@ -23,6 +23,10 @@ const Router = () => {
         userData.privateTasks!.sort((a, b) => taskSortByUpdate(a, b));
         userData.projectTasks!.sort((a, b) => taskSortByUpdate(a, b));
       }
+      if (userData.projects && userData.projects?.length > 0) {
+        userData.currentProjectId = userData.projects[0].id;
+        userData.currentProjectName = userData.projects[0].name;
+      }
       setUserState(userData);
     })();
   }, [setUserState]);
@@ -34,11 +38,15 @@ const Router = () => {
     <>
       <Switch>
         <Route exact path="/" render={() => (userState?.email ? <MainPage /> : <LandingPage />)} />
-        <Route exact path="/work" render={() => <WorkPage />} />
+        <Route
+          exact
+          path="/work"
+          render={() => (userState?.email ? <WorkPage /> : <LandingPage />)}
+        />
         <Route
           exact
           path="/setting"
-          render={() => (userState.admin ? <AdminPage /> : <Redirect to="/" />)}
+          render={() => (userState?.email ? <AdminPage /> : <LandingPage />)}
         />
         <Route
           exact

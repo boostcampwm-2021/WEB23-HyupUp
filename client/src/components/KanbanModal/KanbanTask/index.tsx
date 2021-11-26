@@ -15,7 +15,7 @@ const KanbanTask = ({ task }: { task: BackLogTaskProps }) => {
     <KanbanTaskWrapper>
       <input value={value} placeholder={'Type A Task'} onChange={onChange} />
       <p>
-        <img src={avatar[userState.imageURL as ImageType]} alt="userimage" />
+        <img src={avatar[userState.imageURL] as ImageType} alt="userimage" />
         <span>{userState.name}</span>
       </p>
     </KanbanTaskWrapper>

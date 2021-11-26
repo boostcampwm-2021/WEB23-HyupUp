@@ -24,7 +24,7 @@ const Box = styled.ul<IsVisibleProps>`
   visibility: ${(props) => (props.state ? 'visible' : 'hidden')};
   opacity: ${(props) => (props.state ? '1' : '0')};
   top: 100%;
-  left: 0;
+  right: -50%;
 
   background-color: ${({ theme }) => theme.color.white};
   border-radius: 8px;

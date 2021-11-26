@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
 
 export const Styled = {
   header: styled.header`
@@ -11,11 +10,6 @@ export const Styled = {
     width: 100%;
 
     margin-top: 25px;
-  `,
-  logo: styled(NavLink)`
-    font: ${({ theme }) => theme.font.display_medium};
-    color: ${({ theme }) => theme.color.gray500};
-    text-align: center;
   `,
   iconList: styled.ul`
     display: flex;
