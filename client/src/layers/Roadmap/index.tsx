@@ -34,6 +34,11 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       epic: updatedEpic!,
     });
   });
+  useSocketReceive('GET_EPIC', async (epicId: number) => {
+    const data = await getEpicById(epicId);
+    if (!data || data.projectId !== userState.currentProjectId) return;
+    dispatchEpic({ type: `ADD_EPIC`, epic: data });
+  });
 
   const getMaxOrder = () => {
     return epicsOnProject.length ? Math.max(...epicsOnProject.map((epic) => epic.order)) : 0;
@@ -91,7 +96,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       <S.Title>프로젝트 로드맵</S.Title>
       <S.Content>
         <S.EpicEntry>
-          {epicsOnProject.map(({ id, name, order }) => (
+          {epicsOnProject.map(({ id, projectId, name, order, startAt, endAt }) => (
             <EpicEntryItem
               activated={id === nowDragging.over}
               key={id}
@@ -100,7 +105,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
               onDragEnter={() => setNowDragging({ id: nowDragging.id, over: id })}
               onDragLeave={() => setNowDragging({ id: nowDragging.id, over: 0 })}
               onDrop={() => handleDrop(order)}
-              name={name}
+              epicData={{ id, projectId, name, order, startAt, endAt }}
             />
           ))}
           <S.EpicEntrySpacer

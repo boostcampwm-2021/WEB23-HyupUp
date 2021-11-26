@@ -13,13 +13,10 @@ import roadmap from '@public/icons/calendar-icon.svg';
 import board from '@public/icons/board-icon.svg';
 import backlog from '@public/icons/time-icon.svg';
 
-import { getEpicById, getEpicsByProjectId } from '@/lib/api/epic';
+import { getEpicsByProjectId } from '@/lib/api/epic';
 import { getAllStories } from '@/lib/api/story';
 import { getUsersInfoWithProject } from '@/lib/api/user';
 import { useEpicDispatch, useStoryDispatch } from '@/lib/hooks/useContextHooks';
-import useSocketReceive from '@/lib/hooks/useSocketReceive';
-import { toast } from 'react-toastify';
-import { errorMessage } from '@/lib/common/message';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom, { userListAtom } from '@/recoil/user';
 
@@ -28,16 +25,6 @@ const WorkPage = () => {
   const storyDispatcher = useStoryDispatch();
   const user = useRecoilValue(userAtom);
   const setUserListState = useSetRecoilState(userListAtom);
-  useSocketReceive('GET_EPIC', async (epicId: number) => {
-    try {
-      const data = await getEpicById(epicId);
-      if (!data) throw new Error(errorMessage.GET_EPIC);
-      if (data.projectId !== user.currentProjectId) return;
-      epicDispatcher({ type: `ADD_EPIC`, epic: data });
-    } catch (e) {
-      toast.error((e as Error).message);
-    }
-  });
 
   const tabs = [
     <Roadmap key={0} projectId={user?.currentProjectId} />,

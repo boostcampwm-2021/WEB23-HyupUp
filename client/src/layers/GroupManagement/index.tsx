@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { toast } from 'react-toastify';
+
 import * as S from './style';
 import { UserProfile } from '@/types/users';
 import { Modal } from '@/lib/design';
@@ -7,7 +10,7 @@ import { deleteUserById, getUsersByOrganization, modifyUserAdminById } from '@/l
 import TeamInviteBar from '@/components/TeamInviteBar';
 import { TeamItemViewer } from '@/components/TeamItemViewer';
 import userAtom from '@/recoil/user';
-import { useRecoilValue } from 'recoil';
+import { warningMessage } from '@/lib/common/message';
 
 const ADMIN = true;
 const TEAMMATE = false;
@@ -41,10 +44,18 @@ export const GroupManagement = () => {
   }, [userState.id, userState.organization]);
 
   const onModalButtonClick = () => {
+    if (!userState.admin) {
+      toast.warn(warningMessage.ADMIN_ACCESS);
+      return;
+    }
     setShowModal(() => !showModal);
   };
 
   const showEditModal = (e: React.MouseEvent, id: number) => {
+    if (!userState.admin) {
+      toast.warn(warningMessage.ADMIN_ACCESS);
+      return;
+    }
     const text = (e.target as HTMLLIElement).innerText;
     switch (text) {
       case '팀원에서 제외':
