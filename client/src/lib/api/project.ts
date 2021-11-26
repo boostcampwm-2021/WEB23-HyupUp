@@ -1,3 +1,4 @@
+import { ProjectType } from '@/types/project';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { errorMessage } from '../common/message';
@@ -12,7 +13,10 @@ interface Project {
   id: number;
 }
 
-export const getAllProjectsByUser = async (userId: number, organizationId: number) => {
+export const getAllProjectsByUser = async (
+  userId: number,
+  organizationId: number,
+): Promise<ProjectType[] | void> => {
   try {
     const result = await instance.get(`/?userId=${userId}&organizationId=${organizationId}`);
     if (result.status % 400 < 100) throw new Error();

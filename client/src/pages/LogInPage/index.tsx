@@ -1,13 +1,16 @@
 import React from 'react';
+import { useSetRecoilState } from 'recoil';
+import { useHistory } from 'react-router-dom';
+
 import Button from '@/lib/design/Button';
 import { Styled } from './style';
 import { LogInForm } from '@/components/LogInForm';
-import { useHistory } from 'react-router-dom';
+import Logo from '@/lib/design/Logo';
 import { sudoLogIn } from '@/lib/api/user';
 import { UserState } from '@/contexts/userContext';
 import { taskSortByUpdate } from '@/lib/utils/sort';
 import userAtom from '@/recoil/user';
-import { useSetRecoilState } from 'recoil';
+
 
 const LogInPage = () => {
   const history = useHistory();
@@ -23,13 +26,17 @@ const LogInPage = () => {
       userData.privateTasks!.sort((a, b) => taskSortByUpdate(a, b));
       userData.projectTasks!.sort((a, b) => taskSortByUpdate(a, b));
     }
+    if (userData.projects && userData.projects?.length > 0) {
+      userData.currentProjectId = userData.projects[0].id;
+      userData.currentProjectName = userData.projects[0].name;
+    }
     setUserState(userData);
   };
 
   return (
     <Styled.Container>
       <Styled.LogoContainer>
-        <Styled.Logo to="/">HyupUp</Styled.Logo>
+        <Logo to="/" />
       </Styled.LogoContainer>
       <Styled.ContentContainer>
         <LogInForm />

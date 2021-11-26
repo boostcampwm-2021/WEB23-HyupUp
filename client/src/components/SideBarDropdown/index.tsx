@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router';
 import { useRecoilState } from 'recoil';
 import produce from 'immer';
 import DropDown from '@/lib/design/DropDown';
@@ -7,15 +8,22 @@ import { ProjectType } from '@/types/project';
 import userAtom from '@/recoil/user';
 import { getAllProjectsByUser } from '@/lib/api/project';
 
+type ProjectData = {
+  projects: ProjectType[];
+  currentProjectName: string;
+  currentProjectId: number;
+};
+
 const SideBarDropDown = () => {
   const [userState, setUserState] = useRecoilState(userAtom);
-  const [listState, listStateHandler] = useState<Array<ProjectType>>([]);
-  const [titleState, titleStateHandler] = useState('프로젝트');
+  const [listState, setListState] = useState<Array<ProjectType>>([]);
+  const [titleState, setTitleState] = useState('프로젝트');
+  const location = useLocation<ProjectType>();
 
   const itemClickHandler = (e: React.MouseEvent) => {
     const target = e.target as HTMLLIElement;
     if (target.tagName !== 'LI') return;
-    titleStateHandler(target.innerText);
+    setTitleState(target.innerText);
     setUserState((prev) =>
       produce(prev, (draft) => {
         draft.currentProjectName = target.innerText;
@@ -25,28 +33,41 @@ const SideBarDropDown = () => {
   };
   useEffect(() => {
     (async () => {
-      const projects = await getAllProjectsByUser(
-        userState.id as number,
-        userState.organization as number,
-      );
-      const defaultProject = projects.length !== 0 ? projects[0] : undefined;
-      const payload = defaultProject
-        ? {
-            projects: projects,
-            currentProjectName: defaultProject.name,
-            currentProjectId: defaultProject.id,
-          }
-        : { projects: projects };
+      const data: ProjectData = {
+        projects: [],
+        currentProjectId: 0,
+        currentProjectName: '',
+      };
+      // 관리자 페이지에서 넘어온 경우
+      if (location.state) {
+        data.projects.push(...userState.projects!);
+        data.currentProjectId = location.state.id;
+        data.currentProjectName = location.state.name;
+      } else {
+        const projects = await getAllProjectsByUser(
+          userState.id as number,
+          userState.organization as number,
+        );
+        if (!projects) return;
+        data.projects = projects;
+        if (projects.find((el) => el.id === userState.currentProjectId)) {
+          data.currentProjectId = userState.currentProjectId!;
+          data.currentProjectName = userState.currentProjectName!;
+        } else if (projects.length) {
+          data.currentProjectId = projects[0].id;
+          data.currentProjectName = projects[0].name;
+        }
+      }
       setUserState((prev) =>
         produce(prev, (draft) => ({
           ...draft,
-          ...payload,
+          ...data,
         })),
       );
-      listStateHandler(projects);
-      titleStateHandler(projects[0].name);
+      setListState(data.projects);
+      setTitleState(data.currentProjectName || '');
     })();
-  }, [userState.id, userState.organization, setUserState]);
+  }, []);
 
   return (
     <div>

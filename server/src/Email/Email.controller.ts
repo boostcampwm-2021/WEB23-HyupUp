@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { bodyValidator } from '../../lib/utils/requestValidator';
+import { bodyValidator } from '../utils/requestValidator';
 import { sendMail } from './Email.service';
 import { createClient } from 'redis';
 import { v4 } from 'uuid';

@@ -8,12 +8,14 @@ export const CREATE_EPIC = '에픽 생성에 실패했습니다.';
 export const CREATE_TODO = 'Todo 생성에 실패했습니다.';
 export const CREATE_STORY = '스토리 생성에 실패했습니다.';
 export const CREATE_PROJECT = '프로젝트 생성에 실패했습니다.';
+export const CREATE_TASK = '테스크 생성에 실패했습니다.';
 
 export const UPDATE_EPIC = '에픽 수정에 실패했습니다.';
 export const UPDATE_TODO = 'Todo 항목 수정에 실패했습니다.';
 export const UPDATE_TASK = 'Task 항목 수정에 실패했습니다.';
 export const UPDATE_STORY = '스토리 수정에 실패했습니다.';
 export const UPDATE_USER = '사용자 정보 수정에 실패했습니다.';
+export const UPDATE_USER_PROJECT = '팀원의 프로젝트 정보 수정에 실패했습니다.';
 
 export const DELETE_PROJECT = '프로젝트 삭제에 실패했습니다.';
 export const DELETE_TODO = 'Todo 항목 삭제에 실패했습니다.';
@@ -39,11 +41,13 @@ export default {
   CREATE_USER,
   CREATE_USER_PW,
   CREATE_USER_EMAIL,
+  CREATE_TASK,
   UPDATE_EPIC,
   UPDATE_TODO,
   UPDATE_TASK,
   UPDATE_STORY,
   UPDATE_USER,
+  UPDATE_USER_PROJECT,
   DELETE_PROJECT,
   DELETE_TODO,
   DELETE_TASK,

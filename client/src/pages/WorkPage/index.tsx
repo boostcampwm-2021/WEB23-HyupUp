@@ -13,37 +13,25 @@ import roadmap from '@public/icons/calendar-icon.svg';
 import board from '@public/icons/board-icon.svg';
 import backlog from '@public/icons/time-icon.svg';
 
-import { getEpicById, getEpicsByProjectId } from '@/lib/api/epic';
+import { getEpicsByProjectId } from '@/lib/api/epic';
 import { getAllStories } from '@/lib/api/story';
+import { getUsersInfoWithProject } from '@/lib/api/user';
 import { useEpicDispatch, useStoryDispatch } from '@/lib/hooks/useContextHooks';
-import useSocketReceive from '@/lib/hooks/useSocketReceive';
-import { toast } from 'react-toastify';
-import { errorMessage } from '@/lib/common/message';
-import { useRecoilValue } from 'recoil';
-import userAtom from '@/recoil/user';
-import { EpicType, EpicWithString } from '@/types/epic';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import userAtom, { userListAtom } from '@/recoil/user';
 
 const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
   const storyDispatcher = useStoryDispatch();
   const user = useRecoilValue(userAtom);
-  useSocketReceive('GET_EPIC', async (epicId: number) => {
-    try {
-      const data = await getEpicById(epicId);
-      if (!data) throw new Error(errorMessage.GET_EPIC);
-      if (data.projectId !== user.currentProjectId) return;
-      epicDispatcher({ type: `ADD_EPIC`, epic: data });
-    } catch (e) {
-      toast.error((e as Error).message);
-    }
-  });
+  const setUserListState = useSetRecoilState(userListAtom);
 
   const tabs = [
     <Roadmap key={0} projectId={user?.currentProjectId} />,
     <Kanban key={1} />,
     <Backlog key={2} />,
   ];
-  const { currentIndex, currentTab, changeTab } = useTabs(1, tabs);
+  const { currentIndex, currentTab, changeTab } = useTabs(0, tabs);
 
   const sideBarEntries = [
     <SideBarEntry key={0} icon={roadmap} name={'로드맵'} highlight={currentIndex === 0} />,
@@ -56,8 +44,11 @@ const WorkPage = () => {
       if (!user.currentProjectId) return;
       const epics = await getEpicsByProjectId(user.currentProjectId);
       const stories = await getAllStories(user.currentProjectId);
+      const result = await getUsersInfoWithProject(user.organization as number);
+      if (!result) return;
       epicDispatcher({ type: 'LOAD_EPIC', epics });
       storyDispatcher({ type: 'LOAD_STORY', stories });
+      setUserListState(result);
     })();
   }, [epicDispatcher, storyDispatcher, user.currentProjectId]);
 
