@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { toast } from 'react-toastify';
+import produce from 'immer';
+
 import Styled from '@/components/ProjectModalItem/style';
 import TeamManagementItem from '@/components/TeamManagementItem';
 import { UserInfoWithProject } from '@/types/users';
 import { ProjectType } from '@/types/project';
-import { useSetRecoilState } from 'recoil';
-import { userListAtom } from '@/recoil/user';
-import produce from 'immer';
+import userAtom, { userListAtom } from '@/recoil/user';
 import { inviteUserWithProject } from '@/lib/api/user';
+import { warningMessage } from '@/lib/common/message';
 
 interface ProjectModalItemProps {
   user: UserInfoWithProject;
@@ -15,6 +18,7 @@ interface ProjectModalItemProps {
 
 const ProjectModalItem = ({ user, project }: ProjectModalItemProps) => {
   const [isClickedMinus, setIsClickedMinus] = useState<boolean>(false);
+  const userState = useRecoilValue(userAtom);
   const setUserListState = useSetRecoilState(userListAtom);
 
   const inviteUserIntoProject = async (userId: number, projectObj: ProjectType) => {
@@ -41,6 +45,10 @@ const ProjectModalItem = ({ user, project }: ProjectModalItemProps) => {
   };
 
   const onClickMinus = () => {
+    if (userState.id === user.index) {
+      toast.warn(warningMessage.DELETE_MYSELF);
+      return;
+    }
     setIsClickedMinus((prev) => !prev);
   };
 
