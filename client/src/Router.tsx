@@ -16,7 +16,7 @@ import { useMemo } from 'react';
 const Router = () => {
   const [userState, setUserState] = useRecoilState(userAtom);
   useEffect(() => {
-    if (!document.cookie.match('check')) return;
+    if (!document.cookie.match('status')) return;
     (async () => {
       const userData = (await getUser('')) as UserState;
       if (userData.id) {
