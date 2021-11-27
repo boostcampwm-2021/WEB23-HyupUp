@@ -25,7 +25,7 @@ const Styled = {
     position: absolute;
     display: flex;
     align-items: center;
-    z-index: 200;
+    z-index: 1;
 
     top: 0;
     right: 0;
