@@ -25,12 +25,12 @@ const Box = styled.ul<IsVisibleProps>`
   opacity: ${(props) => (props.state ? '1' : '0')};
   top: 100%;
   right: -50%;
-  
+
   background-color: ${({ theme }) => theme.color.white};
   border-radius: 8px;
 
   transform: ${(props) => (props.state ? 'translateY(0px)' : 'translateY(-10px)')};
-  z-index: ${(props) => (props.state ? '1' : '-1')};
+  z-index: ${(props) => (props.state ? '100' : '-1')};
   transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
   box-shadow: 0px 4px 16px 4px rgba(0, 0, 0, 0.2);
   transition-delay: ${(props) => (props.state ? '0s' : ' 0s, 0s, 0.3s;')};
@@ -54,7 +54,6 @@ const Parent = styled.div`
   position: relative;
   width: fit-content;
   height: fit-content;
-
   border-radius: 8px;
 `;
 
