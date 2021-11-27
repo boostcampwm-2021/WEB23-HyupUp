@@ -25,7 +25,8 @@
   },
   "jest": {
     "testMatch": [
-      "<rootDir>/src/**/**/index.test.tsx"
+      "<rootDir>/src/**/**/index.test.tsx",
+      "<rootDir>/src/**/**/**/index.test.tsx"
     ]
   },
   "devDependencies": {
