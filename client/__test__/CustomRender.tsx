@@ -1,17 +1,20 @@
 import React, { ComponentType, ReactElement } from 'react';
+import { render } from '@testing-library/react';
+import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 import theme from 'client/src/styles/theme';
 import { StoryProvider } from 'client/src/contexts/storyContext';
 import { EpicProvider } from 'client/src/contexts/epicContext';
-import { render } from '@testing-library/react';
 
 const CustomProvider = ({ children }: { children: React.FC }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <EpicProvider>
-        <StoryProvider>{children}</StoryProvider>
-      </EpicProvider>
-    </ThemeProvider>
+    <RecoilRoot>
+      <ThemeProvider theme={theme}>
+        <EpicProvider>
+          <StoryProvider>{children}</StoryProvider>
+        </EpicProvider>
+      </ThemeProvider>
+    </RecoilRoot>
   );
 };
 
