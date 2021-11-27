@@ -11,12 +11,20 @@ function renderKanbanTask(props: Partial<KanbanTaskPropType>) {
 
   const kanbanTask = CustomRender(<KanbanTask {...props} />);
   const dropdown = CustomRender(
-    <DropDown list={[{ id: 1, name: 'test' }]} handleClick={handleUserSelect} isMeatBall={true} />,
+    <DropDown
+      list={[
+        { id: 1, name: 'User1' },
+        { id: 2, name: 'User2' },
+      ]}
+      handleClick={handleUserSelect}
+      isMeatBall={true}
+    />,
   );
 
   const taskNameInput = () => kanbanTask.getByPlaceholderText('Type A Task');
   const dropdownDefaultImg = () => dropdown.getByAltText('meatballimg');
   const dropdownList = () => dropdown.getByRole('list');
+  const UserText = (user: string) => dropdown.getByText(`${user}`);
 
   async function clickTaskInput() {
     await act(async () => {
@@ -36,13 +44,21 @@ function renderKanbanTask(props: Partial<KanbanTaskPropType>) {
     });
   }
 
+  async function clickDropdownUser(user: string) {
+    await act(async () => {
+      userEvent.click(UserText(user));
+    });
+  }
+
   return {
     taskNameInput,
     dropdownDefaultImg,
+    dropdownList,
+    UserText,
     clickTaskInput,
     typeTaskInput,
     clickMeatball,
-    dropdownList,
+    clickDropdownUser,
   };
 }
 
@@ -85,5 +101,20 @@ describe('<KanbanTask />', () => {
     await clickMeatball();
 
     expect(dropdownList()).toBeVisible();
+  });
+
+  it('드롭 다운 내에 User1 을 클릭하면 리스트가 사라진다', async () => {
+    const { dropdownList, UserText, clickMeatball, clickDropdownUser } = renderKanbanTask({
+      task: task,
+      storyId: 1,
+    });
+
+    await clickMeatball();
+    expect(dropdownList()).toBeVisible();
+
+    expect(UserText('User1')).toBeVisible();
+    await clickDropdownUser('User1');
+    expect(UserText('User1')).not.toBeVisible();
+    expect(UserText('User2')).not.toBeVisible();
   });
 });
