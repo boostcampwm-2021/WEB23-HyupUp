@@ -2,12 +2,14 @@ import styled from 'styled-components';
 
 const S = {
   Container: styled.section`
+    position: sticky;
     display: flex;
     flex-direction: column;
     align-items: center;
 
+    top: 10px;
     width: 173px;
-    height: 600px;
+    height: 75vh;
     padding: 24px 16px;
 
     background-color: ${({ theme }) => theme.color.gray100};
