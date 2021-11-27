@@ -123,7 +123,7 @@ const DropDown = (props: DropDownProps) => {
           <ArrowImage src={arrow} state={clickState} alt="arrowimg" />
         )}
       </ContextContainer>
-      <Box onClick={selectItem} state={clickState}>
+      <Box onClick={selectItem} state={clickState} role="list">
         {list.map((el, i) =>
           i === list.length - 1 ? (
             <Item key={el.id} fontTheme={fontTheme} value={el.id}>
