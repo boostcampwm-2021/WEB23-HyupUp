@@ -14,6 +14,11 @@ export type StoryType = {
 export type dragRefObjectType = React.MutableRefObject<number | null>;
 export type dragCategoryType = React.MutableRefObject<StatusType>;
 
+export interface ItemInput {
+  story: StoryType;
+  epic: EpicType | undefined;
+}
+
 export interface KanbanType {
   category: StatusType;
   dragRef: dragRefObjectType;
@@ -38,4 +43,13 @@ export interface KanbanItemType {
   dragCategory: dragCategoryType;
   dragOverCategory: dragCategoryType;
   handleDragDrop(category: StatusType): void;
+}
+
+export interface KanbanTaskType {
+  name?: string;
+  id?: number;
+  preExist?: boolean;
+  user?: string;
+  userImage?: string;
+  userId?: number;
 }
