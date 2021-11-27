@@ -4,7 +4,7 @@ import logo from '@public/hyupup-logo.svg';
 
 const Logo = styled(NavLink)`
   display: block;
-  width: 200px;
+  width: 165px;
   height: 70px;
   background-image: url(${logo});
   background-position: center center;
