@@ -85,9 +85,7 @@ export const inviteUser = async (userId: number, projectId: number, isInvite: bo
     user.projects.push(project);
   } else {
     // 프로젝트에서 제거
-    user.projects = user.projects.filter((el) => {
-      el.id !== projectId;
-    });
+    user.projects = user.projects.filter((el) => el.id !== projectId);
   }
   await userRepository.save(user);
 };
