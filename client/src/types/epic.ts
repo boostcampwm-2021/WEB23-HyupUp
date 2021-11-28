@@ -40,7 +40,7 @@ export type CalendarRange = {
   columns: number;
 };
 
-export type RoadmapBarsStatus = 'NOT_STARTED' | 'STARTED' | 'ALL_DONE';
+export type RoadmapBarsStatus = 'UNINITIALIZED' | 'NOT_STARTED' | 'STARTED' | 'ALL_DONE';
 
 export type EpicRenderInfo = {
   id: number;
