@@ -46,6 +46,10 @@ const S = {
     & button {
       width: 100%;
     }
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   `,
   EpicEntrySpacer: styled.li<{ activated: boolean }>`
     margin: 5px 0;
