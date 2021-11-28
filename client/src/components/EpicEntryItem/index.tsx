@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import S from './style';
 import draggableIcon from '@public/icons/draggable.svg';
-import { Modal, Button } from '@/lib/design';
-import { updateEpicById } from '@/lib/api/epic';
+import { Modal } from '@/lib/design';
 import { EpicType } from '@/types/epic';
-import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
+import EpicEditModal from '../EpicEditModal';
 
 interface EpicEntryItemProps {
   activated: boolean;
@@ -19,23 +18,6 @@ interface EpicEntryItemProps {
 const EpicEntryItem = (props: EpicEntryItemProps) => {
   const [showDraggable, setShowDraggable] = useState(false);
   const [showEditModal, setShowModal] = useState(false);
-  const [value, setValue] = useState(props.epicData.name);
-  const dispatchEpic = useEpicDispatch();
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const updatedEpic = { ...props.epicData, name: value };
-    updateEpicById(props.epicData.id, updatedEpic);
-    dispatchEpic({
-      type: 'UPDATE_EPIC',
-      epic: updatedEpic,
-    });
-    setShowModal(false);
-  };
-
-  const handleChange = (ev: React.ChangeEvent) => {
-    setValue((ev.target as HTMLInputElement).value);
-  };
 
   return (
     <>
@@ -55,17 +37,7 @@ const EpicEntryItem = (props: EpicEntryItemProps) => {
         visible={showEditModal}
         onClose={() => setShowModal(false)}
       >
-        <S.Form onSubmit={handleFormSubmit}>
-          <S.Input
-            type="text"
-            placeholder={props.epicData.name}
-            value={value}
-            onChange={handleChange}
-          />
-          <Button category="default" size="small" onClick={handleFormSubmit}>
-            OK
-          </Button>
-        </S.Form>
+        <EpicEditModal setShowModal={setShowModal} epicData={props.epicData} />
       </Modal>
     </>
   );
