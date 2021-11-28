@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import S from './style';
 import { EpicType } from '@/types/epic';
-import { getYMD } from '@/lib/utils/date';
+import { getYMD, isLatter, isSameDay } from '@/lib/utils/date';
 import { Modal } from '@/lib/design';
 import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
 import { updateEpicById } from '@/lib/api/epic';
 import { useSocketSend } from '@/lib/hooks';
+import { toast } from 'react-toastify';
+import { errorMessage } from '@/lib/common/message';
 
 interface EpicEditModalProps {
   showEditModal: boolean;
@@ -34,6 +36,10 @@ const EpicEditModal = ({
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLatter(startDate, endDate) && !isSameDay(startDate, endDate)) {
+      toast.error(errorMessage.START_DATE_IS_LATTER);
+      return;
+    }
     const updatedEpic = { ...epicData, name: value, startAt: startDate, endAt: endDate };
     dispatchEpic({
       type: 'UPDATE_EPIC',
