@@ -20,6 +20,7 @@
     "@types/morgan": "^1.9.3",
     "@types/nodemailer": "^6.4.4",
     "@types/redis": "^2.8.32",
+    "@types/supertest": "^2.0.11",
     "@types/uuid": "^8.3.3",
     "ts-jest": "^27.0.7",
     "ts-node-dev": "^1.1.8"
@@ -44,6 +45,7 @@
     "redis": "^3.1.2",
     "reflect-metadata": "^0.1.13",
     "socket.io": "^4.3.1",
+    "supertest": "^6.1.6",
     "typeorm": "^0.2.38",
     "uuid": "^8.3.2"
   }
