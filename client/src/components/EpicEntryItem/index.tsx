@@ -53,7 +53,7 @@ const EpicEntryItem = (props: EpicEntryItemProps) => {
       </S.Container>
       <Modal
         shouldConfirm
-        title="에픽 제목 수정"
+        title="에픽 정보 수정"
         visible={showEditModal}
         onClose={() => setShowModal(false)}
         onClickOk={handleFormSubmit}
