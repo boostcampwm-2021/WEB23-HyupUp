@@ -52,6 +52,9 @@ const S = {
     transform: rotateY(180deg);
   `,
   DaysWrapper: styled.div`
+    position: sticky;
+    top: 16px;
+
     display: flex;
     justify-content: space-between;
 
