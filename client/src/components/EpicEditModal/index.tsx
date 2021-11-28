@@ -5,6 +5,7 @@ import { getYMD } from '@/lib/utils/date';
 import { Modal } from '@/lib/design';
 import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
 import { updateEpicById } from '@/lib/api/epic';
+import { useSocketSend } from '@/lib/hooks';
 
 interface EpicEditModalProps {
   showEditModal: boolean;
@@ -29,6 +30,7 @@ const EpicEditModal = ({
   const [startDate, setStartDate] = useState(epicData.startAt);
   const [endDate, setEndDate] = useState(epicData.endAt);
   const dispatchEpic = useEpicDispatch();
+  const emitUpdateEpic = useSocketSend('UPDATE_EPIC_BAR');
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,6 +41,7 @@ const EpicEditModal = ({
       epic: updatedEpic,
     });
     setShowModal(false);
+    emitUpdateEpic(epicData.id);
   };
 
   return (
