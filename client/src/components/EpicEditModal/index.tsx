@@ -17,7 +17,7 @@ interface EpicEditModalProps {
 
 const formatDate = (date: Date) => {
   const { year, month, day } = getYMD(date);
-  return `${year}-${month + 1}-${day}`;
+  return `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 };
 
 const EpicEditModal = ({
@@ -32,15 +32,16 @@ const EpicEditModal = ({
   const dispatchEpic = useEpicDispatch();
   const emitUpdateEpic = useSocketSend('UPDATE_EPIC_BAR');
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const updatedEpic = { ...epicData, name: value, startAt: startDate, endAt: endDate };
-    updateEpicById(epicData.id, updatedEpic);
     dispatchEpic({
       type: 'UPDATE_EPIC',
       epic: updatedEpic,
     });
     setShowModal(false);
+
+    await updateEpicById(epicData.id, updatedEpic);
     emitUpdateEpic(epicData.id);
   };
 
@@ -69,7 +70,10 @@ const EpicEditModal = ({
             <S.Input
               type="date"
               value={formatDate(obj.date)}
-              onChange={(e) => obj.setDate(e.target.valueAsDate ?? new Date())}
+              onChange={(e) => {
+                e.preventDefault();
+                obj.setDate(e.target.valueAsDate ?? obj.date);
+              }}
             />
           </S.Label>
         ))}
