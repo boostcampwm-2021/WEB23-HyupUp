@@ -72,3 +72,14 @@ export const updateEpicById = async (epicId: number, payload: EpicType) => {
     toast.error((e as Error).message);
   }
 };
+
+export const deleteEpicById = async (epicId: number) => {
+  try {
+    const result: {
+      code: number;
+    } = await instance.delete(`/${epicId}`);
+    if (result.code / 100 >= 4) throw new Error(errorMessage.DELETE_EPIC);
+  } catch (e) {
+    toast.error((e as Error).message);
+  }
+};
