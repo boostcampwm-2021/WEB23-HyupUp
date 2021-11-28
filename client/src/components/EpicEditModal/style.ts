@@ -9,6 +9,7 @@ const S = {
 
     min-width: 350px;
     padding: 16px;
+    margin-bottom: 16px;
   `,
   Input: styled.input<{ isTitle?: boolean }>`
     width: 100%;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import S from './style';
 import { EpicType } from '@/types/epic';
 import { getYMD, isLatter, isSameDay } from '@/lib/utils/date';
@@ -33,6 +33,11 @@ const EpicEditModal = ({
   const [endDate, setEndDate] = useState(epicData.endAt);
   const dispatchEpic = useEpicDispatch();
   const emitUpdateEpic = useSocketSend('UPDATE_EPIC_BAR');
+
+  useEffect(() => {
+    setStartDate(epicData.startAt);
+    setEndDate(epicData.endAt);
+  }, [epicData]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,10 +81,7 @@ const EpicEditModal = ({
             <S.Input
               type="date"
               value={formatDate(obj.date)}
-              onChange={(e) => {
-                e.preventDefault();
-                obj.setDate(e.target.valueAsDate ?? obj.date);
-              }}
+              onChange={(e) => obj.setDate(e.target.valueAsDate ?? obj.date)}
             />
           </S.Label>
         ))}
