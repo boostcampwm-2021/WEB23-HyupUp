@@ -20,6 +20,10 @@ const S = {
     border-radius: 8px;
 
     font: ${({ theme, isTitle }) => (isTitle ? theme.font.body_medium : theme.font.body_regular)};
+
+    &::placeholder {
+      color: ${({ theme }) => theme.color.gray200};
+    }
   `,
   Label: styled.label`
     display: flex;
@@ -34,6 +38,11 @@ const S = {
 
     & input {
       margin-left: 16px;
+      cursor: text;
+
+      &::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+      }
     }
   `,
 };
