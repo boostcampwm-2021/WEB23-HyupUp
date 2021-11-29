@@ -5,34 +5,28 @@ import KanbanModal from '@/components/KanbanColumn/KanbanDeleteModal';
 import { StatusType } from '@/types/story';
 import { useSocketReceive } from '@/lib/hooks';
 import { getStoryById } from '@/lib/api/story';
-import { useRecoilState } from 'recoil';
-import storyListAtom from '@/recoil/story/atom';
+import { useSetRecoilState } from 'recoil';
+import storyListAtom from '@/recoil/story';
 
 const Kanban = () => {
   const dragRef = useRef<number | null>(0);
   const dragOverRef = useRef<number | null>(0);
   const dragCategory = useRef<StatusType>('TODO');
   const dragOverCateogry = useRef<StatusType>('TODO');
-  const [storyList, setStoryList] = useRecoilState(storyListAtom);
+  const setStoryList = useSetRecoilState(storyListAtom);
 
-  //TODO StorySelector로 상태 수정
   useSocketReceive('NEW_STORY', async (storyId: number) => {
     const data = await getStoryById(storyId);
     if (!data) return;
     setStoryList((prev) => [...prev, data]);
   });
 
-  useSocketReceive('DELETE_STORY', async (storyId: number) => {
-    if (!storyList.find((story) => story.id === storyId)) {
-      setStoryList(storyList);
-    } else {
-      setStoryList((prev) => [...prev.filter((story) => story.id !== storyId)]);
-    }
+  useSocketReceive('DELETE_STORY', (storyId: number) => {
+    setStoryList((prev) => [...prev.filter((story) => story.id !== storyId)]);
   });
 
   useSocketReceive('UPDATE_STORY', async (storyId: number) => {
     const data = await getStoryById(storyId);
-    console.log(data);
     if (!data) return;
     setStoryList((prev) => [...prev.filter((story) => story.id !== storyId), data]);
   });
