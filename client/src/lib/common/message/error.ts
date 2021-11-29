@@ -30,6 +30,7 @@ export const SEND_EMAIL_SAME = '이미 존재하는 회원입니다.';
 export const NULL_EMAIL = '이메일을 입력해주세요';
 export const CREATE_USER = '회원가입에 실패했습니다.';
 export const CREATE_USER_PW = '비밀번호가 일치하지 않습니다.';
+export const UNAUTH_USER = '인증이 필요한 페이지입니다.';
 export const CREATE_USER_EMAIL = '입력하신 이메일은 사용 중입니다. 다른 이메일을 사용하세요.';
 
 export default {
@@ -62,4 +63,5 @@ export default {
   SEND_EMAIL,
   SEND_EMAIL_SAME,
   NULL_EMAIL,
+  UNAUTH_USER,
 };
