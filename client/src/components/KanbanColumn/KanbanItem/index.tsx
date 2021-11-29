@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
-import Styled from '@/components/KanbanItem/style';
+import Styled from '@/components/KanbanColumn/KanbanItem/style';
 import { KanbanItemType } from '@/types/story';
-import { KanbanModalContext } from '@/components/KanbanDeleteModal';
+import { KanbanModalContext } from '@/components/KanbanColumn/KanbanDeleteModal';
 import { KanbanItemInput, KanbanModal } from '@/components';
 import { handleDragStart, handleDragEnter } from '@/lib/utils/drag';
 

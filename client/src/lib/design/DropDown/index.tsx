@@ -116,9 +116,13 @@ const DropDown = (props: DropDownProps) => {
     <Parent>
       <ContextContainer onClick={changeState}>
         {Title}
-        {isMeatBall ? <img src={meatball} /> : <ArrowImage src={arrow} state={clickState} />}
+        {isMeatBall ? (
+          <img src={meatball} alt="meatballimg" />
+        ) : (
+          <ArrowImage src={arrow} state={clickState} alt="arrowimg" />
+        )}
       </ContextContainer>
-      <Box onClick={selectItem} state={clickState}>
+      <Box onClick={selectItem} state={clickState} role="list">
         {list.map((el, i) =>
           i === list.length - 1 ? (
             <Item key={el.id} fontTheme={fontTheme} value={el.id}>
