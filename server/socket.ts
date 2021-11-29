@@ -69,6 +69,10 @@ io.on('connection', (socket) => {
   socket.on('NEW_STORY', (storyId: number) => {
     socket.to(socket.data.roomName).emit('NEW_STORY', storyId);
   });
+
+  socket.on('DELETE_STORY', (storyId: number) => {
+    socket.to(socket.data.roomName).emit('DELETE_STORY', storyId);
+  });
 });
 
 export default io;
