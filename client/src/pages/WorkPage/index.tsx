@@ -16,14 +16,13 @@ import backlog from '@public/icons/time-icon.svg';
 import { getEpicsByProjectId } from '@/lib/api/epic';
 import { getAllStories } from '@/lib/api/story';
 import { getUsersInfoWithProject } from '@/lib/api/user';
-import { useEpicDispatch, useStoryDispatch } from '@/lib/hooks/useContextHooks';
+import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom, { userListAtom } from '@/recoil/user';
 import storyListAtom from '@/recoil/story/atom';
 
 const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
-  const storyDispatcher = useStoryDispatch();
   const user = useRecoilValue(userAtom);
   const setUserListState = useSetRecoilState(userListAtom);
   const setStoryListState = useSetRecoilState(storyListAtom);
@@ -51,12 +50,9 @@ const WorkPage = () => {
       if (result) setUserListState(result);
       if (stories) setStoryListState(stories);
       if (epics) epicDispatcher({ type: 'LOAD_EPIC', epics });
-
-      // storyDispatcher({ type: 'LOAD_STORY', stories });
     })();
   }, [
     epicDispatcher,
-    storyDispatcher,
     setStoryListState,
     setUserListState,
     user.organization,
