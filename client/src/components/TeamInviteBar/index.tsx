@@ -6,6 +6,8 @@ import * as S from './style';
 import { sendEmail } from '@/lib/api/email';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
+import { toast } from 'react-toastify';
+import { errorMessage } from '@/lib/common/message';
 
 const TeamInviteBar = ({ onCloseClick }: { onCloseClick: (e: React.MouseEvent) => void }) => {
   const [value, setValue] = useState('');
@@ -17,6 +19,10 @@ const TeamInviteBar = ({ onCloseClick }: { onCloseClick: (e: React.MouseEvent) =
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (value === '') {
+      toast.error(errorMessage.NULL_EMAIL);
+      return;
+    }
     sendEmail(userState.organization as number, value);
     setValue('');
   };
