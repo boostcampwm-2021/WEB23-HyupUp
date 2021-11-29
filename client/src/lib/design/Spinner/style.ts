@@ -26,9 +26,9 @@ const Styled = {
       }
     }};
   `,
-  Spinner: styled.div<{ colorValue: string }>`
-    width: 60px;
-    height: 60px;
+  Spinner: styled.div<{ colorValue: string; radiusValue: number }>`
+    width: ${({ radiusValue }) => radiusValue * 2 + 'px'};
+    height: ${({ radiusValue }) => radiusValue * 2 + 'px'};
 
     border-radius: 70px;
     border: 7px solid;
