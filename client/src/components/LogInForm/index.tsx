@@ -7,6 +7,7 @@ import * as S from './style';
 import { taskSortByUpdate } from '@/lib/utils/sort';
 import { UserState } from '@/contexts/userContext';
 import { useInput } from '@/lib/hooks';
+import { checkObjectInputNull } from '@/lib/utils/bytes';
 
 export const LogInForm = () => {
   const setUserState = useSetRecoilState(user);
@@ -16,6 +17,7 @@ export const LogInForm = () => {
 
   const onLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if(!checkObjectInputNull({ email, password })) return;
     const userData = (await logIn(email, password)) as UserState;
     if (userData.id) {
       userData.privateTasks!.sort((a, b) => taskSortByUpdate(a, b));
