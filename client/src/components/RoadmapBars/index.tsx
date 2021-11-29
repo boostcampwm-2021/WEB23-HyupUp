@@ -4,6 +4,8 @@ import S from './style';
 import RoadmapItem from '@/components/RoadmapItem';
 import { useEpicState, useStoryState } from '@/lib/hooks/useContextHooks';
 import { makeEpicRenderInfo } from '@/lib/utils/epic';
+import { toast } from 'react-toastify';
+import { errorMessage } from '@/lib/common/message';
 
 const COLUMNS = 15;
 
@@ -23,7 +25,10 @@ const RoadmapBars = ({ rangeFrom, rangeTo }: RoadmapBarsProps) => {
 
   return (
     <>
-      <S.Container>
+      <S.Container
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={() => toast.error(errorMessage.UPDATE_EPIC)}
+      >
         {epicRenderInfo.map(({ id, length, exceedsLeft, exceedsRight, index, status }) => (
           <RoadmapItem
             key={id}
