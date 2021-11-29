@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import S from './style';
+import deleteIcon from '@public/icons/delete-icon-red.svg';
 import draggableIcon from '@public/icons/draggable.svg';
 import { EpicType } from '@/types/epic';
 import EpicEditModal from '../EpicEditModal';
+import { Modal } from '@/lib/design';
 
 interface EpicEntryItemProps {
   activated: boolean;
@@ -16,7 +18,8 @@ interface EpicEntryItemProps {
 
 const EpicEntryItem = (props: EpicEntryItemProps) => {
   const [showDraggable, setShowDraggable] = useState(false);
-  const [showEditModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [value, setValue] = useState(props.epicData.name);
 
   const handleChange = (ev: React.ChangeEvent) => {
@@ -30,14 +33,22 @@ const EpicEntryItem = (props: EpicEntryItemProps) => {
         {...props}
         onMouseOver={() => setShowDraggable(true)}
         onMouseOut={() => setShowDraggable(false)}
-        onClick={() => setShowModal(true)}
       >
+        <S.DeleteIcon
+          src={deleteIcon}
+          alt="deleteicon"
+          showDelete={showDraggable}
+          onClick={() => setShowDeleteModal(true)}
+        />
         <S.DragIndicator src={draggableIcon} alt="draggableicon" showDraggable={showDraggable} />
-        <div>{props.epicData.name}</div>
+        <div onClick={() => setShowEditModal(true)}>{props.epicData.name}</div>
       </S.Container>
+      <Modal shouldConfirm visible={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+        에픽을 삭제하시겠습니까?
+      </Modal>
       <EpicEditModal
         showEditModal={showEditModal}
-        setShowModal={setShowModal}
+        setShowModal={setShowEditModal}
         epicData={props.epicData}
         value={value}
         handleChange={handleChange}

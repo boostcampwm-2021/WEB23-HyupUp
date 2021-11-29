@@ -1,4 +1,13 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const fadein = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
 const S = {
   Container: styled.li<{ activated: boolean }>`
@@ -20,6 +29,10 @@ const S = {
       margin-top: 32px;
       padding-top: 32px;
     }
+  `,
+  DeleteIcon: styled.img<{ showDelete: boolean }>`
+    display: ${({ showDelete }) => (showDelete ? 'block' : 'none')};
+    animation: ${fadein} 0.1s ease-in-out;
   `,
   DragIndicator: styled.img<{ showDraggable: boolean }>`
     margin-right: 8px;
