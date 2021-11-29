@@ -143,3 +143,13 @@ export const sudoLogIn = async () => {
     toast.error(errorMessage.GET_USER);
   }
 };
+
+export const getAlltasks = async (userId: number, offset: number) => {
+  try {
+    const result = await instance.get(`/tasks?userId=${userId}&offset=${offset}`);
+    if (result.status % 400 < 100) throw new Error();
+    return result.data;
+  } catch (error) {
+    toast.error(errorMessage.GET_TASK);
+  }
+};
