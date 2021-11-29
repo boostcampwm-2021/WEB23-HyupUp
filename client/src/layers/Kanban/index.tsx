@@ -3,12 +3,19 @@ import Styled from '@/layers/Kanban/style';
 import KanbanColumn from '@/components/KanbanColumn';
 import KanbanModal from '@/components/KanbanColumn/KanbanDeleteModal';
 import { StatusType } from '@/types/story';
+import { useSocketReceive } from '@/lib/hooks';
+import { getStoryById, updateStoryWithId } from '@/lib/api/story';
 
 const Kanban = () => {
   const dragRef = useRef<number | null>(0);
   const dragOverRef = useRef<number | null>(0);
   const dragCategory = useRef<StatusType>('TODO');
   const dragOverCateogry = useRef<StatusType>('TODO');
+
+  useSocketReceive('NEW_STORY', async (storyId: number) => {
+    console.log('잘 받았아요');
+    const data = await getStoryById(storyId);
+  });
 
   return (
     <KanbanModal>

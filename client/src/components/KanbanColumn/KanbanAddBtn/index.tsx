@@ -1,24 +1,25 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
-import { postStory, getStoryByid } from '@/lib/api/story';
+import { postStory, getStoryById } from '@/lib/api/story';
 import { Button } from '@/lib/design';
 import { useRecoilState } from 'recoil';
 import storyListAtom from '@/recoil/story/atom';
 import { StoryType } from '@/types/story';
+import { useSocketSend } from '@/lib/hooks';
 
 const initialItem = {
   order: 0,
   name: '',
   status: 'TODO',
-  projectId: undefined,
+  projectId: null,
   epicId: null,
 };
 
 const KanbanAddBtn = () => {
-  const userState = useRecoilValue(userAtom);
   const [recoilStoryList, setStoryList] = useRecoilState(storyListAtom);
-
+  const userState = useRecoilValue(userAtom);
+  const emitNewStory = useSocketSend('NEW_STORY');
   const orderList = recoilStoryList
     .filter((item) => item.status === 'TODO')
     .map((v) => Number(v.order));
@@ -30,8 +31,9 @@ const KanbanAddBtn = () => {
       order: listLargestOrder,
       projectId: userState.currentProjectId,
     });
-    const storyItem = await getStoryByid(id);
+    const storyItem = await getStoryById(id);
     setStoryList((prev) => [...prev, storyItem as StoryType]);
+    emitNewStory(id);
   };
 
   return (
