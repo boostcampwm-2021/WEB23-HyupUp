@@ -60,6 +60,7 @@ const RoadmapItem = ({
   };
 
   const handleDrop = async () => {
+    setIsDragging(false);
     const offset = isDragFront ? initialIndex.left - leftEnd : rightEnd - initialIndex.right;
     setinItialIndex({ left: leftEnd, right: rightEnd });
     const nowDraggingEpic = epics.find((epic) => epic.id === id)!;
