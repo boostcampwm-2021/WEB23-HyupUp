@@ -104,12 +104,12 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       <S.Title>프로젝트 로드맵</S.Title>
       <S.Content>
         <S.EpicEntry>
-          {epicsOnProject.map(({ id, projectId, name, order, startAt, endAt }) => (
+          {epicsOnProject.map((epic) => (
             <EpicEntryItem
-              key={id}
-              handleDragStart={() => setNowDraggingId(id)}
+              key={epic.id}
+              handleDragStart={() => setNowDraggingId(epic.id)}
               handleDrop={(targetOrder: number) => handleDrop(targetOrder)}
-              epicData={{ id, projectId, name, order, startAt, endAt }}
+              epicData={epic}
             />
           ))}
           <EpicEntryItem
