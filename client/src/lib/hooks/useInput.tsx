@@ -1,7 +1,7 @@
 import { useState, useCallback, ChangeEvent } from 'react';
 
 type UseInputFn = {
-  (initialValue: string): {
+  (initialValue?: string): {
     key: number;
     value: string;
     onReset: () => void;
