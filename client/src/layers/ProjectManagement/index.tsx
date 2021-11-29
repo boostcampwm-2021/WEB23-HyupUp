@@ -11,7 +11,7 @@ import { useInput } from '@/lib/hooks';
 import { ProjectType } from '@/types/project';
 import { ProjectCreateForm, ProjectCard } from '@/components';
 
-export const ProjectManagement = () => {
+const ProjectManagement = () => {
   const userState = useRecoilValue(userAtom);
   const setUserListState = useSetRecoilState(userListAtom);
   const [projectList, setProjectList] = useState<ProjectType[]>([]);
@@ -72,3 +72,5 @@ export const ProjectManagement = () => {
     </Styled.ProjectManagementWrapper>
   );
 };
+
+export default ProjectManagement;

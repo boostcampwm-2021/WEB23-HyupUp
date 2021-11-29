@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { UserProfile } from '@/types/users';
-import { Button, DropDown } from '@/lib/design';
+import { Button, DropDown, Spinner } from '@/lib/design';
 
 import TeamManagementItem from '../TeamManagementItem';
 
@@ -74,9 +74,15 @@ export const TeamItemViewer = ({
           팀원 초대하기
         </Button>
       </div>
-      {filterdUserList.length === 0 && userName === ''
-        ? generateUserProfileItem(userProfileList, showEditModal)
-        : generateUserProfileItem(filterdUserList, showEditModal)}
+      {userProfileList.length !== 0 ? (
+        filterdUserList.length === 0 && userName === '' ? (
+          generateUserProfileItem(userProfileList, showEditModal)
+        ) : (
+          generateUserProfileItem(filterdUserList, showEditModal)
+        )
+      ) : (
+        <Spinner heightValue={500} />
+      )}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import styled from 'styled-components';
 
@@ -10,13 +10,24 @@ import { Header, SideBar } from '@/layers';
 import { useTabs } from '@/lib/hooks';
 import userAtom, { userListAtom } from '@/recoil/user';
 import { getUsersInfoWithProject } from '@/lib/api/user';
-import { GroupManagement } from '@/layers/GroupManagement';
-import { ProjectManagement } from '@/layers/ProjectManagement';
+// import  GroupManagement  from '@/layers/GroupManagement';
+// import { ProjectManagement } from '@/layers/ProjectManagement';
+import { Spinner } from '@/lib/design';
+
+const GroupManagement = React.lazy(() => import('@/layers/GroupManagement'));
+const ProjectManagement = React.lazy(() => import('@/layers/ProjectManagement'));
 
 const AdminPage = () => {
   const userState = useRecoilValue(userAtom);
   const setUserListState = useSetRecoilState(userListAtom);
-  const tabs = [<GroupManagement key={0} />, <ProjectManagement key={1} />];
+  const tabs = [
+    <Suspense key={0} fallback={<Spinner />}>
+      <GroupManagement />
+    </Suspense>,
+    <Suspense key={1} fallback={<Spinner />}>
+      <ProjectManagement />
+    </Suspense>,
+  ];
   const { currentIndex, currentTab, changeTab } = useTabs(0, tabs);
   const sideBarEntries = [
     <SideBarEntry key={0} icon={group} name={'팀원 관리'} highlight={currentIndex === 0} />,
