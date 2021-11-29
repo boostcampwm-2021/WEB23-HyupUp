@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
 import { postStory, getStoryById } from '@/lib/api/story';
@@ -25,7 +25,6 @@ const KanbanAddBtn = () => {
     .filter((item) => item.status === 'TODO')
     .map((v) => Number(v.order));
   const listLargestOrder = orderList.length ? Math.max(...orderList) + 1 : 0;
-
   const addStory = async () => {
     const id = await postStory({
       ...initialItem,
@@ -40,7 +39,7 @@ const KanbanAddBtn = () => {
   return (
     <StyledButtonWrapper>
       <Button size={'large'} category={'cancel'} onClick={addStory}>
-        Add Todo
+        + Add Todo
       </Button>
     </StyledButtonWrapper>
   );

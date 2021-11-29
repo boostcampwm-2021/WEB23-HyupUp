@@ -2,7 +2,9 @@ import styled from 'styled-components';
 
 const StyledButtonWrapper = styled.div`
   button {
-    box-shadow: rgb(15 15 15 / 3%) 0px 0px 0px 0.5px, rgb(15 15 15 / 3%) 0px 1px 2px;
+    font: ${({ theme }) => theme.font.bold_small};
+    color: ${({ theme }) => theme.color.gray300};
+    background-color: ${({ theme }) => theme.color.white};
   }
 `;
 
