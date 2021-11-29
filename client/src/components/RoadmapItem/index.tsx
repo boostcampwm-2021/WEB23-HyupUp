@@ -25,7 +25,7 @@ const RoadmapItem = ({
 }: RoadmapItemProps) => {
   const [leftEnd, setLeftEnd] = useState(index);
   const [rightEnd, setRightEnd] = useState(index + length);
-  const [isDragLeft, setIsDragLeft] = useState(false);
+  const [isDragFront, setIsDragFront] = useState(false);
 
   useEffect(() => {
     setLeftEnd(index);
@@ -37,13 +37,22 @@ const RoadmapItem = ({
       {[...Array(columns)].map((_, i) => {
         if (i === leftEnd) {
           return (
-            <S.Bar key={i} status={status}>
+            <S.Bar
+              key={i}
+              data-index={i}
+              status={status}
+              onDragEnter={(e) => {
+                const newIndex = +(e.target as HTMLElement).dataset.index!;
+                if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
+                else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
+              }}
+            >
               {!exceedsLeft && (
                 <S.FrontHandle
                   draggable="true"
                   onDragStart={() => {
                     handleDragStartLeft();
-                    setIsDragLeft(true);
+                    setIsDragFront(true);
                   }}
                   status={status}
                 />
@@ -53,7 +62,7 @@ const RoadmapItem = ({
                   draggable="true"
                   onDragStart={() => {
                     handleDragStart();
-                    setIsDragLeft(false);
+                    setIsDragFront(false);
                   }}
                   status={status}
                 />
@@ -62,13 +71,22 @@ const RoadmapItem = ({
           );
         } else if (i === rightEnd) {
           return (
-            <S.Bar key={i} status={status}>
+            <S.Bar
+              key={i}
+              data-index={i}
+              status={status}
+              onDragEnter={(e) => {
+                const newIndex = +(e.target as HTMLElement).dataset.index!;
+                if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
+                else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
+              }}
+            >
               {!exceedsRight && (
                 <S.RearHandle
                   draggable="true"
                   onDragStart={() => {
                     handleDragStart();
-                    setIsDragLeft(false);
+                    setIsDragFront(false);
                   }}
                   status={status}
                 />
@@ -83,8 +101,8 @@ const RoadmapItem = ({
               status={status}
               onDragEnter={(e) => {
                 const newIndex = +(e.target as HTMLElement).dataset.index!;
-                if (isDragLeft) setLeftEnd(newIndex);
-                else setRightEnd(newIndex);
+                if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
+                else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
               }}
             />
           );
@@ -95,8 +113,8 @@ const RoadmapItem = ({
               key={i}
               onDragEnter={(e) => {
                 const newIndex = +(e.target as HTMLElement).dataset.index!;
-                if (isDragLeft) setLeftEnd(newIndex);
-                else setRightEnd(newIndex);
+                if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
+                else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
               }}
             ></S.Spacer>
           );
