@@ -3,8 +3,8 @@ import Styled from '@/components/KanbanColumn/style';
 import { KanbanItem, KanbanAddBtn } from '@/components';
 import { updateStoryWithId } from '@/lib/api/story';
 import { StatusType, KanbanType, dragCategoryType } from '@/types/story';
-import { useStoryDispatch, useStoryState, useEpicState } from '@/lib/hooks/useContextHooks';
-import { useRecoilValue } from 'recoil';
+import { useEpicState } from '@/lib/hooks/useContextHooks';
+import { useRecoilState } from 'recoil';
 import storyListAtom from '@/recoil/story/atom';
 import {
   dragToDiffBetween,
@@ -25,11 +25,9 @@ const KanbanColumn = ({
   dragOverCategory,
 }: KanbanType) => {
   const [isTopEnter, setTopEnter] = useState(false);
-  const dispatchStory = useStoryDispatch();
   const epicState = useEpicState();
-  const storyList = useStoryState();
-  const recoilStoryList = useRecoilValue(storyListAtom);
-  //TODO 만약 해당 기능이 필요하다면 recoilStoryList 를 storyList 로 변경하시면 사용가능합니다.
+  const [recoilStoryList, setStoryList] = useRecoilState(storyListAtom);
+
   const filterList = recoilStoryList
     ?.filter((item) => item.status === category)
     .sort((a, b) => Number(a.order) - Number(b.order));
@@ -41,10 +39,14 @@ const KanbanColumn = ({
 
   const handleDragDrop = async (category: StatusType) => {
     if (!filterList) return;
+
     if (isMoveToSameTop()) {
       const { firstItem, secondItem } = dragToEqualTop(filterList, dragRef);
-      dispatchStory({ type: 'UPDATE_STORY', story: firstItem });
-      dispatchStory({ type: 'UPDATE_STORY', story: secondItem });
+      setStoryList((prev) => [
+        ...prev.filter((v) => v.id !== firstItem.id && v.id !== secondItem.id),
+        firstItem,
+        secondItem,
+      ]);
       await updateStoryWithId(firstItem);
       await updateStoryWithId(secondItem);
       setTopEnter((isTopEnter) => !isTopEnter);
@@ -53,27 +55,38 @@ const KanbanColumn = ({
 
     if (isMoveToSameBetween()) {
       const item = dragToEqualBetween(filterList, dragRef, dragOverRef);
-      dispatchStory({ type: 'UPDATE_STORY', story: item });
+      setStoryList((prev) => [...prev.filter((v) => v.id !== item.id), item]);
       await updateStoryWithId(item);
       return;
     }
 
     if (isMoveToDiffBetween()) {
-      const item = dragToDiffBetween(storyList, category, dragCategory, dragRef, dragOverRef);
-      dispatchStory({ type: 'UPDATE_STORY', story: item });
+      const item = dragToDiffBetween(recoilStoryList, category, dragCategory, dragRef, dragOverRef);
+      setStoryList((prev) => [...prev.filter((v) => v.id !== item.id), item]);
       await updateStoryWithId(item);
       return;
     }
 
     if (isMoveToDiffTop()) {
-      const { firstItem, secondItem } = dragToDiffTop(storyList, category, dragCategory, dragRef);
-      dispatchStory({ type: 'UPDATE_STORY', story: firstItem });
-      await updateStoryWithId(firstItem);
+      const { firstItem, secondItem } = dragToDiffTop(
+        recoilStoryList,
+        category,
+        dragCategory,
+        dragRef,
+      );
       setTopEnter((isTopEnter) => !isTopEnter);
-      if (Object.keys(secondItem).length < 2) return;
-      dispatchStory({ type: 'UPDATE_STORY', story: secondItem });
-      await updateStoryWithId(secondItem);
-      return;
+      if (Object.keys(secondItem).length > 1) {
+        setStoryList((prev) => [
+          ...prev.filter((v) => v.id !== firstItem.id && v.id !== secondItem.id),
+          firstItem,
+          secondItem,
+        ]);
+        await updateStoryWithId(firstItem);
+        await updateStoryWithId(secondItem);
+      } else {
+        setStoryList((prev) => [...prev.filter((v) => v.id !== firstItem.id), firstItem]);
+        await updateStoryWithId(firstItem);
+      }
     }
   };
 
