@@ -8,7 +8,15 @@ import { EpicType } from '@/types/epic';
 import storyListAtom from '@/recoil/story';
 import { useSocketSend } from '@/lib/hooks';
 
-const KanbanInput = ({ story, epic }: { story: StoryType; epic: EpicType | undefined }) => {
+const KanbanInput = ({
+  story,
+  epic,
+  isHover,
+}: {
+  story: StoryType;
+  epic: EpicType | undefined;
+  isHover: boolean;
+}) => {
   const setStoryListState = useSetRecoilState(storyListAtom);
   const { key, value, onChange } = useInput('');
   const emitUpdateStory = useSocketSend('UPDATE_STORY');
@@ -38,6 +46,7 @@ const KanbanInput = ({ story, epic }: { story: StoryType; epic: EpicType | undef
         data-key={story.id}
         onChange={onChange}
         onBlur={useUpdateStoryName}
+        isHover={isHover}
         ref={inputRef}
       />
       <p>{epic ? epic.name : '클릭 후 Epic을 등록하세요'}</p>

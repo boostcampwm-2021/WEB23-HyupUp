@@ -7,6 +7,7 @@ import { useRecoilState } from 'recoil';
 import storyListAtom from '@/recoil/story/atom';
 import { StoryType } from '@/types/story';
 import { useSocketSend } from '@/lib/hooks';
+import StyledButtonWrapper from './style';
 
 const initialItem = {
   order: 0,
@@ -37,9 +38,11 @@ const KanbanAddBtn = () => {
   };
 
   return (
-    <Button size={'large'} category={'cancel'} onClick={addStory}>
-      Add Todo
-    </Button>
+    <StyledButtonWrapper>
+      <Button size={'large'} category={'cancel'} onClick={addStory}>
+        Add Todo
+      </Button>
+    </StyledButtonWrapper>
   );
 };
 
