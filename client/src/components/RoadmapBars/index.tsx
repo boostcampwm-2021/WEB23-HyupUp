@@ -27,7 +27,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo }: RoadmapBarsProps) => {
     <>
       <S.Container
         onDragOver={(e) => e.preventDefault()}
-        onDrop={() => toast.error(errorMessage.UPDATE_EPIC)}
+        onDrop={() => toast.error(errorMessage.EPIC_DRAG_OUT_OF_PLACE)}
       >
         {epicRenderInfo.map(({ id, length, exceedsLeft, exceedsRight, index, status }) => (
           <RoadmapItem
