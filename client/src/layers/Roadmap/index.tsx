@@ -77,6 +77,10 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     const median = getOrderMedian(epicsOnProject, order);
     /* eslint-disable @typescript-eslint/no-non-null-assertion */
     const nowDraggingEpic = epicsOnProject.find((epic) => epic.id === nowDragging.id)!;
+    if (nowDraggingEpic.order === order) {
+      setNowDragging({ id: 0, over: 0 });
+      return;
+    }
 
     await updateEpicById(nowDragging.id, {
       ...nowDraggingEpic,
