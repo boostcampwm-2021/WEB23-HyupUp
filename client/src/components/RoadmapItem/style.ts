@@ -26,6 +26,7 @@ const S = {
     grid-template-columns: repeat(${({ columns }) => columns}, 1fr);
 
     margin: 27px 0;
+    z-index: 1;
   `,
   Spacer: styled.div`
     width: 100%;
