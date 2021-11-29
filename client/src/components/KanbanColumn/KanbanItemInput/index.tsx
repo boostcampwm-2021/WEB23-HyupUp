@@ -6,18 +6,23 @@ import { updateStoryWithName } from '@/lib/api/story';
 import { StoryType } from '@/types/story';
 import { EpicType } from '@/types/epic';
 import storyListAtom from '@/recoil/story';
+import { useSocketSend } from '@/lib/hooks';
 
 const KanbanInput = ({ story, epic }: { story: StoryType; epic: EpicType | undefined }) => {
   const setStoryListState = useSetRecoilState(storyListAtom);
   const { key, value, onChange } = useInput('');
-  const useUpdateStoryName = () => {
+  const emitUpdateStory = useSocketSend('UPDATE_STORY');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const useUpdateStoryName = async () => {
+    if (key < 0) return;
     setStoryListState((prev) => [
       ...prev.filter((v) => v.id !== key),
       { status: 'TODO', id: key, order: story.order, name: value },
     ]);
-    updateStoryWithName({ status: 'TODO', id: key, order: story.order, name: value });
+    await updateStoryWithName({ status: 'TODO', id: key, order: story.order, name: value });
+    emitUpdateStory(key);
   };
-  const inputRef = useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     if (inputRef.current === null) return;
