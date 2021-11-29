@@ -15,6 +15,7 @@ const Kanban = () => {
   const dragOverCateogry = useRef<StatusType>('TODO');
   const [storyList, setStoryList] = useRecoilState(storyListAtom);
 
+  //TODO StorySelector로 상태 수정
   useSocketReceive('NEW_STORY', async (storyId: number) => {
     const data = await getStoryById(storyId);
     if (!data) return;
@@ -29,7 +30,12 @@ const Kanban = () => {
     }
   });
 
-  //Update
+  useSocketReceive('UPDATE_STORY', async (storyId: number) => {
+    const data = await getStoryById(storyId);
+    console.log(data);
+    if (!data) return;
+    setStoryList((prev) => [...prev.filter((story) => story.id !== storyId), data]);
+  });
 
   return (
     <KanbanModal>

@@ -12,6 +12,7 @@ import {
   dragToEqualTop,
   dragToDiffTop,
 } from '@/lib/utils/story';
+import { useSocketSend } from '@/lib/hooks';
 
 const isEqualCategory = (dragCategory: dragCategoryType, dropCategory: StatusType) => {
   return dragCategory.current === dropCategory;
@@ -24,14 +25,15 @@ const KanbanColumn = ({
   dragCategory,
   dragOverCategory,
 }: KanbanType) => {
-  const [isTopEnter, setTopEnter] = useState(false);
-  const epicState = useEpicState();
   const [recoilStoryList, setStoryList] = useRecoilState(storyListAtom);
-
   const filterList = recoilStoryList
     ?.filter((item) => item.status === category)
     .sort((a, b) => Number(a.order) - Number(b.order));
 
+  const epicState = useEpicState();
+  const [isTopEnter, setTopEnter] = useState(false);
+
+  const emitUpdateStory = useSocketSend('UPDATE_STORY');
   const isMoveToSameTop = () => isTopEnter && isEqualCategory(dragCategory, category);
   const isMoveToSameBetween = () => !isTopEnter && isEqualCategory(dragCategory, category);
   const isMoveToDiffTop = () => isTopEnter && !isEqualCategory(dragCategory, category);
@@ -49,6 +51,8 @@ const KanbanColumn = ({
       ]);
       await updateStoryWithId(firstItem);
       await updateStoryWithId(secondItem);
+      emitUpdateStory(firstItem.id);
+      emitUpdateStory(secondItem.id);
       setTopEnter((isTopEnter) => !isTopEnter);
       return;
     }
@@ -57,6 +61,7 @@ const KanbanColumn = ({
       const item = dragToEqualBetween(filterList, dragRef, dragOverRef);
       setStoryList((prev) => [...prev.filter((v) => v.id !== item.id), item]);
       await updateStoryWithId(item);
+      emitUpdateStory(item.id);
       return;
     }
 
@@ -64,6 +69,7 @@ const KanbanColumn = ({
       const item = dragToDiffBetween(recoilStoryList, category, dragCategory, dragRef, dragOverRef);
       setStoryList((prev) => [...prev.filter((v) => v.id !== item.id), item]);
       await updateStoryWithId(item);
+      emitUpdateStory(item.id);
       return;
     }
 
@@ -75,6 +81,7 @@ const KanbanColumn = ({
         dragRef,
       );
       setTopEnter((isTopEnter) => !isTopEnter);
+
       if (Object.keys(secondItem).length > 1) {
         setStoryList((prev) => [
           ...prev.filter((v) => v.id !== firstItem.id && v.id !== secondItem.id),
@@ -83,10 +90,14 @@ const KanbanColumn = ({
         ]);
         await updateStoryWithId(firstItem);
         await updateStoryWithId(secondItem);
+        emitUpdateStory(firstItem.id);
+        emitUpdateStory(secondItem.id);
       } else {
         setStoryList((prev) => [...prev.filter((v) => v.id !== firstItem.id), firstItem]);
         await updateStoryWithId(firstItem);
+        emitUpdateStory(firstItem.id);
       }
+      return;
     }
   };
 
