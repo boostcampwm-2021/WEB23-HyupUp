@@ -28,9 +28,19 @@ const Styled = {
       font: ${({ theme }) => theme.font.bold_regular};
     }
 
+    h4 {
+      font: ${({ theme }) => theme.font.bold_small};
+    }
+
     button {
       margin: 0;
       margin-left: 50px;
+    }
+
+    ul {
+      position: absolute;
+      top: 30px;
+      right: -5px;
     }
   `,
   MemberContaienr: styled.div`

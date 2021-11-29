@@ -13,7 +13,6 @@ import storyListAtom from '@/recoil/story';
 import { postTask } from '@/lib/api/task';
 
 type TaskListType = Array<TaskProps>;
-type EpicStateType = EpicType;
 
 const defaultTaskItem = {
   name: '',
@@ -25,7 +24,7 @@ const defaultTaskItem = {
 const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) => {
   const epicListState = useEpicState();
   const setStoryListState = useSetRecoilState(storyListAtom);
-  const [epic, setEpic] = useState<EpicStateType>();
+  const [epic, setEpic] = useState<EpicType>();
   const [taskList, setTaskList] = useState<TaskListType>([]);
 
   useEffect(() => {
@@ -74,7 +73,7 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
         <h3>{story.name}</h3>
         <Styled.ControlWrapper>
           <DropDown
-            Title={<p>{epic?.name}</p>}
+            Title={<h4>{epic?.name ? epic.name : 'Epic을 등록하세요'}</h4>}
             list={epicListState}
             handleClick={handleEpicSelect}
           />
