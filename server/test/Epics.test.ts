@@ -82,10 +82,10 @@ beforeAll(async () => {
 
 afterAll(async () => {
   const connection = await getConnection();
-  await connection.query(`DELETE FROM ORGANIZATIONS;`);
+  await connection.query(`DELETE FROM USERS;`);
   await connection.query(`DELETE FROM EPICS;`);
   await connection.query(`DELETE FROM PROJECTS;`);
-  await connection.query(`DELETE FROM USERS;`);
+  await connection.query(`DELETE FROM ORGANIZATIONS;`);
   await connection.close();
 });
 
