@@ -1,19 +1,20 @@
 import React, { useRef } from 'react';
 import { InputContainer, Input } from './style';
-import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
+import { useSetRecoilState } from 'recoil';
 import { useInput } from '@/lib/hooks';
 import { updateStoryWithName } from '@/lib/api/story';
 import { StoryType } from '@/types/story';
 import { EpicType } from '@/types/epic';
+import storyListAtom from '@/recoil/story';
 
 const KanbanInput = ({ story, epic }: { story: StoryType; epic: EpicType | undefined }) => {
-  const dispatchStory = useStoryDispatch();
+  const setStoryListState = useSetRecoilState(storyListAtom);
   const { key, value, onChange } = useInput('');
   const useUpdateStoryName = () => {
-    dispatchStory({
-      type: 'UPDATE_STORY',
-      story: { status: 'TODO', id: key, order: story.order, name: value },
-    });
+    setStoryListState((prev) => [
+      ...prev.filter((v) => v.id !== key),
+      { status: 'TODO', id: key, order: story.order, name: value },
+    ]);
     updateStoryWithName({ status: 'TODO', id: key, order: story.order, name: value });
   };
   const inputRef = useRef<HTMLInputElement>(null);

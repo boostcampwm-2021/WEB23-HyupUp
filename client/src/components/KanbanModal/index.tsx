@@ -1,33 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, DropDown } from '@/lib/design';
+import { useSetRecoilState } from 'recoil';
 import Styled from '@/components/KanbanModal/style';
+import KanbanTask from './KanbanTask/index';
+import { Modal, Button, DropDown } from '@/lib/design';
+
 import { getTasksByStoryId } from '@/lib/api/task';
 import { updateStoryWithId } from '@/lib/api/story';
-import KanbanTask from './KanbanTask/index';
 import { EpicType } from '@/types/epic';
-import { StoryType } from '@/types/story';
-import { useEpicState, useStoryDispatch } from '@/lib/hooks/useContextHooks';
+import { TaskProps, KanbanModalType } from '@/types/story';
+import { useEpicState } from '@/lib/hooks/useContextHooks';
+import storyListAtom from '@/recoil/story';
 
-interface TaskProps {
-  name: string;
-  id: number;
-  preExist?: boolean;
-  user?: string;
-  userImage?: string;
-  userId?: number;
-}
 type TaskListType = undefined | Array<TaskProps>;
 type EpicStateType = undefined | EpicType;
 
-interface KanbanModalType {
-  story: StoryType;
-  isItemModalOpen: boolean;
-  setModalOpen: (arg: boolean) => void;
-}
-
 const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) => {
   const epicListState = useEpicState();
-  const dispatchStory = useStoryDispatch();
+  const setStoryListState = useSetRecoilState(storyListAtom);
   const [epic, setEpic] = useState<EpicStateType>();
   const [tasks, setTasks] = useState<TaskListType>();
 
@@ -46,6 +35,7 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
 
   useEffect(() => {
     (async () => {
+      if (!isItemModalOpen) return;
       const { epicId, id } = story;
       setEpic(epicListState.find((v) => v.id === epicId));
       const taskResult: TaskListType = await getTasksByStoryId(id as number);
@@ -58,7 +48,7 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
     if (target.tagName !== 'LI') return;
 
     const epicId = epicListState.find((v) => v.id === target.value)?.id;
-    dispatchStory({ type: 'UPDATE_STORY', story: { ...story, epicId: epicId } });
+    setStoryListState((prev) => [...prev, { ...story, epicId: epicId }]);
     await updateStoryWithId({ ...story, epicId: epicId });
   };
 

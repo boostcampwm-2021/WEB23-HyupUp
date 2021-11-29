@@ -48,3 +48,18 @@ export interface KanbanTaskType {
   userImage?: string;
   userId?: number;
 }
+
+export interface KanbanModalType {
+  story: StoryType;
+  isItemModalOpen: boolean;
+  setModalOpen: (arg: boolean) => void;
+}
+
+export interface TaskProps {
+  name: string;
+  id: number;
+  preExist?: boolean;
+  user?: string;
+  userImage?: string;
+  userId?: number;
+}
