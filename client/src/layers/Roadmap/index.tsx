@@ -1,18 +1,19 @@
 import * as React from 'react';
+import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
 import S from './style';
-import EpicPlaceholder from '@/components/EpicPlaceholder';
-import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
 import { createEpic, getEpicById, updateEpicById } from '@/lib/api/epic';
-import useSocketSend from '@/lib/hooks/useSocketSend';
-import RoadmapCalendar from '@/components/RoadmapCalendar';
-import Button from '@/lib/design/Button';
-import { errorMessage, successMessage } from '@/lib/common/message';
-import { getOrderMedian } from '@/lib/utils/epic';
-import { useRecoilValue } from 'recoil';
+import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
+import { useSocketReceive, useSocketSend } from '@/lib/hooks';
 import userAtom from '@/recoil/user';
-import { useSocketReceive } from '@/lib/hooks';
+
+import EpicPlaceholder from '@/components/EpicPlaceholder';
+import RoadmapCalendar from '@/components/RoadmapCalendar';
 import EpicEntryItem from '@/components/EpicEntryItem';
+import Button from '@/lib/design/Button';
+
+import { getOrderMedian } from '@/lib/utils/epic';
+import { errorMessage, successMessage } from '@/lib/common/message';
 
 interface RoadmapProps {
   projectId?: number;
@@ -20,7 +21,6 @@ interface RoadmapProps {
 
 const Roadmap = ({ projectId }: RoadmapProps) => {
   const [inputVisible, setInputVisible] = React.useState(false);
-  // const [nowDragging, setNowDragging] = React.useState({ id: 0, over: 0 });
   const [nowDraggingId, setNowDraggingId] = React.useState(0);
   const epicsOnProject = useEpicState();
   const userState = useRecoilValue(userAtom);
@@ -112,14 +112,20 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
               epicData={{ id, projectId, name, order, startAt, endAt }}
             />
           ))}
-          {/* <S.EpicEntrySpacer
-            activated={nowDragging.over === Math.ceil(getMaxOrder() + 1)}
-            onDragOver={(e) => e.preventDefault()}
-            onDragEnter={() =>
-              setNowDragging({ id: nowDragging.id, over: Math.ceil(getMaxOrder() + 1) })
-            }
-            onDrop={() => handleDrop(getMaxOrder() + 1)}
-          /> */}
+          <EpicEntryItem
+            handleDragStart={() => {
+              /* no-op */
+            }}
+            handleDrop={() => handleDrop(Math.ceil(getMaxOrder() + 1))}
+            epicData={{
+              id: 0,
+              projectId: 0,
+              name: '',
+              order: Math.ceil(getMaxOrder() + 1),
+              startAt: new Date(),
+              endAt: new Date(),
+            }}
+          />
           <EpicPlaceholder
             visible={inputVisible}
             setVisible={setInputVisible}
