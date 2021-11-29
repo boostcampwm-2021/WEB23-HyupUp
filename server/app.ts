@@ -44,8 +44,8 @@ app.use(
     saveUninitialized: false,
     resave: false,
     cookie: {
-      httpOnly: false,
-      maxAge: 1000 * 60 * 60,
+      httpOnly: true,
+      maxAge: 3000 * 60 * 60,
     },
     store: new RedisStore({
       client: client,
