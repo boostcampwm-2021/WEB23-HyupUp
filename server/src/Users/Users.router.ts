@@ -1,5 +1,5 @@
 import express from 'express';
-import { authValidator } from '../utils/authValidator';
+import { authValidator } from '@/utils/authValidator';
 import {
   deleteUserById,
   getUsersInfoWithProject,
