@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import bcrypt from 'bcrypt';
-import { bodyValidator, queryValidator } from '../utils/requestValidator';
+import { bodyValidator, queryValidator } from '@/utils/requestValidator';
 import Users from './Users.entity';
 import { getAllTasks, getUserInfo, getUsers, inviteUser, isValidatedEmail } from './Users.service';
 import Organizations from '../Organizations/Organizations.entity';

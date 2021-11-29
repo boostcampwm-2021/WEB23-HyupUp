@@ -1,7 +1,7 @@
-import Users from '../Users/Users.entity';
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
-import { bodyValidator } from '../utils/requestValidator';
+import { bodyValidator } from '@/utils/requestValidator';
+import Users from '@/Users/Users.entity';
 import Todo from './Todo.entity';
 
 export async function createTodo(req: Request, res: Response) {

@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { bodyValidator } from '../utils/requestValidator';
-import { sendMail } from './Email.service';
 import { createClient } from 'redis';
 import { v4 } from 'uuid';
 import { getRepository } from 'typeorm';
-import Organizations from '..//Organizations/Organizations.entity';
+import { bodyValidator } from '@/utils/requestValidator';
+import { sendMail } from './Email.service';
+import Organizations from '@/Organizations/Organizations.entity';
 
 const client = createClient({ host: 'localhost' });
 
