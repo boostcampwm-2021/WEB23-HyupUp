@@ -7,6 +7,7 @@ import EpicEditModal from '../EpicEditModal';
 import { Modal } from '@/lib/design';
 import { deleteEpicById } from '@/lib/api/epic';
 import { useSocketSend } from '@/lib/hooks';
+import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
 
 interface EpicEntryItemProps {
   activated: boolean;
@@ -24,6 +25,7 @@ const EpicEntryItem = (props: EpicEntryItemProps) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [value, setValue] = useState(props.epicData.name);
   const emitDeleteEpic = useSocketSend('DELETE_EPIC');
+  const dispatchEpic = useEpicDispatch();
 
   const handleChange = (ev: React.ChangeEvent) => {
     setValue((ev.target as HTMLInputElement).value);
@@ -32,6 +34,10 @@ const EpicEntryItem = (props: EpicEntryItemProps) => {
   const handleDelete = () => {
     deleteEpicById(props.epicData.id);
     emitDeleteEpic(props.epicData.id);
+    dispatchEpic({
+      type: 'REMOVE_EPIC',
+      id: props.epicData.id,
+    });
   };
 
   return (
