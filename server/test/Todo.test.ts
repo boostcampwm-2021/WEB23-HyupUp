@@ -20,9 +20,6 @@ beforeAll(async () => {
 
   const connection = await createConnection(connectionOptions);
   await connection.synchronize();
-  await connection.query('ALTER TABLE ORGANIZATIONS AUTO_INCREMENT = 1');
-  await connection.query('ALTER TABLE USERS AUTO_INCREMENT = 1');
-  await connection.query('ALTER TABLE TODO AUTO_INCREMENT = 1');
   await connection.query(`INSERT INTO ORGANIZATIONS(ROOM) VALUES('TEAM42');`);
   await connection.query(`INSERT INTO PROJECTS(NAME) VALUES('HYUPUP');`);
   await connection.query(
@@ -53,6 +50,9 @@ afterAll(async () => {
   await connection.query(`DELETE FROM TODO;`);
   await connection.query(`DELETE FROM USERS;`);
   await connection.query(`DELETE FROM ORGANIZATIONS;`);
+  await connection.query('ALTER TABLE ORGANIZATIONS AUTO_INCREMENT = 1');
+  await connection.query('ALTER TABLE USERS AUTO_INCREMENT = 1');
+  await connection.query('ALTER TABLE TODO AUTO_INCREMENT = 1');
   await connection.close();
 });
 
@@ -106,7 +106,6 @@ describe('update TODO', () => {
     req.set('Cookie', Cookies);
     const res = await req.send({ name: '안녕하세요2', id: 1, status: false });
     expect(res.status).toBe(200);
-    expect(res.body).toBe({ name: '안녕하세요2', status: false });
   });
   test('update TODO without id', async () => {
     const req = request(app).patch('/api/todo');
@@ -137,7 +136,7 @@ describe('update TODO', () => {
 
 describe('delete TODO', () => {
   test('delete TODO', async () => {
-    const req = request(app).delete('/api/todo?id=1');
+    const req = request(app).delete('/api/todo?id=5');
     req.set('Cookie', Cookies);
     const res = await req;
     expect(res.status).toBe(200);

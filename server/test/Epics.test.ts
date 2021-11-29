@@ -86,6 +86,10 @@ afterAll(async () => {
   await connection.query(`DELETE FROM EPICS;`);
   await connection.query(`DELETE FROM PROJECTS;`);
   await connection.query(`DELETE FROM ORGANIZATIONS;`);
+  await connection.query('ALTER TABLE ORGANIZATIONS AUTO_INCREMENT = 1');
+  await connection.query('ALTER TABLE USERS AUTO_INCREMENT = 1');
+  await connection.query('ALTER TABLE PROJECTS AUTO_INCREMENT = 1');
+  await connection.query('ALTER TABLE EPICS AUTO_INCREMENT = 1');
   await connection.close();
 });
 
