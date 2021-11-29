@@ -33,6 +33,12 @@ const RoadmapItem = ({
     setRightEnd(index + length);
   }, [index, length]);
 
+  const startDragging = (isFront: boolean) => {
+    (isFront ? handleDragStartLeft : handleDragStart)();
+    setIsDragFront(isFront);
+    setIsDragging(true);
+  };
+
   const handleDragEnter = (e: React.DragEvent) => {
     if (!isDragging) return;
     const newIndex = +(e.target as HTMLElement).dataset.index!;
@@ -49,22 +55,14 @@ const RoadmapItem = ({
               {!exceedsLeft && (
                 <S.FrontHandle
                   draggable="true"
-                  onDragStart={() => {
-                    handleDragStartLeft();
-                    setIsDragFront(true);
-                    setIsDragging(true);
-                  }}
+                  onDragStart={() => startDragging(true)}
                   status={status}
                 />
               )}
               {rightEnd - leftEnd === 0 && !exceedsRight && (
                 <S.RearHandle
                   draggable="true"
-                  onDragStart={() => {
-                    handleDragStart();
-                    setIsDragFront(false);
-                    setIsDragging(true);
-                  }}
+                  onDragStart={() => startDragging(false)}
                   status={status}
                 />
               )}
@@ -76,11 +74,7 @@ const RoadmapItem = ({
               {!exceedsRight && (
                 <S.RearHandle
                   draggable="true"
-                  onDragStart={() => {
-                    handleDragStart();
-                    setIsDragFront(false);
-                    setIsDragging(true);
-                  }}
+                  onDragStart={() => startDragging(false)}
                   status={status}
                 />
               )}
