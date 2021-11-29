@@ -42,7 +42,7 @@ export const getAllTasks = async (id: number, offset: number) => {
   const entityManager = getManager();
   const limit = 10;
   const tasks = await entityManager.query(`
-  select name, createdAt, updatedAt, user_id, status, project_id from tasks where user_id=${id} union select name, createdAt, updatedAt, user_id, status, null as project_id from todo where user_id=${id} order by updatedAt desc limit ${limit} offset ${offset};`);
+  select id, name, createdAt, updatedAt, user_id, status, project_id as projectId from tasks where user_id=${id} union select id, name, createdAt, updatedAt, user_id, status, null as project_id from todo where user_id=${id} order by updatedAt desc limit ${limit} offset ${offset};`);
   return tasks;
 };
 
