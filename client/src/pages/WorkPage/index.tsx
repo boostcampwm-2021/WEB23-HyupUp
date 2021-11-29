@@ -20,7 +20,6 @@ import { useEpicDispatch, useStoryDispatch } from '@/lib/hooks/useContextHooks';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom, { userListAtom } from '@/recoil/user';
 import storyListAtom from '@/recoil/story/atom';
-import { StoryListType } from '@/types/story';
 
 const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
@@ -46,15 +45,23 @@ const WorkPage = () => {
     (async () => {
       if (!user.currentProjectId) return;
       const epics = await getEpicsByProjectId(user.currentProjectId);
-      const stories: StoryListType = await getAllStories(user.currentProjectId);
       const result = await getUsersInfoWithProject(user.organization as number);
-      if (!result) return;
-      epicDispatcher({ type: 'LOAD_EPIC', epics });
-      storyDispatcher({ type: 'LOAD_STORY', stories });
-      setUserListState(result);
-      setStoryListState(stories);
+      const stories = await getAllStories(user.currentProjectId);
+
+      if (result) setUserListState(result);
+      if (stories) setStoryListState(stories);
+      if (epics) epicDispatcher({ type: 'LOAD_EPIC', epics });
+
+      // storyDispatcher({ type: 'LOAD_STORY', stories });
     })();
-  }, [epicDispatcher, storyDispatcher, user.currentProjectId]);
+  }, [
+    epicDispatcher,
+    storyDispatcher,
+    setStoryListState,
+    setUserListState,
+    user.organization,
+    user.currentProjectId,
+  ]);
 
   return (
     <>
