@@ -10,12 +10,6 @@ const Styled = {
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    h3 {
-      text-align: center;
-      margin-bottom: 40px;
-      font: ${({ theme }) => theme.font.display_medium};
-    }
   `,
   ControlWrapper: styled.div`
     display: flex;

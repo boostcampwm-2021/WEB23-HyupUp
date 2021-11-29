@@ -71,6 +71,7 @@ const Styled = {
     position: relative;
     img {
       width: 25px;
+      margin-right: 35px;
     }
   `,
 };

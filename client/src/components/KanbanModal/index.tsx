@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import Styled from '@/components/KanbanModal/style';
 import KanbanTask from './KanbanTask/index';
+import KanbanModalTitle from './KanbanModalTitle/index';
 import { Modal, Button, DropDown } from '@/lib/design';
 
 import { getTasksByStoryId } from '@/lib/api/task';
@@ -70,7 +71,7 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
   return (
     <Modal shouldConfirm={false} visible={isItemModalOpen} onClose={handleCloseClick} size="LARGE">
       <Styled.ContentWrapper>
-        <h3>{story.name}</h3>
+        <KanbanModalTitle story={story} />
         <Styled.ControlWrapper>
           <DropDown
             Title={<h4>{epic?.name ? epic.name : 'Epic을 등록하세요'}</h4>}
