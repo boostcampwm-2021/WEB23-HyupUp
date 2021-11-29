@@ -20,7 +20,7 @@ const RoadmapCalendar = () => {
   };
 
   return (
-    <S.RoadmapCalendar>
+    <S.RoadmapCalendar isToday={isToday}>
       <S.CalendarHead>
         <S.MonthYearWrapper>
           <S.YearLabel>{date.getFullYear()}년</S.YearLabel>

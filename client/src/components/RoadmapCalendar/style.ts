@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 
 const S = {
-  RoadmapCalendar: styled.section`
+  RoadmapCalendar: styled.section<{ isToday: boolean }>`
     position: relative;
+    display: flex;
+    flex-direction: column;
 
     width: 100%;
     height: 100%;
@@ -10,6 +12,20 @@ const S = {
 
     background-color: ${({ theme }) => theme.color.white};
     border-radius: 8px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      width: 50%;
+      height: calc(100% - 200px);
+      margin-top: 100px;
+      padding-top: 100px;
+
+      border-right: 1px solid ${({ theme, isToday }) =>
+        isToday ? theme.color.red400 : 'transparent'};
   `,
   CalendarHead: styled.div`
     display: flex;
