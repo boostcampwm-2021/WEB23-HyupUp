@@ -5,17 +5,14 @@ import draggableIcon from '@public/icons/draggable.svg';
 import { EpicType } from '@/types/epic';
 import EpicEditModal from '../EpicEditModal';
 import { Modal } from '@/lib/design';
-import { deleteEpicById } from '@/lib/api/epic';
+import { deleteEpicById, updateEpicById } from '@/lib/api/epic';
 import { useSocketSend } from '@/lib/hooks';
-import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
+import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
+import { getOrderMedian } from '@/lib/utils/epic';
 
 interface EpicEntryItemProps {
-  activated: boolean;
-  onDragStart?: React.DragEventHandler;
-  onDragOver: React.DragEventHandler;
-  onDragEnter: React.DragEventHandler;
-  onDragLeave?: React.DragEventHandler;
-  onDrop: React.DragEventHandler;
+  handleDragStart: (epicId: number) => void;
+  handleDrop: (epicId: number) => void;
   epicData: EpicType;
 }
 
@@ -26,6 +23,7 @@ const EpicEntryItem = (props: EpicEntryItemProps) => {
   const [value, setValue] = useState(props.epicData.name);
   const emitDeleteEpic = useSocketSend('DELETE_EPIC');
   const dispatchEpic = useEpicDispatch();
+  const [isDragEntered, setDragEntered] = useState(false);
 
   const handleChange = (ev: React.ChangeEvent) => {
     setValue((ev.target as HTMLInputElement).value);
@@ -43,10 +41,18 @@ const EpicEntryItem = (props: EpicEntryItemProps) => {
   return (
     <>
       <S.Container
+        activated={isDragEntered}
         draggable="true"
-        {...props}
         onMouseOver={() => setShowDraggable(true)}
         onMouseOut={() => setShowDraggable(false)}
+        onDragStart={() => props.handleDragStart(props.epicData.id)}
+        onDragOver={(e) => e.preventDefault()}
+        onDragEnter={() => setDragEntered(true)}
+        onDragLeave={() => setDragEntered(false)}
+        onDrop={() => {
+          setDragEntered(false);
+          props.handleDrop(props.epicData.order);
+        }}
       >
         <S.DeleteIcon
           src={deleteIcon}
