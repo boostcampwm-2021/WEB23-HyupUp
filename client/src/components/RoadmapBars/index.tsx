@@ -113,7 +113,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
         })}
       </S.Container>
 
-      <S.DayColumnWrapper>
+      {/* <S.DayColumnWrapper>
         {dayRow.map((day: number, i) => (
           <S.DayColumn
             key={day}
@@ -125,7 +125,7 @@ const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) 
             onDrop={handleDrop}
           />
         ))}
-      </S.DayColumnWrapper>
+      </S.DayColumnWrapper> */}
     </>
   );
 };
