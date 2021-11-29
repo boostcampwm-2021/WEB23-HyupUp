@@ -13,6 +13,7 @@ import { taskSortByUpdate } from '@/lib/utils/sort';
 import { searchOrganizationByName } from '@/lib/api/organization';
 import AvatarForm from '@/components/AvatarForm';
 import SignUpForm from '@/components/SignUpForm';
+import { checkObjectInput, checkObjectInputNull } from '@/lib/utils/bytes';
 
 const SignUpPage = ({ token }: { token: string }) => {
   const { room, email }: { room: string; email: string } =
@@ -39,6 +40,9 @@ const SignUpPage = ({ token }: { token: string }) => {
       toast.error(errorMessage.CREATE_USER_PW);
       return;
     }
+
+    if (!checkObjectInput((newUser as unknown) as { [index: string]: string })) return;
+    if (!checkObjectInputNull((newUser as unknown) as { [index: string]: string })) return;
 
     const nowShowModal = showModal;
     setShowModal(!nowShowModal);
