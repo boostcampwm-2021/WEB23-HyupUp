@@ -8,20 +8,17 @@ import userAtom from '@/recoil/user';
 import { DropDown } from '@/lib/design';
 import * as avatar from '@/lib/common/avatar';
 import { ImageType } from '@/types/image';
+import { KanbanTaskType } from '@/types/story';
 
-interface TaskProps {
-  name: string;
-  id: number;
-  preExist?: boolean;
-  user?: string;
-  userImage?: string;
-  userId?: number;
-}
+export type KanbanTaskPropType = {
+  task?: KanbanTaskType;
+  storyId?: number;
+};
 
-const KanbanTask = ({ task, storyId }: { task: TaskProps; storyId: number }) => {
-  const { key, value, onChange } = useInput(task.name);
+const KanbanTask = ({ task, storyId }: KanbanTaskPropType) => {
+  const { key, value, onChange } = useInput(task?.name);
   const userState = useRecoilValue(userAtom);
-  const [taskState, setTaskState] = useState<TaskProps>(task);
+  const [taskState, setTaskState] = useState<KanbanTaskType | undefined>(task);
   const userListState = useRecoilValue(userListAtom);
   const userListwithId = userListState.map((value) => {
     return { ...value, id: value.index };
@@ -29,11 +26,12 @@ const KanbanTask = ({ task, storyId }: { task: TaskProps; storyId: number }) => 
 
   const handleInput = async () => {
     if (!value) return;
+    if (!taskState || taskState === undefined) return;
     if (!taskState.preExist) {
-      await postTask(value, 1, storyId, null, userState.currentProjectId);
+      await postTask(value, 1, storyId as number, null, userState.currentProjectId);
     } else {
       const userId = taskState.userId;
-      await updateTask(taskState.id, value, false, userId);
+      await updateTask(taskState.id as number, value, false, userId);
     }
     setTaskState((prev) => ({
       ...prev,
@@ -45,12 +43,13 @@ const KanbanTask = ({ task, storyId }: { task: TaskProps; storyId: number }) => 
   const handleUserSelect = async (e: React.MouseEvent) => {
     const target = e.target as HTMLLIElement;
     if (target.tagName !== 'LI') return;
+    if (!taskState || taskState === undefined) return;
     const selectedUser = userListwithId.find((v) => v.index === target.value);
     if (!selectedUser || !selectedUser?.name) return;
     if (!taskState.preExist) {
-      await postTask('', 1, storyId, selectedUser.id, userState.currentProjectId);
+      await postTask('', 1, storyId as number, selectedUser.id, userState.currentProjectId);
     } else {
-      await updateTask(taskState.id, value, false, selectedUser.id);
+      await updateTask(taskState.id as number, value, false, selectedUser.id);
     }
     setTaskState((prev) => ({
       ...prev,
@@ -63,8 +62,14 @@ const KanbanTask = ({ task, storyId }: { task: TaskProps; storyId: number }) => 
 
   return (
     <Styled.KanbanTaskWrapper>
-      <input value={value} onBlur={handleInput} placeholder={'Type A Task'} onChange={onChange} />
-      {taskState.user ? (
+      <input
+        type="text"
+        {...value}
+        onBlur={handleInput}
+        placeholder={task?.name ? task.name : 'Type A Task'}
+        onChange={onChange}
+      />
+      {taskState?.user ? (
         <Styled.MemberContainer>
           <DropDown
             Title={

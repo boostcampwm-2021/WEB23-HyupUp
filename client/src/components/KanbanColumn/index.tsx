@@ -4,7 +4,8 @@ import { KanbanItem, KanbanAddBtn } from '@/components';
 import { updateStoryWithId } from '@/lib/api/story';
 import { StatusType, KanbanType, dragCategoryType } from '@/types/story';
 import { useStoryDispatch, useStoryState, useEpicState } from '@/lib/hooks/useContextHooks';
-
+import { useRecoilValue } from 'recoil';
+import storyListAtom from '@/recoil/story/atom';
 import {
   dragToDiffBetween,
   dragToEqualBetween,
@@ -27,8 +28,10 @@ const KanbanColumn = ({
   const dispatchStory = useStoryDispatch();
   const epicState = useEpicState();
   const storyList = useStoryState();
-  const filterList = storyList
-    .filter((item) => item.status === category)
+  const recoilStoryList = useRecoilValue(storyListAtom);
+  //TODO 만약 해당 기능이 필요하다면 recoilStoryList 를 storyList 로 변경하시면 사용가능합니다.
+  const filterList = recoilStoryList
+    ?.filter((item) => item.status === category)
     .sort((a, b) => Number(a.order) - Number(b.order));
 
   const isMoveToSameTop = () => isTopEnter && isEqualCategory(dragCategory, category);
@@ -37,6 +40,7 @@ const KanbanColumn = ({
   const isMoveToDiffBetween = () => !isTopEnter && !isEqualCategory(dragCategory, category);
 
   const handleDragDrop = async (category: StatusType) => {
+    if (!filterList) return;
     if (isMoveToSameTop()) {
       const { firstItem, secondItem } = dragToEqualTop(filterList, dragRef);
       dispatchStory({ type: 'UPDATE_STORY', story: firstItem });

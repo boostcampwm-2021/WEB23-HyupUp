@@ -19,12 +19,15 @@ import { getUsersInfoWithProject } from '@/lib/api/user';
 import { useEpicDispatch, useStoryDispatch } from '@/lib/hooks/useContextHooks';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom, { userListAtom } from '@/recoil/user';
+import storyListAtom from '@/recoil/story/atom';
+import { StoryListType } from '@/types/story';
 
 const WorkPage = () => {
   const epicDispatcher = useEpicDispatch();
   const storyDispatcher = useStoryDispatch();
   const user = useRecoilValue(userAtom);
   const setUserListState = useSetRecoilState(userListAtom);
+  const setStoryListState = useSetRecoilState(storyListAtom);
 
   const tabs = [
     <Roadmap key={0} projectId={user?.currentProjectId} />,
@@ -43,12 +46,13 @@ const WorkPage = () => {
     (async () => {
       if (!user.currentProjectId) return;
       const epics = await getEpicsByProjectId(user.currentProjectId);
-      const stories = await getAllStories(user.currentProjectId);
+      const stories: StoryListType = await getAllStories(user.currentProjectId);
       const result = await getUsersInfoWithProject(user.organization as number);
       if (!result) return;
       epicDispatcher({ type: 'LOAD_EPIC', epics });
       storyDispatcher({ type: 'LOAD_STORY', stories });
       setUserListState(result);
+      setStoryListState(stories);
     })();
   }, [epicDispatcher, storyDispatcher, user.currentProjectId]);
 

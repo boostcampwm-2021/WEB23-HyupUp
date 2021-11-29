@@ -28,6 +28,7 @@ const KanbanInput = ({ story, epic }: { story: StoryType; epic: EpicType | undef
       <Input
         type="text"
         placeholder={story.name ? story.name : 'Type a Todo ...'}
+        {...value}
         data-key={story.id}
         onChange={onChange}
         onBlur={useUpdateStoryName}
