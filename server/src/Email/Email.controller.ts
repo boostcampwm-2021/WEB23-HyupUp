@@ -6,14 +6,17 @@ import { getRepository } from 'typeorm';
 import { bodyValidator } from '@/utils/requestValidator';
 import { sendMail } from './Email.service';
 import Organizations from '@/Organizations/Organizations.entity';
+import Users from '@/Users/Users.entity';
 
 const client = createClient({ host: 'localhost' });
 
-export const inviteByEmail = (req: Request, res: Response) => {
+export const inviteByEmail = async (req: Request, res: Response) => {
   try {
     if (!bodyValidator(req.body, ['email', 'organizationId'])) {
       throw Error('body is not valid');
     }
+    const user = await getRepository(Users).findOne({ where: { email: req.body.email } });
+    if (user) throw new Error('email conflict');
     const secret = process.env.SECRET as string;
     const key = v4();
     const token = jwt.sign({ id: key }, secret, {
@@ -27,7 +30,11 @@ export const inviteByEmail = (req: Request, res: Response) => {
     sendMail(req.body.email, token);
     res.status(201).end();
   } catch (e) {
-    res.status(400).json({ message: (e as Error).message });
+    if ((e as Error).message === 'email conflict') {
+      res.status(409).json({ message: (e as Error).message });
+    } else {
+      res.status(400).json({ message: (e as Error).message });
+    }
   }
 };
 
