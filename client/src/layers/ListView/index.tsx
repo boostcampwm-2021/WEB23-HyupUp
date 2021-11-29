@@ -1,30 +1,51 @@
 import React, { useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { useInView } from 'react-intersection-observer';
+
 import Styled from '@/layers/ListView/style';
 import { updateTask } from '@/lib/api/task';
 import { updateTodo, deleteTodo } from '@/lib/api/todo';
 import ListViewHeader from '@/components/ListViewHeader';
 import ListViewItem from '@/components/ListViewItem';
-import { PrivateTask } from '@/types/task';
-import { ProjectType } from '@/types/project';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { privateTasksSelector, projectTasksSelector } from '@/recoil/user';
+
+import userAtom, { privateTasksSelector, projectTasksSelector } from '@/recoil/user';
 import { allTasksSelector } from '@/recoil/user/selector';
+import { getAlltasks } from '@/lib/api/user';
+import { Spinner } from '@/lib/design';
+import { AllTask } from '@/types/task';
 
 export type ListState = 'all' | 'private' | 'project' | 'done';
 
-export interface TaskProp extends PrivateTask {
-  project?: ProjectType;
-}
-
-type AllTasks = TaskProp[];
-
 const ListView = () => {
-  const [privateTasks, setPrivateTasks] = useRecoilState(privateTasksSelector);
-  const [projectTasks, setProjectTasks] = useRecoilState(projectTasksSelector);
-  const allTasks = useRecoilValue(allTasksSelector);
+  const userState = useRecoilValue(userAtom);
+  const privateTasks = useRecoilValue(privateTasksSelector);
+  const projectTasks = useRecoilValue(projectTasksSelector);
+  const [allTasks, setAllTasks] = useRecoilState(allTasksSelector);
 
   const [listState, setListState] = useState<ListState>('all');
-  const [renderTasks, setRenderTasks] = useState<AllTasks>([]);
+  const [renderTasks, setRenderTasks] = useState<AllTask[]>([]);
+  // infinite Scroll
+  const [isScrollEnd, setIsScrollEnd] = useState(false);
+  const [ref, inView] = useInView();
+  const [offset, setOffset] = useState(0);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (inView && !loading) {
+      setOffset((prev) => prev + 10);
+    }
+  }, [inView]);
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const newTasks = await getAlltasks(userState.id!, offset);
+      setAllTasks((prev) => [...prev, ...newTasks]);
+      if (newTasks.length < 10) {
+        setIsScrollEnd(true);
+        return;
+      }
+      setLoading(false);
+    })();
+  }, [offset, setAllTasks, userState.id]);
 
   const handleListState = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
@@ -32,31 +53,31 @@ const ListView = () => {
     setListState(target.id as ListState);
   };
 
-  const onClickFinish = async (task: TaskProp) => {
-    if (task.project) {
-      setProjectTasks((prev) => [
+  const onClickFinish = async (task: AllTask) => {
+    if (task.projectId) {
+      setAllTasks((prev) => [
         {
           ...task,
           status: !task.status,
         },
-        ...prev.filter((el) => el.id !== task.id),
+        ...prev.filter((el) => !(el.id === task.id && task.projectId)),
       ]);
       await updateTask(task.id, task.name, !task.status);
     } else {
-      setPrivateTasks((prev) => [
+      setAllTasks((prev) => [
         {
           ...task,
           status: !task.status,
         },
-        ...prev.filter((el) => el.id !== task.id),
+        ...prev.filter((el) => !(el.id === task.id && !task.projectId)),
       ]);
       await updateTodo(task.id, task.name, !task.status);
     }
   };
 
-  const onClickDelete = async (task: TaskProp) => {
-    if (task.project) return;
-    setPrivateTasks((prev) => [...prev.filter((el) => el.id !== task.id)]);
+  const onClickDelete = async (task: AllTask) => {
+    if (task.projectId) return;
+    setAllTasks((prev) => [...prev.filter((el) => !(el.id === task.id && !task.projectId))]);
     await deleteTodo(task.id);
   };
 
@@ -83,6 +104,8 @@ const ListView = () => {
             onClickMethod={listState === 'done' ? onClickDelete : onClickFinish}
           />
         ))}
+        {!isScrollEnd &&
+          (loading ? <Spinner widthLevel={8} heightValue={70} /> : <div ref={ref} />)}
       </Styled.ItemWrapper>
     </Styled.Container>
   );

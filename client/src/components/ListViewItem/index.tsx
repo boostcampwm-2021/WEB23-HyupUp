@@ -2,12 +2,12 @@ import React, { useMemo } from 'react';
 import projectIcon from '@public/icons/project-icon.svg';
 import personalIcon from '@public/icons/personal-icon.svg';
 import Styled from '@/components/ListViewItem/style';
-import { TaskProp } from '@/layers/ListView';
 import Button from '@/lib/design/Button';
+import { AllTask } from '@/types/task';
 
 interface ListItemProp {
-  task: TaskProp;
-  onClickMethod: (task: TaskProp) => Promise<void>;
+  task: AllTask;
+  onClickMethod: (task: AllTask) => Promise<void>;
 }
 
 const ListViewItem = ({ task, onClickMethod }: ListItemProp) => {
@@ -24,7 +24,7 @@ const ListViewItem = ({ task, onClickMethod }: ListItemProp) => {
           완료
         </Button>
       );
-    } else if (!task.project) {
+    } else if (!task.projectId) {
       return (
         <Button size="small" category="confirm" onClick={() => onClickMethod(task)}>
           삭제
@@ -36,8 +36,8 @@ const ListViewItem = ({ task, onClickMethod }: ListItemProp) => {
   return (
     <Styled.Container>
       <Styled.Title>
-        <img src={task.project ? projectIcon : personalIcon} />
-        <h3>{task.project ? 'PROJECT' : 'PERSONAL'}</h3>
+        <img src={task.projectId ? projectIcon : personalIcon} />
+        <h3>{task.projectId ? 'PROJECT' : 'PERSONAL'}</h3>
       </Styled.Title>
       <Styled.Content>{task.name}</Styled.Content>
       {buttonComponent}
