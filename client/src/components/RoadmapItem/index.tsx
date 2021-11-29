@@ -26,6 +26,7 @@ const RoadmapItem = ({
   const [leftEnd, setLeftEnd] = useState(index);
   const [rightEnd, setRightEnd] = useState(index + length);
   const [isDragFront, setIsDragFront] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     setLeftEnd(index);
@@ -42,6 +43,7 @@ const RoadmapItem = ({
               data-index={i}
               status={status}
               onDragEnter={(e) => {
+                if (!isDragging) return;
                 const newIndex = +(e.target as HTMLElement).dataset.index!;
                 if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
                 else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
@@ -53,6 +55,7 @@ const RoadmapItem = ({
                   onDragStart={() => {
                     handleDragStartLeft();
                     setIsDragFront(true);
+                    setIsDragging(true);
                   }}
                   status={status}
                 />
@@ -63,6 +66,7 @@ const RoadmapItem = ({
                   onDragStart={() => {
                     handleDragStart();
                     setIsDragFront(false);
+                    setIsDragging(true);
                   }}
                   status={status}
                 />
@@ -76,6 +80,7 @@ const RoadmapItem = ({
               data-index={i}
               status={status}
               onDragEnter={(e) => {
+                if (!isDragging) return;
                 const newIndex = +(e.target as HTMLElement).dataset.index!;
                 if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
                 else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
@@ -87,6 +92,7 @@ const RoadmapItem = ({
                   onDragStart={() => {
                     handleDragStart();
                     setIsDragFront(false);
+                    setIsDragging(true);
                   }}
                   status={status}
                 />
@@ -100,6 +106,7 @@ const RoadmapItem = ({
               key={i}
               status={status}
               onDragEnter={(e) => {
+                if (!isDragging) return;
                 const newIndex = +(e.target as HTMLElement).dataset.index!;
                 if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
                 else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
@@ -112,6 +119,7 @@ const RoadmapItem = ({
               data-index={i}
               key={i}
               onDragEnter={(e) => {
+                if (!isDragging) return;
                 const newIndex = +(e.target as HTMLElement).dataset.index!;
                 if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
                 else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
