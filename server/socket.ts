@@ -65,6 +65,10 @@ io.on('connection', (socket) => {
   socket.on('UPDATE_EPIC_ORDER', (epicId: number) => {
     socket.to(socket.data.roomName).emit('UPDATE_EPIC_ORDER', epicId);
   });
+
+  socket.on('DELETE_EPIC', (epicId: number) => {
+    socket.to(socket.data.roomName).emit('DELETE_EPIC', epicId);
+  });
 });
 
 export default io;
