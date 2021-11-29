@@ -5,6 +5,7 @@ import draggableIcon from '@public/icons/draggable.svg';
 import { EpicType } from '@/types/epic';
 import EpicEditModal from '../EpicEditModal';
 import { Modal } from '@/lib/design';
+import { deleteEpicById } from '@/lib/api/epic';
 
 interface EpicEntryItemProps {
   activated: boolean;
@@ -26,6 +27,10 @@ const EpicEntryItem = (props: EpicEntryItemProps) => {
     setValue((ev.target as HTMLInputElement).value);
   };
 
+  const handleDelete = () => {
+    deleteEpicById(props.epicData.id);
+  };
+
   return (
     <>
       <S.Container
@@ -43,7 +48,12 @@ const EpicEntryItem = (props: EpicEntryItemProps) => {
         <S.DragIndicator src={draggableIcon} alt="draggableicon" showDraggable={showDraggable} />
         <div onClick={() => setShowEditModal(true)}>{props.epicData.name}</div>
       </S.Container>
-      <Modal shouldConfirm visible={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
+      <Modal
+        shouldConfirm
+        visible={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onClickOk={handleDelete}
+      >
         <S.DeleteConfirm>에픽을 삭제하시겠습니까?</S.DeleteConfirm>
       </Modal>
       <EpicEditModal
