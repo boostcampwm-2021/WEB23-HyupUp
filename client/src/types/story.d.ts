@@ -1,6 +1,6 @@
 import { EpicType } from './epic';
 
-export type StoryListType = StoryType[] | undefined;
+export type StoryListType = StoryType[];
 
 export type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
 

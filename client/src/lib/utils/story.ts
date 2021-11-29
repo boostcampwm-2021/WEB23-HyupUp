@@ -1,4 +1,10 @@
-import { StoryType, dragRefObjectType, dragCategoryType, StatusType } from '@/types/story';
+import {
+  StoryType,
+  StoryListType,
+  dragRefObjectType,
+  dragCategoryType,
+  StatusType,
+} from '@/types/story';
 
 const sortStoryByOrder = (a: StoryType, b: StoryType): number => {
   if (Number(a.order) - Number(b.order) >= 0) return 1;
@@ -6,7 +12,7 @@ const sortStoryByOrder = (a: StoryType, b: StoryType): number => {
 };
 
 export const dragToEqualTop = (
-  itemList: StoryType[],
+  itemList: StoryListType,
   dragRef: dragRefObjectType,
 ): { firstItem: StoryType; secondItem: StoryType } => {
   const toBeChangeItem = itemList.find((v) => v.order === dragRef.current);
@@ -25,7 +31,7 @@ export const dragToEqualTop = (
 };
 
 export const dragToEqualBetween = (
-  itemList: StoryType[],
+  itemList: StoryListType,
   dragRef: dragRefObjectType,
   dragOverRef: dragRefObjectType,
 ): StoryType => {
@@ -43,7 +49,7 @@ export const dragToEqualBetween = (
 };
 
 export const dragToDiffBetween = (
-  storyList: StoryType[],
+  storyList: StoryListType,
   category: StatusType,
   dragCategory: dragCategoryType,
   dragRef: dragRefObjectType,
@@ -67,7 +73,7 @@ export const dragToDiffBetween = (
 };
 
 export const dragToDiffTop = (
-  storyList: StoryType[],
+  storyList: StoryListType,
   category: StatusType,
   dragCategory: dragCategoryType,
   dragRef: dragRefObjectType,
