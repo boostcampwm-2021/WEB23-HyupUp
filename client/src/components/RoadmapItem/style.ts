@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { RoadmapBarsStatus } from '@/types/epic';
 
-const HANDLE_WIDTH = '5px';
+const HANDLE_WIDTH = '12px';
 
 const statusToColor = (
   status: RoadmapBarsStatus,

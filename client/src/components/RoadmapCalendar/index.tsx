@@ -49,12 +49,7 @@ const RoadmapCalendar = () => {
           </S.DayLabel>
         ))}
       </S.DaysWrapper>
-      <RoadmapBars
-        rangeFrom={dateRange.from}
-        rangeTo={dateRange.to}
-        dayRow={dayRow}
-        isToday={isToday}
-      />
+      <RoadmapBars rangeFrom={dateRange.from} rangeTo={dateRange.to} />
     </S.RoadmapCalendar>
   );
 };
