@@ -29,23 +29,23 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
   const [taskList, setTaskList] = useState<TaskListType>([]);
 
   useEffect(() => {
-    const getTaskList = async (id: number) => {
-      const taskResult = await getTasksByStoryId(id);
+    (async () => {
+      if (!isItemModalOpen) return;
+      const { epicId, id } = story;
+      setEpic(epicListState.find((v) => v.id === epicId));
+      const taskResult = await getTasksByStoryId(id as number);
       if (!taskResult) return;
       setTaskList(taskResult);
-    };
-
-    if (isItemModalOpen) getTaskList(story.id as number);
-  }, [isItemModalOpen, story.id]);
-
-  useEffect(() => {
-    setEpic(epicListState.find((v) => v.id === story.epicId));
-  }, [epicListState, story.epicId]);
+    })();
+  }, [story, isItemModalOpen, epicListState]);
 
   const handleEpicSelect = async (e: React.MouseEvent) => {
     if ((e.target as HTMLLIElement).tagName !== 'LI') return;
     const epicId = epicListState.find((v) => v.id === (e.target as HTMLLIElement).value)?.id;
-    setStoryListState((prev) => [...prev, { ...story, epicId: epicId }]);
+    setStoryListState((prev) => [
+      ...prev.filter((v) => v.id !== story.id),
+      { ...story, epicId: epicId },
+    ]);
     await updateStoryWithId({ ...story, epicId: epicId });
   };
 
