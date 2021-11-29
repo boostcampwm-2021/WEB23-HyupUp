@@ -22,7 +22,7 @@ const KanbanItem = ({
     if ((e.target as HTMLElement).dataset.type === 'cancel') return;
     if (!story.name) return;
     if (isItemModalOpen) return;
-    setModalOpen((prev) => !prev);
+    setModalOpen(true);
   };
 
   return (

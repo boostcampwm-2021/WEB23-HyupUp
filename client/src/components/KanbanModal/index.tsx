@@ -10,46 +10,62 @@ import { EpicType } from '@/types/epic';
 import { TaskProps, KanbanModalType } from '@/types/story';
 import { useEpicState } from '@/lib/hooks/useContextHooks';
 import storyListAtom from '@/recoil/story';
+import { postTask } from '@/lib/api/task';
 
-type TaskListType = undefined | Array<TaskProps>;
-type EpicStateType = undefined | EpicType;
+type TaskListType = Array<TaskProps>;
+type EpicStateType = EpicType;
+
+const defaultTaskItem = {
+  name: '',
+  id: '',
+  user: '',
+  userImage: '',
+};
 
 const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) => {
   const epicListState = useEpicState();
   const setStoryListState = useSetRecoilState(storyListAtom);
   const [epic, setEpic] = useState<EpicStateType>();
-  const [tasks, setTasks] = useState<TaskListType>();
-
-  const handleCloseClick = () => {
-    setModalOpen(!isItemModalOpen);
-  };
-
-  const handleAddBtn = () => {
-    const temporaryId = tasks ? Math.max(...tasks.map((v) => v.id)) + 1 : 0;
-    if (tasks !== undefined) {
-      setTasks([...tasks, { id: temporaryId, name: '', user: '', userImage: '', preExist: false }]);
-    } else {
-      setTasks([{ id: temporaryId, name: '', user: '', userImage: '', preExist: false }]);
-    }
-  };
+  const [taskList, setTaskList] = useState<TaskListType>([]);
 
   useEffect(() => {
-    (async () => {
-      if (!isItemModalOpen) return;
-      const { epicId, id } = story;
-      setEpic(epicListState.find((v) => v.id === epicId));
-      const taskResult: TaskListType = await getTasksByStoryId(id as number);
-      setTasks(taskResult?.map((v) => ({ ...v, preExist: true })));
-    })();
-  }, [story, isItemModalOpen, epicListState]);
+    const getTaskList = async (id: number) => {
+      const taskResult = await getTasksByStoryId(id);
+      if (!taskResult) return;
+      setTaskList(taskResult);
+    };
+
+    if (isItemModalOpen) getTaskList(story.id as number);
+  }, [isItemModalOpen, story.id]);
+
+  useEffect(() => {
+    setEpic(epicListState.find((v) => v.id === story.epicId));
+  }, [epicListState, story.epicId]);
 
   const handleEpicSelect = async (e: React.MouseEvent) => {
-    const target = e.target as HTMLLIElement;
-    if (target.tagName !== 'LI') return;
-
-    const epicId = epicListState.find((v) => v.id === target.value)?.id;
+    if ((e.target as HTMLLIElement).tagName !== 'LI') return;
+    const epicId = epicListState.find((v) => v.id === (e.target as HTMLLIElement).value)?.id;
     setStoryListState((prev) => [...prev, { ...story, epicId: epicId }]);
     await updateStoryWithId({ ...story, epicId: epicId });
+  };
+
+  const handleCloseClick = () => setModalOpen(false);
+
+  const handleAddBtn = async () => {
+    const insertedId = await postTask({
+      name: '',
+      status: 1,
+      storyId: Number(story.id),
+      userId: null,
+      projectId: null,
+    });
+
+    if (taskList)
+      setTaskList((taskList) => [
+        { ...defaultTaskItem, id: insertedId },
+        ...(taskList as TaskListType),
+      ]);
+    else setTaskList([{ ...defaultTaskItem, id: insertedId }]);
   };
 
   return (
@@ -62,14 +78,14 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
             list={epicListState}
             handleClick={handleEpicSelect}
           />
-          <Button category={'default'} size={'small'} onClick={handleAddBtn}>
+          <Button category={'default'} size={'small'} onClick={() => handleAddBtn()}>
             ADD TASK
           </Button>
         </Styled.ControlWrapper>
-        {tasks
+        {taskList
           ?.sort((a, b) => b.id - a.id)
           .map((task) => (
-            <KanbanTask key={task.id} task={task} storyId={story.id as number} />
+            <KanbanTask key={task.id} task={task} />
           ))}
       </Styled.ContentWrapper>
     </Modal>

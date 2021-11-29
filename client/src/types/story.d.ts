@@ -58,7 +58,6 @@ export interface KanbanModalType {
 export interface TaskProps {
   name: string;
   id: number;
-  preExist?: boolean;
   user?: string;
   userImage?: string;
   userId?: number;
