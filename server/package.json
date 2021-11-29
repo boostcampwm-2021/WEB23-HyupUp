@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --watch -- ./bin/www.ts",
-    "test": "jest --setupFiles dotenv/config --forceExit --detectOpenHandles"
+    "test": "jest --setupFiles dotenv/config --forceExit --detectOpenHandles --coverage"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

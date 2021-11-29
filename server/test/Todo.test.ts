@@ -141,6 +141,12 @@ describe('delete TODO', () => {
     const res = await req;
     expect(res.status).toBe(200);
   });
+  test('delete TODO', async () => {
+    const req = request(app).delete('/api/todo');
+    req.set('Cookie', Cookies);
+    const res = await req;
+    expect(res.status).toBe(401);
+  });
   test('update TODO', async () => {
     const req = request(app).delete('/api/todo?id=100');
     req.set('Cookie', Cookies);
