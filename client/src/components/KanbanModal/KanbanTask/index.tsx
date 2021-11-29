@@ -8,6 +8,7 @@ import { DropDown } from '@/lib/design';
 import * as avatar from '@/lib/common/avatar';
 import { ImageType } from '@/types/image';
 import { KanbanTaskType } from '@/types/story';
+import { useSocketSend } from '@/lib/hooks';
 
 const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
   const { value, onChange } = useInput(task?.name);
@@ -16,10 +17,12 @@ const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
   const userListWithId = userListState.map((value) => {
     return { ...value, id: value.index };
   });
+  const emitNewTask = useSocketSend('NEW_TASK');
   const handleInput = async () => {
     if (!taskState) return;
     await updateTask(taskState.id as number, value, false, taskState.userId);
-
+    //TODO 언제 보내는게 좋을까?
+    if (taskState.userId) emitNewTask(taskState.userId);
     setTask((prev) => ({
       ...prev,
       name: value,
@@ -32,6 +35,7 @@ const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
     const selectedUser = userListWithId.find((v) => v.index === target.value);
     if (!selectedUser) return;
     await updateTask(Number(taskState.id), value, false, selectedUser.id);
+    emitNewTask(selectedUser.id);
     setTask((prev) => ({
       ...prev,
       user: selectedUser.name,
