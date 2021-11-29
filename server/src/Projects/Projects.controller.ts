@@ -1,10 +1,10 @@
 import { getRepository } from 'typeorm';
 import { Request, Response } from 'express';
-import { bodyValidator, queryValidator } from '../utils/requestValidator';
+import { bodyValidator, queryValidator } from '@/utils/requestValidator';
 
-import Users from '../Users/Users.entity';
+import Users from '@/Users/Users.entity';
 import Projects from './Projects.entity';
-import { getUsers } from '../Users/Users.service';
+import { getUsers } from '@/Users/Users.service';
 
 const getProjects = (users: Users[]) => {
   const result = [];

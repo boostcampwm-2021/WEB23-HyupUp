@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { queryValidator } from '../utils/requestValidator';
+import { queryValidator } from '@/utils/requestValidator';
 import { getRepository, getConnection } from 'typeorm';
 import Stories from './Stories.entity';
 

@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import Tasks from './Tasks.entity';
-import Stories from '../Stories/Stories.entity';
-import { bodyValidator } from '../utils/requestValidator';
+import Stories from '@/Stories/Stories.entity';
+import { bodyValidator } from '@/utils/requestValidator';
 
 export const getAllTasksByProject = async (req: Request, res: Response) => {
   try {
