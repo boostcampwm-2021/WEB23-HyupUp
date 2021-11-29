@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import { bodyValidator, queryValidator } from '../utils/requestValidator';
 import Users from './Users.entity';
 import {
+  getAllTasks,
   getUserInfo,
   getUsers,
   getUserTasks,
@@ -221,5 +222,19 @@ export const logOut = (req: Request, res: Response) => {
     res.end();
   } catch {
     res.status(400).end();
+  }
+};
+
+export const getAllTasksById = async (req: Request, res: Response) => {
+  try {
+    if (!queryValidator(req.query, ['userId', 'offset'])) throw new Error('query is not valid');
+    const userId = Number(req.query.userId);
+    const offset = Number(req.query.offset);
+    const allTasks = await getAllTasks(userId, offset);
+    res.json(allTasks);
+  } catch (e) {
+    res.status(400).json({
+      message: (e as Error).message,
+    });
   }
 };
