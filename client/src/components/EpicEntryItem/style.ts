@@ -34,6 +34,10 @@ const S = {
     display: ${({ showDelete }) => (showDelete ? 'block' : 'none')};
     animation: ${fadein} 0.1s ease-in-out;
   `,
+  DeleteConfirm: styled.h4`
+    margin: 32px;
+    font: ${({ theme }) => theme.font.bold_medium};
+  `,
   DragIndicator: styled.img<{ showDraggable: boolean }>`
     margin-right: 8px;
 

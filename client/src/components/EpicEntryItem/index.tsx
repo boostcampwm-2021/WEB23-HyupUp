@@ -44,7 +44,7 @@ const EpicEntryItem = (props: EpicEntryItemProps) => {
         <div onClick={() => setShowEditModal(true)}>{props.epicData.name}</div>
       </S.Container>
       <Modal shouldConfirm visible={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
-        에픽을 삭제하시겠습니까?
+        <S.DeleteConfirm>에픽을 삭제하시겠습니까?</S.DeleteConfirm>
       </Modal>
       <EpicEditModal
         showEditModal={showEditModal}
