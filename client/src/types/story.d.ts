@@ -10,7 +10,7 @@ export type StoryType = {
   id?: number;
   order?: number;
   projectId?: number;
-  epicId?: number;
+  epicId?: number | null;
 };
 
 export type dragRefObjectType = React.MutableRefObject<number | null>;
