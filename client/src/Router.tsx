@@ -9,7 +9,6 @@ import AdminPage from './pages/AdminPage';
 import LogInPage from './pages/LogInPage';
 import SignUpPage from './pages/SignUpPage';
 import { getUser } from './lib/api/user';
-import { taskSortByUpdate } from './lib/utils/sort';
 import { UserState } from './contexts/userContext';
 import { useMemo } from 'react';
 
@@ -19,10 +18,6 @@ const Router = () => {
     if (!document.cookie.match('status')) return;
     (async () => {
       const userData = (await getUser('')) as UserState;
-      if (userData.id) {
-        userData.privateTasks!.sort((a, b) => taskSortByUpdate(a, b));
-        userData.projectTasks!.sort((a, b) => taskSortByUpdate(a, b));
-      }
       if (userData.projects && userData.projects?.length > 0) {
         userData.currentProjectId = userData.projects[0].id;
         userData.currentProjectName = userData.projects[0].name;
