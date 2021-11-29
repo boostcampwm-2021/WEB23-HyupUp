@@ -33,22 +33,19 @@ const RoadmapItem = ({
     setRightEnd(index + length);
   }, [index, length]);
 
+  const handleDragEnter = (e: React.DragEvent) => {
+    if (!isDragging) return;
+    const newIndex = +(e.target as HTMLElement).dataset.index!;
+    if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
+    else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
+  };
+
   return (
     <S.Container columns={columns}>
       {[...Array(columns)].map((_, i) => {
         if (i === leftEnd) {
           return (
-            <S.Bar
-              key={i}
-              data-index={i}
-              status={status}
-              onDragEnter={(e) => {
-                if (!isDragging) return;
-                const newIndex = +(e.target as HTMLElement).dataset.index!;
-                if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
-                else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
-              }}
-            >
+            <S.Bar key={i} data-index={i} status={status} onDragEnter={handleDragEnter}>
               {!exceedsLeft && (
                 <S.FrontHandle
                   draggable="true"
@@ -75,17 +72,7 @@ const RoadmapItem = ({
           );
         } else if (i === rightEnd) {
           return (
-            <S.Bar
-              key={i}
-              data-index={i}
-              status={status}
-              onDragEnter={(e) => {
-                if (!isDragging) return;
-                const newIndex = +(e.target as HTMLElement).dataset.index!;
-                if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
-                else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
-              }}
-            >
+            <S.Bar key={i} data-index={i} status={status} onDragEnter={handleDragEnter}>
               {!exceedsRight && (
                 <S.RearHandle
                   draggable="true"
@@ -100,32 +87,9 @@ const RoadmapItem = ({
             </S.Bar>
           );
         } else if (i < rightEnd && i > leftEnd) {
-          return (
-            <S.Bar
-              data-index={i}
-              key={i}
-              status={status}
-              onDragEnter={(e) => {
-                if (!isDragging) return;
-                const newIndex = +(e.target as HTMLElement).dataset.index!;
-                if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
-                else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
-              }}
-            />
-          );
+          return <S.Bar data-index={i} key={i} status={status} onDragEnter={handleDragEnter} />;
         } else {
-          return (
-            <S.Spacer
-              data-index={i}
-              key={i}
-              onDragEnter={(e) => {
-                if (!isDragging) return;
-                const newIndex = +(e.target as HTMLElement).dataset.index!;
-                if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
-                else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
-              }}
-            ></S.Spacer>
-          );
+          return <S.Spacer data-index={i} key={i} onDragEnter={handleDragEnter}></S.Spacer>;
         }
       })}
     </S.Container>
