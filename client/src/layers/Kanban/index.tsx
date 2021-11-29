@@ -4,18 +4,32 @@ import KanbanColumn from '@/components/KanbanColumn';
 import KanbanModal from '@/components/KanbanColumn/KanbanDeleteModal';
 import { StatusType } from '@/types/story';
 import { useSocketReceive } from '@/lib/hooks';
-import { getStoryById, updateStoryWithId } from '@/lib/api/story';
+import { getStoryById } from '@/lib/api/story';
+import { useRecoilState } from 'recoil';
+import storyListAtom from '@/recoil/story/atom';
 
 const Kanban = () => {
   const dragRef = useRef<number | null>(0);
   const dragOverRef = useRef<number | null>(0);
   const dragCategory = useRef<StatusType>('TODO');
   const dragOverCateogry = useRef<StatusType>('TODO');
+  const [storyList, setStoryList] = useRecoilState(storyListAtom);
 
   useSocketReceive('NEW_STORY', async (storyId: number) => {
-    console.log('잘 받았아요');
     const data = await getStoryById(storyId);
+    if (!data) return;
+    setStoryList((prev) => [...prev, data]);
   });
+
+  useSocketReceive('DELETE_STORY', async (storyId: number) => {
+    if (!storyList.find((story) => story.id === storyId)) {
+      setStoryList(storyList);
+    } else {
+      setStoryList((prev) => [...prev.filter((story) => story.id !== storyId)]);
+    }
+  });
+
+  //Update
 
   return (
     <KanbanModal>
