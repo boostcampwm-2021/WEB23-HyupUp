@@ -3,23 +3,25 @@ import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
 import { postStory, getStoryByid } from '@/lib/api/story';
 import { Button } from '@/lib/design';
-import { useStoryDispatch, useStoryState } from '@/lib/hooks/useContextHooks';
+import { useRecoilState } from 'recoil';
+import storyListAtom from '@/recoil/story/atom';
 import { StoryType } from '@/types/story';
 
-//TODO projectID, epicId 주입 예정
 const initialItem = {
   order: 0,
   name: '',
   status: 'TODO',
-  projectId: null,
+  projectId: undefined,
   epicId: null,
 };
 
 const KanbanAddBtn = () => {
-  const storyList = useStoryState();
-  const dispatchStory = useStoryDispatch();
   const userState = useRecoilValue(userAtom);
-  const orderList = storyList.filter((item) => item.status === 'TODO').map((v) => Number(v.order));
+  const [recoilStoryList, setStoryList] = useRecoilState(storyListAtom);
+
+  const orderList = recoilStoryList
+    .filter((item) => item.status === 'TODO')
+    .map((v) => Number(v.order));
   const listLargestOrder = orderList.length ? Math.max(...orderList) + 1 : 0;
 
   const addStory = async () => {
@@ -29,7 +31,7 @@ const KanbanAddBtn = () => {
       projectId: userState.currentProjectId,
     });
     const storyItem = await getStoryByid(id);
-    dispatchStory({ type: 'ADD_STORY', story: storyItem as StoryType });
+    setStoryList((prev) => [...prev, storyItem as StoryType]);
   };
 
   return (
