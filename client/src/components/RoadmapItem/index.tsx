@@ -53,6 +53,7 @@ const RoadmapItem = ({
   };
 
   const handleDrop = async (e: React.DragEvent) => {
+    if (!isDragging) return;
     e.stopPropagation();
     setIsDragging(false);
 
