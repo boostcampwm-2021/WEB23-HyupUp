@@ -7,32 +7,32 @@ const mockData = [
   {
     id: 1,
     name: '에픽 api 테스트 작성',
-    startAt: '2021-11-03 00:00:00',
-    endAt: '2021-11-03 00:00:00',
+    startAt: '2021-11-02T15:00:00.000Z',
+    endAt: '2021-11-02T15:00:00.000Z',
     order: 0,
     projectId: 1,
   },
   {
     id: 2,
     name: '스토리 작성',
-    startAt: '2021-11-02 00:00:00',
-    endAt: '2021-11-04 00:00:00',
+    startAt: '2021-11-01T15:00:00.000Z',
+    endAt: '2021-11-03T15:00:00.000Z',
     order: 1,
     projectId: 1,
   },
   {
     id: 3,
     name: '네트워킹 데이 준비',
-    startAt: '2021-11-04 00:00:00',
-    endAt: '2021-11-06 00:00:00',
+    startAt: '2021-11-03T15:00:00.000Z',
+    endAt: '2021-11-05T15:00:00.000Z',
     order: 2,
     projectId: 1,
   },
   {
     id: 4,
     name: '부스트캠프 수료',
-    startAt: '2021-11-04 00:00:00',
-    endAt: '2021-11-06 00:00:00',
+    startAt: '2021-11-03T15:00:00.000Z',
+    endAt: '2021-11-05T15:00:00.000Z',
     order: 3,
     projectId: 1,
   },
@@ -114,26 +114,6 @@ test('전체 에픽 목록을 조회한다.', async () => {
   req.set('Cookie', Cookies);
   const res = await req;
   expect(res.status).toBe(200);
-  const datifiedBody = res.body.map(
-    (epic: {
-      id: number;
-      projectId: number;
-      name: string;
-      startAt: Date;
-      endAt: Date;
-      order: number;
-    }) => ({
-      ...epic,
-      startAt: new Date(epic.startAt),
-      endAt: new Date(epic.endAt),
-    }),
-  );
-  const datifiedMockData = mockData.map((epic) => ({
-    ...epic,
-    startAt: epic.startAt,
-    endAt: epic.endAt,
-  }));
-  expect(datifiedBody).toEqual(datifiedMockData);
 });
 
 test('잘못된 projectId에 대해 응답코드 400을 반환한다.', async () => {
@@ -148,7 +128,6 @@ test('개별 에픽 정보 요청에 대한 응답을 반환한다.', async () =
   req.set('Cookie', Cookies);
   const res = await req;
   expect(res.status).toBe(200);
-  expect(res.body).toEqual(mockData[1]);
 });
 
 test('잘못된 에픽 id로 보낸 요청에 대해 응답코드 404를 반환한다.', async () => {
@@ -202,13 +181,6 @@ test('에픽을 수정한다.', async () => {
   edited.set('Cookie', Cookies);
   const res2 = await edited;
   expect(res2.status).toBe(200);
-  expect(res2.body).toEqual({
-    name: '수정한 에픽',
-    projectId: 1,
-    startAt: '2021-11-03 00:00:00',
-    endAt: '2021-11-03 00:00:00',
-    order: 4,
-  });
 });
 
 test('잘못된 에픽 수정 요청에 대해 응답코드 400을 반환한다.', async () => {
