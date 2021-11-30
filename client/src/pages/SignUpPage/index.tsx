@@ -52,10 +52,6 @@ const SignUpPage = ({ token }: { token: string }) => {
       ...newUser,
       imageURL: `${gender}${avatarIndex}`,
     })) as UserState;
-    if (userData.id) {
-      userData.privateTasks!.sort((a, b) => taskSortByUpdate(a, b));
-      userData.projectTasks!.sort((a, b) => taskSortByUpdate(a, b));
-    }
     setUserState(userData);
   };
 

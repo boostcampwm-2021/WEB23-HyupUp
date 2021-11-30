@@ -46,13 +46,19 @@ export const deleteTask = async (id: number) => {
   }
 };
 
-export const postTask = async (
-  name: string,
-  status: number,
-  storyId: number,
-  userId: null | number,
-  projectId: undefined | number,
-) => {
+export const postTask = async ({
+  name,
+  status,
+  storyId,
+  userId,
+  projectId,
+}: {
+  name: string;
+  status: number;
+  storyId: number;
+  userId: null | number;
+  projectId: null | number;
+}) => {
   try {
     const result = await instance.post('', {
       name,
