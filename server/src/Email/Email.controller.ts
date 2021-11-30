@@ -8,7 +8,9 @@ import { sendMail } from './Email.service';
 import Organizations from '@/Organizations/Organizations.entity';
 import Users from '@/Users/Users.entity';
 
-const client = createClient({ host: 'localhost' });
+const client = createClient({ host: process.env.REDIS_HOST });
+
+const EMAIL_ERROR = 'email conflict';
 
 export const inviteByEmail = async (req: Request, res: Response) => {
   try {
@@ -16,7 +18,7 @@ export const inviteByEmail = async (req: Request, res: Response) => {
       throw Error('body is not valid');
     }
     const user = await getRepository(Users).findOne({ where: { email: req.body.email } });
-    if (user) throw new Error('email conflict');
+    if (user) throw new Error(EMAIL_ERROR);
     const secret = process.env.SECRET as string;
     const key = v4();
     const token = jwt.sign({ id: key }, secret, {
@@ -30,7 +32,7 @@ export const inviteByEmail = async (req: Request, res: Response) => {
     sendMail(req.body.email, token);
     res.status(201).end();
   } catch (e) {
-    if ((e as Error).message === 'email conflict') {
+    if ((e as Error).message === EMAIL_ERROR) {
       res.status(409).json({ message: (e as Error).message });
     } else {
       res.status(400).json({ message: (e as Error).message });
