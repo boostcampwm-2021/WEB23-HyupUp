@@ -37,17 +37,23 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
       { ...story, epicId: epicId },
     ]);
     await updateStoryWithId({ ...story, epicId: epicId });
+    // setStoryListState((prev) =>
+    //   produce(prev, (draft) => [
+    //     ...draft.filter((v) => v.id !== story.id),
+    //     { ...story, epicId: epicId },
+    //   ]),
+    // );
   };
 
   const handleDelete = async (key: number) => {
     setTaskList((prev) => prev.filter((v) => v.id !== key));
+    await deleteTask(key);
     // setTaskList((prev) =>
     //   produce(prev, (draft) => {
     //     const index = draft.findIndex((v) => v.id === key);
     //     draft.splice(index, 1);
     //   }),
     // );
-    await deleteTask(key);
   };
 
   const handleAddBtn = async () => {
@@ -58,14 +64,12 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
       userId: null,
       projectId: null,
     });
-
     setTaskList((taskList) => [...taskList, { ...defaultTaskItem, id: insertedId }]);
-    //   setTaskList((taskList) =>
-    //     produce(taskList, (draft) => {
-    //       draft.push({ ...defaultTaskItem, id: insertedId });
-    //     }),
-    //   );
-    // };
+    // setTaskList((taskList) =>
+    //   produce(taskList, (draft) => {
+    //     draft.push({ ...defaultTaskItem, id: insertedId });
+    //   }),
+    // );
   };
 
   const handleCloseClick = () => setModalOpen(false);
@@ -80,6 +84,7 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
     })();
   }, [story, isItemModalOpen, epicListState]);
 
+  console.log(taskList);
   return (
     <Modal shouldConfirm={false} visible={isItemModalOpen} onClose={handleCloseClick} size="LARGE">
       <Styled.ContentWrapper>
@@ -95,7 +100,7 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
           </Button>
         </Styled.ControlWrapper>
         {taskList
-          ?.sort((a, b) => b?.id - a?.id)
+          ?.sort((a, b) => b.id - a.id)
           .map((task) => (
             <KanbanTask key={task.id} task={task} handleDelete={handleDelete} />
           ))}
