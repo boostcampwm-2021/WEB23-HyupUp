@@ -10,8 +10,6 @@ import { Header, SideBar } from '@/layers';
 import { useTabs } from '@/lib/hooks';
 import userAtom, { userListAtom } from '@/recoil/user';
 import { getUsersInfoWithProject } from '@/lib/api/user';
-// import  GroupManagement  from '@/layers/GroupManagement';
-// import { ProjectManagement } from '@/layers/ProjectManagement';
 import { Spinner } from '@/lib/design';
 
 const GroupManagement = React.lazy(() => import('@/layers/GroupManagement'));
