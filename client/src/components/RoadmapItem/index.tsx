@@ -3,8 +3,8 @@ import { RoadmapBarsStatus } from '@/types/epic';
 import S from './style';
 import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
 import { addDate } from '@/lib/utils/date';
-import { getEpicById, updateEpicById } from '@/lib/api/epic';
-import { useSocketReceive, useSocketSend } from '@/lib/hooks';
+import { updateEpicById } from '@/lib/api/epic';
+import { useSocketSend } from '@/lib/hooks';
 
 interface RoadmapItemProps {
   id: number;
@@ -34,13 +34,6 @@ const RoadmapItem = ({
   const dispatchEpic = useEpicDispatch();
   const epics = useEpicState();
   const emitUpdateEpicBar = useSocketSend('UPDATE_EPIC_BAR');
-  useSocketReceive('UPDATE_EPIC_BAR', async (epicId: number) => {
-    const updatedEpic = await getEpicById(epicId);
-    dispatchEpic({
-      type: 'UPDATE_EPIC',
-      epic: updatedEpic!,
-    });
-  });
 
   useEffect(() => {
     setLeftEnd(index);
