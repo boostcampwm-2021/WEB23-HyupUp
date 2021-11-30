@@ -21,7 +21,6 @@ const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
   const handleInput = async () => {
     if (!taskState) return;
     await updateTask(taskState.id as number, value, false, taskState.userId);
-    //TODO 언제 보내는게 좋을까?
     if (taskState.userId) emitNewTask(taskState.userId);
     setTask((prev) => ({
       ...prev,
@@ -52,17 +51,21 @@ const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
         placeholder={task?.name ? task.name : 'Type A Task'}
         onChange={onChange}
       />
-      {taskState?.user ? (
+      {taskState.user || task.user ? (
         <Styled.MemberContainer>
           <DropDown
             Title={
               <p>
                 <img
                   className="userImage"
-                  src={avatar[taskState.userImage as ImageType]}
+                  src={
+                    avatar[
+                      `${taskState.userImage ? taskState.userImage : task.userImage}` as ImageType
+                    ]
+                  }
                   alt="userimage"
                 />
-                <span>{taskState.user}</span>
+                <span>{taskState.user ? taskState.user : task.user}</span>
               </p>
             }
             list={userListWithId}

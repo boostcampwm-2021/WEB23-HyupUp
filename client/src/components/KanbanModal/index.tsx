@@ -68,6 +68,7 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
     else setTaskList([{ ...defaultTaskItem, id: insertedId }]);
   };
 
+  console.log(taskList);
   return (
     <Modal shouldConfirm={false} visible={isItemModalOpen} onClose={handleCloseClick} size="LARGE">
       <Styled.ContentWrapper>
