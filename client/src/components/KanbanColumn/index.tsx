@@ -45,80 +45,94 @@ const KanbanColumn = ({
 
     if (isMoveToSameTop()) {
       const { firstItem, secondItem } = dragToEqualTop(filterList, dragRef);
-      setTopEnter((isTopEnter) => !isTopEnter);
-      setStoryList((prev) =>
-        produce(prev, (draft) => {
-          [
-            ...draft.filter((v) => v.id !== firstItem.id && v.id !== secondItem.id),
-            firstItem,
-            secondItem,
-          ];
-        }),
-      );
+      // setStoryList((prev) =>
+      //   produce(prev, (draft) => {
+      //     [
+      //       ...draft.filter((v) => v.id !== firstItem.id && v.id !== secondItem.id),
+      //       firstItem,
+      //       secondItem,
+      //     ];
+      //   }),
+      // );
+      setStoryList((prev) => [
+        ...prev.filter((v) => v.id !== firstItem.id && v.id !== secondItem.id),
+        firstItem,
+        secondItem,
+      ]);
 
       await updateStoryWithId(firstItem);
       await updateStoryWithId(secondItem);
       emitUpdateStory(firstItem.id);
       emitUpdateStory(secondItem.id);
+      setTopEnter((isTopEnter) => !isTopEnter);
 
       return;
     }
 
     if (isMoveToSameBetween()) {
       const item = dragToEqualBetween(filterList, dragRef, dragOverRef);
-      setTopEnter((isTopEnter) => !isTopEnter);
-      setStoryList((prev) =>
-        produce(prev, (draft) => {
-          [...draft.filter((v) => v.id !== item.id), item];
-        }),
-      );
+      // setStoryList((prev) =>
+      //   produce(prev, (draft) => {
+      //     [...draft.filter((v) => v.id !== item.id), item];
+      //   }),
+      // );
+      setStoryList((prev) => [...prev.filter((v) => v.id !== item.id), item]);
 
       await updateStoryWithId(item);
       emitUpdateStory(item.id);
+      setTopEnter(false);
       return;
     }
 
     if (isMoveToDiffBetween()) {
       const item = dragToDiffBetween(storyList, category, dragCategory, dragRef, dragOverRef);
-      setTopEnter((isTopEnter) => !isTopEnter);
-      setStoryList((prev) =>
-        produce(prev, (draft) => {
-          [...draft.filter((v) => v.id !== item.id), item];
-        }),
-      );
-
+      // setStoryList((prev) =>
+      //   produce(prev, (draft) => {
+      //     [...draft.filter((v) => v.id !== item.id), item];
+      //   }),
+      // );
+      setStoryList((prev) => [...prev.filter((v) => v.id !== item.id), item]);
       await updateStoryWithId(item);
       emitUpdateStory(item.id);
+      setTopEnter(false);
       return;
     }
 
     if (isMoveToDiffTop()) {
       const { firstItem, secondItem } = dragToDiffTop(storyList, category, dragCategory, dragRef);
-      setTopEnter((isTopEnter) => !isTopEnter);
 
       if (Object.keys(secondItem).length > 1) {
-        setStoryList((prev) =>
-          produce(prev, (draft) => {
-            [
-              ...draft.filter((v) => v.id !== firstItem.id && v.id !== secondItem.id),
-              firstItem,
-              secondItem,
-            ];
-          }),
-        );
+        // setStoryList((prev) =>
+        //   produce(prev, (draft) => {
+        //     [
+        //       ...draft.filter((v) => v.id !== firstItem.id && v.id !== secondItem.id),
+        //       firstItem,
+        //       secondItem,
+        //     ];
+        //   }),
+        // );
+
+        setStoryList((prev) => [
+          ...prev.filter((v) => v.id !== firstItem.id && v.id !== secondItem.id),
+          firstItem,
+          secondItem,
+        ]);
 
         await updateStoryWithId(firstItem);
         await updateStoryWithId(secondItem);
         emitUpdateStory(firstItem.id);
         emitUpdateStory(secondItem.id);
+        setTopEnter(false);
       } else {
-        setStoryList((prev) =>
-          produce(prev, (draft) => {
-            [...draft.filter((v) => v.id !== firstItem.id), firstItem];
-          }),
-        );
+        // setStoryList((prev) =>
+        //   produce(prev, (draft) => {
+        //     [...draft.filter((v) => v.id !== firstItem.id), firstItem];
+        //   }),
+        // );
+        setStoryList((prev) => [...prev.filter((v) => v.id !== firstItem.id), firstItem]);
         await updateStoryWithId(firstItem);
         emitUpdateStory(firstItem.id);
+        setTopEnter(false);
       }
       return;
     }
