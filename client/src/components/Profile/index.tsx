@@ -19,8 +19,8 @@ const Profile = () => {
   const handleLogout = async () => {
     emitLogout(userState.id);
     userDispatch({ type: 'LOGOUT' });
-    location.pathname = '/';
     await logOut();
+    location.pathname = '/';
   };
   const ref = useRef(null);
 
