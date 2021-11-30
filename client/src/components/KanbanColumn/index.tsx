@@ -13,6 +13,7 @@ import {
   dragToDiffTop,
 } from '@/lib/utils/story';
 import { useSocketSend } from '@/lib/hooks';
+import produce from 'immer';
 
 const isEqualCategory = (dragCategory: dragCategoryType, dropCategory: StatusType) => {
   return dragCategory.current === dropCategory;
@@ -25,8 +26,8 @@ const KanbanColumn = ({
   dragCategory,
   dragOverCategory,
 }: KanbanType) => {
-  const [recoilStoryList, setStoryList] = useRecoilState(storyListAtom);
-  const filterList = recoilStoryList
+  const [storyList, setStoryList] = useRecoilState(storyListAtom);
+  const filterList = storyList
     ?.filter((item) => item.status === category)
     .sort((a, b) => Number(a.order) - Number(b.order));
 
@@ -44,56 +45,78 @@ const KanbanColumn = ({
 
     if (isMoveToSameTop()) {
       const { firstItem, secondItem } = dragToEqualTop(filterList, dragRef);
-      setStoryList((prev) => [
-        ...prev.filter((v) => v.id !== firstItem.id && v.id !== secondItem.id),
-        firstItem,
-        secondItem,
-      ]);
+      setTopEnter((isTopEnter) => !isTopEnter);
+      setStoryList((prev) =>
+        produce(prev, (draft) => {
+          [
+            ...draft.filter((v) => v.id !== firstItem.id && v.id !== secondItem.id),
+            firstItem,
+            secondItem,
+          ];
+        }),
+      );
+
       await updateStoryWithId(firstItem);
       await updateStoryWithId(secondItem);
       emitUpdateStory(firstItem.id);
       emitUpdateStory(secondItem.id);
-      setTopEnter((isTopEnter) => !isTopEnter);
+
       return;
     }
 
     if (isMoveToSameBetween()) {
       const item = dragToEqualBetween(filterList, dragRef, dragOverRef);
-      setStoryList((prev) => [...prev.filter((v) => v.id !== item.id), item]);
+      setTopEnter((isTopEnter) => !isTopEnter);
+      setStoryList((prev) =>
+        produce(prev, (draft) => {
+          [...draft.filter((v) => v.id !== item.id), item];
+        }),
+      );
+
       await updateStoryWithId(item);
       emitUpdateStory(item.id);
       return;
     }
 
     if (isMoveToDiffBetween()) {
-      const item = dragToDiffBetween(recoilStoryList, category, dragCategory, dragRef, dragOverRef);
-      setStoryList((prev) => [...prev.filter((v) => v.id !== item.id), item]);
+      const item = dragToDiffBetween(storyList, category, dragCategory, dragRef, dragOverRef);
+      setTopEnter((isTopEnter) => !isTopEnter);
+      setStoryList((prev) =>
+        produce(prev, (draft) => {
+          [...draft.filter((v) => v.id !== item.id), item];
+        }),
+      );
+
       await updateStoryWithId(item);
       emitUpdateStory(item.id);
       return;
     }
 
     if (isMoveToDiffTop()) {
-      const { firstItem, secondItem } = dragToDiffTop(
-        recoilStoryList,
-        category,
-        dragCategory,
-        dragRef,
-      );
+      const { firstItem, secondItem } = dragToDiffTop(storyList, category, dragCategory, dragRef);
       setTopEnter((isTopEnter) => !isTopEnter);
 
       if (Object.keys(secondItem).length > 1) {
-        setStoryList((prev) => [
-          ...prev.filter((v) => v.id !== firstItem.id && v.id !== secondItem.id),
-          firstItem,
-          secondItem,
-        ]);
+        setStoryList((prev) =>
+          produce(prev, (draft) => {
+            [
+              ...draft.filter((v) => v.id !== firstItem.id && v.id !== secondItem.id),
+              firstItem,
+              secondItem,
+            ];
+          }),
+        );
+
         await updateStoryWithId(firstItem);
         await updateStoryWithId(secondItem);
         emitUpdateStory(firstItem.id);
         emitUpdateStory(secondItem.id);
       } else {
-        setStoryList((prev) => [...prev.filter((v) => v.id !== firstItem.id), firstItem]);
+        setStoryList((prev) =>
+          produce(prev, (draft) => {
+            [...draft.filter((v) => v.id !== firstItem.id), firstItem];
+          }),
+        );
         await updateStoryWithId(firstItem);
         emitUpdateStory(firstItem.id);
       }
