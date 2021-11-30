@@ -30,7 +30,6 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
 
   useEffect(() => {
     (async () => {
-      if (!isItemModalOpen) return;
       const { epicId, id } = story;
       setEpic(epicListState.find((v) => v.id === epicId));
       const taskResult = await getTasksByStoryId(id as number);
@@ -68,7 +67,6 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
     else setTaskList([{ ...defaultTaskItem, id: insertedId }]);
   };
 
-  console.log(taskList);
   return (
     <Modal shouldConfirm={false} visible={isItemModalOpen} onClose={handleCloseClick} size="LARGE">
       <Styled.ContentWrapper>
