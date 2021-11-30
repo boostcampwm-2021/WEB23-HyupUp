@@ -5,15 +5,23 @@ import { updateTask } from '@/lib/api/task';
 import { useRecoilValue } from 'recoil';
 import { userListAtom } from '@/recoil/user';
 import { KanbanTaskType } from '@/types/story';
+import { Modal } from '@/lib/design';
 import { useSocketSend } from '@/lib/hooks';
 import TaskItemWithoutUser from '@/components/KanbanModal/TaskItemWithoutUser';
 import TaskItemWithUser from '@/components/KanbanModal/TaskItemWithUser';
 import deleteIcon from '@public/icons/delete-icon-red.svg';
 
-const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
+type handleDeleteType = (arg: number) => void;
+interface KanbanTaskProps {
+  task: KanbanTaskType;
+  handleDelete: handleDeleteType;
+}
+
+const KanbanTask = ({ task, handleDelete }: KanbanTaskProps) => {
   const { value, onChange } = useInput(task?.name);
   const [taskState, setTask] = useState<KanbanTaskType>(task);
   const [showDelete, setShowDelete] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const userListState = useRecoilValue(userListAtom);
   const userListWithId = userListState.map((value) => {
     return { ...value, id: value.index };
@@ -64,8 +72,16 @@ const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
         showDelete={showDelete}
         src={deleteIcon}
         alt="deleteicon"
-        onClick={() => console.log('hi')}
+        onClick={() => setShowDeleteModal(true)}
       />
+      <Modal
+        shouldConfirm
+        visible={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onClickOk={() => handleDelete(Number(task.id))}
+      >
+        <Styled.DeleteConfirm>에픽을 삭제하시겠습니까?</Styled.DeleteConfirm>
+      </Modal>
     </Styled.KanbanTaskWrapper>
   );
 };

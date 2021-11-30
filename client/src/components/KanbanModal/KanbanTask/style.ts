@@ -82,6 +82,11 @@ const Styled = {
     opacity: ${({ showDelete }) => (showDelete ? 1 : 0)};
     transition: opacity 0.3s;
   `,
+
+  DeleteConfirm: styled.h4`
+    margin: 32px;
+    font: ${({ theme }) => theme.font.bold_medium};
+  `,
 };
 
 export default Styled;
