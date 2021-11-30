@@ -63,6 +63,7 @@ io.on('connection', (socket) => {
 
   socket.on('DELETE_EPIC', (epicId: number) => {
     socket.to(socket.data.roomName).emit('DELETE_EPIC', epicId);
+  });
 
   socket.on('NEW_STORY', (storyId: number) => {
     socket.to(socket.data.roomName).emit('NEW_STORY', storyId);
