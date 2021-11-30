@@ -19,15 +19,13 @@ import { getUsersInfoWithProject } from '@/lib/api/user';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom, { userListAtom } from '@/recoil/user';
 import storyListAtom from '@/recoil/story/atom';
-import epicListAtom from '@/recoil/epic';
-import { makeEpicWithDate } from '@/lib/utils/epic';
-import { sortEpicsByOrder } from '@/lib/utils/sort';
+import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
 
 const WorkPage = () => {
   const user = useRecoilValue(userAtom);
   const setUserListState = useSetRecoilState(userListAtom);
   const setStoryListState = useSetRecoilState(storyListAtom);
-  const setEpicListState = useSetRecoilState(epicListAtom);
+  const dispatchEpic = useEpicDispatch();
 
   const tabs = [
     <Roadmap key={0} projectId={user?.currentProjectId} />,
@@ -50,19 +48,10 @@ const WorkPage = () => {
       const stories = await getAllStories(user.currentProjectId);
 
       if (result) setUserListState(result);
-      if (epics)
-        setEpicListState(
-          epics.map((epic) => makeEpicWithDate(epic)).sort((a, b) => sortEpicsByOrder(a, b)),
-        );
+      if (epics) dispatchEpic({ type: 'LOAD_EPIC', epics });
       if (stories) setStoryListState(stories);
     })();
-  }, [
-    setEpicListState,
-    setStoryListState,
-    setUserListState,
-    user.organization,
-    user.currentProjectId,
-  ]);
+  }, [dispatchEpic, setStoryListState, setUserListState, user.organization, user.currentProjectId]);
 
   return (
     <>

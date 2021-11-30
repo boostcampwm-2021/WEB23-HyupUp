@@ -114,7 +114,26 @@ test('전체 에픽 목록을 조회한다.', async () => {
   req.set('Cookie', Cookies);
   const res = await req;
   expect(res.status).toBe(200);
-  expect(res.body).toEqual(mockData);
+  const datifiedBody = res.body.map(
+    (epic: {
+      id: number;
+      projectId: number;
+      name: string;
+      startAt: Date;
+      endAt: Date;
+      order: number;
+    }) => ({
+      ...epic,
+      startAt: new Date(epic.startAt),
+      endAt: new Date(epic.endAt),
+    }),
+  );
+  const datifiedMockData = mockData.map((epic) => ({
+    ...epic,
+    startAt: epic.startAt,
+    endAt: epic.endAt,
+  }));
+  expect(datifiedBody).toEqual(datifiedMockData);
 });
 
 test('잘못된 projectId에 대해 응답코드 400을 반환한다.', async () => {
@@ -129,10 +148,7 @@ test('개별 에픽 정보 요청에 대한 응답을 반환한다.', async () =
   req.set('Cookie', Cookies);
   const res = await req;
   expect(res.status).toBe(200);
-  expect(res.body).toEqual(mockData[0]);
   expect(res.body).toEqual(mockData[1]);
-  expect(res.body).toEqual(mockData[2]);
-  expect(res.body).toEqual(mockData[3]);
 });
 
 test('잘못된 에픽 id로 보낸 요청에 대해 응답코드 404를 반환한다.', async () => {
