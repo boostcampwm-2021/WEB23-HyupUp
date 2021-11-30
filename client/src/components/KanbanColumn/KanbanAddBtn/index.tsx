@@ -1,11 +1,10 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
-import { postStory, getStoryById } from '@/lib/api/story';
+import { postStory } from '@/lib/api/story';
 import { Button } from '@/lib/design';
 import { useRecoilState } from 'recoil';
 import storyListAtom from '@/recoil/story/atom';
-import { StoryType } from '@/types/story';
 import { useSocketSend } from '@/lib/hooks';
 import StyledButtonWrapper from './style';
 
@@ -31,8 +30,10 @@ const KanbanAddBtn = () => {
       order: listLargestOrder,
       projectId: userState.currentProjectId,
     });
-    const storyItem = await getStoryById(id);
-    setStoryList((prev) => [...prev, storyItem as StoryType]);
+    setStoryList((prev) => [
+      ...prev,
+      { ...initialItem, order: listLargestOrder, projectId: userState.currentProjectId, id: id },
+    ]);
     emitNewStory(id);
   };
 
