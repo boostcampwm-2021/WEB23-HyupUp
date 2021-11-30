@@ -136,7 +136,6 @@ describe('update TODO', () => {
       .set('Cookie', Cookies)
       .send({ name: '안녕하세요2', id: 999, status: false });
     expect(res.status).toBe(401);
-    // id가 invalid하면 error를 반환해야하는 것이 아닌가?
   });
 });
 
@@ -149,9 +148,8 @@ describe('delete TODO', () => {
     const res = await request(app).delete('/api/todo').set('Cookie', Cookies);
     expect(res.status).toBe(401);
   });
-  test('update TODO', async () => {
+  test('delete TODO', async () => {
     const res = await request(app).delete('/api/todo?id=100').set('Cookie', Cookies);
-    expect(res.status).toBe(400);
-    // id가 invalid하면 error를 반환해야하는 것이 아닌가?
+    expect(res.status).toBe(401);
   });
 });
