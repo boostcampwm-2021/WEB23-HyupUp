@@ -22,7 +22,7 @@ const KanbanInput = ({
   const emitUpdateStory = useSocketSend('UPDATE_STORY');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const useUpdateStoryName = async () => {
+  const onBlurUpdateName = async () => {
     if (key < 0) return;
     updateStoryName({ status: 'TODO', id: key, order: story.order, name: value });
     await updateStoryWithName({ status: 'TODO', id: key, order: story.order, name: value });
@@ -42,7 +42,7 @@ const KanbanInput = ({
         {...value}
         data-key={story.id}
         onChange={onChange}
-        onBlur={useUpdateStoryName}
+        onBlur={onBlurUpdateName}
         isHover={isHover}
         ref={inputRef}
       />
