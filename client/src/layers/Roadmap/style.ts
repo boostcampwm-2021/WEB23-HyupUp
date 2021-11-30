@@ -35,8 +35,8 @@ const S = {
     flex-direction: column;
     justify-content: center;
 
-    width: 221px;
-    padding: 16px;
+    width: 250px;
+    padding: 16px 0;
     padding-top: 64px;
 
     border-right: 3px solid ${({ theme }) => theme.color.gray100};
@@ -45,6 +45,10 @@ const S = {
 
     & button {
       width: 100%;
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
     }
   `,
   EpicEntrySpacer: styled.li<{ activated: boolean }>`

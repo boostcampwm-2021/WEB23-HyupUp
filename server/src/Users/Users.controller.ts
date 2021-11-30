@@ -1,16 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import bcrypt from 'bcrypt';
-import { bodyValidator, queryValidator } from '../utils/requestValidator';
+import { bodyValidator, queryValidator } from '@/utils/requestValidator';
 import Users from './Users.entity';
-import {
-  getUserInfo,
-  getUsers,
-  getUserTasks,
-  getUserTodos,
-  inviteUser,
-  isValidatedEmail,
-} from './Users.service';
+import { getAllTasks, getUserInfo, getUsers, inviteUser, isValidatedEmail } from './Users.service';
 import Organizations from '../Organizations/Organizations.entity';
 
 declare module 'express-session' {
@@ -26,12 +19,8 @@ export const handleGet = async (req: Request, res: Response) => {
     const email = req.session.isLogIn ? (req.session.email as string) : (req.query.email as string);
     if (!isValidatedEmail(email)) throw Error();
     const user = await getUserInfo(email);
-    const todos = await getUserTodos(email);
-    const tasks = await getUserTasks(email);
     res.json({
       ...user,
-      privateTasks: todos,
-      projectTasks: tasks,
     });
   } catch (err) {
     const message = (err as Error).message;
@@ -137,7 +126,7 @@ export const logInUser = async (req: Request, res: Response, next: NextFunction)
     req.query.email = req.body.email;
     req.session.isLogIn = true;
     req.session.email = req.body.email;
-    res.cookie('status', '');
+    res.cookie('status', '', { maxAge: 3000 * 60 * 60 });
     next();
   } catch (e) {
     const err = e as Error;
@@ -221,5 +210,19 @@ export const logOut = (req: Request, res: Response) => {
     res.end();
   } catch {
     res.status(400).end();
+  }
+};
+
+export const getAllTasksById = async (req: Request, res: Response) => {
+  try {
+    if (!queryValidator(req.query, ['userId', 'offset'])) throw new Error('query is not valid');
+    const userId = Number(req.query.userId);
+    const offset = Number(req.query.offset);
+    const allTasks = await getAllTasks(userId, offset);
+    res.json(allTasks);
+  } catch (e) {
+    res.status(400).json({
+      message: (e as Error).message,
+    });
   }
 };

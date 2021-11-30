@@ -1,4 +1,13 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const fadein = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
 const S = {
   Container: styled.li<{ activated: boolean }>`
@@ -21,30 +30,19 @@ const S = {
       padding-top: 32px;
     }
   `,
+  DeleteIcon: styled.img<{ showDelete: boolean }>`
+    display: ${({ showDelete }) => (showDelete ? 'block' : 'none')};
+    animation: ${fadein} 0.1s ease-in-out;
+  `,
+  DeleteConfirm: styled.h4`
+    margin: 32px;
+    font: ${({ theme }) => theme.font.bold_medium};
+  `,
   DragIndicator: styled.img<{ showDraggable: boolean }>`
     margin-right: 8px;
 
     transition: opacity 0.1s ease;
     opacity: ${({ showDraggable }) => (showDraggable ? 1 : 0)};
-  `,
-  Form: styled.form`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    min-width: 350px;
-    padding: 16px;
-  `,
-  Input: styled.input`
-    width: 100%;
-    padding: 8px 16px;
-    margin-right: 16px;
-
-    background-color: ${({ theme }) => theme.color.gray100};
-    color: ${({ theme }) => theme.color.gray400};
-    border-radius: 8px;
-
-    font: ${({ theme }) => theme.font.body_regular};
   `,
 };
 

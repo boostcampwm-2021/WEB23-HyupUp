@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { queryValidator } from '../utils/requestValidator';
+import { queryValidator } from '@/utils/requestValidator';
 import { getRepository, getConnection } from 'typeorm';
 import Stories from './Stories.entity';
 
@@ -135,5 +135,20 @@ export const deleteStoryWithId = async (req: Request, res: Response) => {
     res.status(400).json({
       message: (e as Error).message,
     });
+  }
+};
+
+export const deleteAllByEpicId = async (req: Request, res: Response) => {
+  const { epicId } = req.params;
+  try {
+    await getRepository(Stories)
+      .createQueryBuilder()
+      .delete()
+      // FIXME: 올바른 쿼리문으로 수정
+      .where('epicId = :id', { id: epicId })
+      .execute();
+    res.end();
+  } catch (e) {
+    res.status(404).json({ message: (e as Error).message });
   }
 };

@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import { RoadmapBarsStatus } from '@/types/epic';
 
-const HANDLE_WIDTH = '5px';
+const HANDLE_WIDTH = '12px';
 
 const statusToColor = (
   status: RoadmapBarsStatus,
-  color: { blue300: string; red300: string; green300: string },
+  color: { blue300: string; red300: string; green300: string; gray300: string },
 ) => {
-  const { blue300, red300, green300 } = color;
+  const { blue300, red300, green300, gray300 } = color;
   switch (status) {
     case 'NOT_STARTED':
       return red300;
@@ -15,6 +15,8 @@ const statusToColor = (
       return green300;
     case 'ALL_DONE':
       return blue300;
+    default:
+      return gray300;
   }
 };
 
@@ -24,6 +26,7 @@ const S = {
     grid-template-columns: repeat(${({ columns }) => columns}, 1fr);
 
     margin: 27px 0;
+    z-index: 1;
   `,
   Spacer: styled.div`
     width: 100%;

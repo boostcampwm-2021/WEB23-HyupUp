@@ -27,7 +27,7 @@ const generateMessage = (message: string) => {
 };
 
 // TODO: 함수 분리하기
-export const GroupManagement = () => {
+const GroupManagement = () => {
   const userState = useRecoilValue(userAtom);
   const [showModal, setShowModal] = useState(false);
   const [userList, setUserList] = useState<Array<UserProfile>>([]);
@@ -127,3 +127,4 @@ export const GroupManagement = () => {
     </S.Container>
   );
 };
+export default GroupManagement;

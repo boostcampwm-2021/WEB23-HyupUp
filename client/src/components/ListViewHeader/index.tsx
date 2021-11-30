@@ -1,6 +1,11 @@
 import React from 'react';
 import Styled from '@/components/ListViewHeader/style';
 import { ListState } from '../../layers/ListView';
+import { useSocketReceive } from '@/lib/hooks';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
+import { toast } from 'react-toastify';
+import { successMessage } from '@/lib/common/message';
 
 type ListProps = {
   listState: ListState;
@@ -8,6 +13,11 @@ type ListProps = {
 };
 
 const ListViewHeader = ({ listState, handleListState }: ListProps) => {
+  const userState = useRecoilValue(userAtom);
+  useSocketReceive('NEW_TASK', async (userId: number) => {
+    if (userState.id === userId) toast.success(successMessage.UPDATE_TASK);
+  });
+
   return (
     <Styled.Container onClick={handleListState}>
       <Styled.StateButton id="all" active={'all' === listState}>

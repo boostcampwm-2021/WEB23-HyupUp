@@ -14,11 +14,15 @@ const Styled = {
     border-radius: 8px;
     background-color: ${({ theme }) => theme.color.white};
 
+    overflow: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
     button {
       width: 250px;
       height: 50px;
-      position: absolute;
-      bottom: 15px;
       color: ${({ theme }) => theme.color.gray400};
     }
 

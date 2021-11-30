@@ -39,7 +39,8 @@ const getStatusFromStories = ({
   inProgresses,
   dones,
 }: ReturnType<typeof filterStoriesAboutEpic>): RoadmapBarsStatus => {
-  if (todos.length === 0 && inProgresses.length === 0) return 'ALL_DONE';
+  if (todos.length === 0 && inProgresses.length === 0 && dones.length === 0) return 'UNINITIALIZED';
+  else if (todos.length === 0 && inProgresses.length === 0) return 'ALL_DONE';
   else if (inProgresses.length === 0 && dones.length === 0) return 'NOT_STARTED';
   else return 'STARTED';
 };

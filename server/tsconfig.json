@@ -10,7 +10,9 @@
     "emitDecoratorMetadata": true,  
     "skipLibCheck": true,  
     "forceConsistentCasingInFileNames": true, 
-    "outDir": "dist"
+    "outDir": "dist",
+    "baseUrl": "./",
+    "paths": {"@/*":["src/*"]},
   },
   "exclude": ["test"],
   "include": ["src", "socket.ts", "app.ts", "bin"]

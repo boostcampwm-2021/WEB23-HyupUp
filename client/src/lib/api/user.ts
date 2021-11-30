@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { UserState } from '@/contexts/userContext';
 import { errorMessage } from '../common/message';
@@ -24,7 +24,9 @@ export const getUser = async (email: string) => {
     const result: { data: UserState } = await instance.get(`?email=${email}`);
     return result.data;
   } catch (e) {
-    if ((e as Error).message === 'Request failed with status code 401') {
+    if ((e as AxiosError).response?.status === 401) {
+      toast.error(errorMessage.UNAUTH_USER);
+    } else {
       toast.error(errorMessage.GET_USER);
     }
   }
@@ -115,7 +117,7 @@ export const signUp = async ({ name, job, email, password, organization, imageUR
 
     return result.data;
   } catch (e) {
-    if ((e as Error).message === 'Request failed with status code 406') {
+    if ((e as AxiosError).response?.status === 406) {
       toast.error(errorMessage.CREATE_USER_EMAIL);
     } else {
       toast.error(errorMessage.CREATE_USER);
@@ -141,5 +143,15 @@ export const sudoLogIn = async () => {
     return result.data;
   } catch (e) {
     toast.error(errorMessage.GET_USER);
+  }
+};
+
+export const getAlltasks = async (userId: number, offset: number) => {
+  try {
+    const result = await instance.get(`/tasks?userId=${userId}&offset=${offset}`);
+    if (result.status % 400 < 100) throw new Error();
+    return result.data;
+  } catch (error) {
+    toast.error(errorMessage.GET_TASK);
   }
 };

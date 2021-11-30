@@ -1,5 +1,5 @@
 import express from 'express';
-import { authValidator } from '../utils/authValidator';
+import { authValidator } from '@/utils/authValidator';
 import {
   deleteUserById,
   getUsersInfoWithProject,
@@ -10,11 +10,13 @@ import {
   signUpUser,
   updateUserAdminById,
   updateUserWithProject,
+  getAllTasksById,
 } from './Users.controller';
 
 const router = express.Router();
 router.get('/', handleGet);
 router.get('/organization', [authValidator, getUsersByOrganization]);
+router.get('/tasks', getAllTasksById);
 router.get('/:orgId', [authValidator, getUsersInfoWithProject]);
 
 router.put('/admin/:id', [authValidator, updateUserAdminById]);

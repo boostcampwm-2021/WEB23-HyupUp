@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { queryValidator } from '../utils/requestValidator';
+import { queryValidator } from '@/utils/requestValidator';
 import { getRepository } from 'typeorm';
 
 import Epics from './Epics.entity';
