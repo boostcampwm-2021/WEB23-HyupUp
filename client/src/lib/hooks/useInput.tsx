@@ -11,7 +11,7 @@ type UseInputFn = {
 
 const useInput: UseInputFn = (initValue = '') => {
   const [value, setValue] = useState(initValue);
-  const [key, setKey] = useState<number>(0);
+  const [key, setKey] = useState<number>(-1);
 
   const onReset = useCallback(() => {
     setValue(initValue);
@@ -22,7 +22,7 @@ const useInput: UseInputFn = (initValue = '') => {
     setKey(Number(e.target.dataset.key));
   }, []);
 
-  return { key: +key, value, onChange, onReset };
+  return { key: Number(key), value, onChange, onReset };
 };
 
 export default useInput;

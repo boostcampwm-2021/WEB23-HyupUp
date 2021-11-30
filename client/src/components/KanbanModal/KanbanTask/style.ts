@@ -31,6 +31,9 @@ const Styled = {
     input {
       background-color: ${({ theme }) => theme.color.gray100};
       font: ${({ theme }) => theme.font.bold_regular};
+      ::placeholder {
+        color: ${({ theme }) => theme.color.gray500};
+      }
       width: 500px;
       height: 30px;
     }
@@ -49,6 +52,17 @@ const Styled = {
     img {
       width: 15px;
     }
+
+    div > img {
+      opacity: 0;
+    }
+
+    ul {
+      position: absolute;
+      top: 50px;
+      right: 10px;
+    }
+
     .userImage {
       width: 50px;
     }
@@ -57,12 +71,7 @@ const Styled = {
     position: relative;
     img {
       width: 25px;
-    }
-    margin-right: 30px;
-    ul {
-      position: absolute;
-      top: 30px;
-      left: -45px;
+      margin-right: 35px;
     }
   `,
 };

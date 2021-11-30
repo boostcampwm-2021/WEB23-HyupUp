@@ -50,11 +50,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('NEW_EPIC', (epicId: number) => {
-    // FIXME:
-    // 이벤트 발행 필터링: 조직 별 구분 & 프로젝트 구분
-    // 클라이언트에서 projectId 도 같이 보내도록 수정
-    // 1차 필터: 서버측(이 파일)에서 조직이 다르면 broadcast 하지 않도록 구현
-    // 2차 필터: 클라이언트측에서 다른프로젝트에 속해있다면 이벤트 핸들러를 실행하지 않도록 구현
     socket.to(socket.data.roomName).emit('GET_EPIC', epicId);
   });
 
@@ -68,6 +63,21 @@ io.on('connection', (socket) => {
 
   socket.on('DELETE_EPIC', (epicId: number) => {
     socket.to(socket.data.roomName).emit('DELETE_EPIC', epicId);
+
+  socket.on('NEW_STORY', (storyId: number) => {
+    socket.to(socket.data.roomName).emit('NEW_STORY', storyId);
+  });
+
+  socket.on('DELETE_STORY', (storyId: number) => {
+    socket.to(socket.data.roomName).emit('DELETE_STORY', storyId);
+  });
+
+  socket.on('UPDATE_STORY', (storyId: number) => {
+    socket.to(socket.data.roomName).emit('UPDATE_STORY', storyId);
+  });
+
+  socket.on('NEW_TASK', (userId: number) => {
+    socket.to(socket.data.roomName).emit('NEW_TASK', userId);
   });
 });
 

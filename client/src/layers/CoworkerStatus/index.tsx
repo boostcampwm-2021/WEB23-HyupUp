@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { getUsersByOrganization } from '@/lib/api/user';
-import useSocketSend from '@/lib/hooks/useSocketSend';
 import { UserProfile } from '@/types/users';
 import useSocketReceive from '@/lib/hooks/useSocketReceive';
 import Avatar from '@/components/CoworkerStatusItem/Avatar';
@@ -24,7 +23,6 @@ const CoworkerStatus = () => {
   const [usersList, setUsersList] = useState<Array<UserStatus>>([]);
   const [usersIdList, setUsersIdList] = useState<Array<number>>([]);
   const [users, setUsers] = useState<Array<UserProfile>>([]);
-  const emitLoginEvent = useSocketSend('LOGIN');
   const userState = useRecoilValue(userAtom);
 
   useSocketReceive('LOGIN_CALLBACK', (userInfo: Array<UserSocketInstance>) => {
@@ -40,10 +38,6 @@ const CoworkerStatus = () => {
   useSocketReceive('OFF', (userId: number) => {
     setUsersIdList(usersIdList.filter((el) => el !== userId));
   });
-
-  useEffect(() => {
-    emitLoginEvent({ userId: userState.id, organizationId: userState.organization });
-  }, [emitLoginEvent, userState]);
 
   useEffect(() => {
     (async () => {

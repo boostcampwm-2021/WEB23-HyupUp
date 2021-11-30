@@ -1,62 +1,46 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import Styled from './style';
 import { useInput } from '@/lib/hooks';
-import { postTask, updateTask } from '@/lib/api/task';
+import { updateTask } from '@/lib/api/task';
 import { useRecoilValue } from 'recoil';
 import { userListAtom } from '@/recoil/user';
-import userAtom from '@/recoil/user';
 import { DropDown } from '@/lib/design';
 import * as avatar from '@/lib/common/avatar';
 import { ImageType } from '@/types/image';
 import { KanbanTaskType } from '@/types/story';
+import { useSocketSend } from '@/lib/hooks';
 
-export type KanbanTaskPropType = {
-  task?: KanbanTaskType;
-  storyId?: number;
-};
-
-const KanbanTask = ({ task, storyId }: KanbanTaskPropType) => {
-  const { key, value, onChange } = useInput(task?.name);
-  const userState = useRecoilValue(userAtom);
-  const [taskState, setTaskState] = useState<KanbanTaskType | undefined>(task);
+const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
+  const { value, onChange } = useInput(task?.name);
+  const [taskState, setTask] = useState<KanbanTaskType>(task);
   const userListState = useRecoilValue(userListAtom);
-  const userListwithId = userListState.map((value) => {
+  const userListWithId = userListState.map((value) => {
     return { ...value, id: value.index };
   });
-
+  const emitNewTask = useSocketSend('NEW_TASK');
   const handleInput = async () => {
-    if (!value) return;
-    if (!taskState || taskState === undefined) return;
-    if (!taskState.preExist) {
-      await postTask(value, 1, storyId as number, null, userState.currentProjectId);
-    } else {
-      const userId = taskState.userId;
-      await updateTask(taskState.id as number, value, false, userId);
-    }
-    setTaskState((prev) => ({
+    if (!taskState) return;
+    await updateTask(taskState.id as number, value, false, taskState.userId);
+    //TODO 언제 보내는게 좋을까?
+    if (taskState.userId) emitNewTask(taskState.userId);
+    setTask((prev) => ({
       ...prev,
       name: value,
-      preExist: true,
     }));
   };
 
   const handleUserSelect = async (e: React.MouseEvent) => {
     const target = e.target as HTMLLIElement;
-    if (target.tagName !== 'LI') return;
-    if (!taskState || taskState === undefined) return;
-    const selectedUser = userListwithId.find((v) => v.index === target.value);
-    if (!selectedUser || !selectedUser?.name) return;
-    if (!taskState.preExist) {
-      await postTask('', 1, storyId as number, selectedUser.id, userState.currentProjectId);
-    } else {
-      await updateTask(taskState.id as number, value, false, selectedUser.id);
-    }
-    setTaskState((prev) => ({
+    if (target.tagName !== 'LI' || !taskState) return;
+    const selectedUser = userListWithId.find((v) => v.index === target.value);
+    if (!selectedUser) return;
+    await updateTask(Number(taskState.id), value, false, selectedUser.id);
+    emitNewTask(selectedUser.id);
+    setTask((prev) => ({
       ...prev,
       user: selectedUser.name,
       userImage: selectedUser.imageURL,
       userId: target.value,
-      preExist: true,
     }));
   };
 
@@ -64,7 +48,6 @@ const KanbanTask = ({ task, storyId }: KanbanTaskPropType) => {
     <Styled.KanbanTaskWrapper>
       <input
         type="text"
-        {...value}
         onBlur={handleInput}
         placeholder={task?.name ? task.name : 'Type A Task'}
         onChange={onChange}
@@ -82,13 +65,13 @@ const KanbanTask = ({ task, storyId }: KanbanTaskPropType) => {
                 <span>{taskState.user}</span>
               </p>
             }
-            list={userListwithId}
+            list={userListWithId}
             handleClick={handleUserSelect}
           />
         </Styled.MemberContainer>
       ) : (
         <Styled.DropdownWrapper>
-          <DropDown list={userListwithId} handleClick={handleUserSelect} isMeatBall={true} />
+          <DropDown list={userListWithId} handleClick={handleUserSelect} isMeatBall={true} />
         </Styled.DropdownWrapper>
       )}
     </Styled.KanbanTaskWrapper>

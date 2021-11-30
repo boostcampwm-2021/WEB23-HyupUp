@@ -1,10 +1,11 @@
 import React from 'react';
 import BackLogItem from '@/components/BackLogItem';
-import { useStoryState } from '@/lib/hooks/useContextHooks';
+import { useRecoilValue } from 'recoil';
+import storyListAtom from '@/recoil/story';
 import * as S from './style';
 
 const Backlog = () => {
-  const stories = useStoryState();
+  const stories = useRecoilValue(storyListAtom);
   const filteredStories = stories.filter((el) => el.name !== '');
   return (
     <S.Container>

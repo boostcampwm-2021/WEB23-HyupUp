@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from 'react';
+import { toast } from 'react-toastify';
+import { useRecoilValue } from 'recoil';
 import S from './style';
 import RoadmapItem from '@/components/RoadmapItem';
-import { useEpicState, useStoryState } from '@/lib/hooks/useContextHooks';
+import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
 import { makeEpicRenderInfo } from '@/lib/utils/epic';
-import { toast } from 'react-toastify';
+import storyListAtom from '@/recoil/story';
 import { errorMessage } from '@/lib/common/message';
+import { useSocketReceive, useSocketSend } from '@/lib/hooks';
 
 const COLUMNS = 15;
 
@@ -16,7 +19,7 @@ interface RoadmapBarsProps {
 
 const RoadmapBars = ({ rangeFrom, rangeTo }: RoadmapBarsProps) => {
   const epics = useEpicState();
-  const stories = useStoryState();
+  const stories = useRecoilValue(storyListAtom);
   const epicRenderInfo = makeEpicRenderInfo(epics, stories, {
     rangeFrom,
     rangeTo,
