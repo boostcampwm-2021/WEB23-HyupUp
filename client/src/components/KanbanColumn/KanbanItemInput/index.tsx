@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
+import Styled from './style';
 import { useSetRecoilState } from 'recoil';
-import { InputContainer, Input } from './style';
 import { useInput } from '@/lib/hooks';
 import { updateStoryWithName } from '@/lib/api/story';
 import { StoryType } from '@/types/story';
@@ -35,8 +35,8 @@ const KanbanInput = ({
   }, []);
 
   return (
-    <InputContainer>
-      <Input
+    <Styled.InputContainer>
+      <Styled.Input
         type="text"
         placeholder={story.name ? story.name : 'Type a Todo ...'}
         {...value}
@@ -47,7 +47,7 @@ const KanbanInput = ({
         ref={inputRef}
       />
       <p>{epic ? epic.name : '클릭 후 Epic을 등록하세요'}</p>
-    </InputContainer>
+    </Styled.InputContainer>
   );
 };
 
