@@ -48,6 +48,9 @@ export const isValidEmail = (req: Request, res: Response) => {
       req.params.token,
       process.env.SECRET as string,
     ) as jwt.JwtPayload;
+    if ((decodedToken.exp as number) * 1000 <= Date.now()) {
+      throw new Error('invalid token');
+    }
     client.get(decodedToken.id, async (err, reply) => {
       if (err) throw new Error(err.message);
       const organizationRepository = getRepository(Organizations);
@@ -66,12 +69,6 @@ export const isValidEmail = (req: Request, res: Response) => {
     });
   } catch (e) {
     const err = e as Error;
-    res.status(400).json({ message: err.message });
-    if (err.message === 'jwt expired') {
-      res.status(401).json({ message: err.message });
-    } else if (err.message === 'invalid token') {
-      res.status(403).json({ message: err.message });
-    }
-    res.end();
+    res.status(401).json({ message: err.message });
   }
 };
