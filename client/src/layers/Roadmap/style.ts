@@ -25,6 +25,7 @@ const S = {
     display: flex;
 
     width: 100%;
+    height: 100%;
 
     background-color: ${({ theme }) => theme.color.white};
     border-radius: 8px;
@@ -36,14 +37,16 @@ const S = {
     justify-content: center;
 
     width: 250px;
-    padding: 16px 0;
-    padding-top: 64px;
+    padding: 64px 0 32px 0;
 
     border-right: 3px solid ${({ theme }) => theme.color.gray100};
 
     overflow: scroll;
 
     & button {
+      position: absolute;
+      bottom: 8px;
+
       width: 100%;
     }
 
