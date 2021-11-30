@@ -4,11 +4,10 @@ import { useInput } from '@/lib/hooks';
 import { updateTask } from '@/lib/api/task';
 import { useRecoilValue } from 'recoil';
 import { userListAtom } from '@/recoil/user';
-import { DropDown } from '@/lib/design';
-import * as avatar from '@/lib/common/avatar';
-import { ImageType } from '@/types/image';
 import { KanbanTaskType } from '@/types/story';
 import { useSocketSend } from '@/lib/hooks';
+import TaskItemWithoutUser from '@/components/KanbanModal/TaskItemWithoutUser';
+import TaskItemWithUser from '@/components/KanbanModal/TaskItemWithUser';
 
 const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
   const { value, onChange } = useInput(task?.name);
@@ -18,6 +17,7 @@ const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
     return { ...value, id: value.index };
   });
   const emitNewTask = useSocketSend('NEW_TASK');
+
   const handleInput = async () => {
     if (!taskState) return;
     await updateTask(taskState.id as number, value, false, taskState.userId);
@@ -52,30 +52,9 @@ const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
         onChange={onChange}
       />
       {taskState.user || task.user ? (
-        <Styled.MemberContainer>
-          <DropDown
-            Title={
-              <p>
-                <img
-                  className="userImage"
-                  src={
-                    avatar[
-                      `${taskState.userImage ? taskState.userImage : task.userImage}` as ImageType
-                    ]
-                  }
-                  alt="userimage"
-                />
-                <span>{taskState.user ? taskState.user : task.user}</span>
-              </p>
-            }
-            list={userListWithId}
-            handleClick={handleUserSelect}
-          />
-        </Styled.MemberContainer>
+        <TaskItemWithUser taskState={taskState} task={task} handleUserSelect={handleUserSelect} />
       ) : (
-        <Styled.DropdownWrapper>
-          <DropDown list={userListWithId} handleClick={handleUserSelect} isMeatBall={true} />
-        </Styled.DropdownWrapper>
+        <TaskItemWithoutUser handleUserSelect={handleUserSelect} />
       )}
     </Styled.KanbanTaskWrapper>
   );

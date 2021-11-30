@@ -29,7 +29,7 @@ const KanbanModalTitle = ({ story }: { story: StoryType }) => {
       <input
         type="text"
         value={value}
-        placeholder={'클릭 후 스토리를 작성하세요'}
+        placeholder={'클릭하여 스토리 이름을 작성하세요'}
         onBlur={() => handleInputChange()}
         onChange={onChange}
       />
