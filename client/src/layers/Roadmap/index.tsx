@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
 import S from './style';
 import { createEpic, getEpicById, updateEpicById } from '@/lib/api/epic';
-import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
+import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
 import { useSocketReceive, useSocketSend } from '@/lib/hooks';
 import userAtom from '@/recoil/user';
 
@@ -14,6 +14,7 @@ import Button from '@/lib/design/Button';
 
 import { getOrderMedian } from '@/lib/utils/epic';
 import { errorMessage, successMessage } from '@/lib/common/message';
+import epicListAtom from '@/recoil/epic';
 
 interface RoadmapProps {
   projectId?: number;
@@ -22,8 +23,8 @@ interface RoadmapProps {
 const Roadmap = ({ projectId }: RoadmapProps) => {
   const [inputVisible, setInputVisible] = React.useState(false);
   const [nowDraggingId, setNowDraggingId] = React.useState(0);
-  const epicsOnProject = useEpicState();
   const userState = useRecoilValue(userAtom);
+  const epicsOnProject = useRecoilValue(epicListAtom);
 
   const dispatchEpic = useEpicDispatch();
   const emitNewEpic = useSocketSend('NEW_EPIC');

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { errorMessage } from '../common/message';
-import { EpicType } from '@/types/epic';
+import { EpicType, EpicWithString } from '@/types/epic';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/epics',
@@ -10,7 +10,7 @@ const instance = axios.create({
 
 export const getEpicsByProjectId = async (projectId: number | string) => {
   try {
-    const result: { data: EpicType[] } = await instance.get(`?projectId=${projectId}`);
+    const result: { data: EpicWithString[] } = await instance.get(`?projectId=${projectId}`);
     return result.data;
   } catch (e) {
     toast.error(errorMessage.GET_EPIC);
