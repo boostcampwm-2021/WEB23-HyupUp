@@ -1,7 +1,9 @@
 import React, { useState, createContext } from 'react';
 import { Modal } from '@/lib/design';
 import { deleteStoryWithId } from '@/lib/api/story';
-import { useStoryDispatch } from '@/lib/hooks/useContextHooks';
+import { useSetRecoilState } from 'recoil';
+import storyListAtom from '@/recoil/story';
+import { useSocketSend } from '@/lib/hooks';
 
 export type ModalContextType = {
   setShowModal: (args: boolean) => void;
@@ -13,11 +15,13 @@ export const KanbanModalContext = createContext<ModalContextType | null>(null);
 const KanbanDeleteModal = ({ children }: { children: React.ReactNode }) => {
   const [showModal, setShowModal] = useState(false);
   const [shouldDeleteKey, setDeleteItem] = useState(0);
+  const setStoryListState = useSetRecoilState(storyListAtom);
+  const emitDeleteStory = useSocketSend('DELETE_STORY');
 
-  const dispatchStory = useStoryDispatch();
   const deleteStory = async () => {
-    dispatchStory({ type: 'REMOVE_STORY', id: shouldDeleteKey });
+    setStoryListState((prev) => [...prev.filter((v) => v.id !== shouldDeleteKey)]);
     await deleteStoryWithId(shouldDeleteKey);
+    emitDeleteStory(shouldDeleteKey);
   };
 
   return (

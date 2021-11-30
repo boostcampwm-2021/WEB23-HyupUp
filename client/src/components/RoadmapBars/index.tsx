@@ -2,11 +2,13 @@
 import React, { useState } from 'react';
 import S from './style';
 import RoadmapItem from '@/components/RoadmapItem';
-import { useEpicDispatch, useEpicState, useStoryState } from '@/lib/hooks/useContextHooks';
+import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
 import { addDate } from '@/lib/utils/date';
 import { getEpicById, updateEpicById } from '@/lib/api/epic';
 import { makeEpicRenderInfo } from '@/lib/utils/epic';
 import { useSocketReceive, useSocketSend } from '@/lib/hooks';
+import { useRecoilValue } from 'recoil';
+import storyListAtom from '@/recoil/story';
 
 const COLUMNS = 15;
 
@@ -19,7 +21,7 @@ interface RoadmapBarsProps {
 
 const RoadmapBars = ({ rangeFrom, rangeTo, dayRow, isToday }: RoadmapBarsProps) => {
   const epics = useEpicState();
-  const stories = useStoryState();
+  const stories = useRecoilValue(storyListAtom);
   const [currentDrag, setCurrentDrag] = useState({ targetId: -1, isDraggingLeft: false });
   const epicRenderInfo = makeEpicRenderInfo(epics, stories, {
     rangeFrom,

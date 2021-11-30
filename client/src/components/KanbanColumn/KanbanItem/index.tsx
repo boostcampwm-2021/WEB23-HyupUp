@@ -16,12 +16,13 @@ const KanbanItem = ({
 }: KanbanItemType) => {
   const modalConsumer = useContext(KanbanModalContext);
   const [isDragEnter, setDragEnter] = useState(false);
+  const [isHover, setIsHover] = useState(false);
   const [isItemModalOpen, setModalOpen] = useState<boolean>(false);
   const handleItemClick = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).dataset.type === 'cancel') return;
     if (!story.name) return;
     if (isItemModalOpen) return;
-    setModalOpen((prev) => !prev);
+    setModalOpen(true);
   };
 
   return (
@@ -42,12 +43,16 @@ const KanbanItem = ({
       }}
       onDragLeave={() => setDragEnter((isDragEnter) => !isDragEnter)}
       onDragOver={(e) => e.preventDefault()}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+      isHover={isHover}
       isDragEnter={isDragEnter}
       draggable={true}
     >
-      <KanbanItemInput story={story} epic={epic} />
+      <KanbanItemInput isHover={isHover} story={story} epic={epic} />
       <Styled.CancelIcon
         data-type="cancel"
+        isHover={isHover}
         onClick={() => {
           modalConsumer?.setShowModal(true);
           modalConsumer?.setDeleteItem(story.id as number);

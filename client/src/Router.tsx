@@ -12,9 +12,11 @@ import { getUser } from './lib/api/user';
 import { taskSortByUpdate } from './lib/utils/sort';
 import { UserState } from './contexts/userContext';
 import { useMemo } from 'react';
+import { useSocketSend } from '@/lib/hooks';
 
 const Router = () => {
   const [userState, setUserState] = useRecoilState(userAtom);
+  const emitLoginEvent = useSocketSend('LOGIN');
   useEffect(() => {
     if (!document.cookie.match('status')) return;
     (async () => {
@@ -30,6 +32,11 @@ const Router = () => {
       setUserState(userData);
     })();
   }, [setUserState]);
+
+  useEffect(() => {
+    if (!document.cookie.match('status') || !userState.id || !userState.organization) return;
+    emitLoginEvent({ userId: userState.id, organizationId: userState.organization });
+  }, [emitLoginEvent, userState]);
 
   const { search } = useLocation();
   const query = useMemo(() => new URLSearchParams(search), [search]);
