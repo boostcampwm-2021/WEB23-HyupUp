@@ -13,6 +13,7 @@ import { useEpicState } from '@/lib/hooks/useContextHooks';
 import storyListAtom from '@/recoil/story';
 import { postTask } from '@/lib/api/task';
 import produce from 'immer';
+import { useSocketSend } from '@/lib/hooks';
 
 type TaskListType = Array<TaskProps>;
 
@@ -28,7 +29,7 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
   const setStoryListState = useSetRecoilState(storyListAtom);
   const [epic, setEpic] = useState<EpicType>();
   const [taskList, setTaskList] = useState<TaskListType>([]);
-
+  const emitUpdateEpic = useSocketSend('UPDATE_EPIC_STORY');
   const handleEpicSelect = async (e: React.MouseEvent) => {
     if ((e.target as HTMLLIElement).tagName !== 'LI') return;
     const epicId = epicListState.find((v) => v.id === (e.target as HTMLLIElement).value)?.id;
@@ -37,6 +38,7 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
       { ...story, epicId: epicId },
     ]);
     await updateStoryWithId({ ...story, epicId: epicId });
+    emitUpdateEpic(epicId);
     // setStoryListState((prev) =>
     //   produce(prev, (draft) => [
     //     ...draft.filter((v) => v.id !== story.id),
@@ -84,7 +86,6 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
     })();
   }, [story, isItemModalOpen, epicListState]);
 
-  console.log(taskList);
   return (
     <Modal shouldConfirm={false} visible={isItemModalOpen} onClose={handleCloseClick} size="LARGE">
       <Styled.ContentWrapper>

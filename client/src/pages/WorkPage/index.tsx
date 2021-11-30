@@ -32,7 +32,7 @@ const WorkPage = () => {
     <Kanban key={1} />,
     <Backlog key={2} />,
   ];
-  const { currentIndex, currentTab, changeTab } = useTabs(0, tabs);
+  const { currentIndex, currentTab, changeTab } = useTabs(1, tabs);
 
   const sideBarEntries = [
     <SideBarEntry key={0} icon={roadmap} name={'로드맵'} highlight={currentIndex === 0} />,
