@@ -80,7 +80,7 @@ const KanbanTask = ({ task, handleDelete }: KanbanTaskProps) => {
         onClose={() => setShowDeleteModal(false)}
         onClickOk={() => handleDelete(Number(task.id))}
       >
-        <Styled.DeleteConfirm>에픽을 삭제하시겠습니까?</Styled.DeleteConfirm>
+        <Styled.DeleteConfirm>테스크를 삭제하시겠습니까?</Styled.DeleteConfirm>
       </Modal>
     </Styled.KanbanTaskWrapper>
   );
