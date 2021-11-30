@@ -8,10 +8,12 @@ import { KanbanTaskType } from '@/types/story';
 import { useSocketSend } from '@/lib/hooks';
 import TaskItemWithoutUser from '@/components/KanbanModal/TaskItemWithoutUser';
 import TaskItemWithUser from '@/components/KanbanModal/TaskItemWithUser';
+import deleteIcon from '@public/icons/delete-icon-red.svg';
 
 const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
   const { value, onChange } = useInput(task?.name);
   const [taskState, setTask] = useState<KanbanTaskType>(task);
+  const [showDelete, setShowDelete] = useState(false);
   const userListState = useRecoilValue(userListAtom);
   const userListWithId = userListState.map((value) => {
     return { ...value, id: value.index };
@@ -56,6 +58,14 @@ const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
       ) : (
         <TaskItemWithoutUser handleUserSelect={handleUserSelect} />
       )}
+      <Styled.DeleteIcon
+        onMouseEnter={() => setShowDelete(true)}
+        onMouseLeave={() => setShowDelete(false)}
+        showDelete={showDelete}
+        src={deleteIcon}
+        alt="deleteicon"
+        onClick={() => console.log('hi')}
+      />
     </Styled.KanbanTaskWrapper>
   );
 };
