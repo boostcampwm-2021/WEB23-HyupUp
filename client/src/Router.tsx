@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useRecoilState } from 'recoil';
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
+
 import LandingPage from './pages/LandingPage';
 import MainPage from './pages/MainPage';
 import WorkPage from './pages/WorkPage';
-import { useRecoilState } from 'recoil';
+import { useSocketSend } from '@/lib/hooks';
 import userAtom from '@/recoil/user';
 import AdminPage from './pages/AdminPage';
 import LogInPage from './pages/LogInPage';
@@ -15,6 +17,8 @@ import { UserState } from './recoil/user/atom';
 const Router = () => {
   const [userState, setUserState] = useRecoilState(userAtom);
   const [loading, setLoading] = useState(true);
+  const emitLoginEvent = useSocketSend('LOGIN');
+
   useEffect(() => {
     if (!document.cookie.match('status')) {
       setLoading(false);
@@ -30,6 +34,11 @@ const Router = () => {
       setLoading(false);
     })();
   }, [setUserState]);
+
+  useEffect(() => {
+    if (!document.cookie.match('status') || !userState.id || !userState.organization) return;
+    emitLoginEvent({ userId: userState.id, organizationId: userState.organization });
+  }, [emitLoginEvent, userState]);
 
   const { search } = useLocation();
   const query = useMemo(() => new URLSearchParams(search), [search]);

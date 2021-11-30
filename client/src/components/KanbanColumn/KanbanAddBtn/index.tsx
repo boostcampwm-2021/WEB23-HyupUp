@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
-import { postStory, getStoryByid } from '@/lib/api/story';
+import { postStory, getStoryById } from '@/lib/api/story';
 import { Button } from '@/lib/design';
-import { useStoryDispatch, useStoryState } from '@/lib/hooks/useContextHooks';
+import { useRecoilState } from 'recoil';
+import storyListAtom from '@/recoil/story/atom';
 import { StoryType } from '@/types/story';
+import { useSocketSend } from '@/lib/hooks';
+import StyledButtonWrapper from './style';
 
-//TODO projectID, epicId 주입 예정
 const initialItem = {
   order: 0,
   name: '',
@@ -16,26 +18,30 @@ const initialItem = {
 };
 
 const KanbanAddBtn = () => {
-  const storyList = useStoryState();
-  const dispatchStory = useStoryDispatch();
+  const [recoilStoryList, setStoryList] = useRecoilState(storyListAtom);
   const userState = useRecoilValue(userAtom);
-  const orderList = storyList.filter((item) => item.status === 'TODO').map((v) => Number(v.order));
+  const emitNewStory = useSocketSend('NEW_STORY');
+  const orderList = recoilStoryList
+    .filter((item) => item.status === 'TODO')
+    .map((v) => Number(v.order));
   const listLargestOrder = orderList.length ? Math.max(...orderList) + 1 : 0;
-
   const addStory = async () => {
     const id = await postStory({
       ...initialItem,
       order: listLargestOrder,
       projectId: userState.currentProjectId,
     });
-    const storyItem = await getStoryByid(id);
-    dispatchStory({ type: 'ADD_STORY', story: storyItem as StoryType });
+    const storyItem = await getStoryById(id);
+    setStoryList((prev) => [...prev, storyItem as StoryType]);
+    emitNewStory(id);
   };
 
   return (
-    <Button size={'large'} category={'cancel'} onClick={addStory}>
-      Add Todo
-    </Button>
+    <StyledButtonWrapper>
+      <Button size={'large'} category={'cancel'} onClick={addStory}>
+        + Add Todo
+      </Button>
+    </StyledButtonWrapper>
   );
 };
 

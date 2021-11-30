@@ -1,39 +1,19 @@
-import { DefaultValue, selector, selectorFamily } from 'recoil';
+import { DefaultValue, selectorFamily } from 'recoil';
 import produce from 'immer';
 import storyListAtom from './atom';
-import { StoryListType, StoryType } from '@/types/story';
+import { StoryType } from '@/types/story';
 
-export const storyListSelector = selector<StoryListType | undefined>({
-  key: 'storyListSelector',
-  get: ({ get }) => {
-    const storyList = get(storyListAtom);
-    return storyList ? storyList : [];
-  },
-  set: ({ set }, newValue) => {
-    set(
-      storyListAtom,
-      newValue instanceof DefaultValue
-        ? newValue
-        : (prev) =>
-            produce(prev, (draft) => {
-              if (!newValue || !draft) return;
-              draft.concat(newValue);
-            }),
-    );
-  },
-});
-
-export const storySelector = selectorFamily<StoryType | undefined, number>({
+export const storyState = selectorFamily<StoryType | undefined, number>({
   key: 'storyWithIdSelector',
   get: (id) => ({ get }) => {
-    const storyList = get(storyListSelector);
+    const storyList = get(storyListAtom);
     return storyList?.find((story) => story.id === id);
   },
   set: (id: number) => ({ set, get }, newValue) => {
     set(
-      storyListSelector,
+      storyListAtom,
       newValue instanceof DefaultValue
-        ? get(storyListSelector)
+        ? get(storyListAtom)
         : (prev) =>
             produce(prev, (draft) => {
               const newStory = draft?.find((story) => story.id === id);

@@ -1,6 +1,6 @@
 import { EpicType } from './epic';
 
-export type StoryListType = StoryType[] | undefined;
+export type StoryListType = StoryType[];
 
 export type StatusType = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
@@ -10,7 +10,7 @@ export type StoryType = {
   id?: number;
   order?: number;
   projectId?: number;
-  epicId?: number;
+  epicId?: number | null;
 };
 
 export type dragRefObjectType = React.MutableRefObject<number | null>;
@@ -44,6 +44,20 @@ export interface KanbanTaskType {
   name?: string;
   id?: number;
   preExist?: boolean;
+  user?: string;
+  userImage?: string;
+  userId?: number;
+}
+
+export interface KanbanModalType {
+  story: StoryType;
+  isItemModalOpen: boolean;
+  setModalOpen: (arg: boolean) => void;
+}
+
+export interface TaskProps {
+  name: string;
+  id: number;
   user?: string;
   userImage?: string;
   userId?: number;
