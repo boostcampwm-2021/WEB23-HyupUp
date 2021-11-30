@@ -74,15 +74,9 @@ export const TeamItemViewer = ({
           팀원 초대하기
         </Button>
       </div>
-      {userProfileList.length !== 0 ? (
-        filterdUserList.length === 0 && userName === '' ? (
-          generateUserProfileItem(userProfileList, showEditModal)
-        ) : (
-          generateUserProfileItem(filterdUserList, showEditModal)
-        )
-      ) : (
-        <Spinner heightValue={500} />
-      )}
+      {filterdUserList.length === 0 && userName === ''
+        ? generateUserProfileItem(userProfileList, showEditModal)
+        : generateUserProfileItem(filterdUserList, showEditModal)}
     </>
   );
 };
