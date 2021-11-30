@@ -113,6 +113,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
             />
           ))}
           <EpicEntryItem
+            isEmpty
             handleDragStart={() => {
               /* no-op */
             }}
