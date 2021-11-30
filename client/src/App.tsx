@@ -15,7 +15,7 @@ function App() {
           <BrowserRouter>
             <GlobalStyle />
             <Router />
-            <ToastContainer style={{ fontSize: 13 }} />
+            <ToastContainer />
           </BrowserRouter>
         </RecoilRoot>
       </ContextProvider>
