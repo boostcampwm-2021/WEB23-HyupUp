@@ -3,41 +3,6 @@ import { entities } from '../src';
 import app from '../app';
 import request from 'supertest';
 
-const mockData = [
-  {
-    id: 1,
-    name: '에픽 api 테스트 작성',
-    startAt: '2021-11-02T15:00:00.000Z',
-    endAt: '2021-11-02T15:00:00.000Z',
-    order: 0,
-    projectId: 1,
-  },
-  {
-    id: 2,
-    name: '스토리 작성',
-    startAt: '2021-11-01T15:00:00.000Z',
-    endAt: '2021-11-03T15:00:00.000Z',
-    order: 1,
-    projectId: 1,
-  },
-  {
-    id: 3,
-    name: '네트워킹 데이 준비',
-    startAt: '2021-11-03T15:00:00.000Z',
-    endAt: '2021-11-05T15:00:00.000Z',
-    order: 2,
-    projectId: 1,
-  },
-  {
-    id: 4,
-    name: '부스트캠프 수료',
-    startAt: '2021-11-03T15:00:00.000Z',
-    endAt: '2021-11-05T15:00:00.000Z',
-    order: 3,
-    projectId: 1,
-  },
-];
-
 beforeAll(async () => {
   const dbConfig = {
     host: process.env.DB_HOST,
