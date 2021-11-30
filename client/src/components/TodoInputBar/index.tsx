@@ -3,11 +3,11 @@ import * as S from './style';
 import Button from '@/lib/design/Button';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { createTodo } from '@/lib/api/todo';
-import userAtom, { privateTasksSelector } from '@/recoil/user';
+import userAtom, { allTasksSelector } from '@/recoil/user';
 
 const TodoInputBar = () => {
   const userState = useRecoilValue(userAtom);
-  const setTodoTasks = useSetRecoilState(privateTasksSelector);
+  const setAllTasks = useSetRecoilState(allTasksSelector);
 
   const [buttonDisabled, buttonDisableHandler] = useState(true);
   const todoInput = useRef<HTMLInputElement>(null);
@@ -25,7 +25,7 @@ const TodoInputBar = () => {
       const target = todoInput.current as HTMLInputElement;
       const todo = await createTodo(target.value, userState.id);
       if (todo) {
-        setTodoTasks((prev) => [todo, ...prev]);
+        setAllTasks((prev) => [todo, ...prev]);
       }
       target.value = '';
       buttonDisableHandler(true);

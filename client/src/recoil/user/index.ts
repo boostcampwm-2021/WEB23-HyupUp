@@ -1,6 +1,10 @@
 import { userAtom, userListAtom } from '@/recoil/user/atom';
-import { privateTasksSelector, projectTasksSelector } from '@/recoil/user/selector';
+import {
+  privateTasksSelector,
+  projectTasksSelector,
+  allTasksSelector,
+} from '@/recoil/user/selector';
 
-export { userListAtom, privateTasksSelector, projectTasksSelector };
+export { userListAtom, privateTasksSelector, projectTasksSelector, allTasksSelector };
 
 export default userAtom;

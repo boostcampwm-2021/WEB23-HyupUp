@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 import { ProjectType } from '@/types/project';
 import { UserInfoWithProject } from '@/types/users';
-import { PrivateTask, ProjectTask } from '@/types/task';
+import { AllTask } from '@/types/task';
 
 export type UserState = {
   id?: number;
@@ -14,8 +14,7 @@ export type UserState = {
   currentProjectName?: string;
   currentProjectId?: number;
   projects?: Array<ProjectType>;
-  privateTasks?: Array<PrivateTask>;
-  projectTasks?: Array<ProjectTask>;
+  allTasks?: Array<AllTask>;
 };
 
 const userAtom = atom<UserState>({

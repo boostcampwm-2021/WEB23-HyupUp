@@ -1,33 +1,29 @@
-import { DefaultValue, selector, selectorFamily } from 'recoil';
+import { DefaultValue, selector } from 'recoil';
 import produce from 'immer';
 import userAtom from '@/recoil/user';
-import { PrivateTask, ProjectTask } from '@/types/task';
-import { taskSortByUpdate } from '@/lib/utils/sort';
+import { AllTask } from '@/types/task';
 
-export const privateTasksSelector = selector<PrivateTask[]>({
+export const privateTasksSelector = selector<AllTask[]>({
   key: 'privateTasksSelector',
   get: ({ get }) => {
     const user = get(userAtom);
-    return user.privateTasks ? user.privateTasks : [];
-  },
-  set: ({ set }, newValue) => {
-    set(
-      userAtom,
-      newValue instanceof DefaultValue
-        ? newValue
-        : (prev) =>
-            produce(prev, (draft) => {
-              draft.privateTasks = [...newValue];
-            }),
-    );
+    return user.allTasks ? user.allTasks.filter((task) => !task.projectId) : [];
   },
 });
 
-export const projectTasksSelector = selector<ProjectTask[]>({
+export const projectTasksSelector = selector<AllTask[]>({
   key: 'projectTasksSelector',
   get: ({ get }) => {
     const user = get(userAtom);
-    return user.projectTasks ? user.projectTasks : [];
+    return user.allTasks ? user.allTasks.filter((task) => task.projectId) : [];
+  },
+});
+
+export const allTasksSelector = selector<AllTask[]>({
+  key: 'allTasksSelector',
+  get: ({ get }) => {
+    const user = get(userAtom);
+    return user.allTasks ? user.allTasks : [];
   },
   set: ({ set }, newValue) => {
     set(
@@ -36,38 +32,7 @@ export const projectTasksSelector = selector<ProjectTask[]>({
         ? newValue
         : (prev) =>
             produce(prev, (draft) => {
-              draft.projectTasks = [...newValue];
-            }),
-    );
-  },
-});
-
-export const allTasksSelector = selector<ProjectTask[] | PrivateTask[]>({
-  key: 'allTasksSelector',
-  get: ({ get }) => {
-    const privateTasks = get(privateTasksSelector);
-    const projectTasks = get(projectTasksSelector);
-    return [...privateTasks, ...projectTasks].sort((a, b) => taskSortByUpdate(a, b));
-  },
-});
-
-export const privateTaskWithIdSelector = selectorFamily<PrivateTask | undefined, number>({
-  key: 'privateTaskWithIdSelector',
-  get: (id) => ({ get }) => {
-    const tasks = get(privateTasksSelector);
-    return tasks?.find((el) => el.id === id);
-  },
-  set: (id: number) => ({ set, get }, newValue) => {
-    set(
-      privateTasksSelector,
-      newValue instanceof DefaultValue
-        ? [...get(privateTasksSelector)]
-        : (prev) =>
-            produce(prev, (draft) => {
-              const newTask = draft.find((el) => el.id === id);
-              if (!newTask) return;
-              newTask.name = newValue!.name;
-              newTask.status = newValue!.status;
+              draft.allTasks = [...newValue];
             }),
     );
   },

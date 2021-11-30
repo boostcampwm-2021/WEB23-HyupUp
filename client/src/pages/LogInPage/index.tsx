@@ -8,9 +8,7 @@ import { LogInForm } from '@/components/LogInForm';
 import Logo from '@/lib/design/Logo';
 import { sudoLogIn } from '@/lib/api/user';
 import { UserState } from '@/contexts/userContext';
-import { taskSortByUpdate } from '@/lib/utils/sort';
 import userAtom from '@/recoil/user';
-
 
 const LogInPage = () => {
   const history = useHistory();
@@ -22,10 +20,6 @@ const LogInPage = () => {
 
   const onClickSudoSignIn = async () => {
     const userData = (await sudoLogIn()) as UserState;
-    if (userData.id) {
-      userData.privateTasks!.sort((a, b) => taskSortByUpdate(a, b));
-      userData.projectTasks!.sort((a, b) => taskSortByUpdate(a, b));
-    }
     if (userData.projects && userData.projects?.length > 0) {
       userData.currentProjectId = userData.projects[0].id;
       userData.currentProjectName = userData.projects[0].name;
