@@ -81,7 +81,7 @@ describe('Task 삭제', () => {
     const res = await req.send();
     expect(res.status).toBe(200);
   });
-  test('올바른 task id 로 삭제 요청', async () => {
+  test('올바르지 않은 task id 로 삭제 요청', async () => {
     const req = request(app).delete('/api/tasks?id=1');
     req.set('Cookie', Cookies);
     const res = await req.send();
