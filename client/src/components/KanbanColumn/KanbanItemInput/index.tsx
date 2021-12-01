@@ -8,6 +8,9 @@ import { EpicType } from '@/types/epic';
 import { useSocketSend } from '@/lib/hooks';
 import { storyState } from '@/recoil/story';
 import userAtom from '@/recoil/user';
+import { checkStringInput } from '@/lib/utils/bytes';
+import { errorMessage } from '@/lib/common/message';
+import { toast } from 'react-toastify';
 
 const KanbanInput = ({
   story,
@@ -26,6 +29,10 @@ const KanbanInput = ({
 
   const onBlurUpdateName = async () => {
     if (key < 0) return;
+    if (!checkStringInput(value)) {
+      toast.error(errorMessage.STORY_TITLE_LENGTH_LIMIT);
+      return;
+    }
     updateStoryName({ status: 'TODO', id: key, order: story.order, name: value });
     await updateStoryWithName({ status: 'TODO', id: key, order: story.order, name: value });
     emitUpdateStory(key, userState.currentProjectId);
