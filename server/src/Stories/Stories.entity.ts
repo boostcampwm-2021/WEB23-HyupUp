@@ -31,6 +31,6 @@ export default class Stories {
   @JoinColumn({ name: 'EPIC_ID' })
   epics!: Epics;
 
-  @OneToMany(() => Tasks, (tasks) => tasks.id)
+  @OneToMany(() => Tasks, (tasks) => tasks.id, { cascade: true })
   tasks!: Tasks[];
 }
