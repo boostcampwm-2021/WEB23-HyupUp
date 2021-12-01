@@ -13,7 +13,7 @@ import EpicEntryItem from '@/components/EpicEntryItem';
 import Button from '@/lib/design/Button';
 
 import { getOrderMedian } from '@/lib/utils/epic';
-import { errorMessage, successMessage } from '@/lib/common/message';
+import { errorMessage } from '@/lib/common/message';
 import { EpicType } from '@/types/epic';
 
 interface RoadmapProps {
@@ -57,7 +57,10 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     return epicsOnProject.length ? Math.max(...epicsOnProject.map((epic) => epic.order)) : 0;
   };
 
-  const handleSubmit = async (value: string) => {
+  const handleSubmit = async (
+    value: string,
+    { startDate, endDate }: { startDate: Date; endDate: Date },
+  ) => {
     try {
       if (!projectId) throw new Error(errorMessage.GET_PROJECT);
       const result = await createEpic(projectId, value, Math.ceil(getMaxOrder() + 1));
@@ -69,15 +72,13 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
           id: result.id,
           projectId: userState.currentProjectId as number,
           name: value,
-          startAt: new Date(),
-          endAt: new Date(),
+          startAt: startDate,
+          endAt: endDate,
           order: Math.ceil(getMaxOrder() + 1),
         },
       });
       setInputVisible(false);
       emitNewEpic(result.id);
-
-      toast.success(successMessage.CREATE_EPIC);
     } catch (e) {
       toast.error((e as Error).message);
     }
