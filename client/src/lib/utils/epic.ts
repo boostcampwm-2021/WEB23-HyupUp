@@ -91,7 +91,7 @@ export const makeEpicRenderInfo = (
 
     let length = 0;
     if (case1) length = getDateDiff(rangeFrom, endAt);
-    else if (case2) length = getDateDiff(startAt, rangeTo);
+    else if (case2) length = getDateDiff(startAt, rangeTo) + 1;
     else if (case3) length = getDateDiff(startAt, endAt);
     else if (case4) length = getDateDiff(rangeFrom, rangeTo);
 
