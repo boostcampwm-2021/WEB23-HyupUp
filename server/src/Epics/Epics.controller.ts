@@ -15,6 +15,7 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
       relations: ['projects'],
       where: { projects: { id: +(projectId as string) } },
     });
+    if (!epics.length) throw new Error('invalid id');
     const result = epics.map((el) => ({
       id: el.id,
       name: el.name,
@@ -24,10 +25,12 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
     }));
     res.json(result);
   } catch (e) {
-    const result = (e as Error).message;
-    if (result === 'query is not vaild') {
-      res.status(400).json(result);
+    const message = (e as Error).message;
+    console.log(message);
+    if (message === 'query is not vaild') {
+      res.status(400).json(message);
     }
+    res.status(404).json({ message });
   }
 };
 
