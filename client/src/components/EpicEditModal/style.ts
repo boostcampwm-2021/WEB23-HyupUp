@@ -23,7 +23,7 @@ const S = {
     font: ${({ theme, isTitle }) => (isTitle ? theme.font.body_medium : theme.font.body_regular)};
 
     &::placeholder {
-      color: ${({ theme }) => theme.color.gray200};
+      color: ${({ theme }) => theme.color.gray300};
     }
   `,
   Label: styled.label`
