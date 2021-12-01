@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import Styled from '@/components/KanbanModal/style';
 import KanbanTask from './KanbanTask/index';
 import KanbanModalTitle from './KanbanModalTitle/index';
@@ -14,6 +14,7 @@ import storyListAtom from '@/recoil/story';
 import { postTask } from '@/lib/api/task';
 import produce from 'immer';
 import { useSocketSend } from '@/lib/hooks';
+import userAtom from '@/recoil/user';
 
 type TaskListType = Array<TaskProps>;
 
@@ -30,12 +31,13 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
   const [epic, setEpic] = useState<EpicType>();
   const [taskList, setTaskList] = useState<TaskListType>([]);
   const emitUpdateEpic = useSocketSend('UPDATE_EPIC_STORY');
+  const userState = useRecoilValue(userAtom);
   const handleEpicSelect = async (e: React.MouseEvent) => {
     if ((e.target as HTMLLIElement).tagName !== 'LI') return;
     const epicId = epicListState.find((v) => v.id === (e.target as HTMLLIElement).value)?.id;
 
     await updateStoryWithId({ ...story, epicId: epicId });
-    emitUpdateEpic(epicId);
+    emitUpdateEpic(epicId, userState.currentProjectId);
     setStoryListState((prev) =>
       produce(prev, (draft) => {
         return [...draft.filter((v) => v.id !== story.id), { ...story, epicId: epicId }];

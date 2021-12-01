@@ -1,12 +1,13 @@
 import React, { useRef } from 'react';
 import Styled from './style';
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { useInput } from '@/lib/hooks';
 import { updateStoryWithName } from '@/lib/api/story';
 import { StoryType } from '@/types/story';
 import { EpicType } from '@/types/epic';
 import { useSocketSend } from '@/lib/hooks';
 import { storyState } from '@/recoil/story';
+import userAtom from '@/recoil/user';
 
 const KanbanInput = ({
   story,
@@ -20,13 +21,14 @@ const KanbanInput = ({
   const { key, value, onChange } = useInput('');
   const updateStoryName = useSetRecoilState(storyState(key));
   const emitUpdateStory = useSocketSend('UPDATE_STORY');
+  const userState = useRecoilValue(userAtom);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onBlurUpdateName = async () => {
     if (key < 0) return;
     updateStoryName({ status: 'TODO', id: key, order: story.order, name: value });
     await updateStoryWithName({ status: 'TODO', id: key, order: story.order, name: value });
-    emitUpdateStory(key);
+    emitUpdateStory(key, userState.currentProjectId);
   };
 
   React.useEffect(() => {

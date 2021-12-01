@@ -4,8 +4,9 @@ import { KanbanItem, KanbanAddBtn } from '@/components';
 import { updateStoryWithId } from '@/lib/api/story';
 import { StatusType, KanbanType, dragCategoryType } from '@/types/story';
 import { useEpicState } from '@/lib/hooks/useContextHooks';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import storyListAtom from '@/recoil/story/atom';
+import userAtom from '@/recoil/user';
 import {
   dragToDiffBetween,
   dragToEqualBetween,
@@ -33,7 +34,7 @@ const KanbanColumn = ({
 
   const epicState = useEpicState();
   const [isTopEnter, setTopEnter] = useState(false);
-
+  const userState = useRecoilValue(userAtom);
   const emitUpdateStory = useSocketSend('UPDATE_STORY');
   const isMoveToSameTop = () => isTopEnter && isEqualCategory(dragCategory, category);
   const isMoveToSameBetween = () => !isTopEnter && isEqualCategory(dragCategory, category);
@@ -57,8 +58,8 @@ const KanbanColumn = ({
 
       await updateStoryWithId(firstItem);
       await updateStoryWithId(secondItem);
-      emitUpdateStory(firstItem.id);
-      emitUpdateStory(secondItem.id);
+      emitUpdateStory(firstItem.id, userState.currentProjectId);
+      emitUpdateStory(secondItem.id, userState.currentProjectId);
       setTopEnter((isTopEnter) => !isTopEnter);
 
       return;
@@ -73,7 +74,7 @@ const KanbanColumn = ({
       );
 
       await updateStoryWithId(item);
-      emitUpdateStory(item.id);
+      emitUpdateStory(item.id, userState.currentProjectId);
       setTopEnter(false);
       return;
     }
@@ -87,7 +88,7 @@ const KanbanColumn = ({
       );
 
       await updateStoryWithId(item);
-      emitUpdateStory(item.id);
+      emitUpdateStory(item.id, userState.currentProjectId);
       setTopEnter(false);
       return;
     }
@@ -108,8 +109,8 @@ const KanbanColumn = ({
 
         await updateStoryWithId(firstItem);
         await updateStoryWithId(secondItem);
-        emitUpdateStory(firstItem.id);
-        emitUpdateStory(secondItem.id);
+        emitUpdateStory(firstItem.id, userState.currentProjectId);
+        emitUpdateStory(secondItem.id, userState.currentProjectId);
         setTopEnter(false);
       } else {
         setStoryList((prev) =>
@@ -119,7 +120,7 @@ const KanbanColumn = ({
         );
 
         await updateStoryWithId(firstItem);
-        emitUpdateStory(firstItem.id);
+        emitUpdateStory(firstItem.id, userState.currentProjectId);
         setTopEnter(false);
       }
       return;

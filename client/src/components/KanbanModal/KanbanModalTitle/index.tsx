@@ -2,16 +2,18 @@ import React from 'react';
 import KanbanModalTitleWrapper from './style';
 import { useInput } from '@/lib/hooks';
 import { StoryType } from '@/types/story';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { updateStoryWithId } from '@/lib/api/story';
 import storyListAtom from '@/recoil/story';
 import { useSocketSend } from '@/lib/hooks';
 import producer from 'immer';
+import userAtom from '@/recoil/user';
 
 const KanbanModalTitle = ({ story }: { story: StoryType }) => {
   const { value, onChange } = useInput(story?.name);
   const setStoryListState = useSetRecoilState(storyListAtom);
   const emitUpdateStory = useSocketSend('UPDATE_STORY');
+  const userState = useRecoilValue(userAtom);
 
   const handleInputChange = async () => {
     setStoryListState((prev) =>
@@ -21,7 +23,7 @@ const KanbanModalTitle = ({ story }: { story: StoryType }) => {
       ]),
     );
     await updateStoryWithId({ ...story, name: value });
-    emitUpdateStory(story.id);
+    emitUpdateStory(story.id, userState.currentProjectId);
   };
 
   return (

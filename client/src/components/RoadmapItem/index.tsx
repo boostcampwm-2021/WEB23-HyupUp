@@ -5,6 +5,8 @@ import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
 import { addDate } from '@/lib/utils/date';
 import { updateEpicById } from '@/lib/api/epic';
 import { useSocketSend } from '@/lib/hooks';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
 
 interface RoadmapItemProps {
   id: number;
@@ -30,6 +32,7 @@ const RoadmapItem = ({
   const [isDragFront, setIsDragFront] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [initialIndex, setinItialIndex] = useState({ left: index, right: index + length });
+  const { currentProjectId } = useRecoilValue(userAtom);
 
   const dispatchEpic = useEpicDispatch();
   const epics = useEpicState();
@@ -73,7 +76,7 @@ const RoadmapItem = ({
       epic: updatedEpic,
     });
     await updateEpicById(id, updatedEpic);
-    emitUpdateEpicBar(id);
+    emitUpdateEpicBar(id, currentProjectId);
   };
 
   return (

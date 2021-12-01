@@ -8,6 +8,8 @@ import { Modal } from '@/lib/design';
 import { deleteEpicById } from '@/lib/api/epic';
 import { useSocketSend } from '@/lib/hooks';
 import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
 
 interface EpicEntryItemProps {
   handleDragStart?: (epicId: number) => void;
@@ -24,6 +26,7 @@ const EpicEntryItem = ({ handleDragStart, handleDrop, epicData, isEmpty }: EpicE
   const emitDeleteEpic = useSocketSend('DELETE_EPIC');
   const dispatchEpic = useEpicDispatch();
   const [isDragEntered, setDragEntered] = useState(false);
+  const { currentProjectId } = useRecoilValue(userAtom);
 
   const handleChange = (ev: React.ChangeEvent) => {
     setValue((ev.target as HTMLInputElement).value);
@@ -31,7 +34,7 @@ const EpicEntryItem = ({ handleDragStart, handleDrop, epicData, isEmpty }: EpicE
 
   const handleDelete = () => {
     deleteEpicById(epicData.id);
-    emitDeleteEpic(epicData.id);
+    emitDeleteEpic(epicData.id, currentProjectId);
     dispatchEpic({
       type: 'REMOVE_EPIC',
       id: epicData.id,

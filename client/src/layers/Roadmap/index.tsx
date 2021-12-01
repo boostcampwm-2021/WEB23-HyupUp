@@ -75,7 +75,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
         },
       });
       setInputVisible(false);
-      emitNewEpic(result.id);
+      emitNewEpic(result.id, userState.currentProjectId);
 
       toast.success(successMessage.CREATE_EPIC);
     } catch (e) {

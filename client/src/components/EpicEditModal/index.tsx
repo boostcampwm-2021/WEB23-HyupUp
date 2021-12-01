@@ -8,6 +8,8 @@ import { updateEpicById } from '@/lib/api/epic';
 import { useSocketSend } from '@/lib/hooks';
 import { toast } from 'react-toastify';
 import { errorMessage } from '@/lib/common/message';
+import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
 
 interface EpicEditModalProps {
   showEditModal: boolean;
@@ -31,6 +33,8 @@ const EpicEditModal = ({
 }: EpicEditModalProps) => {
   const [startDate, setStartDate] = useState(epicData.startAt);
   const [endDate, setEndDate] = useState(epicData.endAt);
+  const { currentProjectId } = useRecoilValue(userAtom);
+
   const dispatchEpic = useEpicDispatch();
   const emitUpdateEpic = useSocketSend('UPDATE_EPIC_BAR');
 
@@ -53,7 +57,7 @@ const EpicEditModal = ({
     setShowModal(false);
 
     await updateEpicById(epicData.id, updatedEpic);
-    emitUpdateEpic(epicData.id);
+    emitUpdateEpic(epicData.id, currentProjectId);
   };
 
   return (
