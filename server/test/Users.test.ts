@@ -1,43 +1,10 @@
-import { ConnectionOptions, createConnection, getConnection } from 'typeorm';
-import { entities } from '../src';
 import app from '../app';
 import request from 'supertest';
 import supertest from 'supertest';
+import { afterAllFunction, beforeAllfunction } from '.';
 
-beforeAll(async () => {
-  const dbConfig = {
-    host: process.env.DB_HOST,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE_TEST,
-  };
-
-  const connectionOptions: ConnectionOptions = {
-    type: 'mysql',
-    synchronize: true,
-    entities: entities,
-    ...dbConfig,
-  };
-
-  const connection = await createConnection(connectionOptions);
-  await connection.synchronize();
-  await connection.query(`INSERT INTO ORGANIZATIONS(ROOM) VALUES('TEAM42');`);
-  await connection.query(`INSERT INTO PROJECTS(NAME) VALUES('HYUPUP');`);
-  await connection.query(
-    `INSERT INTO USERS(NAME, JOB, EMAIL, IMAGE_URL, ADMIN, PASSWORD, ORGANIZATION_ID)` +
-      `VALUES('hm', 'developer', 'test@test.com', 'url', 1,` +
-      `'$2b$10$e3kxJ2jBwf/o5rpNgG.rqe/fvHyPxl2UH6r16ySb18IsLEeeGMwye', 1);`,
-  );
-});
-
-afterAll(async () => {
-  const connection = await getConnection();
-  await connection.query(`DELETE FROM USERS;`);
-  await connection.query(`DELETE FROM ORGANIZATIONS;`);
-  await connection.query('ALTER TABLE ORGANIZATIONS AUTO_INCREMENT = 1');
-  await connection.query('ALTER TABLE USERS AUTO_INCREMENT = 1');
-  await connection.close();
-});
+beforeAll(beforeAllfunction);
+afterAll(afterAllFunction);
 
 let Cookies = '';
 
@@ -162,7 +129,7 @@ describe('유저 조회 관련 API', () => {
       .set('Cookie', Cookies);
     expect(res.status).toBe(200);
     expect(res.body[0]).toStrictEqual({
-      name: 'hm',
+      name: 'harry',
       job: 'developer',
       imageURL: 'url',
       admin: true,
@@ -200,7 +167,22 @@ describe('유저 조회 관련 API', () => {
     const res = await supertest(app).get('/api/users/1').set('Cookie', Cookies);
     expect(res.status).toBe(200);
     expect(res.body).toStrictEqual([
-      { name: 'hm', imageURL: 'url', index: 1, job: 'developer', admin: true, projects: [] },
+      {
+        name: 'harry',
+        imageURL: 'url',
+        index: 1,
+        job: 'developer',
+        admin: true,
+        projects: [],
+      },
+      {
+        name: 'jarry',
+        imageURL: 'url',
+        index: 2,
+        job: 'developer',
+        admin: false,
+        projects: [],
+      },
     ]);
   });
   test('파라미터가 잘못된 project를 포함한 유저 정보 요청', async () => {
