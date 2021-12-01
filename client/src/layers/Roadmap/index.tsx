@@ -14,6 +14,7 @@ import Button from '@/lib/design/Button';
 
 import { getOrderMedian } from '@/lib/utils/epic';
 import { errorMessage, successMessage } from '@/lib/common/message';
+import { EpicType } from '@/types/epic';
 
 interface RoadmapProps {
   projectId?: number;
@@ -42,6 +43,13 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   });
   useSocketReceive('DELETE_EPIC', async (epicId: number) => {
     dispatchEpic({ type: 'REMOVE_EPIC', id: epicId });
+  });
+  useSocketReceive('UPDATE_EPIC_STORY', async (epicId: number) => {
+    const data = await getEpicById(epicId);
+    dispatchEpic({
+      type: 'UPDATE_EPIC',
+      epic: data as EpicType,
+    });
   });
 
   const getMaxOrder = () => {

@@ -4,24 +4,33 @@ import { useInput } from '@/lib/hooks';
 import { updateTask } from '@/lib/api/task';
 import { useRecoilValue } from 'recoil';
 import { userListAtom } from '@/recoil/user';
-import { DropDown } from '@/lib/design';
-import * as avatar from '@/lib/common/avatar';
-import { ImageType } from '@/types/image';
 import { KanbanTaskType } from '@/types/story';
+import { Modal } from '@/lib/design';
 import { useSocketSend } from '@/lib/hooks';
+import TaskItemWithoutUser from '@/components/KanbanModal/TaskItemWithoutUser';
+import TaskItemWithUser from '@/components/KanbanModal/TaskItemWithUser';
+import deleteIcon from '@public/icons/delete-icon-red.svg';
 
-const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
+type handleDeleteType = (arg: number) => void;
+interface KanbanTaskProps {
+  task: KanbanTaskType;
+  handleDelete: handleDeleteType;
+}
+
+const KanbanTask = ({ task, handleDelete }: KanbanTaskProps) => {
   const { value, onChange } = useInput(task?.name);
   const [taskState, setTask] = useState<KanbanTaskType>(task);
+  const [showDelete, setShowDelete] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const userListState = useRecoilValue(userListAtom);
   const userListWithId = userListState.map((value) => {
     return { ...value, id: value.index };
   });
   const emitNewTask = useSocketSend('NEW_TASK');
+
   const handleInput = async () => {
     if (!taskState) return;
     await updateTask(taskState.id as number, value, false, taskState.userId);
-    //TODO 언제 보내는게 좋을까?
     if (taskState.userId) emitNewTask(taskState.userId);
     setTask((prev) => ({
       ...prev,
@@ -52,28 +61,27 @@ const KanbanTask = ({ task }: { task: KanbanTaskType }) => {
         placeholder={task?.name ? task.name : 'Type A Task'}
         onChange={onChange}
       />
-      {taskState?.user ? (
-        <Styled.MemberContainer>
-          <DropDown
-            Title={
-              <p>
-                <img
-                  className="userImage"
-                  src={avatar[taskState.userImage as ImageType]}
-                  alt="userimage"
-                />
-                <span>{taskState.user}</span>
-              </p>
-            }
-            list={userListWithId}
-            handleClick={handleUserSelect}
-          />
-        </Styled.MemberContainer>
+      {taskState.user || task.user ? (
+        <TaskItemWithUser taskState={taskState} task={task} handleUserSelect={handleUserSelect} />
       ) : (
-        <Styled.DropdownWrapper>
-          <DropDown list={userListWithId} handleClick={handleUserSelect} isMeatBall={true} />
-        </Styled.DropdownWrapper>
+        <TaskItemWithoutUser handleUserSelect={handleUserSelect} />
       )}
+      <Styled.DeleteIcon
+        onMouseEnter={() => setShowDelete(true)}
+        onMouseLeave={() => setShowDelete(false)}
+        showDelete={showDelete}
+        src={deleteIcon}
+        alt="deleteicon"
+        onClick={() => setShowDeleteModal(true)}
+      />
+      <Modal
+        shouldConfirm
+        visible={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onClickOk={() => handleDelete(Number(task.id))}
+      >
+        <Styled.DeleteConfirm>테스크를 삭제하시겠습니까?</Styled.DeleteConfirm>
+      </Modal>
     </Styled.KanbanTaskWrapper>
   );
 };
