@@ -36,6 +36,7 @@ const RoadmapItem = ({
   const emitUpdateEpicBar = useSocketSend('UPDATE_EPIC_BAR');
 
   useEffect(() => {
+    console.log('updated both ends', index, index + length);
     setLeftEnd(index);
     setRightEnd(index + length);
   }, [index, length]);
