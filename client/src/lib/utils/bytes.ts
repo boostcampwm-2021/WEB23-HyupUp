@@ -9,12 +9,12 @@ export function getBytes(input: string) {
 
 function isInputObject(object: object) {
   Object.keys(object).forEach((el) => {
-    if (typeof el === 'string') {
+    if (typeof el !== 'string') {
       throw new Error('type error');
     }
   });
   Object.values(object).forEach((el) => {
-    if (typeof el === 'string') {
+    if (typeof el !== 'string') {
       throw new Error('type error');
     }
   });
