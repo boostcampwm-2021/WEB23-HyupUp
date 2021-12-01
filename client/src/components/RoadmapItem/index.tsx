@@ -50,7 +50,11 @@ const RoadmapItem = ({
 
   const handleDragEnter = (e: React.DragEvent) => {
     if (!isDragging) return;
-    const newIndex = +(e.target as HTMLElement).dataset.index!;
+    const target = e.target as HTMLElement;
+    const newIndexString = target.dataset.index;
+    if (!newIndexString) return;
+
+    const newIndex = +newIndexString;
     if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
     else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
   };
@@ -64,7 +68,9 @@ const RoadmapItem = ({
     if (offset === 0) return;
 
     setInitialIndex({ left: leftEnd, right: rightEnd });
-    const nowDraggingEpic = epics.find((epic) => epic.id === id)!;
+    const nowDraggingEpic = epics.find((epic) => epic.id === id);
+    if (!nowDraggingEpic) return;
+
     const updatedEpic = {
       ...nowDraggingEpic,
       startAt: addDate(nowDraggingEpic.startAt, offset * (isDragFront ? 1 : 0)),
