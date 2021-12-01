@@ -10,6 +10,8 @@ interface ListItemProp {
   onClickMethod: (task: AllTask) => Promise<void>;
 }
 
+const maxViewLength = 50;
+
 const ListViewItem = ({ task, onClickMethod }: ListItemProp) => {
   const buttonComponent = useMemo(() => {
     if (!task.status) {
@@ -39,7 +41,9 @@ const ListViewItem = ({ task, onClickMethod }: ListItemProp) => {
         <img src={task.projectId ? projectIcon : personalIcon} />
         <h3>{task.projectId ? 'PROJECT' : 'PERSONAL'}</h3>
       </Styled.Title>
-      <Styled.Content>{task.name}</Styled.Content>
+      <Styled.Content>
+        {task.name.length < maxViewLength ? task.name : task.name.slice(0, maxViewLength) + '...'}
+      </Styled.Content>
       {buttonComponent}
     </Styled.Container>
   );
