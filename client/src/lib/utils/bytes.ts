@@ -7,23 +7,41 @@ export function getBytes(input: string) {
     .reduce((a, b) => a + b, 0);
 }
 
+function isInputObject(object: object) {
+  Object.keys(object).forEach((el) => {
+    if (typeof el !== 'string') {
+      throw new Error('type error');
+    }
+  });
+  Object.values(object).forEach((el) => {
+    if (typeof el !== 'string') {
+      throw new Error('type error');
+    }
+  });
+}
+
 /**
  * 객체 value의 값을 측정하여 input이 limit을 넘으면, false, 모든 value가 넘지 않으면 true 반환
  * @param object { [index: string]: string }의 객체로, values들은 API의 입력으로 들어가는 값들
  * @param limit 허용하는 byte의 최댓값
  * @returns
  */
-export function checkObjectInput(object: { [index: string]: string }, limit = 255) {
+export function checkObjectInput(object: object, limit = 255) {
   try {
+    isInputObject(object);
     Object.values(object).forEach((el) => {
       if (getBytes(el) > limit) {
         throw Error(el);
       }
     });
   } catch (e) {
-    toast.error(
-      `${Object.keys(object).find((key) => object[key] === (e as Error).message)}가 너무 깁니다.`,
-    );
+    if ((e as Error).message !== 'type error') {
+      toast.error(
+        `${Object.keys(object).find(
+          (key) => (object as { [index: string]: string })[key] === (e as Error).message,
+        )}가 너무 깁니다.`,
+      );
+    }
     return false;
   }
   return true;
@@ -34,19 +52,22 @@ export function checkObjectInput(object: { [index: string]: string }, limit = 25
  * @param object { [index: string]: string }의 객체로, values들은 API의 입력으로 들어가는 값들
  * @returns boolean
  */
-export function checkObjectInputNull(object: { [index: string]: string }) {
+export function checkObjectInputNull(object: object) {
   try {
+    isInputObject(object);
     Object.values(object).forEach((el) => {
       if (el.length === 0) {
         throw Error(el);
       }
     });
   } catch (e) {
-    toast.error(
-      `${Object.keys(object).find(
-        (key) => object[key] === (e as Error).message,
-      )}의 입력이 없습니다.`,
-    );
+    if ((e as Error).message !== 'type error') {
+      toast.error(
+        `${Object.keys(object).find(
+          (key) => (object as { [index: string]: string })[key] === (e as Error).message,
+        )}의 입력이 없습니다.`,
+      );
+    }
     return false;
   }
   return true;

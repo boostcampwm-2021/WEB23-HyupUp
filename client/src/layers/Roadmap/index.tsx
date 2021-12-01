@@ -14,6 +14,7 @@ import Button from '@/lib/design/Button';
 
 import { getOrderMedian } from '@/lib/utils/epic';
 import { errorMessage, successMessage } from '@/lib/common/message';
+import { EpicType } from '@/types/epic';
 
 interface RoadmapProps {
   projectId?: number;
@@ -22,10 +23,11 @@ interface RoadmapProps {
 const Roadmap = ({ projectId }: RoadmapProps) => {
   const [inputVisible, setInputVisible] = React.useState(false);
   const [nowDraggingId, setNowDraggingId] = React.useState(0);
-  const epicsOnProject = useEpicState();
   const userState = useRecoilValue(userAtom);
+  const epicsOnProject = useEpicState();
 
   const dispatchEpic = useEpicDispatch();
+
   const emitNewEpic = useSocketSend('NEW_EPIC');
   const emitUpdateEpicOrder = useSocketSend('UPDATE_EPIC_ORDER');
   useSocketReceive('UPDATE_EPIC_ORDER', async (updatedEpicId: number) => {
@@ -42,6 +44,13 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   });
   useSocketReceive('DELETE_EPIC', async (epicId: number) => {
     dispatchEpic({ type: 'REMOVE_EPIC', id: epicId });
+  });
+  useSocketReceive('UPDATE_EPIC_STORY', async (epicId: number) => {
+    const data = await getEpicById(epicId);
+    dispatchEpic({
+      type: 'UPDATE_EPIC',
+      epic: data as EpicType,
+    });
   });
 
   const getMaxOrder = () => {
@@ -113,6 +122,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
             />
           ))}
           <EpicEntryItem
+            isEmpty
             handleDragStart={() => {
               /* no-op */
             }}

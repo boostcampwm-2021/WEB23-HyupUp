@@ -26,7 +26,7 @@ export default class Tasks {
   @JoinColumn({ name: 'PROJECT_ID' })
   projects!: Projects;
 
-  @ManyToOne(() => Stories, (stories) => stories.id)
+  @ManyToOne(() => Stories, (stories) => stories.id, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'STORY_ID' })
   stories!: Stories;
 

@@ -13,9 +13,10 @@ interface EpicEntryItemProps {
   handleDragStart?: (epicId: number) => void;
   handleDrop: (epicId: number) => void;
   epicData: EpicType;
+  isEmpty?: boolean;
 }
 
-const EpicEntryItem = ({ handleDragStart, handleDrop, epicData }: EpicEntryItemProps) => {
+const EpicEntryItem = ({ handleDragStart, handleDrop, epicData, isEmpty }: EpicEntryItemProps) => {
   const [showDraggable, setShowDraggable] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -40,6 +41,7 @@ const EpicEntryItem = ({ handleDragStart, handleDrop, epicData }: EpicEntryItemP
   return (
     <>
       <S.Container
+        isEmpty={isEmpty}
         activated={isDragEntered}
         draggable="true"
         onMouseOver={() => setShowDraggable(true)}
@@ -53,14 +55,22 @@ const EpicEntryItem = ({ handleDragStart, handleDrop, epicData }: EpicEntryItemP
           handleDrop(epicData.order);
         }}
       >
-        <S.DeleteIcon
-          src={deleteIcon}
-          alt="deleteicon"
-          showDelete={showDraggable}
-          onClick={() => setShowDeleteModal(true)}
-        />
-        <S.DragIndicator src={draggableIcon} alt="draggableicon" showDraggable={showDraggable} />
-        <div onClick={() => setShowEditModal(true)}>{epicData.name}</div>
+        {!isEmpty && (
+          <>
+            <S.DeleteIcon
+              src={deleteIcon}
+              alt="deleteicon"
+              showDelete={showDraggable}
+              onClick={() => setShowDeleteModal(true)}
+            />
+            <S.DragIndicator
+              src={draggableIcon}
+              alt="draggableicon"
+              showDraggable={showDraggable}
+            />
+            <div onClick={() => setShowEditModal(true)}>{epicData.name}</div>
+          </>
+        )}
       </S.Container>
       <Modal
         shouldConfirm

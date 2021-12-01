@@ -121,8 +121,7 @@ export const logInUser = async (req: Request, res: Response, next: NextFunction)
       where: { email: req.body.email },
     });
     if (typeof user === 'undefined') throw new Error('User is not valid');
-    if (!bcrypt.compareSync(req.body.password, user.password))
-      throw new Error('password is not valid');
+    if (!bcrypt.compareSync(req.body.password, user.password)) throw new Error('User is not valid');
     req.query.email = req.body.email;
     req.session.isLogIn = true;
     req.session.email = req.body.email;
@@ -141,8 +140,11 @@ export const logInUser = async (req: Request, res: Response, next: NextFunction)
 
 export const signUpUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (!bodyValidator(req.body, ['name', 'job', 'email', 'password', 'organization']))
+    if (
+      !bodyValidator(req.body, ['name', 'job', 'email', 'password', 'organization', 'imageURL'])
+    ) {
       throw new Error('body is not valid');
+    }
 
     req.session.regenerate((err) => {
       if (err) throw new Error('session is not created');
@@ -189,14 +191,13 @@ export const signUpUser = async (req: Request, res: Response, next: NextFunction
     req.query.email = newUser.email;
     req.session.isLogIn = true;
     req.session.email = req.body.email;
-
     next();
   } catch (e) {
     const err = e as Error;
     if (err.message === 'Email has been used.') {
       res.status(406).json({ message: 'Email has been used.' });
     }
-    res.status(400);
+    res.status(400).end();
   }
 };
 

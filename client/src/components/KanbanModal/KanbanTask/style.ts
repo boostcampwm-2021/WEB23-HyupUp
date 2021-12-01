@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const Styled = {
   KanbanTaskWrapper: styled.article`
@@ -44,10 +44,11 @@ const Styled = {
     justify-content: space-between;
     align-items: center;
     p {
-      width: 80%;
+      width: 70%;
       display: flex;
       justify-content: space-around;
       align-items: center;
+      padding-left: 10px;
     }
     img {
       width: 15px;
@@ -60,7 +61,7 @@ const Styled = {
     ul {
       position: absolute;
       top: 50px;
-      right: 10px;
+      right: 12px;
     }
 
     .userImage {
@@ -73,6 +74,18 @@ const Styled = {
       width: 25px;
       margin-right: 35px;
     }
+  `,
+
+  DeleteIcon: styled.img<{ showDelete: boolean }>`
+    padding: 5px;
+    cursor: pointer;
+    opacity: ${({ showDelete }) => (showDelete ? 1 : 0)};
+    transition: opacity 0.3s;
+  `,
+
+  DeleteConfirm: styled.h4`
+    margin: 32px;
+    font: ${({ theme }) => theme.font.bold_medium};
   `,
 };
 

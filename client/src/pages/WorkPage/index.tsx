@@ -16,16 +16,16 @@ import backlog from '@public/icons/time-icon.svg';
 import { getEpicsByProjectId } from '@/lib/api/epic';
 import { getAllStories } from '@/lib/api/story';
 import { getUsersInfoWithProject } from '@/lib/api/user';
-import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom, { userListAtom } from '@/recoil/user';
 import storyListAtom from '@/recoil/story/atom';
+import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
 
 const WorkPage = () => {
-  const epicDispatcher = useEpicDispatch();
   const user = useRecoilValue(userAtom);
   const setUserListState = useSetRecoilState(userListAtom);
   const setStoryListState = useSetRecoilState(storyListAtom);
+  const dispatchEpic = useEpicDispatch();
 
   const tabs = [
     <Roadmap key={0} projectId={user?.currentProjectId} />,
@@ -43,21 +43,15 @@ const WorkPage = () => {
   React.useEffect(() => {
     (async () => {
       if (!user.currentProjectId) return;
-      const epics = await getEpicsByProjectId(user.currentProjectId);
       const result = await getUsersInfoWithProject(user.organization as number);
+      const epics = await getEpicsByProjectId(user.currentProjectId);
       const stories = await getAllStories(user.currentProjectId);
 
       if (result) setUserListState(result);
+      if (epics) dispatchEpic({ type: 'LOAD_EPIC', epics });
       if (stories) setStoryListState(stories);
-      if (epics) epicDispatcher({ type: 'LOAD_EPIC', epics });
     })();
-  }, [
-    epicDispatcher,
-    setStoryListState,
-    setUserListState,
-    user.organization,
-    user.currentProjectId,
-  ]);
+  }, [dispatchEpic, setStoryListState, setUserListState, user.organization, user.currentProjectId]);
 
   return (
     <>
