@@ -2,7 +2,7 @@ import { Styled } from '@/components/Profile/style';
 import React, { useState, useRef } from 'react';
 import useOutSideClick from '@/lib/hooks/useOutSideClick';
 import { useUserDispatch } from '@/lib/hooks/useContextHooks';
-import { useSocketSend } from '@/lib/hooks';
+import { useSocketSendUser } from '@/lib/hooks';
 import { logOut } from '@/lib/api/user';
 import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
@@ -15,7 +15,7 @@ const Profile = () => {
   const userDispatch = useUserDispatch();
   const toggleDropDown = () => setOpenState((openState) => !openState);
   const handleOutClick = () => setOpenState((openState) => !openState);
-  const emitLogout = useSocketSend('LOGOUT');
+  const emitLogout = useSocketSendUser('LOGOUT');
   const handleLogout = async () => {
     emitLogout(userState.id);
     userDispatch({ type: 'LOGOUT' });

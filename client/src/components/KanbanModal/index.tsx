@@ -37,10 +37,11 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
     const epicId = epicListState.find((v) => v.id === (e.target as HTMLLIElement).value)?.id;
 
     await updateStoryWithId({ ...story, epicId: epicId });
-    emitUpdateEpic(epicId, userState.currentProjectId);
+    emitUpdateEpic(story.id, userState.currentProjectId);
     setStoryListState((prev) =>
       produce(prev, (draft) => {
-        return [...draft.filter((v) => v.id !== story.id), { ...story, epicId: epicId }];
+        const idx = draft.findIndex((value) => value.id === story.id);
+        draft[idx] = { ...story, epicId: epicId };
       }),
     );
   };

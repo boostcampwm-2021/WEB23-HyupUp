@@ -13,19 +13,26 @@ import roadmap from '@public/icons/calendar-icon.svg';
 import board from '@public/icons/board-icon.svg';
 import backlog from '@public/icons/time-icon.svg';
 
-import { getEpicsByProjectId } from '@/lib/api/epic';
+import { getEpicById, getEpicsByProjectId } from '@/lib/api/epic';
 import { getAllStories } from '@/lib/api/story';
 import { getUsersInfoWithProject } from '@/lib/api/user';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import userAtom, { userListAtom } from '@/recoil/user';
 import storyListAtom from '@/recoil/story/atom';
 import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
+import { useSocketReceive } from '@/lib/hooks';
+import { getStoryById } from '@/lib/api/story';
+import produce from 'immer';
+import { EpicType } from '@/types/epic';
+import { StoryType } from '@/types/story';
 
 const WorkPage = () => {
   const user = useRecoilValue(userAtom);
   const setUserListState = useSetRecoilState(userListAtom);
   const setStoryListState = useSetRecoilState(storyListAtom);
   const dispatchEpic = useEpicDispatch();
+  const setStoryList = useSetRecoilState(storyListAtom);
+  const userState = useRecoilValue(userAtom);
 
   const tabs = [
     <Roadmap key={0} projectId={user?.currentProjectId} />,
@@ -39,6 +46,107 @@ const WorkPage = () => {
     <SideBarEntry key={1} icon={board} name={'칸반보드'} highlight={currentIndex === 1} />,
     <SideBarEntry key={2} icon={backlog} name={'백로그'} highlight={currentIndex === 2} />,
   ];
+
+  useSocketReceive(
+    'UPDATE_EPIC_BAR',
+    userState.currentProjectId,
+    async (epicId: number, projectId: number) => {
+      if (projectId !== userState.currentProjectId) return;
+      const updatedEpic = await getEpicById(epicId);
+      if (!updatedEpic) return;
+      dispatchEpic({
+        type: 'UPDATE_EPIC',
+        epic: updatedEpic,
+      });
+    },
+  );
+
+  useSocketReceive(
+    'UPDATE_EPIC_ORDER',
+    userState.currentProjectId,
+    async (updatedEpicId: number, projectId: number) => {
+      if (projectId !== userState.currentProjectId) return;
+      const updatedEpic = await getEpicById(updatedEpicId);
+      if (!updatedEpic) return;
+      dispatchEpic({
+        type: 'UPDATE_EPIC',
+        epic: updatedEpic,
+      });
+    },
+  );
+
+  useSocketReceive(
+    'GET_EPIC',
+    userState.currentProjectId,
+    async (epicId: number, projectId: number) => {
+      if (userState.currentProjectId !== projectId) return;
+      const data = await getEpicById(epicId);
+      if (!data) return;
+      dispatchEpic({ type: `ADD_EPIC`, epic: data });
+    },
+  );
+
+  useSocketReceive(
+    'DELETE_EPIC',
+    userState.currentProjectId,
+    async (epicId: number, projectId: number) => {
+      if (userState.currentProjectId !== projectId) return;
+      dispatchEpic({ type: 'REMOVE_EPIC', id: epicId });
+    },
+  );
+
+  useSocketReceive(
+    'UPDATE_EPIC_STORY',
+    userState.currentProjectId,
+    async (storyId: number, projectId: number) => {
+      if (userState.currentProjectId !== projectId) return;
+      const data = await getStoryById(storyId);
+      if (!data) return;
+      setStoryList((prev) =>
+        produce(prev, (draft) => {
+          const idx = draft.findIndex((story) => story.id === storyId);
+          draft[idx] = data;
+        }),
+      );
+    },
+  );
+
+  useSocketReceive(
+    'NEW_STORY',
+    userState.currentProjectId,
+    async (storyId: number, projectId: number) => {
+      if (userState.currentProjectId !== projectId) return;
+      const data = await getStoryById(storyId);
+      if (!data) return;
+      setStoryList((prev) => produce(prev, (draft) => [...draft, data as StoryType]));
+    },
+  );
+
+  useSocketReceive(
+    'DELETE_STORY',
+    userState.currentProjectId,
+    async (storyId: number, projectId: number) => {
+      if (userState.currentProjectId !== projectId) return;
+      setStoryList((prev) =>
+        produce(prev, (draft) => draft.filter((story) => story.id !== storyId)),
+      );
+    },
+  );
+
+  useSocketReceive(
+    'UPDATE_STORY',
+    userState.currentProjectId,
+    async (storyId: number, projectId: number) => {
+      if (userState.currentProjectId !== projectId) return;
+      const data = await getStoryById(storyId);
+      if (!data) return;
+      setStoryList((prev) =>
+        produce(prev, (draft) =>
+          draft.filter((story) => story.id !== storyId).concat([data as StoryType]),
+        ),
+      );
+    },
+  );
 
   React.useEffect(() => {
     (async () => {

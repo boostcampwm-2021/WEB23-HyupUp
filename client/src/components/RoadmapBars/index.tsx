@@ -22,13 +22,6 @@ const RoadmapBars = ({ rangeFrom, rangeTo }: RoadmapBarsProps) => {
   const epics = useEpicState();
   const stories = useRecoilValue(storyListAtom);
   const dispatchEpic = useEpicDispatch();
-  useSocketReceive('UPDATE_EPIC_BAR', async (epicId: number) => {
-    const updatedEpic = await getEpicById(epicId);
-    dispatchEpic({
-      type: 'UPDATE_EPIC',
-      epic: updatedEpic!,
-    });
-  });
   const epicRenderInfo = makeEpicRenderInfo(epics, stories, {
     rangeFrom,
     rangeTo,
