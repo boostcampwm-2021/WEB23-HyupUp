@@ -33,29 +33,19 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
   const handleEpicSelect = async (e: React.MouseEvent) => {
     if ((e.target as HTMLLIElement).tagName !== 'LI') return;
     const epicId = epicListState.find((v) => v.id === (e.target as HTMLLIElement).value)?.id;
-    setStoryListState((prev) => [
-      ...prev.filter((v) => v.id !== story.id),
-      { ...story, epicId: epicId },
-    ]);
+
     await updateStoryWithId({ ...story, epicId: epicId });
     emitUpdateEpic(epicId);
-    // setStoryListState((prev) =>
-    //   produce(prev, (draft) => [
-    //     ...draft.filter((v) => v.id !== story.id),
-    //     { ...story, epicId: epicId },
-    //   ]),
-    // );
+    setStoryListState((prev) =>
+      produce(prev, (draft) => {
+        return [...draft.filter((v) => v.id !== story.id), { ...story, epicId: epicId }];
+      }),
+    );
   };
 
   const handleDelete = async (key: number) => {
     setTaskList((prev) => prev.filter((v) => v.id !== key));
     await deleteTask(key);
-    // setTaskList((prev) =>
-    //   produce(prev, (draft) => {
-    //     const index = draft.findIndex((v) => v.id === key);
-    //     draft.splice(index, 1);
-    //   }),
-    // );
   };
 
   const handleAddBtn = async () => {
@@ -66,12 +56,8 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
       userId: null,
       projectId: null,
     });
-    setTaskList((taskList) => [...taskList, { ...defaultTaskItem, id: insertedId }]);
-    // setTaskList((taskList) =>
-    //   produce(taskList, (draft) => {
-    //     draft.push({ ...defaultTaskItem, id: insertedId });
-    //   }),
-    // );
+    const taskItem = { ...defaultTaskItem, id: insertedId };
+    setTaskList((taskList) => [...taskList, taskItem]);
   };
 
   const handleCloseClick = () => setModalOpen(false);
