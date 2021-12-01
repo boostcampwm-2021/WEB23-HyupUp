@@ -4,8 +4,9 @@ import { getRepository } from 'typeorm';
 
 import Epics from './Epics.entity';
 
+const INVALID_ID = 'invalid id';
+
 export const getAllEpicsByProject = async (req: Request, res: Response) => {
-  const INVALID_ID = 'invalid id';
   const NO_PROJECT_ID = 'no project id';
 
   try {
@@ -96,8 +97,6 @@ export const createEpic = async (req: Request, res: Response) => {
  * @response message: string 응답결과 메시지
  */
 export const updateEpicById = async (req: Request, res: Response) => {
-  const INVALID_ID = 'invalid id';
-
   try {
     const { name, startAt, endAt, order } = req.body;
     const result = await getRepository(Epics)
@@ -122,15 +121,16 @@ export const updateEpicById = async (req: Request, res: Response) => {
  */
 export const deleteEpicById = async (req: Request, res: Response) => {
   try {
-    await getRepository(Epics)
+    const result = await getRepository(Epics)
       .createQueryBuilder()
       .delete()
       .where('id = :id', { id: req.params.id })
       .execute();
+    if (!result.affected) throw new Error(INVALID_ID);
     res.end();
   } catch (e) {
-    res.status(404).json({
-      message: (e as Error).message,
-    });
+    const { message } = e as Error;
+    if (message === INVALID_ID) res.status(404).json({ message });
+    else res.status(400).json({ message });
   }
 };
