@@ -6,7 +6,7 @@ import group from '@public/icons/group.svg';
 import file from '@public/icons/file-copy.svg';
 
 import { SideBarEntry } from '@/components';
-import { Header, SideBar } from '@/layers';
+import { SideBar } from '@/layers';
 import { useTabs } from '@/lib/hooks';
 import userAtom, { userListAtom } from '@/recoil/user';
 import { getUsersInfoWithProject } from '@/lib/api/user';
@@ -42,7 +42,6 @@ const AdminPage = () => {
 
   return (
     <>
-      <Header />
       <S.Container>
         <SideBar entries={sideBarEntries} changeTab={changeTab} needDropDown={false} />
         {currentTab}

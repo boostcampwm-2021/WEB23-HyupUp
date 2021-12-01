@@ -13,6 +13,7 @@ import SignUpPage from './pages/SignUpPage';
 import { getUser } from './lib/api/user';
 import { Spinner } from './lib/design';
 import { UserState } from './recoil/user/atom';
+import { Header } from './layers';
 
 const Router = () => {
   const [userState, setUserState] = useRecoilState(userAtom);
@@ -48,40 +49,43 @@ const Router = () => {
       {loading ? (
         <Spinner colorValue="white" widthLevel={12} />
       ) : (
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() => (userState?.email ? <MainPage /> : <LandingPage />)}
-          />
-          <Route
-            exact
-            path="/work"
-            render={() => (userState?.email ? <WorkPage /> : <Redirect to="/" />)}
-          />
-          <Route
-            exact
-            path="/setting"
-            render={() => (userState?.email ? <AdminPage /> : <Redirect to="/" />)}
-          />
-          <Route
-            exact
-            path="/login"
-            render={() => (userState?.email ? <Redirect to="/" /> : <LogInPage />)}
-          />
-          <Route
-            exact
-            path="/signup"
-            render={() =>
-              userState?.email ? (
-                <Redirect to="/" />
-              ) : (
-                <SignUpPage token={query.get('token') ?? ''} />
-              )
-            }
-          />
-          <Redirect from="*" to="/" />
-        </Switch>
+        <>
+          {userState?.email && <Header />}
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={() => (userState?.email ? <MainPage /> : <LandingPage />)}
+            />
+            <Route
+              exact
+              path="/work"
+              render={() => (userState?.email ? <WorkPage /> : <Redirect to="/" />)}
+            />
+            <Route
+              exact
+              path="/setting"
+              render={() => (userState?.email ? <AdminPage /> : <Redirect to="/" />)}
+            />
+            <Route
+              exact
+              path="/login"
+              render={() => (userState?.email ? <Redirect to="/" /> : <LogInPage />)}
+            />
+            <Route
+              exact
+              path="/signup"
+              render={() =>
+                userState?.email ? (
+                  <Redirect to="/" />
+                ) : (
+                  <SignUpPage token={query.get('token') ?? ''} />
+                )
+              }
+            />
+            <Redirect from="*" to="/" />
+          </Switch>
+        </>
       )}
     </>
   );
