@@ -58,14 +58,14 @@ export const createProject = async (req: Request, res: Response) => {
     }
     const userRepository = getRepository(Users);
     const projectRepository = getRepository(Projects);
-    const newProject = await projectRepository.save({
-      name: req.body.name,
-    });
     const user = await userRepository.findOne({
       relations: ['projects'],
       where: { id: req.body.userId },
     });
-    if (!user) throw Error('유저 없음');
+    if (!user?.id) throw Error('유저 없음');
+    const newProject = await projectRepository.save({
+      name: req.body.name,
+    });
     user.projects.push(newProject);
     await userRepository.save(user);
     res.json(newProject);

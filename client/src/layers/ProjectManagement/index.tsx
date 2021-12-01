@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import produce from 'immer';
 import { toast } from 'react-toastify';
 
@@ -12,7 +12,7 @@ import { ProjectType } from '@/types/project';
 import { ProjectCreateForm, ProjectCard } from '@/components';
 
 const ProjectManagement = () => {
-  const userState = useRecoilValue(userAtom);
+  const [userState, setUserState] = useRecoilState(userAtom);
   const setUserListState = useSetRecoilState(userListAtom);
   const [projectList, setProjectList] = useState<ProjectType[]>([]);
   const { value, onChange, onReset } = useInput('');
@@ -43,6 +43,11 @@ const ProjectManagement = () => {
       produce(prev, (draft) => {
         const thisUser = draft.find((user) => user.index === userState.id);
         thisUser?.projects.push(newProject);
+      }),
+    );
+    setUserState((prev) =>
+      produce(prev, (draft) => {
+        draft.projects!.push(newProject);
       }),
     );
     onReset();

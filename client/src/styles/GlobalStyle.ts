@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
-
+ 
   html{
     font-size: 10px;
   }
@@ -42,6 +42,14 @@ const GlobalStyle = createGlobalStyle`
     font-display: swap;
   }
 
+  :root {
+    --toastify-color-dark: #30333E;
+    --toastify-color-info: #2D6ECF;
+    --toastify-color-success: #5FCC7C;
+    --toastify-color-error: #F06E69;
+    font: normal 600 14px 'Pretendard';
+  }
+  
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
