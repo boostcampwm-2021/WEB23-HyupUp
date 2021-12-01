@@ -58,7 +58,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     return epicsOnProject.length ? Math.max(...epicsOnProject.map((epic) => epic.order)) : 0;
   };
 
-  const handleSubmit = async (
+  const handleSubmitNewEpic = async (
     value: string,
     { startDate, endDate }: { startDate: Date; endDate: Date },
   ) => {
@@ -141,7 +141,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
           <EpicPlaceholder
             visible={inputVisible}
             setVisible={setInputVisible}
-            handleSubmit={handleSubmit}
+            handleSubmit={handleSubmitNewEpic}
           />
           <Button
             size={'small'}
