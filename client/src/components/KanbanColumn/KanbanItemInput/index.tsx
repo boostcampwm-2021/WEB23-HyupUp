@@ -47,8 +47,14 @@ const KanbanInput = ({
     <Styled.InputContainer>
       <Styled.Input
         type="text"
-        placeholder={story.name ? story.name : 'Type a Todo ...'}
-        {...value}
+        placeholder={
+          story.name
+            ? story.name.slice(0, 18).length > 17
+              ? story.name.slice(0, 18) + '...'
+              : story.name.slice(0, 18)
+            : 'Type a Todo ...'
+        }
+        // {...value}
         data-key={story.id}
         onChange={onChange}
         onBlur={onBlurUpdateName}
