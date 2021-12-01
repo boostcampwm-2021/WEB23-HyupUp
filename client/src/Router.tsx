@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, Suspense } from 'react';
 import { useRecoilState } from 'recoil';
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 
 import LandingPage from './pages/LandingPage';
 import MainPage from './pages/MainPage';
-import WorkPage from './pages/WorkPage';
+const WorkPage = React.lazy(() => import('./pages/WorkPage'));
+
 import { useSocketSend } from '@/lib/hooks';
 import userAtom from '@/recoil/user';
 import AdminPage from './pages/AdminPage';
@@ -60,7 +61,15 @@ const Router = () => {
             <Route
               exact
               path="/work"
-              render={() => (userState?.email ? <WorkPage /> : <Redirect to="/" />)}
+              render={() =>
+                userState?.email ? (
+                  <Suspense fallback={<Spinner widthLevel={12} />}>
+                    <WorkPage />
+                  </Suspense>
+                ) : (
+                  <Redirect to="/" />
+                )
+              }
             />
             <Route
               exact
