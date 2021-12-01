@@ -4,6 +4,7 @@ import { Button, Modal } from '@/lib/design';
 import { checkStringInput } from '@/lib/utils/bytes';
 import { toast } from 'react-toastify';
 import { errorMessage } from '@/lib/common/message';
+import EpicEditModal from '../EpicEditModal';
 
 interface EpicPlaceholderProps {
   visible: boolean;
@@ -16,7 +17,7 @@ const EpicPlaceholder = ({ visible, setVisible, handleSubmit }: EpicPlaceholderP
 
   const handleFormSubmit = (ev: React.FormEvent) => {
     ev.preventDefault();
-    if (!checkStringInput(value)) {
+    if (!value.length || !checkStringInput(value)) {
       toast.error(errorMessage.EPIC_TITLE_LENGTH_LIMIT);
       return;
     }
