@@ -60,7 +60,9 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
     setTaskList((taskList) => [...taskList, taskItem]);
   };
 
-  const handleCloseClick = () => setModalOpen(false);
+  const handleCloseClick = () => {
+    setModalOpen(false);
+  };
 
   useEffect(() => {
     (async () => {

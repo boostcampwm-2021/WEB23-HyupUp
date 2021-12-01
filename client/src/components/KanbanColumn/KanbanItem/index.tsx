@@ -23,7 +23,10 @@ const KanbanItem = ({
     if (!story.name) return;
     if (isItemModalOpen) return;
     setModalOpen(true);
+    setIsHover(false);
   };
+
+  console.log(isHover);
 
   return (
     <Styled.KanBanItem
