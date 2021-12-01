@@ -5,7 +5,7 @@ import { errorMessage } from '@/lib/common/message';
 import { BackLogTaskProps } from '@/types/task';
 
 const cache = setupCache({
-  maxAge: 2 * 1000,
+  maxAge: 5 * 1000,
 });
 
 const instance = axios.create({
