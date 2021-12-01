@@ -8,6 +8,7 @@ import { updateEpicById } from '@/lib/api/epic';
 import { useSocketSend } from '@/lib/hooks';
 import { toast } from 'react-toastify';
 import { errorMessage } from '@/lib/common/message';
+import { checkStringInput } from '@/lib/utils/bytes';
 
 interface EpicEditModalProps {
   showEditModal: boolean;
@@ -41,6 +42,11 @@ const EpicEditModal = ({
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!checkStringInput(value)) {
+      toast.error(errorMessage.EPIC_TITLE_LENGTH_LIMIT);
+      return;
+    }
+
     if (isLatter(startDate, endDate) && !isSameDay(startDate, endDate)) {
       toast.error(errorMessage.START_DATE_IS_LATTER);
       return;
@@ -67,7 +73,7 @@ const EpicEditModal = ({
       <S.Form onSubmit={handleFormSubmit}>
         <S.Input
           type="text"
-          placeholder={epicData.name}
+          placeholder={'에픽 제목을 입력하세요 (255자 이내)'}
           value={value}
           onChange={handleChange}
           isTitle
