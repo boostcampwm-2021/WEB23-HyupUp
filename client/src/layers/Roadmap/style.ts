@@ -34,7 +34,6 @@ const S = {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
 
     width: 250px;
     padding: 64px 0 32px 0;
