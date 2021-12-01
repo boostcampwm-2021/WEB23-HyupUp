@@ -16,7 +16,7 @@ function useSocketSend(channel: string) {
   // emit(1, 2, 3) 과 emit([1, 2, 3]) 이 동일한 기능을 하기 위한 로직
   return React.useCallback(
     (...dataToEmit: any[]) => {
-      connection.emit(channel, dataToEmit.length ? dataToEmit[0] : dataToEmit);
+      connection.emit(channel, dataToEmit.length !== 1 ? dataToEmit : dataToEmit[0]);
     },
     [channel, connection],
   );
