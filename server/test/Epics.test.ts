@@ -79,9 +79,9 @@ test('전체 에픽 목록을 조회한다.', async () => {
   expect(res.status).toBe(200);
 });
 
-test('잘못된 projectId에 대해 응답코드 400을 반환한다.', async () => {
+test('잘못된 projectId에 대해 응답코드 404을 반환한다.', async () => {
   const res = await request(app).get('/api/epics?projectId=9999').set('Cookie', Cookies);
-  expect(res.status).toBe(400);
+  expect(res.status).toBe(404);
 });
 
 test('개별 에픽 정보 요청에 대한 응답을 반환한다.', async () => {
@@ -134,9 +134,12 @@ test('에픽을 수정한다.', async () => {
 });
 
 test('잘못된 에픽 수정 요청에 대해 응답코드 400을 반환한다.', async () => {
-  const res = await request(app).patch('/api/epics/9999').send({
-    name: '잘못 요청한 에픽',
-  });
+  const res = await request(app)
+    .patch('/api/epics/9999')
+    .send({
+      name: '잘못 요청한 에픽',
+    })
+    .set('Cookie', Cookies);
   expect(res.status).toBe(400);
 });
 
