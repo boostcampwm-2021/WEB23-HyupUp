@@ -32,9 +32,10 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
   const emitUpdateEpicOrder = useSocketSend('UPDATE_EPIC_ORDER');
   useSocketReceive('UPDATE_EPIC_ORDER', async (updatedEpicId: number) => {
     const updatedEpic = await getEpicById(updatedEpicId);
+    if (!updatedEpic) return;
     dispatchEpic({
       type: 'UPDATE_EPIC',
-      epic: updatedEpic!,
+      epic: updatedEpic,
     });
   });
   useSocketReceive('GET_EPIC', async (epicId: number) => {
