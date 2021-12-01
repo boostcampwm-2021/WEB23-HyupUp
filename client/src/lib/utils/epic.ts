@@ -73,7 +73,8 @@ export const makeEpicRenderInfo = (
 ): EpicRenderInfo[] =>
   epics.map(({ id, startAt, endAt }) => {
     const case1 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeFrom);
-    const case2 = isFormer(startAt, rangeTo) && isLatter(endAt, rangeTo);
+    const case2 =
+      isFormer(startAt, rangeTo) && isLatter(endAt, rangeTo) && !isSameDay(endAt, rangeTo);
     const case3 = isLatter(startAt, rangeFrom) && isFormer(endAt, rangeTo);
     const case4 = isFormer(startAt, rangeFrom) && isLatter(endAt, rangeTo);
 
