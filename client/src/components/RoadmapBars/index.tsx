@@ -8,7 +8,8 @@ import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
 import { makeEpicRenderInfo } from '@/lib/utils/epic';
 import storyListAtom from '@/recoil/story';
 import { errorMessage } from '@/lib/common/message';
-import { useSocketReceive, useSocketSend } from '@/lib/hooks';
+import { useSocketReceive } from '@/lib/hooks';
+import { getEpicById } from '@/lib/api/epic';
 
 const COLUMNS = 15;
 
@@ -20,6 +21,14 @@ interface RoadmapBarsProps {
 const RoadmapBars = ({ rangeFrom, rangeTo }: RoadmapBarsProps) => {
   const epics = useEpicState();
   const stories = useRecoilValue(storyListAtom);
+  const dispatchEpic = useEpicDispatch();
+  useSocketReceive('UPDATE_EPIC_BAR', async (epicId: number) => {
+    const updatedEpic = await getEpicById(epicId);
+    dispatchEpic({
+      type: 'UPDATE_EPIC',
+      epic: updatedEpic!,
+    });
+  });
   const epicRenderInfo = makeEpicRenderInfo(epics, stories, {
     rangeFrom,
     rangeTo,

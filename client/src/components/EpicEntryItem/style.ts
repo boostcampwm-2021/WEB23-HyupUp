@@ -10,7 +10,7 @@ const fadein = keyframes`
 `;
 
 const S = {
-  Container: styled.li<{ activated: boolean }>`
+  Container: styled.li<{ activated: boolean; isEmpty?: boolean }>`
     display: flex;
     align-items: center;
 
@@ -23,7 +23,7 @@ const S = {
       activated ? `4px solid ${theme.color.blue200}` : `4px solid transparent`};
     white-space: nowrap;
 
-    cursor: grab;
+    cursor: ${({ isEmpty }) => (isEmpty ? 'auto' : 'grab')};
 
     &:nth-child(1) {
       margin-top: 32px;

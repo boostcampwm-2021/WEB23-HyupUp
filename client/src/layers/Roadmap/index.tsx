@@ -23,10 +23,11 @@ interface RoadmapProps {
 const Roadmap = ({ projectId }: RoadmapProps) => {
   const [inputVisible, setInputVisible] = React.useState(false);
   const [nowDraggingId, setNowDraggingId] = React.useState(0);
-  const epicsOnProject = useEpicState();
   const userState = useRecoilValue(userAtom);
+  const epicsOnProject = useEpicState();
 
   const dispatchEpic = useEpicDispatch();
+
   const emitNewEpic = useSocketSend('NEW_EPIC');
   const emitUpdateEpicOrder = useSocketSend('UPDATE_EPIC_ORDER');
   useSocketReceive('UPDATE_EPIC_ORDER', async (updatedEpicId: number) => {
@@ -121,6 +122,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
             />
           ))}
           <EpicEntryItem
+            isEmpty
             handleDragStart={() => {
               /* no-op */
             }}
