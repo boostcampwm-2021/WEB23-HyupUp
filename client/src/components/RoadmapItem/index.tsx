@@ -31,7 +31,7 @@ const RoadmapItem = ({
   const [rightEnd, setRightEnd] = useState(index + length);
   const [isDragFront, setIsDragFront] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [initialIndex, setinItialIndex] = useState({ left: index, right: index + length });
+  const [initialIndex, setInitialIndex] = useState({ left: index, right: index + length });
 
   const dispatchEpic = useEpicDispatch();
   const epics = useEpicState();
@@ -40,7 +40,7 @@ const RoadmapItem = ({
   useEffect(() => {
     setLeftEnd(index);
     setRightEnd(index + length);
-    setinItialIndex({ left: index, right: index + length });
+    setInitialIndex({ left: index, right: index + length });
   }, [index, length]);
 
   const startDragging = (isFront: boolean) => {
@@ -61,7 +61,7 @@ const RoadmapItem = ({
     setIsDragging(false);
 
     const offset = isDragFront ? leftEnd - initialIndex.left : rightEnd - initialIndex.right;
-    setinItialIndex({ left: leftEnd, right: rightEnd });
+    setInitialIndex({ left: leftEnd, right: rightEnd });
     const nowDraggingEpic = epics.find((epic) => epic.id === id)!;
     const updatedEpic = {
       ...nowDraggingEpic,
