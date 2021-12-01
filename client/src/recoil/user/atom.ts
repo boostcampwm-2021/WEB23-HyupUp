@@ -15,11 +15,12 @@ export type UserState = {
   currentProjectId?: number;
   projects?: Array<ProjectType>;
   allTasks?: Array<AllTask>;
+  taskOffset?: number;
 };
 
 const userAtom = atom<UserState>({
   key: 'userAtom',
-  default: {},
+  default: { taskOffset: 0 },
 });
 
 const userListAtom = atom<UserInfoWithProject[]>({
