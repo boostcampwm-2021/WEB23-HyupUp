@@ -41,8 +41,8 @@ const SignUpPage = ({ token }: { token: string }) => {
       return;
     }
 
-    if (!checkObjectInput((newUser as unknown) as { [index: string]: string })) return;
-    if (!checkObjectInputNull((newUser as unknown) as { [index: string]: string })) return;
+    if (!checkObjectInput(newUser)) return;
+    if (!checkObjectInputNull(newUser)) return;
 
     const nowShowModal = showModal;
     setShowModal(!nowShowModal);
