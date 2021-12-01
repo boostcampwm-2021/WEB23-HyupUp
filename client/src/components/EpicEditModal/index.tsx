@@ -42,7 +42,7 @@ const EpicEditModal = ({
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!checkStringInput(value)) {
+    if (!value.length || !checkStringInput(value)) {
       toast.error(errorMessage.EPIC_TITLE_LENGTH_LIMIT);
       return;
     }
