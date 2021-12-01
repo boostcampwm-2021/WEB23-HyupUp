@@ -66,6 +66,7 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
 
   useEffect(() => {
     (async () => {
+      if (!isItemModalOpen) return;
       const { epicId, id } = story;
       setEpic(epicListState.find((v) => v.id === epicId));
       const taskResult = await getTasksByStoryId(id as number);

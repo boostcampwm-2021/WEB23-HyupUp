@@ -26,8 +26,6 @@ const KanbanItem = ({
     setIsHover(false);
   };
 
-  console.log(isHover);
-
   return (
     <Styled.KanBanItem
       data-key={story.id}

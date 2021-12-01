@@ -5,8 +5,10 @@ import KanbanModal from '@/components/KanbanColumn/KanbanDeleteModal';
 import { StatusType } from '@/types/story';
 import { useSocketReceive } from '@/lib/hooks';
 import { getStoryById } from '@/lib/api/story';
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
 import storyListAtom from '@/recoil/story';
+import produce from 'immer';
 
 const Kanban = () => {
   const dragRef = useRef<number | null>(0);
@@ -14,21 +16,26 @@ const Kanban = () => {
   const dragCategory = useRef<StatusType>('TODO');
   const dragOverCateogry = useRef<StatusType>('TODO');
   const setStoryList = useSetRecoilState(storyListAtom);
+  const userState = useRecoilValue(userAtom);
 
   useSocketReceive('NEW_STORY', async (storyId: number) => {
     const data = await getStoryById(storyId);
-    if (!data) return;
-    setStoryList((prev) => [...prev, data]);
+    if (!data || data.projectId !== userState.currentProjectId) return;
+    setStoryList((prev) => produce(prev, (draft) => [...draft, data]));
   });
 
-  useSocketReceive('DELETE_STORY', (storyId: number) => {
-    setStoryList((prev) => [...prev.filter((story) => story.id !== storyId)]);
+  useSocketReceive('DELETE_STORY', async (storyId: number) => {
+    const data = await getStoryById(storyId);
+    if (!data || data.projectId !== userState.currentProjectId) return;
+    setStoryList((prev) => produce(prev, (draft) => draft.filter((story) => story.id !== storyId)));
   });
 
   useSocketReceive('UPDATE_STORY', async (storyId: number) => {
     const data = await getStoryById(storyId);
-    if (!data) return;
-    setStoryList((prev) => [...prev.filter((story) => story.id !== storyId), data]);
+    if (!data || data.projectId !== userState.currentProjectId) return;
+    setStoryList((prev) =>
+      produce(prev, (draft) => draft.filter((story) => story.id !== storyId).concat([data])),
+    );
   });
 
   return (
