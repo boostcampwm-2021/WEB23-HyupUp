@@ -5,9 +5,12 @@ import { getRepository } from 'typeorm';
 import Epics from './Epics.entity';
 
 export const getAllEpicsByProject = async (req: Request, res: Response) => {
+  const INVALID_ID = 'invalid id';
+  const NO_PROJECT_ID = 'no project id';
+
   try {
     if (!queryValidator(req.query, ['projectId'])) {
-      throw new Error('query is not vaild');
+      throw new Error(NO_PROJECT_ID);
     }
     const { projectId } = req.query;
     const epicRepository = getRepository(Epics);
@@ -26,11 +29,11 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
     res.json(result);
   } catch (e) {
     const message = (e as Error).message;
-    console.log(message);
-    if (message === 'query is not vaild') {
-      res.status(400).json(message);
+    if (message === INVALID_ID) {
+      res.status(404).json({ message });
+    } else {
+      res.status(400).json({ message });
     }
-    res.status(404).json({ message });
   }
 };
 
