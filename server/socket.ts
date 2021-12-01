@@ -52,35 +52,35 @@ io.on('connection', (socket) => {
     });
   });
 
-  socket.on('NEW_EPIC', (epicId: number, projectId: number) => {
+  socket.on('NEW_EPIC', ([epicId, projectId]: number[]) => {
     socket.to(socket.data.roomName).emit('GET_EPIC', epicId, projectId);
   });
 
-  socket.on('UPDATE_EPIC_BAR', (epicId: number, projectId: number) => {
+  socket.on('UPDATE_EPIC_BAR', ([epicId, projectId]: number[]) => {
     socket.to(socket.data.roomName).emit('UPDATE_EPIC_BAR', epicId, projectId);
   });
 
-  socket.on('UPDATE_EPIC_ORDER', (epicId: number, projectId: number) => {
+  socket.on('UPDATE_EPIC_ORDER', ([epicId, projectId]: number[]) => {
     socket.to(socket.data.roomName).emit('UPDATE_EPIC_ORDER', epicId, projectId);
   });
 
-  socket.on('UPDATE_EPIC_STORY', (epicId: number, projectId: number) => {
-    socket.to(socket.data.roomName).emit('UPDATE_EPIC_STORY', epicId, projectId);
+  socket.on('UPDATE_EPIC_STORY', ([storyId, projectId]: number[]) => {
+    socket.to(socket.data.roomName).emit('UPDATE_EPIC_STORY', storyId, projectId);
   });
 
-  socket.on('DELETE_EPIC', (epicId: number, projectId: number) => {
+  socket.on('DELETE_EPIC', ([epicId, projectId]: number[]) => {
     socket.to(socket.data.roomName).emit('DELETE_EPIC', epicId, projectId);
   });
 
-  socket.on('NEW_STORY', (storyId: number, projectId: number) => {
+  socket.on('NEW_STORY', ([storyId, projectId]: number[]) => {
     socket.to(socket.data.roomName).emit('NEW_STORY', storyId, projectId);
   });
 
-  socket.on('DELETE_STORY', (storyId: number, projectId: number) => {
+  socket.on('DELETE_STORY', ([storyId, projectId]: number[]) => {
     socket.to(socket.data.roomName).emit('DELETE_STORY', storyId, projectId);
   });
 
-  socket.on('UPDATE_STORY', (storyId: number, projectId: number) => {
+  socket.on('UPDATE_STORY', ([storyId, projectId]: number[]) => {
     socket.to(socket.data.roomName).emit('UPDATE_STORY', storyId, projectId);
   });
 
