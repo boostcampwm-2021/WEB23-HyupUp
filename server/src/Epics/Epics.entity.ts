@@ -23,6 +23,6 @@ export default class Epics {
   @JoinColumn({ name: 'PROJECT_ID' })
   projects!: Projects;
 
-  @OneToMany(() => Stories, (stories) => stories.id)
+  @OneToMany(() => Stories, (stories) => stories.id, { cascade: true })
   stories!: Stories[];
 }

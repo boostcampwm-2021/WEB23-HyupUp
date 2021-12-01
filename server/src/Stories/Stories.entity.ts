@@ -27,7 +27,7 @@ export default class Stories {
   @JoinColumn({ name: 'PROJECT_ID' })
   projects!: Projects;
 
-  @ManyToOne(() => Epics, (epics) => epics.id)
+  @ManyToOne(() => Epics, (epics) => epics.id, { onDelete: 'SET NULL' })
   @JoinColumn({ name: 'EPIC_ID' })
   epics!: Epics;
 
