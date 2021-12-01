@@ -43,10 +43,11 @@ export const updateTodo = async (req: Request, res: Response) => {
       throw Error('body is not valid');
     }
     const todoRepository = getRepository(Todo);
-    await todoRepository.update(req.body.id, {
+    const result = await todoRepository.update(req.body.id, {
       name: req.body.name,
       status: req.body.status,
     });
+    if (!result.affected) throw new Error('id is not valid');
     res.end();
   } catch (error) {
     const message = (error as Error).message;
@@ -60,7 +61,8 @@ export const deleteTodo = async (req: Request, res: Response) => {
       throw Error('body is not valid');
     }
     const todoRepository = getRepository(Todo);
-    await todoRepository.delete({ id: +req.query.id });
+    const result = await todoRepository.delete({ id: +req.query.id });
+    if (!result.affected) throw new Error('id is not valid');
     res.end();
   } catch (error) {
     const message = (error as Error).message;
