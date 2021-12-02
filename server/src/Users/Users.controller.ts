@@ -191,6 +191,7 @@ export const signUpUser = async (req: Request, res: Response, next: NextFunction
     req.query.email = newUser.email;
     req.session.isLogIn = true;
     req.session.email = req.body.email;
+    res.cookie('status', '', { maxAge: 3000 * 60 * 60 });
     next();
   } catch (e) {
     const err = e as Error;

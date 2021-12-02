@@ -43,6 +43,9 @@ export const inviteByEmail = async (req: Request, res: Response) => {
 export const isValidEmail = (req: Request, res: Response) => {
   try {
     if (!req.params.token) throw new Error('token is undefined');
+    req.session.destroy((err) => {
+      if (err) throw new Error(err);
+    });
     const secret = process.env.SECRET as string;
     const decodedToken = jwt.verify(
       req.params.token,
@@ -65,6 +68,8 @@ export const isValidEmail = (req: Request, res: Response) => {
           expiresIn: '1h',
         },
       );
+      res.clearCookie('connect.sid');
+      res.clearCookie('status');
       res.redirect(`${process.env.CLIENT_URL}/signup?token=${token}`);
     });
   } catch (e) {
