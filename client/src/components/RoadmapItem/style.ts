@@ -3,7 +3,7 @@ import { RoadmapBarsStatus } from '@/types/epic';
 
 const HANDLE_WIDTH = '12px';
 
-const statusToColor = (
+export const statusToColor = (
   status: RoadmapBarsStatus,
   color: { blue300: string; red300: string; green300: string; gray300: string },
 ) => {
