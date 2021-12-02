@@ -67,6 +67,14 @@ const S = {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    button {
+      width: calc(50% - 16px);
+
+      & + & {
+        margin-left: 16px;
+      }
+    }
   `,
 };
 
