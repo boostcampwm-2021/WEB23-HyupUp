@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { useRecoilValue } from 'recoil';
 import S from './style';
 import deleteIcon from '@public/icons/delete-icon-red.svg';
 import draggableIcon from '@public/icons/draggable.svg';
@@ -12,7 +13,7 @@ import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
 import { errorMessage } from '@/lib/common/message';
 import { checkStringInput } from '@/lib/utils/bytes';
 import { isLatter, isSameDay } from '@/lib/utils/date';
-
+import userAtom from '@/recoil/user';
 interface EpicEntryItemProps {
   handleDragStart?: (epicId: number) => void;
   handleDrop: (epicId: number) => void;
@@ -29,6 +30,7 @@ const EpicEntryItem = ({ handleDragStart, handleDrop, epicData, isEmpty }: EpicE
   const emitDeleteEpic = useSocketSend('DELETE_EPIC');
   const emitUpdateEpic = useSocketSend('UPDATE_EPIC_BAR');
   const dispatchEpic = useEpicDispatch();
+  const userState = useRecoilValue(userAtom);
 
   const handleChange = (ev: React.ChangeEvent) => {
     setValue((ev.target as HTMLInputElement).value);
@@ -36,7 +38,7 @@ const EpicEntryItem = ({ handleDragStart, handleDrop, epicData, isEmpty }: EpicE
 
   const handleDelete = () => {
     deleteEpicById(epicData.id);
-    emitDeleteEpic(epicData.id, currentProjectId);
+    emitDeleteEpic(epicData.id, userState.currentProjectId);
     dispatchEpic({
       type: 'REMOVE_EPIC',
       id: epicData.id,
