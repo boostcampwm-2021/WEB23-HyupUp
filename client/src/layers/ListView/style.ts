@@ -19,6 +19,15 @@ const Styled = {
       display: none;
     }
   `,
+  EmptyWrapper: styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 200px;
+    font: ${({ theme }) => theme.font.bold_large};
+    color: ${({ theme }) => theme.color.gray300};
+  `,
 };
 
 export default Styled;
