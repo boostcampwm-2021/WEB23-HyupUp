@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getUsersByOrganization } from '@/lib/api/user';
 import { UserProfile } from '@/types/users';
-import useSocketReceive from '@/lib/hooks/useSocketReceive';
 import Avatar from '@/components/CoworkerStatusItem/Avatar';
 import * as S from './style';
 import StatusTitle from '@/components/CoworkerStatusItem/StatusTitle';
@@ -9,6 +8,7 @@ import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
 import * as avatar from '@/lib/common/avatar';
 import { ImageType } from '@/types/image';
+import useSocketReceiveUser from '@/lib/hooks/useSocketReceiveUser';
 
 interface UserStatus extends UserProfile {
   status: boolean;
@@ -25,17 +25,17 @@ const CoworkerStatus = () => {
   const [users, setUsers] = useState<Array<UserProfile>>([]);
   const userState = useRecoilValue(userAtom);
 
-  useSocketReceive('LOGIN_CALLBACK', (userInfo: Array<UserSocketInstance>) => {
+  useSocketReceiveUser('LOGIN_CALLBACK', (userInfo: Array<UserSocketInstance>) => {
     if (userInfo.length === 0) return;
     const ids = userInfo.map((el) => el.userId);
     setUsersIdList(ids);
   });
 
-  useSocketReceive('ON', (userId: number) => {
+  useSocketReceiveUser('ON', (userId: number) => {
     setUsersIdList([...usersIdList, userId]);
   });
 
-  useSocketReceive('OFF', (userId: number) => {
+  useSocketReceiveUser('OFF', (userId: number) => {
     setUsersIdList(usersIdList.filter((el) => el !== userId));
   });
 
