@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, Suspense } from 'react';
 import { useRecoilState } from 'recoil';
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
 
 import LandingPage from './pages/LandingPage';
 import MainPage from './pages/MainPage';
-import WorkPage from './pages/WorkPage';
-import { useSocketSend } from '@/lib/hooks';
+import { useSocketSendUser, useSocketSend } from '@/lib/hooks';
 import userAtom from '@/recoil/user';
 import AdminPage from './pages/AdminPage';
 import LogInPage from './pages/LogInPage';
@@ -13,11 +12,14 @@ import SignUpPage from './pages/SignUpPage';
 import { getUser } from './lib/api/user';
 import { Spinner } from './lib/design';
 import { UserState } from './recoil/user/atom';
+import { Header } from './layers';
+  
+const WorkPage = React.lazy(() => import('./pages/WorkPage'));
 
 const Router = () => {
   const [userState, setUserState] = useRecoilState(userAtom);
   const [loading, setLoading] = useState(true);
-  const emitLoginEvent = useSocketSend('LOGIN');
+  const emitLoginEvent = useSocketSendUser('LOGIN');
 
   useEffect(() => {
     if (!document.cookie.match('status')) {
@@ -48,40 +50,51 @@ const Router = () => {
       {loading ? (
         <Spinner colorValue="white" widthLevel={12} />
       ) : (
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() => (userState?.email ? <MainPage /> : <LandingPage />)}
-          />
-          <Route
-            exact
-            path="/work"
-            render={() => (userState?.email ? <WorkPage /> : <Redirect to="/" />)}
-          />
-          <Route
-            exact
-            path="/setting"
-            render={() => (userState?.email ? <AdminPage /> : <Redirect to="/" />)}
-          />
-          <Route
-            exact
-            path="/login"
-            render={() => (userState?.email ? <Redirect to="/" /> : <LogInPage />)}
-          />
-          <Route
-            exact
-            path="/signup"
-            render={() =>
-              userState?.email ? (
-                <Redirect to="/" />
-              ) : (
-                <SignUpPage token={query.get('token') ?? ''} />
-              )
-            }
-          />
-          <Redirect from="*" to="/" />
-        </Switch>
+        <>
+          {userState?.email && <Header />}
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={() => (userState?.email ? <MainPage /> : <LandingPage />)}
+            />
+            <Route
+              exact
+              path="/work"
+              render={() =>
+                userState?.email ? (
+                  <Suspense fallback={<Spinner widthLevel={12} />}>
+                    <WorkPage />
+                  </Suspense>
+                ) : (
+                  <Redirect to="/" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/setting"
+              render={() => (userState?.email ? <AdminPage /> : <Redirect to="/" />)}
+            />
+            <Route
+              exact
+              path="/login"
+              render={() => (userState?.email ? <Redirect to="/" /> : <LogInPage />)}
+            />
+            <Route
+              exact
+              path="/signup"
+              render={() =>
+                userState?.email ? (
+                  <Redirect to="/" />
+                ) : (
+                  <SignUpPage token={query.get('token') ?? ''} />
+                )
+              }
+            />
+            <Redirect from="*" to="/" />
+          </Switch>
+        </>
       )}
     </>
   );

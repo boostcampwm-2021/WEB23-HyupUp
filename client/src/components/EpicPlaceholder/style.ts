@@ -6,8 +6,8 @@ const S = {
     justify-content: center;
     align-items: center;
 
-    min-width: 350px;
-    padding: 16px;
+    min-width: 400px;
+    padding: 32px 16px;
   `,
   Input: styled.input`
     width: 100%;

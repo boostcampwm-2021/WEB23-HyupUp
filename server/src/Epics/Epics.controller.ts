@@ -4,10 +4,14 @@ import { getRepository } from 'typeorm';
 
 import Epics from './Epics.entity';
 
+const INVALID_ID = 'invalid id';
+
 export const getAllEpicsByProject = async (req: Request, res: Response) => {
+  const NO_PROJECT_ID = 'no project id';
+
   try {
     if (!queryValidator(req.query, ['projectId'])) {
-      throw new Error('query is not vaild');
+      throw new Error(NO_PROJECT_ID);
     }
     const { projectId } = req.query;
     const epicRepository = getRepository(Epics);
@@ -15,6 +19,7 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
       relations: ['projects'],
       where: { projects: { id: +(projectId as string) } },
     });
+    if (!epics.length) throw new Error('invalid id');
     const result = epics.map((el) => ({
       id: el.id,
       name: el.name,
@@ -24,9 +29,11 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
     }));
     res.json(result);
   } catch (e) {
-    const result = (e as Error).message;
-    if (result === 'query is not vaild') {
-      res.status(400).json(result);
+    const message = (e as Error).message;
+    if (message === INVALID_ID) {
+      res.status(404).json({ message });
+    } else {
+      res.status(400).json({ message });
     }
   }
 };
@@ -92,17 +99,18 @@ export const createEpic = async (req: Request, res: Response) => {
 export const updateEpicById = async (req: Request, res: Response) => {
   try {
     const { name, startAt, endAt, order } = req.body;
-    await getRepository(Epics)
+    const result = await getRepository(Epics)
       .createQueryBuilder()
       .update()
       .set({ name, startAt, endAt, order })
       .where('id = :id', { id: req.params.id })
       .execute();
+    if (!result.affected) throw new Error(INVALID_ID);
     res.end();
   } catch (e) {
-    res.status(400).json({
-      message: (e as Error).message,
-    });
+    const { message } = e as Error;
+    if (message === INVALID_ID) res.status(404).json({ message });
+    else res.status(400).json({ message });
   }
 };
 
@@ -113,15 +121,16 @@ export const updateEpicById = async (req: Request, res: Response) => {
  */
 export const deleteEpicById = async (req: Request, res: Response) => {
   try {
-    await getRepository(Epics)
+    const result = await getRepository(Epics)
       .createQueryBuilder()
       .delete()
       .where('id = :id', { id: req.params.id })
       .execute();
+    if (!result.affected) throw new Error(INVALID_ID);
     res.end();
   } catch (e) {
-    res.status(404).json({
-      message: (e as Error).message,
-    });
+    const { message } = e as Error;
+    if (message === INVALID_ID) res.status(404).json({ message });
+    else res.status(400).json({ message });
   }
 };

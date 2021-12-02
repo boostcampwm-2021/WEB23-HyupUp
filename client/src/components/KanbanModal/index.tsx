@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import Styled from '@/components/KanbanModal/style';
 import KanbanTask from './KanbanTask/index';
 import KanbanModalTitle from './KanbanModalTitle/index';
@@ -14,6 +14,7 @@ import storyListAtom from '@/recoil/story';
 import { postTask } from '@/lib/api/task';
 import produce from 'immer';
 import { useSocketSend } from '@/lib/hooks';
+import userAtom from '@/recoil/user';
 
 type TaskListType = Array<TaskProps>;
 
@@ -30,32 +31,24 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
   const [epic, setEpic] = useState<EpicType>();
   const [taskList, setTaskList] = useState<TaskListType>([]);
   const emitUpdateEpic = useSocketSend('UPDATE_EPIC_STORY');
+  const userState = useRecoilValue(userAtom);
   const handleEpicSelect = async (e: React.MouseEvent) => {
     if ((e.target as HTMLLIElement).tagName !== 'LI') return;
     const epicId = epicListState.find((v) => v.id === (e.target as HTMLLIElement).value)?.id;
-    setStoryListState((prev) => [
-      ...prev.filter((v) => v.id !== story.id),
-      { ...story, epicId: epicId },
-    ]);
+
     await updateStoryWithId({ ...story, epicId: epicId });
-    emitUpdateEpic(epicId);
-    // setStoryListState((prev) =>
-    //   produce(prev, (draft) => [
-    //     ...draft.filter((v) => v.id !== story.id),
-    //     { ...story, epicId: epicId },
-    //   ]),
-    // );
+    emitUpdateEpic(story.id, userState.currentProjectId);
+    setStoryListState((prev) =>
+      produce(prev, (draft) => {
+        const idx = draft.findIndex((value) => value.id === story.id);
+        draft[idx] = { ...story, epicId: epicId };
+      }),
+    );
   };
 
   const handleDelete = async (key: number) => {
     setTaskList((prev) => prev.filter((v) => v.id !== key));
     await deleteTask(key);
-    // setTaskList((prev) =>
-    //   produce(prev, (draft) => {
-    //     const index = draft.findIndex((v) => v.id === key);
-    //     draft.splice(index, 1);
-    //   }),
-    // );
   };
 
   const handleAddBtn = async () => {
@@ -66,18 +59,17 @@ const KanbanModal = ({ story, isItemModalOpen, setModalOpen }: KanbanModalType) 
       userId: null,
       projectId: null,
     });
-    setTaskList((taskList) => [...taskList, { ...defaultTaskItem, id: insertedId }]);
-    // setTaskList((taskList) =>
-    //   produce(taskList, (draft) => {
-    //     draft.push({ ...defaultTaskItem, id: insertedId });
-    //   }),
-    // );
+    const taskItem = { ...defaultTaskItem, id: insertedId };
+    setTaskList((taskList) => [...taskList, taskItem]);
   };
 
-  const handleCloseClick = () => setModalOpen(false);
+  const handleCloseClick = () => {
+    setModalOpen(false);
+  };
 
   useEffect(() => {
     (async () => {
+      if (!isItemModalOpen) return;
       const { epicId, id } = story;
       setEpic(epicListState.find((v) => v.id === epicId));
       const taskResult = await getTasksByStoryId(id as number);

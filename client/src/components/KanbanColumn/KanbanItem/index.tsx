@@ -23,6 +23,7 @@ const KanbanItem = ({
     if (!story.name) return;
     if (isItemModalOpen) return;
     setModalOpen(true);
+    setIsHover(false);
   };
 
   return (

@@ -26,6 +26,9 @@ export const DELETE_USER = '사용자 삭제에 실패했습니다.';
 
 export const EPIC_DRAG_OUT_OF_PLACE = '드래그 앤 드랍 영역을 벗어났습니다. 다시 시도해주세요.';
 export const START_DATE_IS_LATTER = '시작일이 종료일보다 뒤에 있을수 없습니다.';
+export const EPIC_TITLE_LENGTH_LIMIT =
+  '에픽 제목이 올바르지 않습니다. 1자 이상 255자 이내로 입력해주세요.';
+
 export const SEND_EMAIL = '이메일 발송에 실패했습니다.';
 export const SEND_EMAIL_SAME = '이미 존재하는 회원입니다.';
 export const NULL_EMAIL = '이메일을 입력해주세요';
@@ -33,6 +36,10 @@ export const CREATE_USER = '회원가입에 실패했습니다.';
 export const CREATE_USER_PW = '비밀번호가 일치하지 않습니다.';
 export const UNAUTH_USER = '인증이 필요한 페이지입니다.';
 export const CREATE_USER_EMAIL = '입력하신 이메일은 사용 중입니다. 다른 이메일을 사용하세요.';
+export const STORY_TITLE_LENGTH_LIMIT =
+  '스토리 제목이 올바르지 않습니다. 255자 이내로 입력해주세요.';
+export const TASK_TITLE_LENGTH_LIMIT =
+  '테스크 제목이 올바르지 않습니다. 255자 이내로 입력해주세요.';
 
 export default {
   GET_USER,
@@ -62,8 +69,11 @@ export default {
   DELETE_USER,
   EPIC_DRAG_OUT_OF_PLACE,
   START_DATE_IS_LATTER,
+  EPIC_TITLE_LENGTH_LIMIT,
   SEND_EMAIL,
   SEND_EMAIL_SAME,
   NULL_EMAIL,
   UNAUTH_USER,
+  STORY_TITLE_LENGTH_LIMIT,
+  TASK_TITLE_LENGTH_LIMIT,
 };

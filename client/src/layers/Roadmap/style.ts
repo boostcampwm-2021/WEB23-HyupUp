@@ -6,6 +6,7 @@ const S = {
     flex-direction: column;
 
     width: 941px;
+    min-height: calc(75vh);
 
     margin: 0 0 64px 26px;
     padding: 18px;
@@ -34,7 +35,6 @@ const S = {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
 
     width: 250px;
     padding: 64px 0 32px 0;

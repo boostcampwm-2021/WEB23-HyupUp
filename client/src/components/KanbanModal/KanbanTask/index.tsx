@@ -10,6 +10,9 @@ import { useSocketSend } from '@/lib/hooks';
 import TaskItemWithoutUser from '@/components/KanbanModal/TaskItemWithoutUser';
 import TaskItemWithUser from '@/components/KanbanModal/TaskItemWithUser';
 import deleteIcon from '@public/icons/delete-icon-red.svg';
+import { checkStringInput } from '@/lib/utils/bytes';
+import { errorMessage } from '@/lib/common/message';
+import { toast } from 'react-toastify';
 
 type handleDeleteType = (arg: number) => void;
 interface KanbanTaskProps {
@@ -30,6 +33,11 @@ const KanbanTask = ({ task, handleDelete }: KanbanTaskProps) => {
 
   const handleInput = async () => {
     if (!taskState) return;
+    if (!checkStringInput(value)) {
+      toast.error(errorMessage.TASK_TITLE_LENGTH_LIMIT);
+      return;
+    }
+
     await updateTask(taskState.id as number, value, false, taskState.userId);
     if (taskState.userId) emitNewTask(taskState.userId);
     setTask((prev) => ({

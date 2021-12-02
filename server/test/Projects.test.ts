@@ -19,8 +19,8 @@ beforeEach((done) => {
     });
 });
 
-describe('create PROJECT', () => {
-  test('create PROJECT by valid userId', async () => {
+describe('프로젝트 생성', () => {
+  test('올바른 userId로 요청한다.', async () => {
     const req = request(app).post('/api/projects');
     req.set('Cookie', Cookies);
     const res = await req.send({ name: '테스트 프로젝트', userId: 1 });
@@ -28,13 +28,13 @@ describe('create PROJECT', () => {
     expect(res.body.name).toBe('테스트 프로젝트');
     expect(res.body.id).toBe(3);
   });
-  test('create PROJECT by invalid userId', async () => {
+  test('잘못된 userId로 요청한다.', async () => {
     const req = request(app).post('/api/projects');
     req.set('Cookie', Cookies);
     const res = await req.send({ name: '테스트 프로젝트2', userId: 100 });
     expect(res.status).toBe(401);
   });
-  test('create PROJECT without userId', async () => {
+  test('userId없이 요청한다.', async () => {
     const req = request(app).post('/api/projects');
     req.set('Cookie', Cookies);
     const res = await req.send({ name: '테스트 프로젝트3' });
@@ -43,8 +43,8 @@ describe('create PROJECT', () => {
 });
 
 // TODO: User로 옮겨야 함
-describe('update PROJECT for invite', () => {
-  test('invite user by valid body', async () => {
+describe('프로젝트에 초대또는 프로젝트에서 제거', () => {
+  test('올바른 body로 유저를 초대한다.', async () => {
     const req = request(app).patch('/api/users/project');
     req.set('Cookie', Cookies);
     const res = await req.send({
@@ -54,7 +54,7 @@ describe('update PROJECT for invite', () => {
     });
     expect(res.status).toBe(200);
   });
-  test('remove user by valid body', async () => {
+  test('올바른 body로 유저를 제거한다.', async () => {
     const req = request(app).patch('/api/users/project');
     req.set('Cookie', Cookies);
     const res = await req.send({
@@ -64,7 +64,7 @@ describe('update PROJECT for invite', () => {
     });
     expect(res.status).toBe(200);
   });
-  test('invite user without userId', async () => {
+  test('userId 없이 프로젝트에 초대한다.', async () => {
     const req = request(app).patch('/api/users/project');
     req.set('Cookie', Cookies);
     const res = await req.send({
@@ -73,7 +73,7 @@ describe('update PROJECT for invite', () => {
     });
     expect(res.status).toBe(400);
   });
-  test('invite user without projectId', async () => {
+  test('projectId 없이 프로젝트에 초대한다.', async () => {
     const req = request(app).patch('/api/users/project');
     req.set('Cookie', Cookies);
     const res = await req.send({
@@ -82,7 +82,7 @@ describe('update PROJECT for invite', () => {
     });
     expect(res.status).toBe(400);
   });
-  test('invite user by invalid body', async () => {
+  test('잘못된 body로 초대요청을 한다.', async () => {
     const req = request(app).patch('/api/users/project');
     req.set('Cookie', Cookies);
     const res = await req.send({
@@ -94,15 +94,15 @@ describe('update PROJECT for invite', () => {
   });
 });
 
-describe('delete PROJECT', () => {
-  test('delete PROJECT by valid projectId', async () => {
+describe('프로젝트 삭제', () => {
+  test('올바른 projectId로 삭제요청을 한다.', async () => {
     const projectId = 3;
     const req = request(app).delete(`/api/projects/${projectId}`);
     req.set('Cookie', Cookies);
     const res = await req;
     expect(res.status).toBe(200);
   });
-  test('delete PROJECT by invalid projectId', async () => {
+  test('잘못된 projectId로 삭제요청을 한다.', async () => {
     const projectId = 2;
     const req = request(app).delete(`/api/projects/${projectId}`);
     req.set('Cookie', Cookies);

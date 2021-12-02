@@ -1,10 +1,11 @@
 import React, { useState, createContext } from 'react';
 import { Modal } from '@/lib/design';
 import { deleteStoryWithId } from '@/lib/api/story';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import storyListAtom from '@/recoil/story';
 import { useSocketSend } from '@/lib/hooks';
 import produce from 'immer';
+import userAtom from '@/recoil/user';
 
 export type ModalContextType = {
   setShowModal: (args: boolean) => void;
@@ -18,11 +19,12 @@ const KanbanDeleteModal = ({ children }: { children: React.ReactNode }) => {
   const [shouldDeleteKey, setDeleteItem] = useState(0);
   const setStoryList = useSetRecoilState(storyListAtom);
   const emitDeleteStory = useSocketSend('DELETE_STORY');
+  const userState = useRecoilValue(userAtom);
 
   const deleteStory = async () => {
     setStoryList((prev) => produce(prev, (draft) => draft.filter((v) => v.id !== shouldDeleteKey)));
     await deleteStoryWithId(shouldDeleteKey);
-    emitDeleteStory(shouldDeleteKey);
+    emitDeleteStory(shouldDeleteKey, userState.currentProjectId);
   };
 
   return (

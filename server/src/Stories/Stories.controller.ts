@@ -39,13 +39,22 @@ export const getStoryById = async (req: Request, res: Response) => {
     if (!req.params.id) {
       throw new Error('유효한 ID 가 존재하지 않습니다.');
     }
-    const { id } = req.params;
-    const result = await getRepository(Stories).findOne(id);
-    if (!result) {
-      throw new Error(`해당 ${id} 를 조회할 수 없습니다`);
-    }
-    res.json(result);
+
+    const { id, name, order, status, epics } = (await getRepository(Stories)
+      .createQueryBuilder('stories')
+      .leftJoinAndSelect('stories.epics', 'epics')
+      .where('stories.id = :id', { id: req.params.id })
+      .getOne()) as Stories;
+
+    res.json({
+      id,
+      name,
+      order,
+      status,
+      epicId: epics?.id,
+    });
   } catch (e) {
+    console.log(e);
     res.status(404).json({
       message: (e as Error).message,
     });
@@ -103,12 +112,12 @@ export const updateStoryWithId = async (req: Request, res: Response) => {
     throw new Error('유효한 ID 가 존재하지 않습니다.');
   }
   const { id } = req.params;
-  const { name, status, order } = req.body;
+  const { name, status, order, epicId } = req.body;
   try {
     await getConnection()
       .createQueryBuilder()
       .update(Stories)
-      .set({ name: name, status: status, order: order })
+      .set({ name: name, status: status, order: order, epics: epicId })
       .where('id = :id', { id: id })
       .execute();
 

@@ -6,7 +6,7 @@ const KanbanModalTitleWrapper = styled.div`
     text-align: center;
     margin-bottom: 40px;
     padding: 20px;
-    width: 300px;
+    width: 400px;
     font: ${({ theme }) => theme.font.bold_large}}
     ::placeholder {
       font: ${({ theme }) => theme.font.bold_large};

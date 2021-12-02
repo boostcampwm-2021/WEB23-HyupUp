@@ -25,7 +25,7 @@ const KanbanAddBtn = () => {
   const listLargestOrder = orderList.length ? Math.max(...orderList) + 1 : 0;
 
   const addStory = async () => {
-    const id = await postStory({
+    const storyId = await postStory({
       ...initialItem,
       order: listLargestOrder,
       projectId: userState.currentProjectId,
@@ -37,12 +37,12 @@ const KanbanAddBtn = () => {
           ...initialItem,
           order: listLargestOrder,
           projectId: userState.currentProjectId,
-          id: id,
+          id: storyId,
         });
       }),
     );
 
-    emitNewStory(id);
+    emitNewStory(storyId, userState.currentProjectId);
   };
 
   return (

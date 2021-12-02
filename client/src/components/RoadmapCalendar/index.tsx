@@ -1,33 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import S from '@/components/RoadmapCalendar/style';
-import { getRangeFromDate, getYMD, isSameDay, makeDayRow } from '@/lib/utils/date';
+import { addDate, getRangeFromDate, isSameDay, makeDayRow } from '@/lib/utils/date';
 import RoadmapBars from '@/components/RoadmapBars';
 import arrowIcon from '@public/icons/arrow-right.svg';
 import calendar from '@public/icons/calendar-icon.svg';
-
-const WEEK_OFFSET = 14;
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import calendarAtom, { WEEK_OFFSET } from '@/recoil/calendar/atom';
 
 const RoadmapCalendar = () => {
-  const [date, setDate] = useState(new Date());
-  const isToday = isSameDay(new Date(), date);
-  const dayRow = makeDayRow(date);
-  const dateRange = getRangeFromDate(date);
+  const [date, setDate] = useRecoilState(calendarAtom);
+  const isToday = isSameDay(new Date(), date.middle);
+  const resetDate = useResetRecoilState(calendarAtom);
+  const dayRow = makeDayRow(date.middle);
+  const dateRange = getRangeFromDate(date.middle);
 
   const moveCalendar = (isNext: boolean) => {
-    const { year, month, day } = getYMD(date);
-    const newDate = new Date(year, month, day + WEEK_OFFSET * (isNext ? 1 : -1));
-    setDate(newDate);
+    const offset = WEEK_OFFSET * (isNext ? 1 : -1);
+    setDate({
+      middle: addDate(date.middle, offset),
+      rangeFrom: addDate(date.rangeFrom, offset),
+      rangeTo: addDate(date.rangeTo, offset),
+    });
   };
 
   return (
     <S.RoadmapCalendar isToday={isToday}>
       <S.CalendarHead>
         <S.MonthYearWrapper>
-          <S.YearLabel>{date.getFullYear()}년</S.YearLabel>
-          <S.MonthLabel>{date.getMonth() + 1}월</S.MonthLabel>
+          <S.YearLabel>{date.middle.getFullYear()}년</S.YearLabel>
+          <S.MonthLabel>{date.middle.getMonth() + 1}월</S.MonthLabel>
         </S.MonthYearWrapper>
         <S.ButtonWrapper>
-          <S.CalendarButton onClick={() => setDate(new Date())}>
+          <S.CalendarButton onClick={() => resetDate()}>
             <S.Today src={calendar} alt="today" />
           </S.CalendarButton>
           <S.CalendarButton onClick={() => moveCalendar(false)}>

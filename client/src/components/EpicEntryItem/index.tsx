@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useRecoilValue } from 'recoil';
 import S from './style';
 import deleteIcon from '@public/icons/delete-icon-red.svg';
 import draggableIcon from '@public/icons/draggable.svg';
 import { EpicType } from '@/types/epic';
 import EpicEditModal from '../EpicEditModal';
 import { Modal } from '@/lib/design';
-import { deleteEpicById } from '@/lib/api/epic';
+import { updateEpicById, deleteEpicById } from '@/lib/api/epic';
 import { useSocketSend } from '@/lib/hooks';
 import { useEpicDispatch } from '@/lib/hooks/useContextHooks';
-
+import { errorMessage } from '@/lib/common/message';
+import { checkStringInput } from '@/lib/utils/bytes';
+import { isLatter, isSameDay } from '@/lib/utils/date';
+import userAtom from '@/recoil/user';
 interface EpicEntryItemProps {
   handleDragStart?: (epicId: number) => void;
   handleDrop: (epicId: number) => void;
@@ -21,9 +26,11 @@ const EpicEntryItem = ({ handleDragStart, handleDrop, epicData, isEmpty }: EpicE
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [value, setValue] = useState(epicData.name);
-  const emitDeleteEpic = useSocketSend('DELETE_EPIC');
-  const dispatchEpic = useEpicDispatch();
   const [isDragEntered, setDragEntered] = useState(false);
+  const emitDeleteEpic = useSocketSend('DELETE_EPIC');
+  const emitUpdateEpic = useSocketSend('UPDATE_EPIC_BAR');
+  const dispatchEpic = useEpicDispatch();
+  const userState = useRecoilValue(userAtom);
 
   const handleChange = (ev: React.ChangeEvent) => {
     setValue((ev.target as HTMLInputElement).value);
@@ -31,11 +38,36 @@ const EpicEntryItem = ({ handleDragStart, handleDrop, epicData, isEmpty }: EpicE
 
   const handleDelete = () => {
     deleteEpicById(epicData.id);
-    emitDeleteEpic(epicData.id);
+    emitDeleteEpic(epicData.id, userState.currentProjectId);
     dispatchEpic({
       type: 'REMOVE_EPIC',
       id: epicData.id,
     });
+  };
+
+  const handleEditSubmit = async (
+    e: React.FormEvent,
+    { startDate, endDate }: { startDate: Date; endDate: Date },
+  ) => {
+    e.preventDefault();
+    if (!value.length || !checkStringInput(value)) {
+      toast.error(errorMessage.EPIC_TITLE_LENGTH_LIMIT);
+      return;
+    }
+
+    if (isLatter(startDate, endDate) && !isSameDay(startDate, endDate)) {
+      toast.error(errorMessage.START_DATE_IS_LATTER);
+      return;
+    }
+    const updatedEpic = { ...epicData, name: value, startAt: startDate, endAt: endDate };
+    dispatchEpic({
+      type: 'UPDATE_EPIC',
+      epic: updatedEpic,
+    });
+    setShowEditModal(false);
+
+    await updateEpicById(epicData.id, updatedEpic);
+    emitUpdateEpic(epicData.id);
   };
 
   return (
@@ -86,6 +118,7 @@ const EpicEntryItem = ({ handleDragStart, handleDrop, epicData, isEmpty }: EpicE
         epicData={epicData}
         value={value}
         handleChange={handleChange}
+        handleFormSubmit={handleEditSubmit}
       />
     </>
   );

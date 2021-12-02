@@ -4,6 +4,7 @@ import Tasks from './Tasks.entity';
 import Stories from '@/Stories/Stories.entity';
 import { bodyValidator } from '@/utils/requestValidator';
 
+// FIXME: 사용하지 않는 api??
 export const getAllTasksByProject = async (req: Request, res: Response) => {
   try {
     if (!('projectName' in req.query)) {
@@ -73,10 +74,11 @@ export const updateTask = async (req: Request, res: Response) => {
 export const deleteTask = async (req: Request, res: Response) => {
   try {
     if (!req.query.id) {
-      throw Error('body is not valid');
+      throw new Error('query is not valid');
     }
     const taskRepository = getRepository(Tasks);
-    await taskRepository.delete({ id: +req.query.id });
+    const response = await taskRepository.delete({ id: +req.query.id });
+    if (!response.affected) throw new Error('id is not valid');
     res.end();
   } catch (error) {
     const message = (error as Error).message;
@@ -86,6 +88,9 @@ export const deleteTask = async (req: Request, res: Response) => {
 
 export const postTask = async (req: Request, res: Response) => {
   try {
+    if (!bodyValidator(req.body, ['name', 'status', 'userId', 'projectId', 'storyId'])) {
+      throw new Error();
+    }
     const result = await getRepository(Tasks)
       .createQueryBuilder()
       .insert()
@@ -100,7 +105,6 @@ export const postTask = async (req: Request, res: Response) => {
       .execute();
     res.json({ id: result.raw.insertId });
   } catch (error) {
-    console.log(error);
     const message = (error as Error).message;
     res.status(401).json({ message });
   }
