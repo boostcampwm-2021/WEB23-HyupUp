@@ -52,7 +52,7 @@ export const beforeAllfunction = async () => {
   );
   await connection.query(
     'INSERT INTO EPICS(NAME, START_AT, END_AT, `ORDER`, PROJECT_ID)' +
-      `VALUES('마지막 에픽', '2021-11-5 00:00:00', '2021-11-06 00:00:00', 3, 2);`,
+      `VALUES('마지막 에픽', '2021-11-5 00:00:00', '2021-11-06 00:00:00', 4, 2);`,
   );
   // 스토리
   await connection.query(
