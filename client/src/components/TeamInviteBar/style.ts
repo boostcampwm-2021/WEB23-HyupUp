@@ -32,7 +32,13 @@ const ButtonContainer = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  margin: auto auto;
+  & button {
+    width: calc(50% - 16px);
+
+    & + & {
+      margin-left: 16px;
+    }
+  }
 `;
 
 export { EmailInputBarContainer, InputBox, ButtonContainer };
