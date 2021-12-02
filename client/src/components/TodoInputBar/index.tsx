@@ -24,7 +24,7 @@ const TodoInputBar = () => {
     event.preventDefault();
     if (typeof userState.id === 'number') {
       const target = todoInput.current as HTMLInputElement;
-      checkObjectInput({ text: target.value });
+      if (!checkObjectInput({ text: target.value })) return;
       const todo = await createTodo(target.value, userState.id);
       if (todo) {
         setAllTasks((prev) => [todo, ...prev]);
