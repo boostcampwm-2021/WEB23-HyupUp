@@ -4,6 +4,7 @@ import Button from '@/lib/design/Button';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { createTodo } from '@/lib/api/todo';
 import userAtom, { allTasksSelector } from '@/recoil/user';
+import { checkObjectInput } from '@/lib/utils/bytes';
 
 const TodoInputBar = () => {
   const userState = useRecoilValue(userAtom);
@@ -23,6 +24,7 @@ const TodoInputBar = () => {
     event.preventDefault();
     if (typeof userState.id === 'number') {
       const target = todoInput.current as HTMLInputElement;
+      checkObjectInput({ text: target.value });
       const todo = await createTodo(target.value, userState.id);
       if (todo) {
         setAllTasks((prev) => [todo, ...prev]);

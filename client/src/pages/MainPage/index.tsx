@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Header from '@/layers/Header';
 import TodoInputBar from '@/components/TodoInputBar';
 import ListView from '@/layers/ListView';
 import CoworkerStatus from '@/layers/CoworkerStatus';
@@ -8,7 +7,6 @@ import CoworkerStatus from '@/layers/CoworkerStatus';
 const MainPage = () => {
   return (
     <>
-      <Header />
       <ContentContainer>
         <div>
           <TodoInputBar />
