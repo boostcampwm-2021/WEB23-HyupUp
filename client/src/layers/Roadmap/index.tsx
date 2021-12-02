@@ -30,29 +30,6 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
 
   const emitNewEpic = useSocketSend('NEW_EPIC');
   const emitUpdateEpicOrder = useSocketSend('UPDATE_EPIC_ORDER');
-  useSocketReceive('UPDATE_EPIC_ORDER', async (updatedEpicId: number) => {
-    const updatedEpic = await getEpicById(updatedEpicId);
-    if (!updatedEpic) return;
-    dispatchEpic({
-      type: 'UPDATE_EPIC',
-      epic: updatedEpic,
-    });
-  });
-  useSocketReceive('GET_EPIC', async (epicId: number) => {
-    const data = await getEpicById(epicId);
-    if (!data || data.projectId !== userState.currentProjectId) return;
-    dispatchEpic({ type: `ADD_EPIC`, epic: data });
-  });
-  useSocketReceive('DELETE_EPIC', async (epicId: number) => {
-    dispatchEpic({ type: 'REMOVE_EPIC', id: epicId });
-  });
-  useSocketReceive('UPDATE_EPIC_STORY', async (epicId: number) => {
-    const data = await getEpicById(epicId);
-    dispatchEpic({
-      type: 'UPDATE_EPIC',
-      epic: data as EpicType,
-    });
-  });
 
   const getMaxOrder = () => {
     return epicsOnProject.length ? Math.max(...epicsOnProject.map((epic) => epic.order)) : 0;
@@ -79,7 +56,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
         },
       });
       setInputVisible(false);
-      emitNewEpic(result.id);
+      emitNewEpic(result.id, userState.currentProjectId);
     } catch (e) {
       toast.error((e as Error).message);
     }

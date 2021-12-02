@@ -36,7 +36,7 @@ const EpicEntryItem = ({ handleDragStart, handleDrop, epicData, isEmpty }: EpicE
 
   const handleDelete = () => {
     deleteEpicById(epicData.id);
-    emitDeleteEpic(epicData.id);
+    emitDeleteEpic(epicData.id, currentProjectId);
     dispatchEpic({
       type: 'REMOVE_EPIC',
       id: epicData.id,

@@ -82,7 +82,7 @@ const RoadmapItem = ({
       epic: updatedEpic,
     });
     await updateEpicById(id, updatedEpic);
-    emitUpdateEpicBar(id);
+    emitUpdateEpicBar(id, currentProjectId);
   };
 
   return (

@@ -52,36 +52,36 @@ io.on('connection', (socket) => {
     });
   });
 
-  socket.on('NEW_EPIC', (epicId: number) => {
-    socket.to(socket.data.roomName).emit('GET_EPIC', epicId);
+  socket.on('NEW_EPIC', ([epicId, projectId]: number[]) => {
+    socket.to(socket.data.roomName).emit('GET_EPIC', epicId, projectId);
   });
 
-  socket.on('UPDATE_EPIC_BAR', (epicId: number) => {
-    socket.to(socket.data.roomName).emit('UPDATE_EPIC_BAR', epicId);
+  socket.on('UPDATE_EPIC_BAR', ([epicId, projectId]: number[]) => {
+    socket.to(socket.data.roomName).emit('UPDATE_EPIC_BAR', epicId, projectId);
   });
 
-  socket.on('UPDATE_EPIC_ORDER', (epicId: number) => {
-    socket.to(socket.data.roomName).emit('UPDATE_EPIC_ORDER', epicId);
+  socket.on('UPDATE_EPIC_ORDER', ([epicId, projectId]: number[]) => {
+    socket.to(socket.data.roomName).emit('UPDATE_EPIC_ORDER', epicId, projectId);
   });
 
-  socket.on('UPDATE_EPIC_STORY', (epicId: number) => {
-    socket.to(socket.data.roomName).emit('UPDATE_EPIC_STORY', epicId);
+  socket.on('UPDATE_EPIC_STORY', ([storyId, projectId]: number[]) => {
+    socket.to(socket.data.roomName).emit('UPDATE_EPIC_STORY', storyId, projectId);
   });
 
-  socket.on('DELETE_EPIC', (epicId: number) => {
-    socket.to(socket.data.roomName).emit('DELETE_EPIC', epicId);
+  socket.on('DELETE_EPIC', ([epicId, projectId]: number[]) => {
+    socket.to(socket.data.roomName).emit('DELETE_EPIC', epicId, projectId);
   });
 
-  socket.on('NEW_STORY', (storyId: number) => {
-    socket.to(socket.data.roomName).emit('NEW_STORY', storyId);
+  socket.on('NEW_STORY', ([storyId, projectId]: number[]) => {
+    socket.to(socket.data.roomName).emit('NEW_STORY', storyId, projectId);
   });
 
-  socket.on('DELETE_STORY', (storyId: number) => {
-    socket.to(socket.data.roomName).emit('DELETE_STORY', storyId);
+  socket.on('DELETE_STORY', ([storyId, projectId]: number[]) => {
+    socket.to(socket.data.roomName).emit('DELETE_STORY', storyId, projectId);
   });
 
-  socket.on('UPDATE_STORY', (storyId: number) => {
-    socket.to(socket.data.roomName).emit('UPDATE_STORY', storyId);
+  socket.on('UPDATE_STORY', ([storyId, projectId]: number[]) => {
+    socket.to(socket.data.roomName).emit('UPDATE_STORY', storyId, projectId);
   });
 
   socket.on('NEW_TASK', (userId: number) => {

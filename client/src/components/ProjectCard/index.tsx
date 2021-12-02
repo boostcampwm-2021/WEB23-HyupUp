@@ -56,7 +56,6 @@ const ProjectCard = ({ project, deleteProject }: ProjectCardProps) => {
       <Modal
         shouldConfirm
         visible={showDeleteModal}
-        onClickCancel={() => console.log('cancel')}
         onClickOk={() => deleteProject(project.id)}
         onClose={() => setShowDeleteModal(false)}
       >

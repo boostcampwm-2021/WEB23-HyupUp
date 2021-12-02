@@ -31,6 +31,9 @@ const SideBarDropDown = () => {
       }),
     );
   };
+
+  // console.log(userState.currentProjectId);
+
   useEffect(() => {
     (async () => {
       const data: ProjectData = {
