@@ -3,6 +3,7 @@ import { queryValidator } from '@/utils/requestValidator';
 import { getRepository } from 'typeorm';
 
 import Epics from './Epics.entity';
+import Projects from '@/Projects/Projects.entity';
 
 const INVALID_ID = 'invalid id';
 
@@ -15,11 +16,13 @@ export const getAllEpicsByProject = async (req: Request, res: Response) => {
     }
     const { projectId } = req.query;
     const epicRepository = getRepository(Epics);
+    const projectRepository = getRepository(Projects);
+    const project = await projectRepository.findOne({ where: { id: projectId } });
+    if (!project) throw new Error('invalid id');
     const epics = await epicRepository.find({
       relations: ['projects'],
       where: { projects: { id: +(projectId as string) } },
     });
-    if (!epics.length) throw new Error('invalid id');
     const result = epics.map((el) => ({
       id: el.id,
       name: el.name,
