@@ -31,12 +31,13 @@ const KanbanDeleteModal = ({ children }: { children: React.ReactNode }) => {
     <KanbanModalContext.Provider value={{ setShowModal, setDeleteItem }}>
       <Modal
         shouldConfirm
-        title={'스토리를 삭제하시겠습니까?'}
         visible={showModal}
         onClose={() => setShowModal(false)}
         onClickCancel={() => setShowModal(false)}
         onClickOk={deleteStory}
-      />
+      >
+        <div style={{ margin: '32px' }}>스토리를 삭제하시겠습니까?</div>
+      </Modal>
       {children}
     </KanbanModalContext.Provider>
   );
