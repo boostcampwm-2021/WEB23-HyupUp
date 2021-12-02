@@ -10,6 +10,7 @@ import userAtom from '@/recoil/user';
 import EpicPlaceholder from '@/components/EpicPlaceholder';
 import RoadmapCalendar from '@/components/RoadmapCalendar';
 import EpicEntryItem from '@/components/EpicEntryItem';
+import EpicColorInfo from '@/components/EpicColorInfo';
 import Button from '@/lib/design/Button';
 
 import { getOrderMedian } from '@/lib/utils/epic';
@@ -89,7 +90,10 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
 
   return (
     <S.Container>
-      <S.Title>프로젝트 로드맵</S.Title>
+      <S.TitleWrapper>
+        <S.Title>프로젝트 로드맵</S.Title>
+        <EpicColorInfo />
+      </S.TitleWrapper>
       <S.Content>
         <S.EpicEntry>
           {epicsOnProject.map((epic) => (
