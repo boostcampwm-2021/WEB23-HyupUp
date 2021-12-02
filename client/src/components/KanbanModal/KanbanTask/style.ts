@@ -11,16 +11,10 @@ const Styled = {
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
-    padding: 10px 40px;
+    padding: 10px 70px 10px 20px;
 
     h4 {
       padding-left: 30px;
-    }
-
-    img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
     }
 
     span {
@@ -37,6 +31,12 @@ const Styled = {
       width: 500px;
       height: 30px;
     }
+  `,
+  Profile: styled.img`
+    width: 40px;
+    height: 40px;
+    margin-right: 16px;
+    border-radius: 20px;
   `,
   MemberContainer: styled.div`
     width: 100px;
@@ -78,6 +78,8 @@ const Styled = {
 
   DeleteIcon: styled.img<{ showDelete: boolean }>`
     padding: 5px;
+    margin-right: 20px;
+
     cursor: pointer;
     opacity: ${({ showDelete }) => (showDelete ? 1 : 0)};
     transition: opacity 0.3s;
