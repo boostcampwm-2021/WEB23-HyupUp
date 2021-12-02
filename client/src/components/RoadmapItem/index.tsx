@@ -6,6 +6,7 @@ import { addDate, getDateDiff } from '@/lib/utils/date';
 import { updateEpicById } from '@/lib/api/epic';
 import { useSocketSend } from '@/lib/hooks';
 import { useRecoilValue } from 'recoil';
+import userAtom from '@/recoil/user';
 import calendarAtom from '@/recoil/calendar/atom';
 
 interface RoadmapItemProps {
@@ -36,6 +37,7 @@ const RoadmapItem = ({
   const dispatchEpic = useEpicDispatch();
   const epics = useEpicState();
   const emitUpdateEpicBar = useSocketSend('UPDATE_EPIC_BAR');
+  const userState = useRecoilValue(userAtom);
 
   useEffect(() => {
     setLeftEnd(index);
@@ -82,7 +84,7 @@ const RoadmapItem = ({
       epic: updatedEpic,
     });
     await updateEpicById(id, updatedEpic);
-    emitUpdateEpicBar(id, currentProjectId);
+    emitUpdateEpicBar(id, userState.currentProjectId);
   };
 
   return (

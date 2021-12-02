@@ -75,7 +75,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
       ...nowDraggingEpic,
       order: median,
     });
-    emitUpdateEpicOrder(nowDraggingId);
+    emitUpdateEpicOrder(nowDraggingId, userState.currentProjectId);
     dispatchEpic({
       type: 'UPDATE_EPIC',
       epic: {
