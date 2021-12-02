@@ -1,60 +1,9 @@
-import { ConnectionOptions, createConnection, getConnection } from 'typeorm';
-import { entities } from '../src';
 import app from '../app';
 import request from 'supertest';
+import { afterAllFunction, beforeAllfunction } from '.';
 
-beforeAll(async () => {
-  const dbConfig = {
-    host: process.env.DB_HOST,
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE_TEST,
-  };
-
-  const connectionOptions: ConnectionOptions = {
-    type: 'mysql',
-    synchronize: true,
-    entities: entities,
-    ...dbConfig,
-  };
-
-  const connection = await createConnection(connectionOptions);
-  await connection.synchronize();
-  await connection.query(`INSERT INTO ORGANIZATIONS(ROOM) VALUES('TEAM42');`);
-  await connection.query(`INSERT INTO PROJECTS(NAME) VALUES('HYUPUP');`);
-  await connection.query(
-    `INSERT INTO USERS(NAME, JOB, EMAIL, IMAGE_URL, ADMIN, PASSWORD, ORGANIZATION_ID)` +
-      `VALUES('hm', 'developer', 'test@test.com', 'url', 1,` +
-      `'$2b$10$e3kxJ2jBwf/o5rpNgG.rqe/fvHyPxl2UH6r16ySb18IsLEeeGMwye', 1);`,
-  );
-  await connection.query(
-    'INSERT INTO TODO(NAME, createdAT, updatedAT, STATUS, USER_ID)' +
-      `VALUES('에픽 api 테스트 작성', '2021-11-03 00:00:00', '2021-11-03 00:00:00', 0, 1);`,
-  );
-  await connection.query(
-    'INSERT INTO TODO(NAME, createdAt, updatedAt, STATUS, USER_ID)' +
-      `VALUES('스토리 작성', '2021-11-02 00:00:00', '2021-11-04 00:00:00', 0, 1);`,
-  );
-  await connection.query(
-    'INSERT INTO TODO(NAME, createdAt, updatedAt, STATUS, USER_ID)' +
-      `VALUES('네트워킹 데이 준비', '2021-11-04 00:00:00', '2021-11-06 00:00:00', 0, 1);`,
-  );
-  await connection.query(
-    'INSERT INTO TODO(NAME, createdAt, updatedAt, STATUS, USER_ID)' +
-      `VALUES('부스트캠프 수료', '2021-11-04 00:00:00', '2021-11-06 00:00:00', 0,1);`,
-  );
-});
-
-afterAll(async () => {
-  const connection = await getConnection();
-  await connection.query(`DELETE FROM TODO;`);
-  await connection.query(`DELETE FROM USERS;`);
-  await connection.query(`DELETE FROM ORGANIZATIONS;`);
-  await connection.query('ALTER TABLE ORGANIZATIONS AUTO_INCREMENT = 1');
-  await connection.query('ALTER TABLE USERS AUTO_INCREMENT = 1');
-  await connection.query('ALTER TABLE TODO AUTO_INCREMENT = 1');
-  await connection.close();
-});
+beforeAll(beforeAllfunction);
+afterAll(afterAllFunction);
 
 let Cookies = '';
 beforeEach((done) => {
@@ -77,7 +26,7 @@ describe('create TODO', () => {
       .set('Cookie', Cookies)
       .send({ name: '안녕하세요', userId: 1 });
     expect(res.status).toEqual(201);
-    expect(res.body.id).toBe(5);
+    expect(res.body.id).toBe(6);
     expect(res.body.name).toBe('안녕하세요');
     expect(res.body.status).toBe(false);
   });
@@ -96,7 +45,7 @@ describe('create TODO', () => {
     const res = await request(app)
       .post('/api/todo')
       .set('Cookie', Cookies)
-      .send({ name: '안녕하세요', userId: 2 });
+      .send({ name: '안녕하세요', userId: 1000 });
     expect(res.status).toBe(400);
   });
 });

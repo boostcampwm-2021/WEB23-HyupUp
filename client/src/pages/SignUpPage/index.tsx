@@ -25,7 +25,7 @@ const SignUpPage = ({ token }: { token: string }) => {
     password: '',
     checkPassword: '',
     organization: room,
-    imageURL: '',
+    imageURL: 'Boy0',
   });
   const setUserState = useSetRecoilState(userAtom);
 
