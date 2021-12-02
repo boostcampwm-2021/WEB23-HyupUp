@@ -59,7 +59,7 @@ const ProjectCard = ({ project, deleteProject }: ProjectCardProps) => {
         onClickOk={() => deleteProject(project.id)}
         onClose={() => setShowDeleteModal(false)}
       >
-        해당 프로젝트를 삭제하시겠습니까?
+        <div style={{ margin: '32px' }}>해당 프로젝트를 삭제하시겠습니까?</div>
       </Modal>
       <ProjectModal
         showProjectModal={showProjectModal}
