@@ -9,10 +9,10 @@ import { Modal } from '@/lib/design';
 import { useSocketSend } from '@/lib/hooks';
 import TaskItemWithoutUser from '@/components/KanbanModal/TaskItemWithoutUser';
 import TaskItemWithUser from '@/components/KanbanModal/TaskItemWithUser';
-import deleteIcon from '@public/icons/delete-icon-red.svg';
 import { checkStringInput } from '@/lib/utils/bytes';
 import { errorMessage } from '@/lib/common/message';
 import { toast } from 'react-toastify';
+import deleteIcon from '@public/icons/cancel-icon.svg';
 
 type handleDeleteType = (arg: number) => void;
 interface KanbanTaskProps {
@@ -62,7 +62,16 @@ const KanbanTask = ({ task, handleDelete }: KanbanTaskProps) => {
   };
 
   return (
-    <Styled.KanbanTaskWrapper>
+    <Styled.KanbanTaskWrapper
+      onMouseEnter={() => setShowDelete(true)}
+      onMouseLeave={() => setShowDelete(false)}
+    >
+      <Styled.DeleteIcon
+        showDelete={showDelete}
+        src={deleteIcon}
+        alt="deleteicon"
+        onClick={() => setShowDeleteModal(true)}
+      />
       <input
         type="text"
         onBlur={handleInput}
@@ -74,14 +83,6 @@ const KanbanTask = ({ task, handleDelete }: KanbanTaskProps) => {
       ) : (
         <TaskItemWithoutUser handleUserSelect={handleUserSelect} />
       )}
-      <Styled.DeleteIcon
-        onMouseEnter={() => setShowDelete(true)}
-        onMouseLeave={() => setShowDelete(false)}
-        showDelete={showDelete}
-        src={deleteIcon}
-        alt="deleteicon"
-        onClick={() => setShowDeleteModal(true)}
-      />
       <Modal
         shouldConfirm
         visible={showDeleteModal}

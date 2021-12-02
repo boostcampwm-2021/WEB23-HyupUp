@@ -24,7 +24,7 @@ const TaskItemWithUser = ({ taskState, task, handleUserSelect }: TaskItemWithUse
       <DropDown
         Title={
           <p>
-            <img
+            <Styled.Profile
               className="userImage"
               src={
                 avatar[`${taskState.userImage ? taskState.userImage : task.userImage}` as ImageType]
