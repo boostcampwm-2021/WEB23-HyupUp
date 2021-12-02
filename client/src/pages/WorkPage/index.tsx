@@ -7,7 +7,6 @@ import Roadmap from '@/layers/Roadmap';
 import Kanban from '@/layers/Kanban';
 import Backlog from '@/layers/Backlog';
 import useTabs from '@/lib/hooks/useTabs';
-import Header from '@/layers/Header';
 
 import roadmap from '@public/icons/calendar-icon.svg';
 import board from '@public/icons/board-icon.svg';
@@ -163,7 +162,6 @@ const WorkPage = () => {
 
   return (
     <>
-      <Header />
       <S.Container>
         <SideBar entries={sideBarEntries} changeTab={changeTab} needDropDown={true}></SideBar>
         {currentTab}

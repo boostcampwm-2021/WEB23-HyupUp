@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { RoadmapBarsStatus } from '@/types/epic';
 import S from './style';
 import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
-import { addDate } from '@/lib/utils/date';
+import { addDate, getDateDiff } from '@/lib/utils/date';
 import { updateEpicById } from '@/lib/api/epic';
 import { useSocketSend } from '@/lib/hooks';
 import { useRecoilValue } from 'recoil';
-import userAtom from '@/recoil/user';
+import calendarAtom from '@/recoil/calendar/atom';
 
 interface RoadmapItemProps {
   id: number;
@@ -31,8 +31,7 @@ const RoadmapItem = ({
   const [rightEnd, setRightEnd] = useState(index + length);
   const [isDragFront, setIsDragFront] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [initialIndex, setinItialIndex] = useState({ left: index, right: index + length });
-  const { currentProjectId } = useRecoilValue(userAtom);
+  const [initialIndex, setInitialIndex] = useState({ left: index, right: index + length });
 
   const dispatchEpic = useEpicDispatch();
   const epics = useEpicState();
@@ -41,6 +40,7 @@ const RoadmapItem = ({
   useEffect(() => {
     setLeftEnd(index);
     setRightEnd(index + length);
+    setInitialIndex({ left: index, right: index + length });
   }, [index, length]);
 
   const startDragging = (isFront: boolean) => {
@@ -50,7 +50,11 @@ const RoadmapItem = ({
 
   const handleDragEnter = (e: React.DragEvent) => {
     if (!isDragging) return;
-    const newIndex = +(e.target as HTMLElement).dataset.index!;
+    const target = e.target as HTMLElement;
+    const newIndexString = target.dataset.index;
+    if (!newIndexString) return;
+
+    const newIndex = +newIndexString;
     if (isDragFront && newIndex <= rightEnd) setLeftEnd(newIndex);
     else if (!isDragFront && newIndex >= leftEnd) setRightEnd(newIndex);
   };
@@ -60,15 +64,17 @@ const RoadmapItem = ({
     e.stopPropagation();
     setIsDragging(false);
 
-    const offset = isDragFront ? initialIndex.left - leftEnd : rightEnd - initialIndex.right;
-    setinItialIndex({ left: leftEnd, right: rightEnd });
-    const nowDraggingEpic = epics.find((epic) => epic.id === id)!;
+    const offset = isDragFront ? leftEnd - initialIndex.left : rightEnd - initialIndex.right;
+    if (offset === 0) return;
+
+    setInitialIndex({ left: leftEnd, right: rightEnd });
+    const nowDraggingEpic = epics.find((epic) => epic.id === id);
+    if (!nowDraggingEpic) return;
+
     const updatedEpic = {
       ...nowDraggingEpic,
-      startAt: isDragFront
-        ? addDate(nowDraggingEpic.startAt, offset * -1)
-        : nowDraggingEpic.startAt,
-      endAt: isDragFront ? nowDraggingEpic.endAt : addDate(nowDraggingEpic.endAt, offset),
+      startAt: addDate(nowDraggingEpic.startAt, offset * (isDragFront ? 1 : 0)),
+      endAt: addDate(nowDraggingEpic.endAt, offset * (!isDragFront ? 1 : 0)),
     };
 
     dispatchEpic({

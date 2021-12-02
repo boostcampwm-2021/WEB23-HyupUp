@@ -26,6 +26,9 @@ export const DELETE_USER = '사용자 삭제에 실패했습니다.';
 
 export const EPIC_DRAG_OUT_OF_PLACE = '드래그 앤 드랍 영역을 벗어났습니다. 다시 시도해주세요.';
 export const START_DATE_IS_LATTER = '시작일이 종료일보다 뒤에 있을수 없습니다.';
+export const EPIC_TITLE_LENGTH_LIMIT =
+  '에픽 제목이 올바르지 않습니다. 1자 이상 255자 이내로 입력해주세요.';
+
 export const SEND_EMAIL = '이메일 발송에 실패했습니다.';
 export const SEND_EMAIL_SAME = '이미 존재하는 회원입니다.';
 export const NULL_EMAIL = '이메일을 입력해주세요';
@@ -66,6 +69,7 @@ export default {
   DELETE_USER,
   EPIC_DRAG_OUT_OF_PLACE,
   START_DATE_IS_LATTER,
+  EPIC_TITLE_LENGTH_LIMIT,
   SEND_EMAIL,
   SEND_EMAIL_SAME,
   NULL_EMAIL,

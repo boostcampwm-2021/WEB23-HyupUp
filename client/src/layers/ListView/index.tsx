@@ -8,7 +8,11 @@ import { updateTodo, deleteTodo } from '@/lib/api/todo';
 import ListViewHeader from '@/components/ListViewHeader';
 import ListViewItem from '@/components/ListViewItem';
 
-import userAtom, { privateTasksSelector, projectTasksSelector } from '@/recoil/user';
+import userAtom, {
+  privateTasksSelector,
+  projectTasksSelector,
+  taskOffsetSelector,
+} from '@/recoil/user';
 import { allTasksSelector } from '@/recoil/user/selector';
 import { getAlltasks } from '@/lib/api/user';
 import { Spinner } from '@/lib/design';
@@ -27,25 +31,30 @@ const ListView = () => {
   // infinite Scroll
   const [isScrollEnd, setIsScrollEnd] = useState(false);
   const [ref, inView] = useInView();
-  const [offset, setOffset] = useState(0);
+  const [taskOffset, setTaskOffset] = useRecoilState(taskOffsetSelector);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (inView && !loading) {
-      setOffset((prev) => prev + 10);
+      setTaskOffset((prev) => prev + 10);
     }
   }, [inView]);
   useEffect(() => {
+    if (taskOffset === -1) {
+      setIsScrollEnd(true);
+      return;
+    }
     (async () => {
       setLoading(true);
-      const newTasks = await getAlltasks(userState.id!, offset);
+      const newTasks = await getAlltasks(userState.id!, taskOffset);
       setAllTasks((prev) => [...prev, ...newTasks]);
       if (newTasks.length < 10) {
         setIsScrollEnd(true);
+        setTaskOffset(-1);
         return;
       }
       setLoading(false);
     })();
-  }, [offset, setAllTasks, userState.id]);
+  }, [setAllTasks, userState.id, taskOffset, setIsScrollEnd]);
 
   const handleListState = (event: React.MouseEvent) => {
     const target = event.target as HTMLElement;
