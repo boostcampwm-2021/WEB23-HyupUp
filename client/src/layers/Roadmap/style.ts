@@ -17,6 +17,10 @@ const S = {
     font: ${({ theme }) => theme.font.body_regular};
     color: ${({ theme }) => theme.color.gray400};
   `,
+  TitleWrapper: styled.div`
+    display: flex;
+    justify-content: space-between;
+  `,
   Title: styled.h2`
     margin-bottom: 16px;
 
