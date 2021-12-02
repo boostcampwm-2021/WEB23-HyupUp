@@ -106,6 +106,9 @@ const ListView = () => {
     <Styled.Container>
       <ListViewHeader listState={listState} handleListState={handleListState} />
       <Styled.ItemWrapper>
+        {!allTasks.length && (
+          <Styled.EmptyWrapper>할 일을 추가하시거나 Task를 할당해주세요.</Styled.EmptyWrapper>
+        )}
         {renderTasks.map((task, i) => (
           <ListViewItem
             task={task}
