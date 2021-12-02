@@ -2,9 +2,9 @@ import * as React from 'react';
 import { useRecoilValue } from 'recoil';
 import { toast } from 'react-toastify';
 import S from './style';
-import { createEpic, getEpicById, updateEpicById } from '@/lib/api/epic';
+import { createEpic, updateEpicById } from '@/lib/api/epic';
 import { useEpicDispatch, useEpicState } from '@/lib/hooks/useContextHooks';
-import { useSocketReceive, useSocketSend } from '@/lib/hooks';
+import { useSocketSend } from '@/lib/hooks';
 import userAtom from '@/recoil/user';
 
 import EpicPlaceholder from '@/components/EpicPlaceholder';
@@ -15,7 +15,6 @@ import Button from '@/lib/design/Button';
 
 import { getOrderMedian } from '@/lib/utils/epic';
 import { errorMessage } from '@/lib/common/message';
-import { EpicType } from '@/types/epic';
 
 interface RoadmapProps {
   projectId?: number;
