@@ -67,7 +67,7 @@ const EpicEntryItem = ({ handleDragStart, handleDrop, epicData, isEmpty }: EpicE
     setShowEditModal(false);
 
     await updateEpicById(epicData.id, updatedEpic);
-    emitUpdateEpic(epicData.id);
+    emitUpdateEpic(epicData.id, userState.currentProjectId);
   };
 
   return (
