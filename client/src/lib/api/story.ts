@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { StoryType } from '@/types/story';
-import { errorMessage } from '../common/message';
+import { errorMessage, warningMessage } from '../common/message';
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/stories',
@@ -37,7 +37,11 @@ export const postStory = async ({ status, name, order, projectId, epicId }: Stor
     });
     return result.data.id;
   } catch (e) {
-    toast.error(errorMessage.CREATE_STORY);
+    if ((e as AxiosError).response?.status === 401) {
+      toast.warn(warningMessage.CREATE_STORY_WITHOUT_AUTH);
+    } else {
+      toast.error(errorMessage.CREATE_STORY);
+    }
   }
 };
 

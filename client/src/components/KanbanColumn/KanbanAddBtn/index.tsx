@@ -30,6 +30,7 @@ const KanbanAddBtn = () => {
       order: listLargestOrder,
       projectId: userState.currentProjectId,
     });
+    if (storyId === undefined) return;
 
     setStoryList((prev) =>
       produce(prev, (draft) => {
@@ -41,8 +42,6 @@ const KanbanAddBtn = () => {
         });
       }),
     );
-
-    emitNewStory(storyId, userState.currentProjectId);
   };
 
   return (
