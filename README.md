@@ -33,7 +33,7 @@
 
 [**리액트와 불변성**](https://oasis-pocket-331.notion.site/Immer-js-f6c3936bf589468db0aa4fa06fc91c1d) by **[@rudy3091](https://github.com/rudy3091)**
 
-**[Recoil로의 마이그레이션](https://oasis-pocket-331.notion.site/Recoil-c876906b6cb44e53b776dd7f592777c1)** by **[@haesoo9410](https://github.com/haesoo9410)**
+**[Recoil로의 마이그레이션](https://haesoo9410.tistory.com/330?category=974679)** by **[@haesoo9410](https://github.com/haesoo9410)**
 
 **[Redis 도입 배경](https://oasis-pocket-331.notion.site/Redis-7ae574d796004381914a7334497e1a1b)** by **[@ChanHoLee275](https://github.com/ChanHoLee275)** 
 
@@ -64,21 +64,21 @@ HyupUp과 함께라면 신속하고 효율적인 협업으로 **칼퇴**를 하�
 - 드래그 앤 드랍으로 진행기간을 조정
 - 하위 스토리 항목과 연동되어 진행상태를 시각적으로 확인가능
 
-### 📬 메일링 서비스
-
-- 조직의 구성원을 쉽게 초대하기 위한 서비스
-- 이메일에 포함된 링크를 클릭하면, 해당 조직으로 회원가입 진행
-
 ### 🗂️ 프로젝트 스토리 관리
 
 - Drag and Drop API 를 활용한 스토리 진행 상황 관리
 - 소켓을 활용한 프로젝트 팀원간 진행 상황 공유
 - 스토리의 진행 상황을 반영한 에픽 상태 변경
 
+### 📬 메일링 서비스
+
+- 조직의 구성원을 쉽게 초대하기 위한 서비스
+- 이메일에 포함된 링크를 클릭하면, 해당 조직으로 회원가입 진행
+
 
 
 ## 기술 스택
-<img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/5651fe79-310e-4847-b7da-25ee7e4583d4/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20211123%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211123T101053Z&X-Amz-Expires=86400&X-Amz-Signature=21123c83ee6d3c6bb73fc8f5ad7b628e8ea83400f5b9ef89db9633840c1b7599&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject" />
+![image](https://user-images.githubusercontent.com/71266602/144960113-67c6269a-a7f9-4a85-ab92-a6755543ead6.png)
 
 ## Documents
 - [API](https://oasis-pocket-331.notion.site/API-4cdb0639248d4a13baa68d198248c99c)
