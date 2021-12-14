@@ -1,17 +1,11 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { setupCache } from 'axios-cache-adapter';
 import { errorMessage } from '@/lib/common/message';
 import { BackLogTaskProps } from '@/types/task';
-
-const cache = setupCache({
-  maxAge: 5 * 1000,
-});
 
 const instance = axios.create({
   baseURL: process.env.SERVER_URL + '/api/tasks',
   withCredentials: true,
-  adapter: cache.adapter,
 });
 
 export const getTasksByStoryId = async (storyId: number) => {
