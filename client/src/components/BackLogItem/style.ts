@@ -38,45 +38,9 @@ const ToggleButton = styled.button`
   right: 10px;
 `;
 
-const TaskContainer = styled.ul<IsClick>`
-  display: ${({ click }) => (click ? 'block' : 'none')};
-  animation-duration: 0.3s;
-  animation-name: slidein;
-  @keyframes slidein {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0px);
-    }
-  }
-`;
-
-const UndefinedItemContainer = styled.ul`
-  width: 705px;
-  height: 70px;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-
-  background-color: ${({ theme }) => theme.color.gray200};
-`;
-
-const UndefinedText = styled.span`
-  font: ${({ theme }) => theme.font.body_regular};
-`;
-
 export default {
   ItemContainer,
   StoryText,
   ToggleImg,
   ToggleButton,
-  TaskContainer,
-  UndefinedItemContainer,
-  UndefinedText,
 };
