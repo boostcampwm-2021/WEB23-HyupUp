@@ -33,11 +33,7 @@ const WorkPage = () => {
   const setStoryList = useSetRecoilState(storyListAtom);
   const userState = useRecoilValue(userAtom);
 
-  const tabs = [
-    <Roadmap key={0} projectId={user?.currentProjectId} />,
-    <Kanban key={1} />,
-    <Backlog key={2} />,
-  ];
+  const tabs = [<Roadmap key={0} />, <Kanban key={1} />, <Backlog key={2} />];
   const { currentIndex, currentTab, changeTab } = useTabs(0, tabs);
 
   const sideBarEntries = [
