@@ -16,11 +16,7 @@ import Button from '@/lib/design/Button';
 import { getOrderMedian } from '@/lib/utils/epic';
 import { errorMessage } from '@/lib/common/message';
 
-interface RoadmapProps {
-  projectId?: number;
-}
-
-const Roadmap = ({ projectId }: RoadmapProps) => {
+const Roadmap = () => {
   const [inputVisible, setInputVisible] = React.useState(false);
   const [nowDraggingId, setNowDraggingId] = React.useState(0);
   const userState = useRecoilValue(userAtom);
@@ -40,6 +36,7 @@ const Roadmap = ({ projectId }: RoadmapProps) => {
     { startDate, endDate }: { startDate: Date; endDate: Date },
   ) => {
     try {
+      const projectId = userState.currentProjectId;
       if (!projectId) throw new Error(errorMessage.GET_PROJECT);
       const result = await createEpic(projectId, value, Math.ceil(getMaxOrder() + 1));
       if (!result) return;
