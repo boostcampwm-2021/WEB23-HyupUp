@@ -13,8 +13,8 @@ import { SocketContext } from '@/contexts/socketContext';
  */
 function useSocketReceive(
   channel: string,
-  dependency: any,
   onReceive: (...payload: any[]) => void,
+  dependency: any[] = [],
 ) {
   const { connection } = React.useContext(SocketContext);
 
@@ -24,7 +24,7 @@ function useSocketReceive(
     return () => {
       connection.off(channel, onReceive);
     };
-  }, [dependency]);
+  }, dependency);
 }
 
 export default useSocketReceive;
