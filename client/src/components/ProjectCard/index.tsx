@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { toast } from 'react-toastify';
 
@@ -24,7 +24,7 @@ const ProjectCard = ({ project, deleteProject }: ProjectCardProps) => {
   const [userState, setUserState] = useRecoilState(userAtom);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showProjectModal, setShowProjectModal] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
   const openModalHandler = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
     if (!userState.admin) {
@@ -44,7 +44,7 @@ const ProjectCard = ({ project, deleteProject }: ProjectCardProps) => {
       toast.warn(warningMessage.MOVE_PROJECT);
       return;
     }
-    history.push('/work', project);
+    navigate('/work', { state: project });
   };
   return (
     <Styled.CardWrapper>
