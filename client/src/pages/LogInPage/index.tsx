@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSetRecoilState } from 'recoil';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '@/lib/design/Button';
 import { Styled } from './style';
@@ -11,11 +11,11 @@ import { UserState } from '@/contexts/userContext';
 import userAtom from '@/recoil/user';
 
 const LogInPage = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const setUserState = useSetRecoilState(userAtom);
 
   const onClickSignIn = () => {
-    history.push('/signup');
+    navigate('/signup');
   };
 
   const onClickSudoSignIn = async () => {

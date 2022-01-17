@@ -9,7 +9,7 @@ const Header = () => {
     <Styled.header>
       <Logo to="/" />
       <Styled.iconList>
-        <PageIcon exact to="/" name="home" />
+        <PageIcon to="/" name="home" />
         <PageIcon to="/work" name="work" />
         <PageIcon to="/setting" name="setting" />
       </Styled.iconList>
