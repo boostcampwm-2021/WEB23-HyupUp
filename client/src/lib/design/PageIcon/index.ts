@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
 import home from '@public/icons/home-icon.svg';
 import work from '@public/icons/work-icon.svg';
 import setting from '@public/icons/setting-icon.svg';
 import homeActive from '@public/icons/home-active-icon.svg';
 import workActive from '@public/icons/work-active-icon.svg';
 import settingActive from '@public/icons/setting-active-icon.svg';
+import Link from '@/lib/common/link/Link';
 
 interface PageProps {
   name: 'home' | 'work' | 'setting';
@@ -27,7 +27,7 @@ const pageName: PageName = {
 /**
  * @property {string} name - 'home' | 'work' | 'setting'
  */
-export const PageIcon = styled(NavLink)<PageProps>`
+export const PageIcon = styled(Link)<PageProps>`
   display: inline-block;
 
   width: 55px;
