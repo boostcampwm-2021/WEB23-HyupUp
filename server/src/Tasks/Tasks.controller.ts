@@ -38,6 +38,7 @@ export const getTasksByStoryId = async (req: Request, res: Response) => {
       relations: ['users'],
       where: { stories: { id: +req.params.id } },
     });
+
     res.status(200).json(
       tasks.map((el) => ({
         id: el.id,
@@ -63,6 +64,7 @@ export const updateTask = async (req: Request, res: Response) => {
       name: req.body.name,
       status: req.body.status,
       users: req.body.userId,
+      projects: req.body.projectId,
     });
     res.end();
   } catch (error) {
