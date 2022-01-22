@@ -82,7 +82,8 @@ const EpicEntryItem = ({ handleDragStart, handleDrop, epicData, isEmpty }: EpicE
         onDragOver={(e) => e.preventDefault()}
         onDragEnter={() => setDragEntered(true)}
         onDragLeave={() => setDragEntered(false)}
-        onDrop={() => {
+        onDrop={(e) => {
+          e.stopPropagation();
           setDragEntered(false);
           handleDrop(epicData.order);
         }}

@@ -20,6 +20,7 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --progress",
+    "dev:bundle": "BUNDLE=true webpack-dev-server --progress",
     "build": "webpack --mode=production",
     "storybook": "start-storybook -s ./public -p 9001"
   },

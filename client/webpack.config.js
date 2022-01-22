@@ -3,6 +3,27 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Dotenv = require('dotenv-webpack');
 
+const loadPlugin = () => {
+  const plugins = [
+    new HtmlWebpackPlugin({
+      template: '/public/index.html',
+      favicon: 'public/favicon.ico',
+      minify:
+        process.env.NODE_ENV === 'production'
+          ? {
+              collapseWhitespace: true,
+              removeComments: true,
+            }
+          : false,
+    }),
+    new Dotenv(),
+  ];
+
+  const showBundle = !!process.env.BUNDLE;
+  if (process.env.BUNDLE) plugins.push(new BundleAnalyzerPlugin());
+  return plugins;
+};
+
 module.exports = {
   mode: 'development',
 
@@ -59,19 +80,5 @@ module.exports = {
     clean: true,
   },
 
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: '/public/index.html',
-      favicon: 'public/favicon.ico',
-      minify:
-        process.env.NODE_ENV === 'production'
-          ? {
-              collapseWhitespace: true,
-              removeComments: true,
-            }
-          : false,
-    }),
-    new BundleAnalyzerPlugin(),
-    new Dotenv(),
-  ],
+  plugins: loadPlugin(),
 };
