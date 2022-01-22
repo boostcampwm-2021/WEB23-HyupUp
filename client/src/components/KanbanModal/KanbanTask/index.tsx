@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import Styled from './style';
-import { useInput } from '@/lib/hooks';
-import { updateTask } from '@/lib/api/task';
 import { useRecoilValue } from 'recoil';
 import { userListAtom } from '@/recoil/user';
-import { KanbanTaskType } from '@/types/story';
-import { Modal } from '@/lib/design';
-import { useSocketSend } from '@/lib/hooks';
+import userAtom from '@/recoil/user';
+
 import TaskItemWithoutUser from '@/components/KanbanModal/TaskItemWithoutUser';
 import TaskItemWithUser from '@/components/KanbanModal/TaskItemWithUser';
+import { Modal } from '@/lib/design';
+
+import { updateTask } from '@/lib/api/task';
+import { useInput } from '@/lib/hooks';
+import { useSocketSend } from '@/lib/hooks';
 import { checkStringInput } from '@/lib/utils/bytes';
+
+import { KanbanTaskType } from '@/types/story';
 import { errorMessage } from '@/lib/common/message';
 import { toast } from 'react-toastify';
 import deleteIcon from '@public/icons/cancel-icon.svg';
@@ -26,6 +30,7 @@ const KanbanTask = ({ task, handleDelete }: KanbanTaskProps) => {
   const [showDelete, setShowDelete] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const userListState = useRecoilValue(userListAtom);
+  const userState = useRecoilValue(userAtom);
   const userListWithId = userListState.map((value) => {
     return { ...value, id: value.index };
   });
@@ -38,7 +43,13 @@ const KanbanTask = ({ task, handleDelete }: KanbanTaskProps) => {
       return;
     }
 
-    await updateTask(taskState.id as number, value, false, taskState.userId);
+    await updateTask(
+      taskState.id as number,
+      value,
+      false,
+      taskState.userId,
+      userState.currentProjectId,
+    );
     if (taskState.userId) emitNewTask(taskState.userId);
     setTask((prev) => ({
       ...prev,
@@ -51,7 +62,13 @@ const KanbanTask = ({ task, handleDelete }: KanbanTaskProps) => {
     if (target.tagName !== 'LI' || !taskState) return;
     const selectedUser = userListWithId.find((v) => v.index === target.value);
     if (!selectedUser) return;
-    await updateTask(Number(taskState.id), value, false, selectedUser.id);
+    await updateTask(
+      Number(taskState.id),
+      value,
+      false,
+      selectedUser.id,
+      userState.currentProjectId,
+    );
     emitNewTask(selectedUser.id);
     setTask((prev) => ({
       ...prev,
