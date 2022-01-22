@@ -1,8 +1,8 @@
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import logo from '@public/hyupup-logo.svg';
+import Link from '@/lib/common/link/Link';
 
-const Logo = styled(NavLink)`
+const Logo = styled(Link)`
   display: block;
   width: 165px;
   height: 70px;

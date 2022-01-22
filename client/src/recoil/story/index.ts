@@ -1,5 +1,5 @@
 import storyListAtom from '@/recoil/story/atom';
-import { storyState } from '@/recoil/story/selector';
+import { storyState, tasksSelector } from '@/recoil/story/selector';
 
-export { storyState };
+export { storyState, tasksSelector };
 export default storyListAtom;

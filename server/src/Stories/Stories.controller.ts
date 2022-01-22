@@ -54,7 +54,6 @@ export const getStoryById = async (req: Request, res: Response) => {
       epicId: epics?.id,
     });
   } catch (e) {
-    console.log(e);
     res.status(404).json({
       message: (e as Error).message,
     });
@@ -63,7 +62,6 @@ export const getStoryById = async (req: Request, res: Response) => {
 
 export const postStory = async (req: Request, res: Response) => {
   try {
-    //TODO 생성 후 생성 결과를 반환하도록 query 문 작성
     const result = await getRepository(Stories)
       .createQueryBuilder()
       .insert()
@@ -79,9 +77,9 @@ export const postStory = async (req: Request, res: Response) => {
 
     res.json({ id: result.raw.insertId });
   } catch (e) {
-    res.status(400).json({
-      message: (e as Error).message,
-    });
+    const err = e as Error;
+    if (req.body.projectId === 0) res.status(401).json({ message: err.message });
+    else res.status(400).json({ message: err.message });
   }
 };
 

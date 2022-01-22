@@ -5,14 +5,13 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.24.0",
-    "axios-cache-adapter": "^2.7.3",
     "dotenv-webpack": "^7.0.3",
     "immer": "^9.0.6",
     "jwt-decode": "^3.1.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-intersection-observer": "^8.32.5",
-    "react-router-dom": "^5.3.0",
+    "react-intersection-observer": "^8.33.1",
+    "react-router-dom": "^6.2.1",
     "react-toastify": "^8.1.0",
     "recoil": "^0.5.2",
     "socket.io-client": "^4.3.2",
@@ -65,6 +64,7 @@
     "react-recoil-hooks-testing-library": "^0.1.0",
     "style-loader": "^3.3.1",
     "webpack": "^5.61.0",
+    "webpack-bundle-analyzer": "^4.5.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.4.0"
   }

@@ -33,11 +33,7 @@ const WorkPage = () => {
   const setStoryList = useSetRecoilState(storyListAtom);
   const userState = useRecoilValue(userAtom);
 
-  const tabs = [
-    <Roadmap key={0} projectId={user?.currentProjectId} />,
-    <Kanban key={1} />,
-    <Backlog key={2} />,
-  ];
+  const tabs = [<Roadmap key={0} />, <Kanban key={1} />, <Backlog key={2} />];
   const { currentIndex, currentTab, changeTab } = useTabs(0, tabs);
 
   const sideBarEntries = [
@@ -48,7 +44,6 @@ const WorkPage = () => {
 
   useSocketReceive(
     'UPDATE_EPIC_BAR',
-    userState.currentProjectId,
     async (epicId: number, projectId: number) => {
       if (projectId !== userState.currentProjectId) return;
       const updatedEpic = await getEpicById(epicId);
@@ -58,11 +53,11 @@ const WorkPage = () => {
         epic: updatedEpic,
       });
     },
+    [userState.currentProjectId],
   );
 
   useSocketReceive(
     'UPDATE_EPIC_ORDER',
-    userState.currentProjectId,
     async (updatedEpicId: number, projectId: number) => {
       if (projectId !== userState.currentProjectId) return;
       const updatedEpic = await getEpicById(updatedEpicId);
@@ -72,31 +67,31 @@ const WorkPage = () => {
         epic: updatedEpic,
       });
     },
+    [userState.currentProjectId],
   );
 
   useSocketReceive(
     'GET_EPIC',
-    userState.currentProjectId,
     async (epicId: number, projectId: number) => {
       if (userState.currentProjectId !== projectId) return;
       const data = await getEpicById(epicId);
       if (!data) return;
       dispatchEpic({ type: `ADD_EPIC`, epic: data });
     },
+    [userState.currentProjectId],
   );
 
   useSocketReceive(
     'DELETE_EPIC',
-    userState.currentProjectId,
     async (epicId: number, projectId: number) => {
       if (userState.currentProjectId !== projectId) return;
       dispatchEpic({ type: 'REMOVE_EPIC', id: epicId });
     },
+    [userState.currentProjectId],
   );
 
   useSocketReceive(
     'UPDATE_EPIC_STORY',
-    userState.currentProjectId,
     async (storyId: number, projectId: number) => {
       if (userState.currentProjectId !== projectId) return;
       const data = await getStoryById(storyId);
@@ -108,33 +103,33 @@ const WorkPage = () => {
         }),
       );
     },
+    [userState.currentProjectId],
   );
 
   useSocketReceive(
     'NEW_STORY',
-    userState.currentProjectId,
     async (storyId: number, projectId: number) => {
       if (userState.currentProjectId !== projectId) return;
       const data = await getStoryById(storyId);
       if (!data) return;
       setStoryList((prev) => produce(prev, (draft) => [...draft, data as StoryType]));
     },
+    [userState.currentProjectId],
   );
 
   useSocketReceive(
     'DELETE_STORY',
-    userState.currentProjectId,
     async (storyId: number, projectId: number) => {
       if (userState.currentProjectId !== projectId) return;
       setStoryList((prev) =>
         produce(prev, (draft) => draft.filter((story) => story.id !== storyId)),
       );
     },
+    [userState.currentProjectId],
   );
 
   useSocketReceive(
     'UPDATE_STORY',
-    userState.currentProjectId,
     async (storyId: number, projectId: number) => {
       if (userState.currentProjectId !== projectId) return;
       const data = await getStoryById(storyId);
@@ -145,6 +140,7 @@ const WorkPage = () => {
         ),
       );
     },
+    [userState.currentProjectId],
   );
 
   React.useEffect(() => {

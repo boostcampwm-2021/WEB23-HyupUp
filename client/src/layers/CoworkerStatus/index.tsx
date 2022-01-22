@@ -8,7 +8,7 @@ import { useRecoilValue } from 'recoil';
 import userAtom from '@/recoil/user';
 import * as avatar from '@/lib/common/avatar';
 import { ImageType } from '@/types/image';
-import useSocketReceiveUser from '@/lib/hooks/useSocketReceiveUser';
+import useSocketReceive from '@/lib/hooks/useSocketReceive';
 
 interface UserStatus extends UserProfile {
   status: boolean;
@@ -25,17 +25,17 @@ const CoworkerStatus = () => {
   const [users, setUsers] = useState<Array<UserProfile>>([]);
   const userState = useRecoilValue(userAtom);
 
-  useSocketReceiveUser('LOGIN_CALLBACK', (userInfo: Array<UserSocketInstance>) => {
+  useSocketReceive('LOGIN_CALLBACK', (userInfo: Array<UserSocketInstance>) => {
     if (userInfo.length === 0) return;
     const ids = userInfo.map((el) => el.userId);
     setUsersIdList(ids);
   });
 
-  useSocketReceiveUser('ON', (userId: number) => {
+  useSocketReceive('ON', (userId: number) => {
     setUsersIdList([...usersIdList, userId]);
   });
 
-  useSocketReceiveUser('OFF', (userId: number) => {
+  useSocketReceive('OFF', (userId: number) => {
     setUsersIdList(usersIdList.filter((el) => el !== userId));
   });
 
