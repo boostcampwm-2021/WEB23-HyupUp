@@ -15,4 +15,4 @@ export default {
 
 const Template: Story<SpinnerProps> = (args) => <Spinner {...args} />;
 
-export const DefaultSearchBar = (args: SpinnerProps) => <Template {...args}></Template>;
+export const DefaultSpinner = (args: SpinnerProps) => <Template {...args}></Template>;

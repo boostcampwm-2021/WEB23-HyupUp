@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useRecoilRefresher_UNSTABLE } from 'recoil';
 import S from './style';
 import arrow from '@public/icons/chevron-down.svg';
 
 import { tasksSelector } from '@/recoil/story';
-import BackLogTaskContainer from '../BackLogTaskContainer';
+import { Spinner } from '@/lib/design';
+
+const BackLogTaskContainer = React.lazy(() => import('../BackLogTaskContainer'));
 
 const BackLogItem = ({ name, id }: { name: string; id: number }) => {
   const [clicked, setClicked] = useState(false);
@@ -28,7 +30,11 @@ const BackLogItem = ({ name, id }: { name: string; id: number }) => {
           <S.ToggleImg src={arrow} click={clicked} />
         </S.ToggleButton>
       </S.ItemContainer>
-      {clicked && <BackLogTaskContainer storyId={id} />}
+      {clicked && (
+        <Suspense fallback={<Spinner widthLevel={8} heightValue={100} />}>
+          <BackLogTaskContainer storyId={id} />
+        </Suspense>
+      )}
     </div>
   );
 };
