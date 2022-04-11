@@ -33,7 +33,7 @@
 
 [**리액트와 불변성**](https://oasis-pocket-331.notion.site/Immer-js-f6c3936bf589468db0aa4fa06fc91c1d) by **[@rudy3091](https://github.com/rudy3091)**
 
-**[Recoil로의 마이그레이션](https://haesoo9410.tistory.com/330?category=974679)** by **[@haesoo9410](https://github.com/haesoo9410)**
+**[Recoil로의 마이그레이션](https://haesoo9410.tistory.com/330?category=974679)** by **[@haesoo-y](https://github.com/haesoo-y)**
 
 **[Redis 도입 배경](https://oasis-pocket-331.notion.site/Redis-7ae574d796004381914a7334497e1a1b)** by **[@ChanHoLee275](https://github.com/ChanHoLee275)** 
 
@@ -97,14 +97,14 @@ HyupUp과 함께라면 신속하고 효율적인 협업으로 **칼퇴**를 하�
 <table>
     <tr>
         <td align="center"><img src="https://github.com/rudy3091.png" width="80"></td>
-        <td align="center"><img src="https://github.com/haesoo9410.png" width="80">
+        <td align="center"><img src="https://github.com/haesoo-y.png" width="80">
         </td>
         <td align="center"><img src="https://github.com/ingong.png" width="80"></td>
         <td align="center"><img src="https://github.com/chanholee275.png" width="80"></td>
     </tr>
     <tr>
         <td align="center"><a href="https://github.com/rudy3091">J066 김현민</a></td>
-        <td align="center"><a href="https://github.com/haesoo9410">J137 윤해수</a></td>
+        <td align="center"><a href="https://github.com/haesoo-y">J137 윤해수</a></td>
         <td align="center"><a href="https://github.com/ingong">J155 이인송</a></td>
         <td align="center"><a href="https://github.com/chanholee275">J164 이찬호</a></td>
     </tr>
